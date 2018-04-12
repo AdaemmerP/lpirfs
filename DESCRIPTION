@@ -21,6 +21,4 @@ Imports:
     mFilter(>=  0.1-3),
     sandwich(>= 2.4-0),
     vars(>= 0.7.4)
-   
-    
 RoxygenNote: 6.0.1

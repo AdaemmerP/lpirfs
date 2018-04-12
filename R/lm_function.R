@@ -2,7 +2,7 @@
 #'
 #' @param y_data A data frame for the exogenous variables.
 #' @param x_lin A data frame with exogenous variables.
-#' @param lags Numeric value with number of lags.
+#' @param specs List with general variables for estimation.
 #' @return List with output from lm object.
 
 

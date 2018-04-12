@@ -2,18 +2,20 @@
 % Please edit documentation in R/lm_function.R
 \name{lm_function}
 \alias{lm_function}
-\title{Creates a data frame with lagged exogenous variables.}
+\title{Function to estimate VAR by OLS: equation for equation.}
 \usage{
-lm_function(m)
+lm_function(y_data, x_lin, specs)
 }
 \arguments{
-\item{data}{A data frame.}
+\item{y_data}{A data frame for the exogenous variables.}
 
-\item{lags}{numeric: The number of lags.}
+\item{x_lin}{A data frame with exogenous variables.}
+
+\item{specs}{List with general variables for estimation.}
 }
 \value{
-A data frame.
+List with output from lm object.
 }
 \description{
-Creates a data frame with lagged exogenous variables.
+Function to estimate VAR by OLS: equation for equation.
 }
