@@ -1,22 +1,23 @@
 #' Function to estimate reduced VAR equation for equation and then shock matrix.
 #'
 #' @param y_data A data frame for the exogenous variables.
-#' @param x_lin A data frame with exogenous variables.
+#' @param x_lin A list with exogenous variables.
+#' @param y_lin A list with endogenous variables.
 #' @param lags Numeric value with number of lags.
 #' @return List with output from lm object.
 
 
 
-reduced_var <- function(y_lin, data_set_estim, specs){
+reduced_var <- function(y_lin, x_lin, data_set_estim, specs){
 
   # Estimate OLS equation for equation
   if (specs$lags_criterion == 'NA') {
 
     lm_all   <- dplyr::as_tibble(lapply(y_lin, lm_function))
 
-  } else {
+                         } else {
 
-    lag_criterion <- vars::VARselect(data_set_estim, lag.max =  specs$max_lags)
+      lag_criterion <- vars::VARselect(data_set_estim, lag.max =  specs$max_lags)
 
     if (specs$lags_criterion == 'AIC'){
 
@@ -24,11 +25,11 @@ reduced_var <- function(y_lin, data_set_estim, specs){
       lm_all          <- dplyr::as_tibble(lapply(y_lin[[specs$lags_lin]],
                                                  lm_function))
 
-    } else {
+                          } else {
 
       specs$lags_lin  <- which.min(lag_criterion$criteria[3,])
-      lm_all  <- dplyr::as_tibble(lapply(y_lin[[specs$lags_lin ]],
-                                         lm_function)) }
+      lm_all          <- dplyr::as_tibble(lapply(y_lin[[specs$lags_lin ]],
+                                                          lm_function)) }
 
   }
 
@@ -52,7 +53,7 @@ reduced_var <- function(y_lin, data_set_estim, specs){
   # Loop to create shocks
   for (jj in 1:specs$endog){
 
-    # Making a unit shock
+  # Making a unit shock
     d[, jj]                          <-  A[, jj]/A[jj, jj]*D[jj, jj]
   }
 
