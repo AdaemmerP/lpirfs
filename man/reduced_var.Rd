@@ -4,12 +4,14 @@
 \alias{reduced_var}
 \title{Function to estimate reduced VAR equation for equation and then shock matrix.}
 \usage{
-reduced_var(y_lin, data_set_estim, specs)
+reduced_var(y_lin, x_lin, data_set_estim, specs)
 }
 \arguments{
-\item{y_data}{A data frame for the exogenous variables.}
+\item{y_lin}{A list with endogenous variables.}
 
-\item{x_lin}{A data frame with exogenous variables.}
+\item{x_lin}{A list with exogenous variables.}
+
+\item{y_data}{A data frame for the exogenous variables.}
 
 \item{lags}{Numeric value with number of lags.}
 }
