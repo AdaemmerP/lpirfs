@@ -3,7 +3,7 @@
 #' @param data A data frame.
 #' @param lags The number of lags.
 #' @return A data frame
-
+#' @export
 
 create_lags <- function(data, lags){
 
