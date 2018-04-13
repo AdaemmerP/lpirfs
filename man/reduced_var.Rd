@@ -2,22 +2,26 @@
 % Please edit documentation in R/reduced_var.R
 \name{reduced_var}
 \alias{reduced_var}
-\title{Function to estimate reduced VAR equation for equation and then shock matrix.}
+\title{Function to estimate structural shock matrix via Cholesky decomposition.}
 \usage{
-reduced_var(y_lin, x_lin, data_set_estim, specs)
+reduced_var(y_lin, x_lin, data_set, specs)
 }
 \arguments{
-\item{y_lin}{A list with endogenous variables.}
+\item{y_lin}{A data frame for the exogenous variables.}
 
 \item{x_lin}{A list with exogenous variables.}
 
-\item{y_data}{A data frame for the exogenous variables.}
+\item{data_set}{Data with all endogenous variables.}
 
-\item{lags}{Numeric value with number of lags.}
+\item{specs}{A list with specifications that go into 'lin_lp' or 'nl_lp' function.
+specs$lags_criterion: Either NaN (given lag length) or 'BIC'|'AIC'
+specs$lags_lin:       Lag length
+specs$max_lags:       Maximum number of lags to use for lag length criteria
+specs$shock_type:     1 = Standard deviation shock, 2 = Unit shock}
 }
 \value{
-List with output from lm object.
+Shock matrix (d).
 }
 \description{
-Function to estimate reduced VAR equation for equation and then shock matrix.
+Function to estimate structural shock matrix via Cholesky decomposition.
 }
