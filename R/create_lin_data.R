@@ -1,6 +1,6 @@
 #' Function to create data for linear model.
 #'
-#' @param specs A list with specifications that go into 'lp_lin' function.
+#' @param specs A list with specifications that go into 'lin_lp' or 'nl_lp' function.
 #'        specs$lags_criterion: Either NaN (given lag length) or 'BIC'|'AIC'
 #'        specs$lags_lin:       Lag length
 #'        specs$trend:          1 (no trend), 2 (trend), 3 (quadratic trend)
@@ -25,10 +25,10 @@ create_lin_data     <- function(specs, data_set){
     # Include no trend, trend or quadratic trend?
     switch(specs$trend,
            x_lin            <-   x_lin,
-           x_lin            <-   x_lin                                    %>%
-                                    dplyr::mutate(trend = row_number()),
-           x_lin            <-   x_lin                                    %>%
-                                    dplyr:: mutate(trend = row_number())  %>%
+           x_lin            <-   x_lin                                      %>%
+                                    dplyr::mutate(trend    = row_number()),
+           x_lin            <-   x_lin                                      %>%
+                                    dplyr:: mutate(trend   = row_number())  %>%
                                     dplyr::mutate(sq_trend = trend^2))
 
 ################################################################################
