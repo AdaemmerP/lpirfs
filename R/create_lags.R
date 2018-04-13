@@ -2,7 +2,7 @@
 #'
 #' @param data A data frame.
 #' @param lags Numeric value for the number of lags.
-#' @return A data frame.
+#' @return lag_data: A data frame.
 
 create_lags  <- function(data, lags){
 
