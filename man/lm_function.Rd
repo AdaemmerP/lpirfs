@@ -2,20 +2,18 @@
 % Please edit documentation in R/lm_function.R
 \name{lm_function}
 \alias{lm_function}
-\title{Function to estimate VAR by OLS: equation for equation.}
+\title{OLS function}
 \usage{
-lm_function(y_data, x_lin, specs)
+lm_function(y_vector, x_data)
 }
 \arguments{
-\item{y_data}{A data frame for the exogenous variables.}
+\item{y_vector}{A vector for the left hand variable.}
 
 \item{x_lin}{A data frame with exogenous variables.}
-
-\item{specs}{List with general variables for estimation.}
 }
 \value{
 List with output from lm object.
 }
 \description{
-Function to estimate VAR by OLS: equation for equation.
+OLS function
 }
