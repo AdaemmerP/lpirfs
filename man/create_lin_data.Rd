@@ -2,19 +2,22 @@
 % Please edit documentation in R/create_lin_data.R
 \name{create_lin_data}
 \alias{create_lin_data}
-\title{Function to create data for linear model}
+\title{Function to create data for linear model.}
 \usage{
 create_lin_data(specs, data_set)
 }
 \arguments{
 \item{specs}{A list with specifications that go into 'lp_lin' function.
-lags_criterion: either NaN (given lag length) or 'BIC'|'AIC'}
+specs$lags_criterion: Either NaN (given lag length) or 'BIC'|'AIC'
+specs$lags_lin:       Lag length
+specs$trend:          1 (no trend), 2 (trend), 3 (quadratic trend)
+specs$max_lags:       Maximum number of lags to use for lag length criteria}
 
 \item{data_set}{A data frame with all endogenous variables.}
 }
 \value{
-List with output from lm object.
+List with left (y_lin) and right hand side (x_lin) data.
 }
 \description{
-Function to create data for linear model
+Function to create data for linear model.
 }
