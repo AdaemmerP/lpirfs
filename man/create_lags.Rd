@@ -17,3 +17,6 @@ lag_data: A data frame with lagged values from 'data'.
 \description{
 Creates a data frame with lagged exogenous variables.
 }
+\author{
+Philipp Adämmer
+}

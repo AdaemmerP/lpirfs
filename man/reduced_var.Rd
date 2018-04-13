@@ -25,3 +25,6 @@ Shock matrix (d).
 \description{
 Function to estimate structural shock matrix via Cholesky decomposition.
 }
+\author{
+Philipp Adämmer
+}

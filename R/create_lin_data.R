@@ -7,6 +7,7 @@
 #'        specs$max_lags:       Maximum number of lags to use for lag length criteria
 #' @param data_set A data frame with all endogenous variables.
 #' @return List with left (y_lin) and right hand side (x_lin) data.
+#' @author Philipp Adämmer
 
 
 create_lin_data     <- function(specs, data_set){
