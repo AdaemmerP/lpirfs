@@ -1,8 +1,8 @@
 #' Creates a data frame with lagged exogenous variables.
 #'
-#' @param data A data frame.
+#' @param data A data frame with variables in columns.
 #' @param lags Numeric value for the number of lags.
-#' @return lag_data: A data frame.
+#' @return lag_data: A data frame with lagged values from 'data'.
 
 create_lags  <- function(data, lags){
 

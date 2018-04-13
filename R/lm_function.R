@@ -1,24 +1,16 @@
-#' Function to estimate VAR by OLS: equation for equation.
+#' OLS function
 #'
-#' @param y_data A data frame for the exogenous variables.
+#' @param y_vector A vector for the left hand variable.
 #' @param x_lin A data frame with exogenous variables.
-#' @param specs List with general variables for estimation.
 #' @return List with output from lm object.
 
 
 
-lm_function  <-  function(y_data, x_lin, specs){
+lm_function  <- function(y_vector, x_data){
 
-  if(specs$lags_criterion == ''){
-    data_lm       <- cbind(y = y_data, x_lin)
-
-                } else {
-
-    data_lm   <- cbind(y = y_data, x_lin[[specs$lags_lin]])}
-
-  names(data_lm)[1] <- 'y'
-
-  lm_output         <- lm(y ~ ., data = data_lm )
-
+                    data_lm           <- cbind(y = y_vector, x_data)
+                    names(data_lm)[1] <- 'y'
+                    lm_output         <- lm(y ~ ., data = data_lm )
 
 }
+
