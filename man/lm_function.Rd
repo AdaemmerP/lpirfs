@@ -2,18 +2,18 @@
 % Please edit documentation in R/lm_function.R
 \name{lm_function}
 \alias{lm_function}
-\title{OLS function}
+\title{lm function which returns OLS parameter estimates}
 \usage{
-lm_function(y_vector, x_data)
+lm_function(y_data, x_data)
 }
 \arguments{
-\item{y_vector}{A vector for the left hand variable.}
+\item{y_data}{A vector for the left hand variable.}
 
-\item{x_lin}{A data frame with exogenous variables.}
+\item{x_data}{A data frame with exogenous variables.}
 }
 \value{
 List with output from lm object.
 }
 \description{
-OLS function
+lm function which returns OLS parameter estimates
 }
