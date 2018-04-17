@@ -1,16 +1,18 @@
-#' OLS function
+#' lm function which returns OLS parameter estimates
 #'
-#' @param y_vector A vector for the left hand variable.
-#' @param x_lin A data frame with exogenous variables.
+#' @param y_data A vector for the left hand variable.
+#' @param x_data A data frame with exogenous variables.
 #' @return List with output from lm object.
 
 
 
-lm_function  <- function(y_vector, x_data){
+lm_function  <- function(y_data, x_data){
 
-                    data_lm           <- cbind(y = y_vector, x_data)
-                    names(data_lm)[1] <- 'y'
-                    lm_output         <- lm(y ~ ., data = data_lm )
+  yy           <- as.matrix(y_data)
+  xx           <- as.matrix(x_data)
+
+
+  lm_output    <- lm(yy ~ xx)
 
 }
 
