@@ -10,7 +10,6 @@
 #' @return A list with lagged data for non-linear model.
 #' @export
 #' @author Philipp Adämmer
-#' @examples
 #'
 create_nl_data <- function(specs, data_set_estim){
 
