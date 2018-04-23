@@ -21,9 +21,6 @@ A list with lagged data for non-linear model.
 \description{
 Function to create data for non-linear model.
 }
-\examples{
-
-}
 \author{
 Philipp Adämmer
 }
