@@ -1,25 +1,31 @@
 #' Creates a data frame with lagged exogenous variables.
 #'
-#' @param data A data frame cloumn variables.
-#' @param lags Numeric value for the number of lags.
+#' @param data A data frame.
+#' @param lags Integer for the number of lags.
 #' @return lag_data: A data frame with lagged values from 'data'.
 #' @author Philipp Adämmer
 
 create_lags  <- function(data, lags){
 
+  # Loop to construct lagged data
   for (i in 1:lags){
 
-        lags_column  <- data %>%
-                          dplyr::mutate_all(funs(lag(., i))) %>%
-                          dplyr::rename_all(funs(paste0(.,"_", "lag_", i)))
+    lags_column  <- data %>%
+                      dplyr::mutate_all(funs(lag(., i))) %>%
+                      dplyr::rename_all(funs(paste0(.,"_", "lag_", i)))
 
-        ifelse(i == 1, lag_data <- lags_column, '')
+              if(i == 1){
 
-        ifelse(i > 1,  lag_data <- cbind(lag_data, lags_column), '')
+           lag_data <- lags_column
 
+               } else {
+
+           lag_data <- cbind(lag_data, lags_column)
+        }
   }
 
   # Delete NAs
-  lag_data <- lag_data %>%
-                na.omit()
+     lag_data <- lag_data %>%
+                            na.omit()
+     return(lag_data)
 }

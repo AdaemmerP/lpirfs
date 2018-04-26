@@ -2,17 +2,22 @@
 #'
 #' @param y_data A vector for the left hand variable.
 #' @param x_data A data frame with exogenous variables.
-#' @return List with output from lm object.
-
-
+#' @return Vector with residuals from OLS regression.
 
 lm_function  <- function(y_data, x_data){
 
+  # Build matrices
   yy           <- as.matrix(y_data)
   xx           <- as.matrix(x_data)
+  xx           <- cbind(rep(1,nrow(xx)), xx)  # Add vector of ones for constant
 
+  # Regression parameters
+  beta    <- (solve(crossprod(xx))%*%t(xx))%*%yy
 
-  lm_output    <- lm(yy ~ xx)
+  # Residuals
+  resids  <- yy - xx%*%beta
+
+  return(resids)
 
 }
 
