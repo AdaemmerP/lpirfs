@@ -4,14 +4,14 @@
 \alias{reduced_var}
 \title{Function to estimate structural shock matrix via Cholesky decomposition.}
 \usage{
-reduced_var(y_lin, x_lin, data_set_estim, specs)
+reduced_var(y_lin, x_lin, data_set_df, specs)
 }
 \arguments{
 \item{y_lin}{A data frame for the exogenous variables.}
 
 \item{x_lin}{A list with exogenous variables.}
 
-\item{data_set_estim}{Data with all endogenous variables.}
+\item{data_set_df}{Data frame with all endogenous variables.}
 
 \item{specs}{A list with specifications that go into 'lin_lp' or 'nl_lp' function.
 specs$lags_criterion: Either NaN (given lag length) or 'BIC'|'AIC'

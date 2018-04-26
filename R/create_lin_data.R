@@ -6,7 +6,6 @@
 #'        specs$trend:          1 (no trend), 2 (trend), 3 (quadratic trend)
 #'        specs$max_lags:       Maximum number of lags to determine lag length criteria
 #' @param data_set_df A data frame with all endogenous variables for VAR.
-#' @export
 #' @return List with filled matrices of lagged left (y_lin) and right hand side (x_lin) variables
 #' @author Philipp Adämmer
 
