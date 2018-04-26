@@ -9,7 +9,6 @@
 #'        specs$hp_filter: 1 = Use HP-filter to extract standardized time series
 #'                         0 = Use pre-defined time series for transition function
 #' @return fz: Vector with values from smooth transition function
-#' @export
 #' @author Philipp Adämmer
 #' @examples
 
