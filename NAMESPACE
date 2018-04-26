@@ -2,6 +2,8 @@
 
 export(create_lin_data)
 export(create_nl_data)
+export(find_optim_lags)
 export(lp_lin)
 export(reduced_var)
 export(switching_series)
+import(foreach)

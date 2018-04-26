@@ -1,7 +1,7 @@
 #include <RcppArmadillo.h>
 using namespace Rcpp;
 
-
+// [[Rcpp::export]]
 
 NumericVector nw_weight(NumericMatrix hhat, int nobs, int num_exog, int nlag) {
   NumericMatrix za;
