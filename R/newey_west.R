@@ -8,11 +8,11 @@
 #'
 newey_west <- function(yy, xx){
 
-  nlag    <- floor(nrow(xx)^(1/4))
+  nlag      <- floor(nrow(xx)^(1/4))
 
   # Regression parameters
-  xpxi    <- chol2inv(chol(crossprod(xx)))
-  beta    <- xpxi%*%t(xx)%*%yy
+  xpxi      <- chol2inv(chol(crossprod(xx)))
+  beta      <- xpxi%*%t(xx)%*%yy
 
   # Output
   resids    <- yy - xx%*%beta
@@ -24,7 +24,7 @@ newey_west <- function(yy, xx){
   hhat      <- emat*t(xx)
 
   # C++ function for while loop
-  G         <- nw_weight(hhat, nobs, num_exog, nlag)
+  G         <- nw_weight.cpp(hhat, nobs, num_exog, nlag)
 
   V         <- xpxi%*%G%*%xpxi
   nwerr     <- sqrt(diag(V))

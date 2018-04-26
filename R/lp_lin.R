@@ -5,6 +5,7 @@
 #'
 #' @return List with mean... SaetÄTER
 #' @export
+#' @import foreach
 #'
 lp_lin <- function(data_set_estim, specs){
 
@@ -44,7 +45,7 @@ lp_lin <- function(data_set_estim, specs){
   if(is.nan(specs$lags_criterion) == TRUE) {
 
     # Loops to estimate local projections. Loop one for parallel computing
-    lin_irfs <- foreach(s = 1:specs$endog) %dopar% { # Outer (multicore-) loop to account for the different shocks
+    lin_irfs <- foreach::foreach(s = 1:specs$endog) %dopar% { # Outer (multicore-) loop to account for the different shocks
 
       for (h in 1:(specs$hor))  {                  # Account for the horizons
 
@@ -100,7 +101,7 @@ lp_lin <- function(data_set_estim, specs){
     lag_crit_val <- matrix(NaN, 1, specs$max_lags)
 
     # --- Loops to estimate local projections.
-    lin_irfs     <- foreach(s = 1:specs$endog,
+    lin_irfs     <- foreach::foreach(s = 1:specs$endog,
                             .export = c('find_optim_lags', 'newey_west'),
                             .noexport = c('')) %dopar% {
 
