@@ -4,7 +4,7 @@
 \alias{create_nl_data}
 \title{Function to create data for non-linear model.}
 \usage{
-create_nl_data(specs, data_set_estim)
+create_nl_data(specs, data_set_df)
 }
 \arguments{
 \item{specs}{A list with specifications that go into 'lin_lp' or 'nl_lp' function.
@@ -13,7 +13,7 @@ specs$lags_lin:       Lag length
 specs$trend:          1 (no trend), 2 (trend), 3 (quadratic trend)
 specs$max_lags:       Maximum number of lags to use for lag length criteria}
 
-\item{data_set_estim}{}
+\item{data_set_df}{A data frame with all endogenous variables}
 }
 \value{
 A list with lagged data for non-linear model.

@@ -7,9 +7,9 @@
 create_lags(data, lags)
 }
 \arguments{
-\item{data}{A data frame cloumn variables.}
+\item{data}{A data frame.}
 
-\item{lags}{Numeric value for the number of lags.}
+\item{lags}{Integer for the number of lags.}
 }
 \value{
 lag_data: A data frame with lagged values from 'data'.

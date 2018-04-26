@@ -6,23 +6,38 @@
 
 using namespace Rcpp;
 
-// nw_weight
-NumericVector nw_weight(NumericMatrix hhat, int nobs, int num_exog, int nlag);
-RcppExport SEXP _lpirfs_nw_weight(SEXP hhatSEXP, SEXP nobsSEXP, SEXP num_exogSEXP, SEXP nlagSEXP) {
+// find_lag_c
+NumericVector find_lag_c(List y, List x, int lag_crit, int h, int k, int max_lags);
+RcppExport SEXP _lpirfs_find_lag_c(SEXP ySEXP, SEXP xSEXP, SEXP lag_critSEXP, SEXP hSEXP, SEXP kSEXP, SEXP max_lagsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type hhat(hhatSEXP);
-    Rcpp::traits::input_parameter< int >::type nobs(nobsSEXP);
-    Rcpp::traits::input_parameter< int >::type num_exog(num_exogSEXP);
-    Rcpp::traits::input_parameter< int >::type nlag(nlagSEXP);
-    rcpp_result_gen = Rcpp::wrap(nw_weight(hhat, nobs, num_exog, nlag));
+    Rcpp::traits::input_parameter< List >::type y(ySEXP);
+    Rcpp::traits::input_parameter< List >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type lag_crit(lag_critSEXP);
+    Rcpp::traits::input_parameter< int >::type h(hSEXP);
+    Rcpp::traits::input_parameter< int >::type k(kSEXP);
+    Rcpp::traits::input_parameter< int >::type max_lags(max_lagsSEXP);
+    rcpp_result_gen = Rcpp::wrap(find_lag_c(y, x, lag_crit, h, k, max_lags));
+    return rcpp_result_gen;
+END_RCPP
+}
+// newey_west_c
+List newey_west_c(NumericVector y, NumericMatrix x);
+RcppExport SEXP _lpirfs_newey_west_c(SEXP ySEXP, SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(newey_west_c(y, x));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_lpirfs_nw_weight", (DL_FUNC) &_lpirfs_nw_weight, 4},
+    {"_lpirfs_find_lag_c", (DL_FUNC) &_lpirfs_find_lag_c, 6},
+    {"_lpirfs_newey_west_c", (DL_FUNC) &_lpirfs_newey_west_c, 2},
     {NULL, NULL, 0}
 };
 

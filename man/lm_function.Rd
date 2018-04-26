@@ -12,7 +12,7 @@ lm_function(y_data, x_data)
 \item{x_data}{A data frame with exogenous variables.}
 }
 \value{
-List with output from lm object.
+Vector with residuals from OLS regression.
 }
 \description{
 lm function which returns OLS parameter estimates

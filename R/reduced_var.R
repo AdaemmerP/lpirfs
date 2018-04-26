@@ -9,7 +9,6 @@
 #'        specs$max_lags:       Maximum number of lags to use for lag length criteria
 #'        specs$shock_type:     1 = Standard deviation shock, 2 = Unit shock
 #' @return Shock matrix (d)
-#' @export
 #' @author Philipp Adämmer
 
 
