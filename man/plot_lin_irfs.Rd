@@ -2,13 +2,13 @@
 % Please edit documentation in R/plot_lin_irfs.R
 \name{plot_lin_irfs}
 \alias{plot_lin_irfs}
-\title{Function to estimate linear irfs, estimated with lin_lp function}
+\title{Function to plot irfs, estimated with lin_lp function}
 \usage{
 plot_lin_irfs(results_lin)
 }
 \arguments{
-\item{results_lin}{}
+\item{results_lin}{List with results from lp_lin function}
 }
 \description{
-Function to estimate linear irfs, estimated with lin_lp function
+Function to plot irfs, estimated with lin_lp function
 }
