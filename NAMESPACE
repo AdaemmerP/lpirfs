@@ -2,7 +2,7 @@
 
 export(lp_lin)
 export(lp_nl)
-export(switching_series)
+export(plot_lin_irfs)
 exportPattern("^[[:alpha:]]+")
 import(foreach)
 importFrom(Rcpp,evalCpp)
