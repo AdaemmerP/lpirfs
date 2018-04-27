@@ -18,8 +18,8 @@ lp_nl <- function(data_set_df, specs){
 
   # Construct data for non-linear model
   data_nl <- create_nl_data(specs, data_set_df)
-  y_nl <- data_nl$y_nl
-  x_nl <- data_nl$x_nl
+  y_nl <- data_nl[[1]]
+  x_nl <- data_nl[[2]]
 
   # Construct data for linear model for reduced shocks
   data_lin               <- create_lin_data(specs, data_set_df)
@@ -85,7 +85,7 @@ lp_nl <- function(data_set_df, specs){
          for (k in 1:specs$endog){ # Accounts for the reactions of the endogenous variables
 
            # Estimate coefficients and newey west std.err
-           nw_results       <- lpirfs::newey_west_c(yy[, k], xx)
+           nw_results       <- lpirfs::newey_west_c(yy[, k], xx, h)
            b                <- nw_results[[1]]
            std_err          <- sqrt(diag(nw_results[[2]]))*specs$confint
 
@@ -170,7 +170,7 @@ lp_nl <- function(data_set_df, specs){
               xx              <- xx[1:(dim(xx)[1] - h + 1),]
 
              # Estimate parameters and newey west standard errors
-              nw_results      <- lpirfs::newey_west_c(yy, xx)
+              nw_results      <- lpirfs::newey_west_c(yy, xx, h)
               b               <- nw_results[[1]]
               std_err         <- sqrt(diag(nw_results[[2]]))
 

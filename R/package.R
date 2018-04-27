@@ -1,4 +1,4 @@
-#' Local Projection Impulse response Functions
+#' Local Projection Impulse Response Functions
 #'
 #' Contains functions to estimate local projections as proposed by Jordà (2005)
 #' @docType package

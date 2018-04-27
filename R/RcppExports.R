@@ -5,7 +5,7 @@ find_lag_c <- function(y, x, lag_crit, h, k, max_lags) {
     .Call(`_lpirfs_find_lag_c`, y, x, lag_crit, h, k, max_lags)
 }
 
-newey_west_c <- function(y, x) {
-    .Call(`_lpirfs_newey_west_c`, y, x)
+newey_west_c <- function(y, x, h) {
+    .Call(`_lpirfs_newey_west_c`, y, x, h)
 }
 
