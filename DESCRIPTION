@@ -20,7 +20,6 @@ Imports:
     ggpubr(>= 0.1.6),
     mFilter(>=  0.1-3),
     Rcpp,
-    sandwich(>= 2.4-0),
     vars(>= 0.7.4)
 RoxygenNote: 6.0.1
 LinkingTo: Rcpp, RcppArmadillo

@@ -3,7 +3,7 @@ using namespace Rcpp;
 
 
 // [[Rcpp::export]]
-List newey_west_c(NumericVector y, NumericMatrix x){
+List newey_west_c(NumericVector y, NumericMatrix x, int h){
   NumericMatrix V;
   arma::mat G, M, xx, xx_one, yy, M1, M2, ga, g1, w, za, xpxi, emat, hhat;
   arma::vec w1, beta, resids;
@@ -18,7 +18,7 @@ List newey_west_c(NumericVector y, NumericMatrix x){
   num_exog = xx.n_cols;
   nobs     = xx.n_rows;
 
-  nlag     = floor(pow(nobs,1.0/4));
+  nlag     = h; // Alternatives: 1 + num_exog + h_total; floor(pow(nobs,1.0/4));
   xpxi     = inv(xx.t()*xx);
   beta     = xpxi*xx.t()*yy;
   resids   = yy - xx*beta;

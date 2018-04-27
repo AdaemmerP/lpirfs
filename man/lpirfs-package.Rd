@@ -3,7 +3,7 @@
 \docType{package}
 \name{lpirfs-package}
 \alias{lpirfs-package}
-\title{Local Projection Impulse response Functions}
+\title{Local Projection Impulse Response Functions}
 \description{
 Contains functions to estimate local projections as proposed by Jordà (2005)
 }
