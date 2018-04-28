@@ -11,6 +11,7 @@ plot_lin_irfs <- function(results_lin){
   irf_lin_mean <- results_lin[[1]]
   irf_lin_low  <- results_lin[[2]]
   irf_lin_up   <- results_lin[[3]]
+  specs        <- results_lin[[4]]
 
   plot_num     <- 1
   gg_lin       <- rep(list(NaN), specs$endog*specs$endog)
@@ -47,7 +48,8 @@ plot_lin_irfs <- function(results_lin){
     }
       }
 
+  return(gg_lin)
   # Plot results
-  lin_plots <- sapply(gg_lin, ggplotGrob)
-  marrangeGrob(lin_plots, nrow = specs$endog, ncol = specs$endog)
+ # lin_plots <- sapply(gg_lin, ggplotGrob)
+ # marrangeGrob(lin_plots, nrow = specs$endog, ncol = specs$endog)
 }

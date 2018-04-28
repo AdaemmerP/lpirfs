@@ -6,7 +6,7 @@ Author: Philipp Adämmer
 Maintainer: Philipp Adämmer <adaemmer@hsu-hh.de>
 Description: The package estimates linear and non-linear impulse response functions based on the local projection method by Jordà (2005).
               The non-linear irfs are based on a transition function as used in Auerbach & Gorodnichenko (2012).
-License: What license is it under?
+License: MIT
 Encoding: UTF-8
 LazyData: true
 Imports: 
@@ -23,3 +23,5 @@ Imports:
     vars(>= 0.7.4)
 RoxygenNote: 6.0.1
 LinkingTo: Rcpp, RcppArmadillo
+Suggests: 
+    testthat
