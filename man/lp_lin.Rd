@@ -2,25 +2,44 @@
 % Please edit documentation in R/lp_lin.R
 \name{lp_lin}
 \alias{lp_lin}
-\title{lp_lin}
+\title{Compute (linear) impulse responses}
 \usage{
-lp_lin(data_set_df, specs)
+lp_lin(data_set_df, specs_list)
 }
 \arguments{
-\item{specs}{A list with specifications that go into 'lin_lp' or 'nl_lp' function.
-specs$lags_criterion: Either NaN (given lag length) or 'AICc'|BICc'|'BIC'
-specs$lags_lin:       Lag length
-specs$trend:          1 (no trend), 2 (trend), 3 (quadratic trend)
-specs$max_lags:       Maximum number of lags to use for lag length criteria
-specs$lamdba:    Value of lambda for HP filter
-specs$hp_filter: 1 = Use HP-filter to extract standardized time series
-                 0 = Use pre-defined time series for transition function}
+\item{data_set_df}{A \link{data.frame}, containing all endogenous variabls for the VAR.}
 
-\item{data_set_estim}{A data.frame/tibble}
+\item{specs_list}{A list with the following inputs: \cr
+\itemize{
+  \item \emph{lags_criterion:}   NaN (Lag length is given), 'AICc', 'AIC' or 'BIC'.
+  \item \emph{lags_lin:}         Number of lags for VAR (if \emph{lags_criterion:} = NaN).
+  \item \emph{max_lags:}         Maximum number of lags (if \emph{lags_criterion:} = 'AICc', BICc' or 'BIC').
+  \item \emph{trend:}            No trend =  1 , Include trend = 2, Include trend and quadratic trend = 3.
+  \item \emph{shock_type:}       No trend =  1 , Include trend = 2, Include trend and quadratic trend = 3.
+  \item \emph{confint:}          Width of confidence bands. 68% = 1, 90% = 1.65, 95% = 1.96.
+  \item \emph{hor:}              Horizons for irfs.
+}}
 }
 \value{
-A list with irfs from local projections and its newey west standard errors
+A list with estimated impulse responses their newey west standard errors and
+a list with specifications of the data frame for the plot function.
 }
 \description{
-lp_lin
+Compute impulse responses with local projections by Jordà (2005).
+}
+\examples{
+# Make specification list
+specs_list <- list()
+
+# Specify inputs
+specs_list$lags_lin       <- 12
+specs_list$lags_criterion <- NaN
+specs_list$max_lags       <- 2
+specs_list$trend          <- 1
+specs_list$shock_type     <- 1
+specs_list$confint        <- 1.96
+specs_list$hor            <- 24
+
+# Estimate model and save results
+ results_lin <- lpirfs::lp_lin(data_set_df, specs_list)
 }
