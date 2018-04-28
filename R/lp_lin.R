@@ -6,15 +6,18 @@
 #'         specs$lags_lin:       Lag length
 #'         specs$trend:          1 (no trend), 2 (trend), 3 (quadratic trend)
 #'         specs$max_lags:       Maximum number of lags to use for lag length criteria
-#'         specs$lamdba:    Value of lambda for HP filter
-#'         specs$hp_filter: 1 = Use HP-filter to extract standardized time series
-#'                          0 = Use pre-defined time series for transition function
-#'
+#'         #'
 #' @return A list with irfs from local projections and its newey west standard errors
 #' @export
 #' @import foreach
-#'
+#' @example
 lp_lin <- function(data_set_df, specs){
+
+  # Safe data frame specifications in 'specs for functions
+   specs$starts         <- 1                        # Sample Start
+   specs$ends           <- dim(data_set_df)[1]      # Sample end
+   specs$columns        <- names(data_set_df)       # Name endogenous variables
+   specs$endog          <- ncol(data_set_df)        # Set the number of endogenous variables
 
  # Construct (lagged) data
   data_lin <- create_lin_data(specs, data_set_df)

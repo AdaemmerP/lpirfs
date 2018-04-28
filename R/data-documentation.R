@@ -1,7 +1,7 @@
 #' Data to estimate the effects of interest rate rules for monetary policy, applied in the AER article by Jordà (2005).
 #' <doi:10.1257/0002828053828518>
 #' Quarterly data to estimate the effects of interest rate rules for monetary policy.
-#' Sample spans from 1955:I - 2003:I
+#'
 #'
 #' @format A data frame with 193 observations (rows) and 3 variables:
 #' \describe{
@@ -11,16 +11,16 @@
 
 #'   ...
 #' }
+#' Sample: 1955:I - 2003:I
 #' @source \url{https://www.aeaweb.org/articles?id=10.1257/0002828053828518}
 "monetary_var_data"
 
 
 
 
-#' Data for for the Christiano, Eichenbaum and Evans (1996) VAR,
-#' applied in the AER article by Jordà (2005).
+#' Data for for Evans and Marshall (1998) VAR, applied in the AER article by Jordà (2005).
 #' <doi:10.1257/0002828053828518>
-#' Monthly data for a standard monetary VAR. Sample spans from 1960:01 - 2001:02.
+#'
 #'
 #' @format A data frame with 494 observations (rows) and 6 variables:
 #' \describe{
@@ -33,5 +33,6 @@
 #'    \item{M2}{Annual growth rate of M2 stock.}
 #'   ...
 #' }
+#' Sample: 1960:01 - 2001:02.
 #' @source \url{https://www.aeaweb.org/articles?id=10.1257/0002828053828518}
 "monetary_var_data"

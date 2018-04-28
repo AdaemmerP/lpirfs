@@ -84,6 +84,6 @@ plot_nl_irfs <- function(results_nl){
   marrangeGrob(s1_plots, nrow = specs$endog, ncol = specs$endog)
   marrangeGrob(s2_plots, nrow = specs$endog, ncol = specs$endog)
 
-  #list (s1_plots = s1_plots, s2_plots = s2_plots)
+  list (s1_plots = s1_plots, s2_plots = s2_plots)
 
 }
