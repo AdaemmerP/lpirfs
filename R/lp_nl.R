@@ -13,7 +13,7 @@
 #' @return A list with irfs from local projections and newey west standard errors
 #' @export
 #' @import foreach
-#'
+#' @example
 lp_nl <- function(data_set_df, specs){
 
   # Construct data for non-linear model
