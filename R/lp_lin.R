@@ -88,6 +88,7 @@ I
        nw_results     <- lpirfs::newey_west_c(yy[, k], xx, h)
        b              <- nw_results[[1]]
        std_err        <- sqrt(diag(nw_results[[2]]))*specs$confint
+
       # Fill coefficient matrix
        b1[k, ]        <-   b[2:(specs$endog + 1)]
        b1_low[k, ]    <-   b[2:(specs$endog + 1)] - std_err[2:(specs$endog + 1)]
