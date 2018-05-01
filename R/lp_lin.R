@@ -14,15 +14,16 @@
 #'   \item \emph{hor:}              Horizons for irfs.
 #' }
 
-#' @return A list with estimated impulse responses their newey west standard errors and
-#' a list with specifications of the data frame for the plot function.
+#' @return A list with estimated impulse responses and their corresponding newey west standard errors. A
+#' list with specifications of the data frame for the plot function.
 #' @export
 #' @references
 #' Jordà, O. (2005) "Estimation and Inference of Impulse Responses by Local Projections."
-#' \emph{American Economic Review}, 95 (1): 161-182. \href{https://doi.org/10.1257/0002828053828518}
+#' \emph{American Economic Review}, 95 (1): 161-182.
+#' \href{https://doi.org/10.1257/0002828053828518}
 #' @import foreach
 #' @examples
-#' # Make specification list
+#' # Create list for function input
 #' specs_list <- list()
 #'
 #' # Specify inputs
