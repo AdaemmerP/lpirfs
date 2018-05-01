@@ -12,8 +12,8 @@ lp_lin(data_set_df, specs_list)
 \item{specs_list}{A list with the following inputs: \cr
 \itemize{
   \item \emph{lags_criterion:}   NaN (Lag length is given), 'AICc', 'AIC' or 'BIC'.
-  \item \emph{lags_lin:}         Number of lags for VAR (if \emph{lags_criterion:} = NaN).
-  \item \emph{max_lags:}         Maximum number of lags (if \emph{lags_criterion:} = 'AICc', BICc' or 'BIC').
+  \item \emph{lags_lin:}         Number of lags for VAR (if \emph{lags_criterion} = NaN).
+  \item \emph{max_lags:}         Maximum number of lags (if \emph{lags_criterion} = 'AICc', BICc' or 'BIC').
   \item \emph{trend:}            No trend =  1 , Include trend = 2, Include trend and quadratic trend = 3.
   \item \emph{shock_type:}       No trend =  1 , Include trend = 2, Include trend and quadratic trend = 3.
   \item \emph{confint:}          Width of confidence bands. 68% = 1, 90% = 1.65, 95% = 1.96.
@@ -42,4 +42,8 @@ specs_list$hor            <- 24
 
 # Estimate model and save results
  results_lin <- lpirfs::lp_lin(data_set_df, specs_list)
+}
+\references{
+Jordà, O. (2005) "Estimation and Inference of Impulse Responses by Local Projections."
+\emph{American Economic Review}, 95 (1): 161-182. \href{https://doi.org/10.1257/0002828053828518}
 }
