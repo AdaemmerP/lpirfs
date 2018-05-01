@@ -3,7 +3,7 @@
 #' @description Compute impulse responses with local projections by Jordà (2005).
 #'
 #' @param data_set_df A \link{data.frame}, containing all endogenous variabls for the VAR.
-#' @param specs_list A list with the following inputs: \cr
+#' @param specs A list with the following inputs: \cr
 #' \itemize{
 #'   \item \emph{lags_criterion:}   NaN (Lag length is given), 'AICc', 'AIC' or 'BIC'.
 #'   \item \emph{lags_lin:}         Number of lags for VAR (if \emph{lags_criterion} = NaN).
@@ -15,29 +15,31 @@
 #' }
 
 #' @return A list with estimated impulse responses and their corresponding newey west standard errors. A
-#' list with specifications of the data frame for the plot function.
+#' list with specifications of the data frame for the plot function:
+#'
+#'
 #' @export
 #' @references
 #' Jordà, O. (2005) "Estimation and Inference of Impulse Responses by Local Projections."
 #' \emph{American Economic Review}, 95 (1): 161-182.
-#' \href{https://doi.org/10.1257/0002828053828518}
+#' doi: \href{https://doi.org/10.1257/0002828053828518}
 #' @import foreach
 #' @examples
 #' # Create list for function input
-#' specs_list <- list()
+#' specs <- list()
 #'
 #' # Specify inputs
-#' specs_list$lags_lin       <- 12
-#' specs_list$lags_criterion <- NaN
-#' specs_list$max_lags       <- 2
-#' specs_list$trend          <- 1
-#' specs_list$shock_type     <- 1
-#' specs_list$confint        <- 1.96
-#' specs_list$hor            <- 24
+#' specs$lags_lin       <- 12
+#' specs$lags_criterion <- NaN
+#' specs$max_lags       <- 2
+#' specs$trend          <- 1
+#' specs$shock_type     <- 1
+#' specs$confint        <- 1.96
+#' specs$hor            <- 24
 #'
 #' # Estimate model and save results
-#'  results_lin <- lpirfs::lp_lin(data_set_df, specs_list)
-lp_lin <- function(data_set_df, specs_list){
+#'  results_lin <- lpirfs::lp_lin(data_set_df, specs)
+lp_lin <- function(data_set_df, specs){
 
   # Safe data frame specifications in 'specs for functions
    specs$starts         <- 1                        # Sample Start
