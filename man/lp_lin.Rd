@@ -44,16 +44,16 @@ Compute impulse responses with local projections by Jordà (2005).
 }
 \examples{
 # Create list for function input
-specs <- list()
+  specs <- list()
 
 # Specify inputs
-specs$lags_lin       <- 12
-specs$lags_criterion <- NaN
-specs$max_lags       <- 2
-specs$trend          <- 1
-specs$shock_type     <- 1
-specs$confint        <- 1.96
-specs$hor            <- 24
+  specs$lags_lin       <- 12
+  specs$lags_criterion <- NaN
+  specs$max_lags       <- 2
+  specs$trend          <- 1
+  specs$shock_type     <- 1
+  specs$confint        <- 1.96
+  specs$hor            <- 24
 
 # Estimate model and save results
  results_lin <- lpirfs::lp_lin(data_set_df, specs)
