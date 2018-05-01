@@ -17,6 +17,9 @@
 #' @return A list with estimated impulse responses their newey west standard errors and
 #' a list with specifications of the data frame for the plot function.
 #' @export
+#' @references
+#' Jordà, O. (2005) "Estimation and Inference of Impulse Responses by Local Projections."
+#' \emph{American Economic Review}, 95 (1): 161-182. \href{https://doi.org/10.1257/0002828053828518}
 #' @import foreach
 #' @examples
 #' # Make specification list
@@ -88,6 +91,7 @@ I
        nw_results     <- lpirfs::newey_west_c(yy[, k], xx, h)
        b              <- nw_results[[1]]
        std_err        <- sqrt(diag(nw_results[[2]]))*specs$confint
+
       # Fill coefficient matrix
        b1[k, ]        <-   b[2:(specs$endog + 1)]
        b1_low[k, ]    <-   b[2:(specs$endog + 1)] - std_err[2:(specs$endog + 1)]
