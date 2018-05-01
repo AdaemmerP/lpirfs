@@ -23,19 +23,23 @@ create_lin_data     <- function(specs, data_set_df){
     x_lin <- create_lags(data_set_df, specs$lags_lin)
 
     # Include no trend, trend or quadratic trend?
-    switch(specs$trend,
-           x_lin            <-   x_lin               %>%
-                                              as.matrix(),
+    if (specs$trend == 0){
 
-           x_lin            <-   x_lin                                     %>%
-                                   dplyr::mutate(trend    = row_number()   %>%
-                                                                   as.matrix()),
+      x_lin            <-   x_lin               %>%
+                                                      as.matrix()
+             } else if (specs$trend == 1){
 
-           x_lin            <-   x_lin               %>%
-                                   dplyr::mutate(trend    = row_number())  %>%
-                                   dplyr::mutate(sq_trend = trend^2)       %>%
+      x_lin            <-   x_lin                                     %>%
+                                dplyr::mutate(trend    = row_number()      %>%
                                                                    as.matrix())
 
+             } else {
+
+       x_lin            <-   x_lin               %>%
+                                dplyr::mutate(trend    = row_number())  %>%
+                                dplyr::mutate(sq_trend = trend^2)       %>%
+                                                                        as.matrix()
+}
 ################################################################################
                                } else {
 ################################################################################
@@ -53,20 +57,23 @@ create_lin_data     <- function(specs, data_set_df){
     x_lin[[i]] <-  dplyr::as_tibble(create_lags(data_set_df, i))
 
    # Include no trend, trend or quadratic trend
-   switch(specs$trend,
+    if (specs$trend == 0){
 
-             x_lin[[i]]            <-   x_lin[[i]]                 %>%
-                                                            as.matrix(),
+     x_lin[[i]]          <-   x_lin[[i]]        %>%
+                                                as.matrix()
+             } else if  (specs$trend == 1){
 
-             x_lin[[i]]            <-   x_lin[[i]]                             %>%
+     x_lin[[i]]          <-   x_lin[[i]]       %>%
                                           dplyr::mutate(trend = row_number())  %>%
-                                                            as.matrix(),
+                                                            as.matrix()
+             } else {
 
-             x_lin[[i]]            <-   x_lin[[i]]                 %>%
-                                          dplyr::mutate(trend = row_number())   %>%
-                                          dplyr::mutate(sq_trend = trend^2) %>%
-                                                            as.matrix())
+     x_lin[[i]]          <-   x_lin[[i]]                            %>%
+                                          dplyr::mutate(trend = row_number())  %>%
+                                          dplyr::mutate(sq_trend = trend^2)    %>%
+                                                            as.matrix()
     }
+   }
   }
 
   # Return list with exogenous and endogenous data
