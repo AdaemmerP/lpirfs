@@ -80,7 +80,7 @@ reduced_var  <- function(y_lin, x_lin, data_set_df, specs){
   # Shock Matrix
   d <- matrix(NaN, specs$endog, specs$endog)
 
-      if (specs$shock_type == 1){
+      if (specs$shock_type == 0){
 
         for (i in 1:specs$endog){
 

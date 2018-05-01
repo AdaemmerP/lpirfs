@@ -10,16 +10,16 @@
 #' \item{lags_lin: Number of (linear) VAR lags (if \emph{lags_criterion} = NaN).}
 #' \item{max_lags: Maximum number of lags if lags_criterion is given.}
 #' \item{trend: No trend =  0 , Include trend = 1, Include trend and quadratic trend = 2.}
-#' \item{shock_type: No trend =  1 , Include trend = 2, Include trend and quadratic trend = 3.}
+#' \item{shock_type: Standard deviation shock = 0, Unit shock = 1.}
 #' \item{confint: Width of confidence bands. 68\% = 1, 90\% = 1.65, 95\% = 1.96.}
 #' \item{hor: Horizons for irfs.}
 #' }
 #'
-#' @return A list with all impulse responses and their corresponding standard errors based on Newey West (1987).
+#' @return A list with impulse responses and their corresponding Newey West (1987) standard errors.
 #' It also returns an updated list with the data frames specifications for the plot function.
 #'
 #'\item{irf_lin_mean:}{A three 3D \link{array}, containing all impulse responses for all endogenous variables.
-#'                     The third array dimension denotes the variable which shocks. The row in each corresponding matrix
+#'                     The last array dimension denotes the variable which shocks. The row in each corresponding matrix
 #'                                denotes the respones of the \emph{ith} variable as ordered in data_set_df. The matrices columns denote the horizons.
 #'                                For example, lp_lin$irf_lin_mean[, , 1] returns a KXH matrix, where K is the number of endogenous variables
 #'                                and H the number of horizons. '1' denotes the variable which shocks.}
