@@ -2,27 +2,46 @@
 #' @title Compute (linear) impulse responses
 #' @description Compute impulse responses with local projections by Jordà (2005).
 #'
-#' @param data_set_df A \link{data.frame}, containing all endogenous variabls for the VAR.
-#' @param specs A list with the following inputs: \cr
+#' @param data_set_df A \link{data.frame} containing all endogenous variabls for the VAR.
+#' @param specs A \link{list} with the following inputs:
+#'
 #' \itemize{
-#'   \item \emph{lags_criterion:}   NaN (Lag length is given), 'AICc', 'AIC' or 'BIC'.
-#'   \item \emph{lags_lin:}         Number of lags for VAR (if \emph{lags_criterion} = NaN).
-#'   \item \emph{max_lags:}         Maximum number of lags (if \emph{lags_criterion} = 'AICc', BICc' or 'BIC').
-#'   \item \emph{trend:}            No trend =  1 , Include trend = 2, Include trend and quadratic trend = 3.
-#'   \item \emph{shock_type:}       No trend =  1 , Include trend = 2, Include trend and quadratic trend = 3.
-#'   \item \emph{confint:}          Width of confidence bands. 68% = 1, 90% = 1.65, 95% = 1.96.
-#'   \item \emph{hor:}              Horizons for irfs.
+#' \item{lags_criterion: NaN (Lag length is given), 'AICc', 'AIC' or 'BIC'.}
+#' \item{lags_lin: Number of (linear) VAR lags (if \emph{lags_criterion} = NaN).}
+#' \item{max_lags: Maximum number of lags if lags_criterion is given.}
+#' \item{trend: No trend =  0 , Include trend = 1, Include trend and quadratic trend = 2.}
+#' \item{shock_type: No trend =  1 , Include trend = 2, Include trend and quadratic trend = 3.}
+#' \item{confint: Width of confidence bands. 68\% = 1, 90\% = 1.65, 95\% = 1.96.}
+#' \item{hor: Horizons for irfs.}
 #' }
-
-#' @return A list with estimated impulse responses and their corresponding newey west standard errors. A
-#' list with specifications of the data frame for the plot function:
+#'
+#' @return A list with all impulse responses and their corresponding standard errors based on Newey West (1987).
+#' It also returns an updated list with the data frames specifications for the plot function.
+#'
+#'\item{irf_lin_mean:}{A three 3D \link{array}, containing all impulse responses for all endogenous variables.
+#'                     The third array dimension denotes the variable which shocks. The row in each corresponding matrix
+#'                                denotes the respones of the \emph{ith} variable as ordered in data_set_df. The matrices columns denote the horizons.
+#'                                For example, lp_lin$irf_lin_mean[, , 1] returns a KXH matrix, where K is the number of endogenous variables
+#'                                and H the number of horizons. '1' denotes the variable which shocks.}
+#'
+#'\item{irf_lin_low:}{A three 3D \link{array}, containing all lower confidence bands based on Newey West (1987).
+#'                                Properties are equal to irf_lin_mean.}
+#'
+#'\item{irf_lin_up:}{A three 3D \link{array}, containing all upper confidence bands based on Newey West (1987).
+#'                                Properties are equal to irf_lin_mean.}
+#'
+#'\item{specs:}{An updated list of \emph{specs} with updated entries for the plot function.}
+#'
 #'
 #'
 #' @export
 #' @references
 #' Jordà, O. (2005) "Estimation and Inference of Impulse Responses by Local Projections."
 #' \emph{American Economic Review}, 95 (1): 161-182.
-#' doi: \href{https://doi.org/10.1257/0002828053828518}
+#'
+#' Newey W.K., West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
+#' Autocorrelation Consistent Covariance Matrix.” Econometrica, 55, 703–708.
+
 #' @import foreach
 #' @examples
 #' # Create list for function input
@@ -201,6 +220,7 @@ I
   # Close cluster
   stopCluster(cl)
 
-  list(irf_lin_mean, irf_lin_low, irf_lin_up, specs)
+  list(irf_lin_mean = irf_lin_mean, irf_lin_low = irf_lin_low,
+       irf_lin_up   = irf_lin_up, spes = specs)
 
 }
