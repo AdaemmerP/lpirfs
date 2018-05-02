@@ -7,8 +7,8 @@
 #'
 #' \itemize{
 #' \item{lags_criterion: NaN (Lag length is given), 'AICc', 'AIC' or 'BIC'.}
-#' \item{lags_lin: Number of (linear) VAR lags (if \emph{lags_criterion} = NaN).}
-#' \item{max_lags: Maximum number of lags if lags_criterion is given.}
+#' \item{lags_lin: Number of lags for (linear) VAR (if \emph{lags_criterion} = NaN).}
+#' \item{max_lags: Maximum number of lags if (lags_criterion = 'AICc'|'AIC'|'BIC'.}
 #' \item{trend: No trend =  0 , Include trend = 1, Include trend and quadratic trend = 2.}
 #' \item{shock_type: Standard deviation shock = 0, Unit shock = 1.}
 #' \item{confint: Width of confidence bands. 68\% = 1, 90\% = 1.65, 95\% = 1.96.}
