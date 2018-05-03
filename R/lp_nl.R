@@ -8,7 +8,7 @@
 #'
 #' \itemize{
 #' \item{\strong{lags_criterion} NaN or character ('AICc', 'AIC' or 'BIC'). NaN means that the number of lags will be given. The
-#'       character refers to the corresponding the lag length criterion.}
+#'       character refers to the corresponding lag length criterion.}
 #' \item{\strong{lags_lin} Integer. Number of lags for (linear) VAR (if lags_criterion = NaN).}
 #' \item{\strong{max_lags} Integer. Maximum number of lags (if lags_criterion = 'AICc'|'AIC'|'BIC').}
 #' \item{\strong{trend} Integer. No trend =  0 , Include trend = 1, Include trend and quadratic trend = 2.}
