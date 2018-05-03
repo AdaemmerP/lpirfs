@@ -2,33 +2,36 @@
 #' @title Compute (linear) impulse responses
 #' @description Compute impulse responses with local projections by Jordà (2005).
 #'
-#' @param data_set_df A \link{data.frame} containing all endogenous variabls for the VAR.
-#' @param specs A \link{list} with the following inputs:
+#' @param data_set_df A \link{data.frame}() containing all endogenous variabls for the VAR. The column order
+#'                    is used for the Cholesky decomposition.
+#' @param specs A \link{list}() with the following inputs:
 #'
 #' \itemize{
-#' \item{lags_criterion: NaN (Lag length is given), 'AICc', 'AIC' or 'BIC'.}
-#' \item{lags_lin: Number of lags for (linear) VAR (if \emph{lags_criterion} = NaN).}
-#' \item{max_lags: Maximum number of lags if (lags_criterion = 'AICc'|'AIC'|'BIC'.}
-#' \item{trend: No trend =  0 , Include trend = 1, Include trend and quadratic trend = 2.}
-#' \item{shock_type: Standard deviation shock = 0, Unit shock = 1.}
-#' \item{confint: Width of confidence bands. 68\% = 1, 90\% = 1.65, 95\% = 1.96.}
-#' \item{hor: Horizons for irfs.}
+#' \item{\strong{lags_criterion} NaN or character ('AICc', 'AIC' or 'BIC'). NaN means that the number of lags will be given. The
+#'       character refers to the corresponding lag length criterion.}
+#' \item{\strong{lags_lin} Integer. Number of lags for (linear) VAR (if lags_criterion = NaN).}
+#' \item{\strong{max_lags} Integer. Maximum number of lags (if lags_criterion = 'AICc'|'AIC'|'BIC').}
+#' \item{\strong{trend} Integer. No trend =  0 , Include trend = 1, Include trend and quadratic trend = 2.}
+#' \item{\strong{shock_type} Integer. Standard deviation shock = 0, Unit shock = 1.}
+#' \item{\strong{confint} Double. Width of confidence bands. 68\% = 1, 90\% = 1.65, 95\% = 1.96.}
+#' \item{\strong{hor} Integer. Horizons for irfs. Wieso das denn?}
 #' }
 #'
-#' @return A list with impulse responses and their corresponding Newey West (1987) standard errors.
-#' It also returns an updated list with the data frames specifications for the plot function.
+#' @return A list with impulse responses and their robust confidence bands.
+#' It also returns an updated list with further properties of 'data_set_df' for the plot function.
 #'
 #'\item{irf_lin_mean:}{A three 3D \link{array}, containing all impulse responses for all endogenous variables.
-#'                     The last array dimension denotes the variable which shocks. The row in each corresponding matrix
-#'                                denotes the respones of the \emph{ith} variable as ordered in data_set_df. The matrices columns denote the horizons.
-#'                                For example, lp_lin$irf_lin_mean[, , 1] returns a KXH matrix, where K is the number of endogenous variables
-#'                                and H the number of horizons. '1' denotes the variable which shocks.}
+#'                    The last dimension denotes the shock variable. The row in each matrix
+#'                    denotes the respones of the \emph{ith} variable as ordered in data_set_df. The columns denote the horizon.
+#'                    For example, if \emph{results_lin} contains the results, results_lin$irf_lin_mean[, , 1] returns a KXH matrix,
+#'                    where K is the number of variables and H the number of horizons. '1' means that the rows are the responses to
+#'                    the shock of the first variable.}
 #'
-#'\item{irf_lin_low:}{A three 3D \link{array}, containing all lower confidence bands based on Newey West (1987).
-#'                                Properties are equal to irf_lin_mean.}
+#'\item{irf_lin_low:}{A three 3D \link{array}, containing all lower confidence bands of the responses,
+#'                    based on robust standard errors by Newey and West (1987). Properties are equal to irf_lin_mean.}
 #'
-#'\item{irf_lin_up:}{A three 3D \link{array}, containing all upper confidence bands based on Newey West (1987).
-#'                                Properties are equal to irf_lin_mean.}
+#'\item{irf_lin_up:}{A three 3D \link{array}, containing all upper confidence bands of the responses,
+#'                    robust standard errors by Newey and West (1987). Properties are equal to irf_lin_mean.}
 #'
 #'\item{specs:}{An updated list of \emph{specs} with updated entries for the plot function.}
 #'
@@ -40,25 +43,32 @@
 #' \emph{American Economic Review}, 95 (1): 161-182.
 #'
 #' Newey W.K., West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
-#' Autocorrelation Consistent Covariance Matrix.” Econometrica, 55, 703–708.
+#' Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–708.
 
 #' @import foreach
 #' @examples
-#' # Create list for function input
+#' # Create list for input
 #'   specs <- list()
 #'
 #' # Specify inputs
-#'   specs$lags_lin       <- 12
+#'   specs$lags_lin       <- 12L
 #'   specs$lags_criterion <- NaN
-#'   specs$max_lags       <- 2
-#'   specs$trend          <- 1
-#'   specs$shock_type     <- 1
+#'   specs$max_lags       <- 2L
+#'   specs$trend          <- 1L
+#'   specs$shock_type     <- 1L
 #'   specs$confint        <- 1.96
-#'   specs$hor            <- 24
+#'   specs$hor            <- 24L
 #'
 #' # Estimate model and save results
 #'  results_lin <- lpirfs::lp_lin(data_set_df, specs)
 lp_lin <- function(data_set_df, specs){
+
+  # Check coherence of list input
+    if( (is.character(specs$lags_criterion) == TRUE) &
+      (is.numeric(specs$lags_lin) == TRUE)){
+     stop('You can not provide a lag criterion (AICc, AIC or BIC) and a fixed number of lags.')
+    }
+
 
   # Safe data frame specifications in 'specs for functions
    specs$starts         <- 1                        # Sample Start
