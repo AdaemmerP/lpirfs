@@ -7,33 +7,33 @@
 #' @param specs A \link{list}() with the following inputs:
 #'
 #' \itemize{
-#' \item{\strong{lags_criterion} NaN or character ('AICc', 'AIC' or 'BIC'). NaN means that the number of lags will be given. The
-#'       character refers to the corresponding lag length criterion.}
-#' \item{\strong{lags_lin} Integer. Number of lags for (linear) VAR (if lags_criterion = NaN).}
-#' \item{\strong{max_lags} Integer. Maximum number of lags (if lags_criterion = 'AICc'|'AIC'|'BIC').}
+#' \item{\strong{lags_criterion} NaN or character ('AICc', 'AIC' or 'BIC'). NaN means that the number of lags
+#'         has to be given at \emph{lags_lin}. The character refers to the corresponding lag length criterion.}
+#' \item{\strong{lags_lin} Integer. Number of lags for (linear) VAR (if \emph{lags_criterion} = NaN).}
+#' \item{\strong{max_lags} Integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC').}
 #' \item{\strong{trend} Integer. No trend =  0 , Include trend = 1, Include trend and quadratic trend = 2.}
 #' \item{\strong{shock_type} Integer. Standard deviation shock = 0, Unit shock = 1.}
 #' \item{\strong{confint} Double. Width of confidence bands. 68\% = 1, 90\% = 1.65, 95\% = 1.96.}
-#' \item{\strong{hor} Integer. Horizons for irfs. Wieso das denn?}
+#' \item{\strong{hor} Integer. Number of horizons for impulse responses. }
 #' }
 #'
 #' @return A list with impulse responses and their robust confidence bands.
-#' It also returns an updated list with further properties of 'data_set_df' for the plot function.
+#' It also returns an updated list of \emph{specs} with further properties of 'data_set_df' for the plot function.
 #'
-#'\item{irf_lin_mean:}{A three 3D \link{array}, containing all impulse responses for all endogenous variables.
+#'\item{irf_lin_mean}{A three 3D \link{array}, containing all impulse responses for all endogenous variables.
 #'                    The last dimension denotes the shock variable. The row in each matrix
 #'                    denotes the respones of the \emph{ith} variable as ordered in data_set_df. The columns denote the horizon.
 #'                    For example, if \emph{results_lin} contains the results, results_lin$irf_lin_mean[, , 1] returns a KXH matrix,
 #'                    where K is the number of variables and H the number of horizons. '1' means that the rows are the responses to
 #'                    the shock of the first variable.}
 #'
-#'\item{irf_lin_low:}{A three 3D \link{array}, containing all lower confidence bands of the responses,
+#'\item{irf_lin_low}{A three 3D \link{array}, containing all lower confidence bands of the responses,
 #'                    based on robust standard errors by Newey and West (1987). Properties are equal to irf_lin_mean.}
 #'
-#'\item{irf_lin_up:}{A three 3D \link{array}, containing all upper confidence bands of the responses,
+#'\item{irf_lin_up}{A three 3D \link{array}, containing all upper confidence bands of the responses,
 #'                    robust standard errors by Newey and West (1987). Properties are equal to irf_lin_mean.}
 #'
-#'\item{specs:}{An updated list of \emph{specs} with updated entries for the plot function.}
+#'\item{specs}{An updated list of \emph{specs} for the plot function.}
 #'
 #'
 #'
@@ -42,7 +42,7 @@
 #' Jordà, O. (2005) "Estimation and Inference of Impulse Responses by Local Projections."
 #' \emph{American Economic Review}, 95 (1): 161-182.
 #'
-#' Newey W.K., West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
+#' Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
 #' Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–708.
 
 #' @import foreach

@@ -1,75 +1,119 @@
 #' @name lp_nl
 #' @title Compute (non-linear) impulse responses
-#' @description Compute non-linear impulse responses with local projections by Jordà (2005).
+#' @description Compute non-linear impulse responses with local projections by Jordà (2005). The
+#' data are separated into two states with a smooth transition function as in by Auerbach and Gorodnichenko (2012).
 #'
-#' @param data_set_df A \link{data.frame}() containing all endogenous variabls for the VAR. The column order
-#'                    is used for the Cholesky decomposition.
+#' @param data_set_df A \link{data.frame}() containing all endogenous variables for the VAR. The column order
+#'                     is also used for the Cholesky decomposition.
 #' @param specs A \link{list}() with the following inputs:
 #'
 #' \itemize{
-#' \item{\strong{lags_criterion} NaN or character ('AICc', 'AIC' or 'BIC'). NaN means that the number of lags will be given. The
-#'       character refers to the corresponding lag length criterion.}
-#' \item{\strong{lags_lin} Integer. Number of lags for (linear) VAR (if lags_criterion = NaN).}
-#' \item{\strong{max_lags} Integer. Maximum number of lags (if lags_criterion = 'AICc'|'AIC'|'BIC').}
-#' \item{\strong{trend} Integer. No trend =  0 , Include trend = 1, Include trend and quadratic trend = 2.}
+#' \item{\strong{lags_criterion} NaN or character ('AICc', 'AIC' or 'BIC'). NaN means that the number of lags
+#'         has to be given at \emph{lags_nl}. The character denotes the lag length criterion.}
+#' \item{\strong{lags_nl} Integer. Number of lags for (non-linear) VAR (if \emph{lags_criterion} = NaN).}
+#' \item{\strong{max_lags} Integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC').}
+#' \item{\strong{trend} Integer. Include no trend =  0 , include trend = 1, include trend and quadratic trend = 2.}
 #' \item{\strong{shock_type} Integer. Standard deviation shock = 0, Unit shock = 1.}
-#' \item{\strong{confint} Double. Width of confidence bands. 68\% = 1, 90\% = 1.65, 95\% = 1.96.}
-#' \item{\strong{hor} Integer. Horizons for irfs. Wieso das denn?}
-#' \item{\strong{switching} Vector. A vector with the same row dimension as 'data_set_df'. This series is either
-#'               decomposed by the Hodrick-Prescott filter or directly included into the the switching function
-#'               \deqn{(F_{z_t}) = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)}}    }
+#' \item{\strong{confint} Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.}
+#' \item{\strong{hor} Integer. Number of horizons for impulse responses. }
+#' \item{\strong{switching} Vector. A column vector with the same length as \emph{data_set_df}. This series (\eqn{z_t}) can either
+#'               be first decomposed by the Hodrick-Prescott filter as proposed in Ramey and Zubairy (2018) or
+#'               directly plugged into the smooth transition function:
+#'               \deqn{ F_{z_t}) = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)} }
+#'               Warning: \eqn{F_{z_t}} will first be lagged in \link{create_nl_data} by one and then multiplied with the data.
+#'               If the variable shall not be lagged, it has to be given with a lead of one.
+#'               The transition states are defined as: \cr
+#'               State 1 = 1-\eqn{F(z_t)}, state 2 = \eqn{F(z_t)}
+#'               Please read Auerbach and Gorodnichenko (2012) for further details.
+#'                 }
+#'\item{\strong{hp_filter} Integer. No HP-filter = 0. Use HP-filter = 1. }
+#'\item{\strong{lambda} Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter if \emph{hp_filter} = 1. }
+#'\item{\strong{gamma} Double. Value of \eqn{\gamma} which is used in the transition function in \link{switching_variable}. }
 #' }
 #'
-#' @return A list with impulse responses and their robust confidence bands.
-#' It also returns an updated list with further properties of 'data_set_df' for the plot function.
 #'
-#'\item{irf_lin_mean:}{A three 3D \link{array}, containing all impulse responses for all endogenous variables.
+#' @return A list with impulse responses and their robust confidence bands.
+#' It also returns an updated list of \emph{specs} with further properties of \emph{data_set_df} for the plot function.
+#'
+#'
+#'\item{irf_s1_mean}{A three 3D \link{array}, containing all impulse responses for all endogenous variables of the first state.
+#'                    The last dimension denotes the shock variable. The row in each matrix
+#'                    denotes the respones of the \emph{ith} variable ordered as in \emph{data_set_df}. The columns are the horizons.
+#'                    For example, if the results are saved in \emph{results_lin}, results_lin$irf_lin_mean[, , 1] returns a KXH matrix,
+#'                    where K is the number of variables and H the number of horizons. '1' is the first shock variable corresponding to the
+#'                    variable in the first column of \emph{data_set_df}.
+#'
+#'\item{irf_s1_low}{A three 3D \link{array}, containing all lower confidence bands of the impulse responses, based on
+#'                    robust standard standard errors by Newey and West (1987). Properties are equal to \emph{irf_s1_mean}.}
+#'
+#'\item{irf_s1_up}{A three 3D \link{array}, containing all upper confidence bands of the impulse responses, based on
+#'                    robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s1_mean}}
+#'
+#'\item{irf_s2_mean}{A three 3D \link{array}, containing all impulse responses for all endogenous variables of the second state.
 #'                    The last dimension denotes the shock variable. The row in each matrix
 #'                    denotes the respones of the \emph{ith} variable as ordered in data_set_df. The columns denote the horizon.
-#'                    For example, if \emph{results_lin} contains the results, results_lin$irf_lin_mean[, , 1] returns a KXH matrix,
-#'                    where K is the number of variables and H the number of horizons. '1' means that the rows are the responses to
-#'                    the shock of the first variable.}
+#'                    For example, if the results are saved in \emph{results_lin}, results_lin$irf_lin_mean[, , 1] returns a KXH matrix,
+#'                    where K is the number of variables and H the number of horizons. '1' is the first shock variable corresponding to the
+#'                    variable in the first column of \emph{data_set_df}.
 #'
-#'\item{irf_lin_low:}{A three 3D \link{array}, containing all lower confidence bands of the responses,
-#'                    based on robust standard errors by Newey and West (1987). Properties are equal to irf_lin_mean.}
+#'\item{irf_s2_low}{A three 3D \link{array}, containing all lower confidence bands of the responses,
+#'                    based on robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s2_mean}}
 #'
-#'\item{irf_lin_up:}{A three 3D \link{array}, containing all upper confidence bands of the responses,
-#'                    robust standard errors by Newey and West (1987). Properties are equal to irf_lin_mean.}
+#'\item{irf_s2_up}{A three 3D \link{array}, containing all upper confidence bands of the responses, based on
+#'                    robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s2_mean}}
 #'
-#'\item{specs:}{An updated list of \emph{specs} with updated entries for the plot function.}
+#'\item{specs}{An updated list of \emph{specs} for the plot function.}
 #'
-#'
+#'\item{fz}
 #'
 #' @export
 #' @references
+#' Auerbach, A. J., and  Gorodnichenko Y. (2012). "Measuring the Output Responses to Fiscal Policy."
+#' \emph{American Economic Journal: Economic Policy}, 4 (2): 1-27.
+#'
 #' Jordà, O. (2005) "Estimation and Inference of Impulse Responses by Local Projections."
 #' \emph{American Economic Review}, 95 (1): 161-182.
 #'
-#' Newey W.K., West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
+#' Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
 #' Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–708.
-
+#'
+#' Ramey, V.A., and Zubairy, S. (2018). "Government Spending Multipliers in Good Times and in Bad:
+#' Evidence from US Historical Data." \emph{Journal of Political Economy}, 126 (2), 850-901.
 #' @import foreach
 #' @examples
 #' # Create list for input
-#'   specs <- list()
+#' specs <- list()
+#' # Fill list
+#' specs$lags_nl        <- 4
+#' specs$lags_criterion <- NaN
+#' specs$max_lags       <- 2
+#' specs$trend          <- 1
+#' specs$shock_type     <- 1
 #'
-#' # Specify inputs
-#'   specs$lags_lin       <- 12L
-#'   specs$lags_criterion <- NaN
-#'   specs$max_lags       <- 2L
-#'   specs$trend          <- 1L
-#'   specs$shock_type     <- 1L
-#'   specs$confint        <- 1.96
-#'   specs$hor            <- 24L
-#'
+#' # Specifications for switching variable
+#' specs$switching      <- data_set_df$XXX # Use a column of the data
+#'                                           frame or provide another vector
+#' specs$hp_filter      <- 1
+#' specs$lambda         <- 1600
+#' specs$gamma          <- -3
+#' # Horizons and cinfidence intervals
+#' specs$confint        <- 1.96
+#' specs$hor            <- 24
 #' # Estimate model and save results
 #'  results_lin <- lpirfs::lp_lin(data_set_df, specs)
 lp_nl <- function(data_set_df, specs){
+
+  # Safe data frame specifications in 'specs for functions
+  specs$starts         <- 1                        # Sample Start
+  specs$ends           <- dim(data_set_df)[1]      # Sample end
+  specs$columns        <- names(data_set_df)       # Name endogenous variables
+  specs$endog          <- ncol(data_set_df)        # Set the number of endogenous variables
 
   # Construct data for non-linear model
   data_nl <- create_nl_data(specs, data_set_df)
   y_nl <- data_nl[[1]]
   x_nl <- data_nl[[2]]
+  fz   <- data_nl[[3]]
 
   # Construct data for linear model for reduced shocks
   data_lin               <- create_lin_data(specs, data_set_df)
@@ -282,6 +326,7 @@ lp_nl <- function(data_set_df, specs){
   stopCluster(cl)
 
   list(irf_s1_mean = irf_s1_mean, irf_s1_low = irf_s1_low, irf_s1_up = irf_s1_up,
-       irf_s2_mean = irf_s2_mean, irf_s2_low = irf_s2_low, irf_s2_up = irf_s2_up)
+       irf_s2_mean = irf_s2_mean, irf_s2_low = irf_s2_low, irf_s2_up = irf_s2_up,
+       fz          = fz, specs = specs)
 
 }

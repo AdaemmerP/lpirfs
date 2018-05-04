@@ -1,6 +1,5 @@
 #' Data to estimate the effects of interest rate rules for monetary policy, applied in the AER article by Jordà (2005).
 #' <doi:10.1257/0002828053828518>
-#' Quarterly data to estimate the effects of interest rate rules for monetary policy.
 #'
 #'
 #' @format A data frame with 193 observations (rows) and 3 variables:
@@ -13,7 +12,7 @@
 #' }
 #' Sample: 1955:I - 2003:I
 #' @source \url{https://www.aeaweb.org/articles?id=10.1257/0002828053828518}
-"monetary_var_data"
+"interest_rules_var_data"
 
 
 
