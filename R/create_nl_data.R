@@ -111,5 +111,5 @@ create_nl_data <- function(specs, data_set_df){
     }
    }
 
-  list(y_nl = y_nl, x_nl = x_nl)
+  list(y_nl = y_nl, x_nl = x_nl, fz = fz)
 }
