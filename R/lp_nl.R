@@ -81,6 +81,8 @@
 #' Evidence from US Historical Data." \emph{Journal of Political Economy}, 126 (2), 850-901.
 #' @import foreach
 #' @examples
+#' data("monetary_var_data")
+#'
 #' # Create list for input
 #' specs <- list()
 #' # Fill list
@@ -91,8 +93,7 @@
 #' specs$shock_type     <- 1
 #'
 #' # Specifications for switching variable
-#' specs$switching      <- data_set_df$XXX # Use a column of the data
-#'                                           frame or provide another vector
+#' specs$switching      <- data_set_df$EM
 #' specs$hp_filter      <- 1
 #' specs$lambda         <- 1600
 #' specs$gamma          <- -3
@@ -103,11 +104,14 @@
 #'  results_lin <- lpirfs::lp_lin(data_set_df, specs)
 lp_nl <- function(data_set_df, specs){
 
+  # Check input for consistency
+
   # Safe data frame specifications in 'specs for functions
   specs$starts         <- 1                        # Sample Start
   specs$ends           <- dim(data_set_df)[1]      # Sample end
   specs$columns        <- names(data_set_df)       # Name endogenous variables
   specs$endog          <- ncol(data_set_df)        # Set the number of endogenous variables
+  specs$lags_lin       <- specs$lags_nl            # Number of lags for shock matrix
 
   # Construct data for non-linear model
   data_nl <- create_nl_data(specs, data_set_df)

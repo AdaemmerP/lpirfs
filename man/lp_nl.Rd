@@ -41,6 +41,8 @@ Compute non-linear impulse responses with local projections by Jordà (2005). Th
 data are separated into two states with a smooth transition function as in by Auerbach and Gorodnichenko (2012).
 }
 \examples{
+data("monetary_var_data")
+
 # Create list for input
 specs <- list()
 # Fill list
@@ -51,8 +53,7 @@ specs$trend          <- 1
 specs$shock_type     <- 1
 
 # Specifications for switching variable
-specs$switching      <- data_set_df$XXX # Use a column of the data
-                                          frame or provide another vector
+specs$switching      <- data_set_df$EM
 specs$hp_filter      <- 1
 specs$lambda         <- 1600
 specs$gamma          <- -3
