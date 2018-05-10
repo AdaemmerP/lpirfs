@@ -7,8 +7,28 @@
 plot_lin_irfs(results_lin)
 }
 \arguments{
-\item{results_lin}{List with results from lp_lin function}
+\item{results_lin}{A list with KXK with plots constructed with ggplot2}
 }
 \description{
 Function to plot irfs, estimated with lin_lp function
+}
+\examples{
+
+# Estimate linear impulse responses
+results_lin <- lp_lin(data_set_df, specs)
+
+# Show single plots
+results_lin[[1]]
+results_lin[[2]]
+...
+
+# Show all plots
+library(ggpubr)
+library(gridExtra)
+
+
+lin_plots <- sapply(results_lin, ggplotGrob)
+marrangeGrob(lin_plots, nrow = specs$endog, ncol = specs$endog)
+
+
 }

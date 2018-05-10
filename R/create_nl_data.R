@@ -1,12 +1,7 @@
 #' Function to create data for non-linear model.
 #'
-#' @param specs A list with specifications that go into 'lin_lp' or 'nl_lp' function.
-#'        specs$lags_criterion: Either NaN (given lag length) or 'BIC'|'AIC'
-#'        specs$lags_lin:       Lag length
-#'        specs$trend:          1 (no trend), 2 (trend), 3 (quadratic trend)
-#'        specs$max_lags:       Maximum number of lags to use for lag length criteria
+#' @param specs A list with specifications used as input for \link{lp_nl}.
 #' @param data_set_df A data frame with all endogenous variables
-#'
 #' @return A list with lagged data for non-linear model.
 #' @author Philipp Adämmer
 #'

@@ -13,8 +13,8 @@ is also used for the Cholesky decomposition.}
 \item{specs}{A \link{list}() with the following inputs:
 
 \itemize{
-\item{\strong{lags_criterion} NaN or character ('AICc', 'AIC' or 'BIC'). NaN means that the number of lags
-        has to be given at \emph{lags_nl}. The character denotes the lag length criterion.}
+\item{\strong{lags_criterion} NaN or character. NaN means that the number of lags
+        will be given at \emph{lags_nl}. The character denotes the lag length criterion ('AICc', 'AIC' or 'BIC').}
 \item{\strong{lags_nl} Integer. Number of lags for (non-linear) VAR (if \emph{lags_criterion} = NaN).}
 \item{\strong{max_lags} Integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC').}
 \item{\strong{trend} Integer. Include no trend =  0 , include trend = 1, include trend and quadratic trend = 2.}
@@ -22,14 +22,14 @@ is also used for the Cholesky decomposition.}
 \item{\strong{confint} Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.}
 \item{\strong{hor} Integer. Number of horizons for impulse responses. }
 \item{\strong{switching} Vector. A column vector with the same length as \emph{data_set_df}. This series (\eqn{z_t}) can either
-              be first decomposed by the Hodrick-Prescott filter as proposed in Ramey and Zubairy (2018) or
+              be first decomposed by the Hodrick-Prescott filter as proposed by Ramey and Zubairy (2018) or
               directly plugged into the smooth transition function:
               \deqn{ F_{z_t}) = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)} }
-              Warning: \eqn{F_{z_t}} will first be lagged in \link{create_nl_data} by one and then multiplied with the data.
-              If the variable shall not be lagged, it has to be given with a lead of one.
-              The transition states are defined as: \cr
-              State 1 = 1-\eqn{F(z_t)}, state 2 = \eqn{F(z_t)}
-              Please read Auerbach and Gorodnichenko (2012) for further details.
+              Warning: \eqn{F_{z_t}} will be lagged in \link{create_nl_data} by one and then multiplied with the data.
+              If the variable shall not be lagged, the vector has to be given with a lead of one.
+              The exogonous data for the transition states are prepared as follows: \cr
+              State 1 = (1-\eqn{F(z_t)})*X, state 2 = \eqn{F(z_t)}*X \cr
+              Please read Auerbach and Gorodnichenko (2012) for further details on the transition function.
                 }
 \item{\strong{hp_filter} Integer. No HP-filter = 0. Use HP-filter = 1. }
 \item{\strong{lambda} Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter if \emph{hp_filter} = 1. }
@@ -38,13 +38,15 @@ is also used for the Cholesky decomposition.}
 }
 \description{
 Compute non-linear impulse responses with local projections by Jordà (2005). The
-data are separated into two states with a smooth transition function as in by Auerbach and Gorodnichenko (2012).
+data are separated into two states with a smooth transition function as in Auerbach and Gorodnichenko (2012).
 }
 \examples{
-data("monetary_var_data")
+# Load data
+data_set_df <- data("interest_rules_var_data")
 
 # Create list for input
 specs <- list()
+
 # Fill list
 specs$lags_nl        <- 4
 specs$lags_criterion <- NaN
@@ -53,10 +55,11 @@ specs$trend          <- 1
 specs$shock_type     <- 1
 
 # Specifications for switching variable
-specs$switching      <- data_set_df$EM
+specs$switching      <- data_set_df$GDP_gap
 specs$hp_filter      <- 1
 specs$lambda         <- 1600
 specs$gamma          <- -3
+
 # Horizons and cinfidence intervals
 specs$confint        <- 1.96
 specs$hor            <- 24

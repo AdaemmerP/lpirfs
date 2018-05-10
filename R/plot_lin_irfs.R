@@ -1,11 +1,29 @@
 #' Function to plot irfs, estimated with lin_lp function
 #'
-#' @param results_lin List with results from lp_lin function
+#' @param results_lin A list with KXK with plots constructed with ggplot2
 #'
 #' @return
 #' @export
-#'
+#' @import ggplot2
 #' @examples
+#'
+#' # Estimate linear impulse responses
+#' results_lin <- lp_lin(data_set_df, specs)
+#'
+#' # Show single plots
+#' results_lin[[1]]
+#' results_lin[[2]]
+#' ...
+#'
+#' # Show all plots
+#' library(ggpubr)
+#' library(gridExtra)
+#'
+#'
+#' lin_plots <- sapply(results_lin, ggplotGrob)
+#' marrangeGrob(lin_plots, nrow = specs$endog, ncol = specs$endog)
+#'
+#'
 plot_lin_irfs <- function(results_lin){
 
   irf_lin_mean <- results_lin[[1]]
@@ -49,7 +67,5 @@ plot_lin_irfs <- function(results_lin){
       }
 
   return(gg_lin)
-  # Plot results
- # lin_plots <- sapply(gg_lin, ggplotGrob)
- # marrangeGrob(lin_plots, nrow = specs$endog, ncol = specs$endog)
+
 }

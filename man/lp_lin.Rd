@@ -7,14 +7,14 @@
 lp_lin(data_set_df, specs)
 }
 \arguments{
-\item{data_set_df}{A \link{data.frame}() containing all endogenous variabls for the VAR. The column order
+\item{data_set_df}{A \link{data.frame}() containing all endogenous variables for the VAR. The column order
 is used for the Cholesky decomposition.}
 
 \item{specs}{A \link{list}() with the following inputs:
 
 \itemize{
-\item{\strong{lags_criterion} NaN or character ('AICc', 'AIC' or 'BIC'). NaN means that the number of lags
-        has to be given at \emph{lags_lin}. The character refers to the corresponding lag length criterion.}
+\item{\strong{lags_criterion} NaN or character. NaN means that the number of lags
+        has to be given at \emph{lags_lin}. The character refers to the corresponding lag length criterion ('AICc', 'AIC' or 'BIC').}
 \item{\strong{lags_lin} Integer. Number of lags for (linear) VAR (if \emph{lags_criterion} = NaN).}
 \item{\strong{max_lags} Integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC').}
 \item{\strong{trend} Integer. No trend =  0 , Include trend = 1, Include trend and quadratic trend = 2.}
@@ -25,7 +25,7 @@ is used for the Cholesky decomposition.}
 }
 \value{
 A list with impulse responses and their robust confidence bands.
-It also returns an updated list of \emph{specs} with further properties of 'data_set_df' for the plot function.
+It also returns an updated list of \emph{specs} with further properties of \emph{data_set_df} for the plot function.
 
 \item{irf_lin_mean}{A three 3D \link{array}, containing all impulse responses for all endogenous variables.
                    The last dimension denotes the shock variable. The row in each matrix
@@ -46,6 +46,9 @@ It also returns an updated list of \emph{specs} with further properties of 'data
 Compute impulse responses with local projections by Jordà (2005).
 }
 \examples{
+# Load data
+  data_set_df <-data("interest_rules_var_data")
+
 # Create list for input
   specs <- list()
 
