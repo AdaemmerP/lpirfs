@@ -25,13 +25,13 @@ create_lin_data     <- function(specs, data_set_df){
     # Include no trend, trend or quadratic trend?
     if (specs$trend == 0){
 
-      x_lin            <-   x_lin               %>%
-                                                      as.matrix()
+      x_lin            <-   x_lin %>%
+                              as.matrix()
              } else if (specs$trend == 1){
 
-      x_lin            <-   x_lin                                     %>%
-                                dplyr::mutate(trend    = row_number()      %>%
-                                                                   as.matrix())
+      x_lin            <-   x_lin                                        %>%
+                             dplyr::mutate(trend    = row_number())      %>%
+                                                                   as.matrix()
 
              } else {
 
