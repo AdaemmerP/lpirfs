@@ -28,7 +28,7 @@
 #'                 }
 #'\item{\strong{hp_filter} Integer. No HP-filter = 0. Use HP-filter = 1. }
 #'\item{\strong{lambda} Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter if \emph{hp_filter} = 1. }
-#'\item{\strong{gamma} Double. Value of \eqn{\gamma} which is used in the transition function in \link{switching_variable}. }
+#'\item{\strong{gamma} Double. Value of \eqn{\gamma} which is used in the transition function in \link{switching_series}. }
 #' }
 #'
 #'
@@ -81,6 +81,7 @@
 #'
 #' @import foreach
 #' @examples
+#' \dontrun{
 #' # Load data
 #' data_set_df <- data("interest_rules_var_data")
 #'
@@ -103,8 +104,10 @@
 #' # Horizons and cinfidence intervals
 #' specs$confint        <- 1.96
 #' specs$hor            <- 24
+#'
 #' # Estimate model and save results
-#'  results_lin <- lpirfs::lp_lin(data_set_df, specs)
+#'  results_lin <- lp_lin(data_set_df, specs)
+#'  }
 lp_nl <- function(data_set_df, specs){
 
   # Check input for consistency

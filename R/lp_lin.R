@@ -47,6 +47,7 @@
 
 #' @import foreach
 #' @examples
+#' \dontrun{
 #' # Load data
 #'   data_set_df <-data("interest_rules_var_data")
 #'
@@ -63,7 +64,9 @@
 #'   specs$hor            <- 12L
 #'
 #' # Estimate model and save results
-#'  results_lin <- lpirfs::lp_lin(data_set_df, specs)
+#'  results_lin <- lp_lin(data_set_df, specs)
+#'
+#'  }
 lp_lin <- function(data_set_df, specs){
 
   # Check coherence of list input

@@ -6,7 +6,7 @@
 #' @export
 #' @import ggplot2
 #' @examples
-#'
+#'\dontrun{
 #' # Estimate linear impulse responses
 #' results_lin <- lp_lin(data_set_df, specs)
 #'
@@ -16,12 +16,14 @@
 #' ...
 #'
 #' # Show all plots
+#'
 #' library(ggpubr)
 #' library(gridExtra)
 #'
 #'
 #' lin_plots <- sapply(results_lin, ggplotGrob)
 #' marrangeGrob(lin_plots, nrow = specs$endog, ncol = specs$endog)
+#' }
 #'
 #'
 plot_lin_irfs <- function(results_lin){

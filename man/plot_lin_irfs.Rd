@@ -13,7 +13,7 @@ plot_lin_irfs(results_lin)
 Function to plot irfs, estimated with lin_lp function
 }
 \examples{
-
+\dontrun{
 # Estimate linear impulse responses
 results_lin <- lp_lin(data_set_df, specs)
 
@@ -23,12 +23,14 @@ results_lin[[2]]
 ...
 
 # Show all plots
+
 library(ggpubr)
 library(gridExtra)
 
 
 lin_plots <- sapply(results_lin, ggplotGrob)
 marrangeGrob(lin_plots, nrow = specs$endog, ncol = specs$endog)
+}
 
 
 }
