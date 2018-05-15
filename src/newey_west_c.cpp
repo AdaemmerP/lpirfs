@@ -1,7 +1,7 @@
 #include <RcppArmadillo.h>
 using namespace Rcpp;
 
-// Based on Matlab Code by James P. LeSage.
+// [[Rcpp::export]]
 List newey_west_c(NumericVector y, NumericMatrix x, int h){
   NumericMatrix V;
   arma::mat G, M, xx, xx_one, yy, M1, M2, ga, g1, w, za, xpxi, emat, hhat;

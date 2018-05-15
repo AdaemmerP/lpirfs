@@ -99,7 +99,7 @@ specs$trend          <- 1
 specs$shock_type     <- 1
 
 # Specifications for switching variable
-specs$switching      <- data_set_df$GDP_gap
+specs$switching      <- data_set_df$EM
 specs$hp_filter      <- 1
 specs$lambda         <- 1600
 specs$gamma          <- -3
