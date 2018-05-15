@@ -33,14 +33,49 @@ is also used for the Cholesky decomposition.}
                 }
 \item{\strong{hp_filter} Integer. No HP-filter = 0. Use HP-filter = 1. }
 \item{\strong{lambda} Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter if \emph{hp_filter} = 1. }
-\item{\strong{gamma} Double. Value of \eqn{\gamma} which is used in the transition function in \link{switching_variable}. }
+\item{\strong{gamma} Double. Value of \eqn{\gamma} which is used in the transition function in \link{switching_series}. }
 }}
+}
+\value{
+A list with impulse responses and their robust confidence bands.
+It also returns an updated list of \emph{specs} with further properties of \emph{data_set_df} for the plot function.
+
+\item{irf_s1_mean}{A three 3D \link{array}, containing all impulse responses for all endogenous variables of the first state.
+                   The last dimension denotes the shock variable. The row in each matrix
+                   denotes the respones of the \emph{ith} variable ordered as in \emph{data_set_df}. The columns are the horizons.
+                   For example, if the results are saved in \emph{results_lin}, results_lin$irf_lin_mean[, , 1] returns a KXH matrix,
+                   where K is the number of variables and H the number of horizons. '1' is the first shock variable corresponding to the
+                   variable in the first column of \emph{data_set_df}.}
+
+\item{irf_s1_low}{A three 3D \link{array}, containing all lower confidence bands of the impulse responses, based on
+                   robust standard standard errors by Newey and West (1987). Properties are equal to \emph{irf_s1_mean}.}
+
+\item{irf_s1_up}{A three 3D \link{array}, containing all upper confidence bands of the impulse responses, based on
+                   robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s1_mean}.}
+
+\item{irf_s2_mean}{A three 3D \link{array}, containing all impulse responses for all endogenous variables of the second state.
+                   The last dimension denotes the shock variable. The row in each matrix
+                   denotes the respones of the \emph{ith} variable as ordered in data_set_df. The columns denote the horizon.
+                   For example, if the results are saved in \emph{results_lin}, results_lin$irf_lin_mean[, , 1] returns a KXH matrix,
+                   where K is the number of variables and H the number of horizons. '1' is the first shock variable corresponding to the
+                   variable in the first column of \emph{data_set_df}.}
+
+\item{irf_s2_low}{A three 3D \link{array}, containing all lower confidence bands of the responses,
+                   based on robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s2_mean}.}
+
+\item{irf_s2_up}{A three 3D \link{array}, containing all upper confidence bands of the responses, based on
+                   robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s2_mean}.}
+
+\item{specs}{An updated list of \emph{specs} for the plot function.}
+
+\item{fz}{Soso}
 }
 \description{
 Compute non-linear impulse responses with local projections by Jordà (2005). The
 data are separated into two states with a smooth transition function as in Auerbach and Gorodnichenko (2012).
 }
 \examples{
+\dontrun{
 # Load data
 data_set_df <- data("interest_rules_var_data")
 
@@ -63,8 +98,10 @@ specs$gamma          <- -3
 # Horizons and cinfidence intervals
 specs$confint        <- 1.96
 specs$hor            <- 24
+
 # Estimate model and save results
- results_lin <- lpirfs::lp_lin(data_set_df, specs)
+ results_lin <- lp_lin(data_set_df, specs)
+ }
 }
 \references{
 Auerbach, A. J., and  Gorodnichenko Y. (2012). "Measuring the Output Responses to Fiscal Policy."

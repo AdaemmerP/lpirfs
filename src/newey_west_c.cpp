@@ -1,8 +1,7 @@
 #include <RcppArmadillo.h>
 using namespace Rcpp;
 
-
-// [[Rcpp::export]]
+// Based on Matlab Code by James P. LeSage.
 List newey_west_c(NumericVector y, NumericMatrix x, int h){
   NumericMatrix V;
   arma::mat G, M, xx, xx_one, yy, M1, M2, ga, g1, w, za, xpxi, emat, hhat;
@@ -18,7 +17,7 @@ List newey_west_c(NumericVector y, NumericMatrix x, int h){
   num_exog = xx.n_cols;
   nobs     = xx.n_rows;
 
-  nlag     = h; // Alternatives: 1 + num_exog + h_total; floor(pow(nobs,1.0/4));
+  nlag     = h; // Based on Ramey and Zubairy (2018);
   xpxi     = inv(xx.t()*xx);
   beta     = xpxi*xx.t()*yy;
   resids   = yy - xx*beta;

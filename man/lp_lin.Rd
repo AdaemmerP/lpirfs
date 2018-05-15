@@ -46,6 +46,7 @@ It also returns an updated list of \emph{specs} with further properties of \emph
 Compute impulse responses with local projections by Jordà (2005).
 }
 \examples{
+\dontrun{
 # Load data
   data_set_df <-data("interest_rules_var_data")
 
@@ -53,16 +54,18 @@ Compute impulse responses with local projections by Jordà (2005).
   specs <- list()
 
 # Specify inputs
-  specs$lags_lin       <- 12L
+  specs$lags_lin       <- 4L
   specs$lags_criterion <- NaN
   specs$max_lags       <- 2L
-  specs$trend          <- 1L
+  specs$trend          <- 0L
   specs$shock_type     <- 1L
   specs$confint        <- 1.96
-  specs$hor            <- 24L
+  specs$hor            <- 12L
 
 # Estimate model and save results
- results_lin <- lpirfs::lp_lin(data_set_df, specs)
+ results_lin <- lp_lin(data_set_df, specs)
+
+ }
 }
 \references{
 Jordà, O. (2005) "Estimation and Inference of Impulse Responses by Local Projections."

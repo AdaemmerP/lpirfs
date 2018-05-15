@@ -2,7 +2,6 @@
 using namespace Rcpp;
 
 
-// [[Rcpp::export]]
 NumericVector find_lag_c(List y, List x, int lag_crit, int h, int k, int max_lags){
 
   arma::mat xx, xx_one, yy, xpxi, emat, hhat;
