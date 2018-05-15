@@ -85,6 +85,15 @@
 #' # Load data
 #' data_set_df <- data("interest_rules_var_data")
 #'
+#' # Load packages
+#' library(dplyr)
+#' library(parallel)
+#' library(doSNOW)
+#' library(foreach)
+#' library(mFilter)
+#' library(Rcpp)
+#'
+#'
 #' # Create list for input
 #' specs <- list()
 #'
