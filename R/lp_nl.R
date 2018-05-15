@@ -35,36 +35,35 @@
 #' @return A list with impulse responses and their robust confidence bands.
 #' It also returns an updated list of \emph{specs} with further properties of \emph{data_set_df} for the plot function.
 #'
-#'
 #'\item{irf_s1_mean}{A three 3D \link{array}, containing all impulse responses for all endogenous variables of the first state.
 #'                    The last dimension denotes the shock variable. The row in each matrix
 #'                    denotes the respones of the \emph{ith} variable ordered as in \emph{data_set_df}. The columns are the horizons.
 #'                    For example, if the results are saved in \emph{results_lin}, results_lin$irf_lin_mean[, , 1] returns a KXH matrix,
 #'                    where K is the number of variables and H the number of horizons. '1' is the first shock variable corresponding to the
-#'                    variable in the first column of \emph{data_set_df}.
+#'                    variable in the first column of \emph{data_set_df}.}
 #'
 #'\item{irf_s1_low}{A three 3D \link{array}, containing all lower confidence bands of the impulse responses, based on
 #'                    robust standard standard errors by Newey and West (1987). Properties are equal to \emph{irf_s1_mean}.}
 #'
 #'\item{irf_s1_up}{A three 3D \link{array}, containing all upper confidence bands of the impulse responses, based on
-#'                    robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s1_mean}}
+#'                    robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s1_mean}.}
 #'
 #'\item{irf_s2_mean}{A three 3D \link{array}, containing all impulse responses for all endogenous variables of the second state.
 #'                    The last dimension denotes the shock variable. The row in each matrix
 #'                    denotes the respones of the \emph{ith} variable as ordered in data_set_df. The columns denote the horizon.
 #'                    For example, if the results are saved in \emph{results_lin}, results_lin$irf_lin_mean[, , 1] returns a KXH matrix,
 #'                    where K is the number of variables and H the number of horizons. '1' is the first shock variable corresponding to the
-#'                    variable in the first column of \emph{data_set_df}.
+#'                    variable in the first column of \emph{data_set_df}.}
 #'
 #'\item{irf_s2_low}{A three 3D \link{array}, containing all lower confidence bands of the responses,
-#'                    based on robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s2_mean}}
+#'                    based on robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s2_mean}.}
 #'
 #'\item{irf_s2_up}{A three 3D \link{array}, containing all upper confidence bands of the responses, based on
-#'                    robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s2_mean}}
+#'                    robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s2_mean}.}
 #'
 #'\item{specs}{An updated list of \emph{specs} for the plot function.}
 #'
-#'\item{fz}
+#'\item{fz}{Soso}
 #'
 #' @export
 #' @references
@@ -79,6 +78,7 @@
 #'
 #' Ramey, V.A., and Zubairy, S. (2018). "Government Spending Multipliers in Good Times and in Bad:
 #' Evidence from US Historical Data." \emph{Journal of Political Economy}, 126 (2), 850-901.
+#'
 #' @import foreach
 #' @examples
 #' # Load data
