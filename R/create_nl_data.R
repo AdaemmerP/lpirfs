@@ -16,7 +16,8 @@ create_nl_data <- function(specs, data_set_df){
     fz  <- fz[specs$lags_nl:(length(fz) - 1)]  # Make lagged data so that (F_{z_(t-1)})
 
    # Select data for endogenous variables
-    y_nl         <- data_set_df[(specs$lags_nl + 1):dim(data_set_df)[1],]
+    y_nl         <- data_set_df[(specs$lags_nl + 1):dim(data_set_df)[1],] %>%
+                    as.matrix()
 
    # Make exogenous lagged data
     x_nl         <- create_lags(data_set_df, specs$lags_nl)

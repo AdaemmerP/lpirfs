@@ -16,9 +16,13 @@ plot_nl_irfs <- function(results_nl){
   irf_s2_low  <- results_nl[[5]]
   irf_s2_up   <- results_nl[[6]]
 
+  specs      <- results_nl$specs
+
   gg_s1      <- rep(list(NaN), specs$endog*specs$endog)
   gg_s2      <- rep(list(NaN), specs$endog*specs$endog)
   plot_num   <- 1
+
+
 
   for(rr in 1:(specs$endog)){
     for (ss in 1:(specs$endog)){
@@ -81,8 +85,8 @@ plot_nl_irfs <- function(results_nl){
   s2_plots <- sapply(gg_s2, ggplotGrob)
 
   # Plot plots
-  marrangeGrob(s1_plots, nrow = specs$endog, ncol = specs$endog)
-  marrangeGrob(s2_plots, nrow = specs$endog, ncol = specs$endog)
+ # marrangeGrob(s1_plots, nrow = specs$endog, ncol = specs$endog)
+#  marrangeGrob(s2_plots, nrow = specs$endog, ncol = specs$endog)
 
   list (s1_plots = s1_plots, s2_plots = s2_plots)
 

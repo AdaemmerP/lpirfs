@@ -76,17 +76,15 @@ data are separated into two states with a smooth transition function as in Auerb
 }
 \examples{
 \dontrun{
-# Load data
-data_set_df <- data("interest_rules_var_data")
-
 # Load packages
-library(dplyr)
-library(parallel)
-library(doSNOW)
-library(foreach)
-library(mFilter)
-library(Rcpp)
+  library(dplyr)
+  library(doSNOW)
+  library(parallel)
+  library(mFilter)
+  library(Rcpp)
 
+# Load data
+data_set_df <- data("monetary_var_data")
 
 # Create list for input
 specs <- list()
@@ -99,7 +97,7 @@ specs$trend          <- 1
 specs$shock_type     <- 1
 
 # Specifications for switching variable
-specs$switching      <- data_set_df$EM
+specs$switching      <- data_set_df$GDP_
 specs$hp_filter      <- 1
 specs$lambda         <- 1600
 specs$gamma          <- -3
@@ -109,7 +107,7 @@ specs$confint        <- 1.96
 specs$hor            <- 24
 
 # Estimate model and save results
- results_lin <- lp_lin(data_set_df, specs)
+ results_nl <- lp_nl(data_set_df, specs)
  }
 }
 \references{
