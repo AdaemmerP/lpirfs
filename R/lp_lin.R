@@ -48,6 +48,13 @@
 #' @import foreach
 #' @examples
 #' \dontrun{
+#' # Load packages
+#'   library(dplyr)
+#'   library(doSNOW)
+#'   library(parallel)
+#'   library(Rcpp)
+#'
+#'
 #' # Load data
 #'   data_set_df <-data("interest_rules_var_data")
 #'
