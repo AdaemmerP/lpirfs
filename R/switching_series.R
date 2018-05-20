@@ -7,8 +7,7 @@
 #' @param specs A list with specifications as in \link{lp_nl}.
 #' @return fz: Vector with values from smooth transition function.
 #' @author Philipp Adämmer
-#' @export
-#' @examples
+
 
 
 switching_series <- function(switching_data, specs){

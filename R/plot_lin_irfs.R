@@ -1,29 +1,54 @@
-#' Function to plot irfs, estimated with lin_lp function
+#' @name plot_lin_irfs
 #'
-#' @param results_lin A list with KXK with plots constructed with ggplot2
+#' @title Compute (linear) irf plots
+#' @description Compute (linear) irf plots estimated with \link{lin_lp}.
+#'
+#' @param results_lin A list with KXK plots constructed with ggplot2
 #'
 #' @return
 #' @export
 #' @import ggplot2
 #' @examples
-#'\dontrun{
-#' # Estimate linear impulse responses
-#' results_lin <- lp_lin(data_set_df, specs)
+#'  \dontrun{
+#'# Load packages
+#'   library(dplyr)
+#'   library(doSNOW)
+#'   library(parallel)
+#'   library(Rcpp)
 #'
-#' # Show single plots
-#' results_lin[[1]]
-#' results_lin[[2]]
-#' ...
+#'# Load data
+#'   data_set_df <- interest_rules_var_data
 #'
-#' # Show all plots
+#'# Create list for input
+#'   specs <- list()
 #'
-#' library(ggpubr)
-#' library(gridExtra)
+#'# Specify inputs
+#'   specs$lags_lin       <- 4L
+#'   specs$lags_criterion <- NaN
+#'   specs$max_lags       <- 2L
+#'   specs$trend          <- 0L
+#'   specs$shock_type     <- 1L
+#'   specs$confint        <- 1.96
+#'   specs$hor            <- 12L
 #'
+#'# Estimate model and save results
+#'   results_lin  <- lp_lin(data_set_df, specs)
 #'
-#' lin_plots <- sapply(results_lin, ggplotGrob)
-#' marrangeGrob(lin_plots, nrow = specs$endog, ncol = specs$endog)
-#' }
+#'# Make and save plots
+#'   linear_plots <- plot_lin_irfs(results_lin)
+#'
+#'# Show single plots
+#'   linear_plots[[1]]
+#'   linear_plots[[2]]
+#'
+#'# Show all plots
+#'   library(ggpubr)
+#'   library(gridExtra)
+#'
+#'   lin_plots_all <- sapply(linear_plots, ggplotGrob)
+#'   marrangeGrob(lin_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df))
+#'
+#'  }
 #'
 #'
 plot_lin_irfs <- function(results_lin){

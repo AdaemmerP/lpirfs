@@ -55,7 +55,7 @@ Compute impulse responses with local projections by Jordà (2005).
 
 
 # Load data
-  data_set_df <-data("interest_rules_var_data")
+  data_set_df <- interest_rules_var_data
 
 # Create list for input
   specs <- list()
@@ -70,13 +70,28 @@ Compute impulse responses with local projections by Jordà (2005).
   specs$hor            <- 12L
 
 # Estimate model and save results
- results_lin <- lp_lin(data_set_df, specs)
+  results_lin  <- lp_lin(data_set_df, specs)
+
+# Make and save plots
+  linear_plots <- plot_lin_irfs(results_lin)
+
+# Show single plots
+  linear_plots[[1]]
+  linear_plots[[2]]
+
+# Show all plots
+  library(ggpubr)
+  library(gridExtra)
+
+  lin_plots_all <- sapply(linear_plots, ggplotGrob)
+  marrangeGrob(lin_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df))
 
  }
 }
 \references{
 Jordà, O. (2005) "Estimation and Inference of Impulse Responses by Local Projections."
 \emph{American Economic Review}, 95 (1): 161-182.
+
 
 Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
 Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–708.

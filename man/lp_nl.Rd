@@ -84,30 +84,52 @@ data are separated into two states with a smooth transition function as in Auerb
   library(Rcpp)
 
 # Load data
-data_set_df <- data("monetary_var_data")
+  data_set_df <- monetary_var_data
 
 # Create list for input
-specs <- list()
+  specs <- list()
 
 # Fill list
-specs$lags_nl        <- 4
-specs$lags_criterion <- NaN
-specs$max_lags       <- 2
-specs$trend          <- 1
-specs$shock_type     <- 1
+  specs$lags_nl        <- NaN
+  specs$lags_criterion <- 'AIC'
+  specs$max_lags       <- 2
+  specs$trend          <- 1
+  specs$shock_type     <- 1
 
 # Specifications for switching variable
-specs$switching      <- data_set_df$GDP_
-specs$hp_filter      <- 1
-specs$lambda         <- 1600
-specs$gamma          <- -3
+  specs$switching      <- data_set_df$GDP_
+  specs$hp_filter      <- 1
+  specs$lambda         <- 129600 # Suggestions: Monthly   = 129600,
+                                 #              Quarterly = 1600,
+                                 #              Annual = 6.25
+  specs$gamma          <- -3
 
 # Horizons and cinfidence intervals
-specs$confint        <- 1.96
-specs$hor            <- 24
+  specs$confint        <- 1.96
+  specs$hor            <- 24
 
 # Estimate model and save results
- results_nl <- lp_nl(data_set_df, specs)
+  results_nl <- lp_nl(data_set_df, specs)
+
+# Make and save all plots
+  nl_plots <- plot_nl_irfs(results_nl)
+
+# Save plots based on states
+  s1_plots <- sapply(nl_plots$gg_s1, ggplotGrob)
+  s2_plots <- sapply(nl_plots$gg_s2, ggplotGrob)
+
+# Show first irf of each state
+  s1_plots[[1]]
+  s2_plots[[1]]
+
+# Show all plots
+  library(ggpubr)
+  library(gridExtra)
+
+# Plot plots
+  marrangeGrob(s1_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df))
+  marrangeGrob(s2_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df))
+
  }
 }
 \references{

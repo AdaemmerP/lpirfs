@@ -4,10 +4,6 @@
 #' @param x_lin A list with exogenous variables.
 #' @param data_set_df Data frame with all endogenous variables.
 #' @param specs A list with specifications that go into 'lin_lp' or 'nl_lp' function.
-#'         specs$lags_criterion: Either NaN (given lag length) or 'BIC'|'AIC'
-#'         specs$lags_lin:       Lag length
-#'         specs$max_lags:       Maximum number of lags to use for lag length criteria
-#'         specs$shock_type:     1 = Standard deviation shock, 2 = Unit shock
 #' @return Shock matrix (d)
 #' @author Philipp Adämmer
 
