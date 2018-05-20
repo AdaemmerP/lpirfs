@@ -82,42 +82,74 @@
 #' @import foreach
 #' @examples
 #' \dontrun{
-#' # Load packages
+#'# Load packages
 #'   library(dplyr)
 #'   library(doSNOW)
 #'   library(parallel)
 #'   library(mFilter)
 #'   library(Rcpp)
 #'
-#' # Load data
-#' data_set_df <- data("monetary_var_data")
+#'# Load data
+#'   data_set_df <- monetary_var_data
 #'
-#' # Create list for input
-#' specs <- list()
+#'# Create list for input
+#'   specs <- list()
 #'
-#' # Fill list
-#' specs$lags_nl        <- 4
-#' specs$lags_criterion <- NaN
-#' specs$max_lags       <- 2
-#' specs$trend          <- 1
-#' specs$shock_type     <- 1
+#'# Fill list
+#'   specs$lags_nl        <- NaN
+#'   specs$lags_criterion <- 'AIC'
+#'   specs$max_lags       <- 2
+#'   specs$trend          <- 1
+#'   specs$shock_type     <- 1
 #'
-#' # Specifications for switching variable
-#' specs$switching      <- data_set_df$GDP_
-#' specs$hp_filter      <- 1
-#' specs$lambda         <- 1600
-#' specs$gamma          <- -3
+#'# Specifications for switching variable
+#'   specs$switching      <- data_set_df$GDP_
+#'   specs$hp_filter      <- 1
+#'   specs$lambda         <- 129600 # Suggestions: Monthly   = 129600,
+#'                                  #              Quarterly = 1600,
+#'                                  #              Annual = 6.25
+#'   specs$gamma          <- -3
 #'
-#' # Horizons and cinfidence intervals
-#' specs$confint        <- 1.96
-#' specs$hor            <- 24
+#'# Horizons and cinfidence intervals
+#'   specs$confint        <- 1.96
+#'   specs$hor            <- 24
 #'
-#' # Estimate model and save results
-#'  results_nl <- lp_nl(data_set_df, specs)
+#'# Estimate model and save results
+#'   results_nl <- lp_nl(data_set_df, specs)
+#'
+#'# Make and save all plots
+#'   nl_plots <- plot_nl_irfs(results_nl)
+#'
+#'# Save plots based on states
+#'   s1_plots <- sapply(nl_plots$gg_s1, ggplotGrob)
+#'   s2_plots <- sapply(nl_plots$gg_s2, ggplotGrob)
+#'
+#'# Show first irf of each state
+#'   s1_plots[[1]]
+#'   s2_plots[[1]]
+#'
+#'# Show all plots
+#'   library(ggpubr)
+#'   library(gridExtra)
+#'
+#'# Plot plots
+#'   marrangeGrob(s1_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df))
+#'   marrangeGrob(s2_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df))
+#'
 #'  }
 lp_nl <- function(data_set_df, specs){
 
-  # Check input for consistency
+  # Check coherence of list input
+  if( (is.character(specs$lags_criterion) == TRUE) &
+      (!is.na(specs$lags_nl) == TRUE)){
+    stop('You can not provide a lag criterion (AICc, AIC or BIC) and a fixed number of lags.')
+  }
+
+  if( (is.na(specs$lags_criterion) == TRUE) &
+      (is.na(specs$lags_nl)        == TRUE)){
+    stop('You have to at least provide a lag criterion (AICc, AIC or BIC) or a fixed number of lags.')
+  }
+
 
   # Safe data frame specifications in 'specs for functions
   specs$starts         <- 1                        # Sample Start
@@ -172,10 +204,6 @@ lp_nl <- function(data_set_df, specs){
   end_nl_s1     <- specs$endog + 1
   samp_nl_s1    <- start_nl_s1:end_nl_s1
 
-  start_nl_s2   <- 2 + specs$endog*specs$lags_nl
-  end_nl_s2     <- start_nl_s2 + specs$endog - 1
-  samp_nl_s2    <- start_nl_s2:end_nl_s2
-
   # Make cluster
   numb_cores     <- min(specs$endog, parallel::detectCores() - 1)
   cl             <- makeCluster(numb_cores)
@@ -183,6 +211,11 @@ lp_nl <- function(data_set_df, specs){
 
  # Determine whether manual lag lengths are given or have to be determined
   if(is.nan(specs$lags_criterion) == TRUE) {
+
+# Determine parameter position for regime 2
+ start_nl_s2   <- 2 + specs$endog*specs$lags_nl
+ end_nl_s2     <- start_nl_s2 + specs$endog - 1
+ samp_nl_s2    <- start_nl_s2:end_nl_s2
 
  # Loops to estimate local projections
   nl_irfs <- foreach( s        = 1:specs$endog,

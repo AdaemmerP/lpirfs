@@ -35,12 +35,11 @@
 #'
 #'\item{specs}{An updated list of \emph{specs} for the plot function.}
 #'
-#'
-#'
 #' @export
 #' @references
 #' Jordà, O. (2005) "Estimation and Inference of Impulse Responses by Local Projections."
 #' \emph{American Economic Review}, 95 (1): 161-182.
+#'
 #'
 #' Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
 #' Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–708.
@@ -48,20 +47,20 @@
 #' @import foreach
 #' @examples
 #' \dontrun{
-#' # Load packages
+#'# Load packages
 #'   library(dplyr)
 #'   library(doSNOW)
 #'   library(parallel)
 #'   library(Rcpp)
 #'
 #'
-#' # Load data
-#'   data_set_df <-data("interest_rules_var_data")
+#'# Load data
+#'   data_set_df <- interest_rules_var_data
 #'
-#' # Create list for input
+#'# Create list for input
 #'   specs <- list()
 #'
-#' # Specify inputs
+#'# Specify inputs
 #'   specs$lags_lin       <- 4L
 #'   specs$lags_criterion <- NaN
 #'   specs$max_lags       <- 2L
@@ -70,17 +69,36 @@
 #'   specs$confint        <- 1.96
 #'   specs$hor            <- 12L
 #'
-#' # Estimate model and save results
-#'  results_lin <- lp_lin(data_set_df, specs)
+#'# Estimate model and save results
+#'   results_lin  <- lp_lin(data_set_df, specs)
+#'
+#'# Make and save plots
+#'   linear_plots <- plot_lin_irfs(results_lin)
+#'
+#'# Show single plots
+#'   linear_plots[[1]]
+#'   linear_plots[[2]]
+#'
+#'# Show all plots
+#'   library(ggpubr)
+#'   library(gridExtra)
+#'
+#'   lin_plots_all <- sapply(linear_plots, ggplotGrob)
+#'   marrangeGrob(lin_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df))
 #'
 #'  }
 lp_lin <- function(data_set_df, specs){
 
   # Check coherence of list input
     if( (is.character(specs$lags_criterion) == TRUE) &
-      (is.numeric(specs$lags_lin) == TRUE)){
+      (!is.na(specs$lags_lin) == TRUE)){
      stop('You can not provide a lag criterion (AICc, AIC or BIC) and a fixed number of lags.')
     }
+
+  if( (is.na(specs$lags_criterion) == TRUE) &
+      (is.na(specs$lags_lin)        == TRUE)){
+    stop('You have to at least provide a lag criterion (AICc, AIC or BIC) or a fixed number of lags.')
+  }
 
 
   # Safe data frame specifications in 'specs for functions
