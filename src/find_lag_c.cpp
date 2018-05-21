@@ -1,6 +1,5 @@
 #include <RcppArmadillo.h>
 using namespace Rcpp;
-
 //' @name find_lag_c
 //' @title Determines optimal lag length
 //' @description Determines optimal lag length based on 'AICc', 'AIC', or 'BIC' criterion.
@@ -11,6 +10,7 @@ using namespace Rcpp;
 //' @references
 //' Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
 //' Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–708.
+
 // [[Rcpp::export]]
 NumericVector find_lag_c(List y, List x, int lag_crit, int h, int k, int max_lags){
 
