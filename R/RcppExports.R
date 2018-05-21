@@ -5,6 +5,15 @@ find_lag_c <- function(y, x, lag_crit, h, k, max_lags) {
     .Call(`_lpirfs_find_lag_c`, y, x, lag_crit, h, k, max_lags)
 }
 
+#' @name newey_west_c
+#' @title Compute newey west covariance matrix
+#' @description This function estimates OLS's coefficients and the corresponding covariance matrix
+#' based on Newey and West (1987).
+#' The function is based on the Matlab code by James LeSage.
+#'
+#' @param y Numeric vector
+#' @param x Numeric Matrix
+#' @param h Integer
 newey_west_c <- function(y, x, h) {
     .Call(`_lpirfs_newey_west_c`, y, x, h)
 }

@@ -52,6 +52,7 @@ Compute impulse responses with local projections by Jordà (2005).
   library(doSNOW)
   library(parallel)
   library(Rcpp)
+  library(lpirfs)
 
 
 # Load data
@@ -84,7 +85,7 @@ Compute impulse responses with local projections by Jordà (2005).
   library(gridExtra)
 
   lin_plots_all <- sapply(linear_plots, ggplotGrob)
-  marrangeGrob(lin_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df))
+  marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df))
 
  }
 }

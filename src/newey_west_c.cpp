@@ -1,6 +1,17 @@
 #include <RcppArmadillo.h>
 using namespace Rcpp;
-
+//' @name newey_west_c
+//' @title Compute newey west covariance matrix
+//' @description This function estimates OLS's coefficients and the corresponding covariance matrix
+//' based on Newey and West (1987).
+//' The function is based on the Matlab code by James LeSage.
+//'
+//' @param y Numeric vector
+//' @param x Numeric Matrix
+//' @param h Integer
+//' @references
+//' Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
+//' Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–708.
 // [[Rcpp::export]]
 List newey_west_c(NumericVector y, NumericMatrix x, int h){
   NumericMatrix V;

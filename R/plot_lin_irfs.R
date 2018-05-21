@@ -1,7 +1,7 @@
 #' @name plot_lin_irfs
 #'
 #' @title Compute (linear) irf plots
-#' @description Compute (linear) irf plots estimated with \link{lin_lp}.
+#' @description Compute (linear) irf plots estimated with \link{lp_lin}.
 #'
 #' @param results_lin A list with KXK plots constructed with ggplot2
 #'

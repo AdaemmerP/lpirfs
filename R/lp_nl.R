@@ -88,6 +88,7 @@
 #'   library(parallel)
 #'   library(mFilter)
 #'   library(Rcpp)
+#'   library(lpirfs)
 #'
 #'# Load data
 #'   data_set_df <- monetary_var_data
@@ -139,12 +140,13 @@
 #'  }
 lp_nl <- function(data_set_df, specs){
 
-  # Check coherence of list input
+  # Check whether lags criterion and maximum number of lags is given
   if( (is.character(specs$lags_criterion) == TRUE) &
       (!is.na(specs$lags_nl) == TRUE)){
     stop('You can not provide a lag criterion (AICc, AIC or BIC) and a fixed number of lags.')
   }
 
+  # Check whether no lag length criterion and number of lags is given
   if( (is.na(specs$lags_criterion) == TRUE) &
       (is.na(specs$lags_nl)        == TRUE)){
     stop('You have to at least provide a lag criterion (AICc, AIC or BIC) or a fixed number of lags.')
