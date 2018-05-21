@@ -82,6 +82,7 @@ data are separated into two states with a smooth transition function as in Auerb
   library(parallel)
   library(mFilter)
   library(Rcpp)
+  library(lpirfs)
 
 # Load data
   data_set_df <- monetary_var_data

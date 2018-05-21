@@ -52,6 +52,7 @@
 #'   library(doSNOW)
 #'   library(parallel)
 #'   library(Rcpp)
+#'   library(lpirfs)
 #'
 #'
 #'# Load data
@@ -84,18 +85,19 @@
 #'   library(gridExtra)
 #'
 #'   lin_plots_all <- sapply(linear_plots, ggplotGrob)
-#'   marrangeGrob(lin_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df))
+#'   marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df))
 #'
 #'  }
 lp_lin <- function(data_set_df, specs){
 
-  # Check coherence of list input
+  # Check whether lags criterion and maximum number of lags is given
     if( (is.character(specs$lags_criterion) == TRUE) &
       (!is.na(specs$lags_lin) == TRUE)){
      stop('You can not provide a lag criterion (AICc, AIC or BIC) and a fixed number of lags.')
     }
 
-  if( (is.na(specs$lags_criterion) == TRUE) &
+  # Check whether no lag length criterion and number of lags is given
+  if( (is.na(specs$lags_criterion)  == TRUE) &
       (is.na(specs$lags_lin)        == TRUE)){
     stop('You have to at least provide a lag criterion (AICc, AIC or BIC) or a fixed number of lags.')
   }

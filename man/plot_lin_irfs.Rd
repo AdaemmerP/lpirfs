@@ -10,7 +10,7 @@ plot_lin_irfs(results_lin)
 \item{results_lin}{A list with KXK plots constructed with ggplot2}
 }
 \description{
-Compute (linear) irf plots estimated with \link{lin_lp}.
+Compute (linear) irf plots estimated with \link{lp_lin}.
 }
 \examples{
  \dontrun{
