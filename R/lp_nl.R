@@ -144,21 +144,54 @@
 #'  }
 lp_nl <- function(data_set_df, specs){
 
-# Check inputs
+#--- Check inputs
 
-  # Check whether 'trend' is provided
+  # Check whether 'trend' is given
   if(is.null(specs$trend) == TRUE){
     stop('Please specify whether and which type of trend to include.')
   }
 
-  # Check whether 'shock_type' is provided
+  # Check whether 'shock_type' is given
   if(is.null(specs$shock_type) == TRUE){
     stop('Please specify which type of shock to use.')
   }
 
+  # Check whether switching variable is given
+  if(is.null(specs$switching) == TRUE){
+    stop('Please specify a switching variable.')
+  }
+
+  # Check whether 'hp_filter' is given
+  if(is.null(specs$hp_filter) == TRUE){
+    stop('Please specify whether to use the HP-filter for the switching variable.')
+  }
+
+  # Check whether lambda is given if 'hp_filter == 1'
+  if((specs$hp_filter == 1) &
+     (is.null(specs$lambda) == TRUE)){
+    stop('Please specify lambda for the HP-filter.')
+  }
+
+  # Check whether 'gamma' is given
+  if(is.null(specs$gamma) == TRUE){
+    stop('Please specify gamma for the transition function.')
+  }
+
+  # Check whether 'confint' is given
+  if(is.null(specs$confint) == TRUE){
+    stop('Please specify a value for the width of the confidence bands.')
+  }
 
 
+  # Check whether number of horizons is given
+  if(is.null(specs$hor) == TRUE){
+    stop('Please specify the number of horizons.')
+  }
 
+  # Check whether wrong lag length criterion is given
+  if(!(specs$lags_criterion == 'AICc'| specs$lags_criterion == 'AIC' | specs$lags_criterion == 'BIC'    ) == TRUE){
+    stop('Possible lag length criteria are AICc, AIC or BIC.')
+  }
 
 
   # Check whether lags criterion and maximum number of lags is given
@@ -167,11 +200,6 @@ lp_nl <- function(data_set_df, specs){
     stop('You can not provide a lag criterion (AICc, AIC or BIC) and a fixed number of lags.')
   }
 
-  # Check whether no lag length criterion and number of lags is given
-  if((is.na(specs$lags_criterion) == TRUE) &
-     (is.na(specs$lags_nl)        == TRUE)){
-    stop('You have to at least provide a lag criterion (AICc, AIC or BIC) or a fixed number of lags.')
-  }
 
 
   # Safe data frame specifications in 'specs for functions
