@@ -104,7 +104,7 @@
 #'   specs$shock_type     <- 1
 #'
 #'# Specifications for switching variable
-#'   specs$switching      <- data_set_df$GDP_
+#'   specs$switching      <- data_set_df$FF
 #'   specs$hp_filter      <- 1
 #'   specs$lambda         <- 129600 # Suggestions: Monthly   = 129600,
 #'                                  #              Quarterly = 1600,
@@ -121,22 +121,26 @@
 #'# Make and save all plots
 #'   nl_plots <- plot_nl_irfs(results_nl)
 #'
+#'# Show all plots
+#'   library(ggpubr)
+#'   library(gridExtra)
+#'
 #'# Save plots based on states
 #'   s1_plots <- sapply(nl_plots$gg_s1, ggplotGrob)
 #'   s2_plots <- sapply(nl_plots$gg_s2, ggplotGrob)
 #'
 #'# Show first irf of each state
-#'   s1_plots[[1]]
-#'   s2_plots[[1]]
-#'
-#'# Show all plots
-#'   library(ggpubr)
-#'   library(gridExtra)
+#'   plot(s1_plots[[1]])
+#'   plot(s2_plots[[1]])
 #'
 #'# Plot plots
 #'   marrangeGrob(s1_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df))
 #'   marrangeGrob(s2_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df))
 #'
+#'# Plot transition function
+#' # Make date time series
+#' start_date <-
+#' end_date   <-
 #'  }
 lp_nl <- function(data_set_df, specs){
 
