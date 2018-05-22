@@ -52,7 +52,8 @@ plot_nl_irfs <- function(results_nl){
                   ggtitle(paste(specs$columns[ss], 'on', specs$columns[rr], sep=" ")) +
                   xlab('') +
                   ylab('') +
-                  theme(title = element_text(size = 6)) +
+                  theme(title = element_text(size = 6),
+                        plot.title = element_text(hjust = 0.5)) +
                   scale_y_continuous(expand = c(0, 0))  +
                   scale_x_continuous(expand = c(0, 0),
                                      breaks = seq(0, specs$hor, 2))  +
@@ -67,7 +68,8 @@ plot_nl_irfs <- function(results_nl){
                   ggtitle(paste(specs$columns[ss], 'on', specs$columns[rr], sep=" ")) +
                   xlab('') +
                   ylab('') +
-                  theme(title = element_text(size = 6)) +
+                  theme(title = element_text(size = 6),
+                        plot.title = element_text(hjust = 0.5)) +
                   scale_y_continuous(expand = c(0, 0))  +
                   scale_x_continuous(expand = c(0, 0),
                                      breaks = seq(0, specs$hor, 2))  +

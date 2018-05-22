@@ -57,8 +57,8 @@ Make list for input
   specs <- list()
 
 # Specify inputs
-  specs$lags_lin       <- 4L
-  specs$lags_criterion <- NaN
+  specs$lags_lin       <- NaN
+  specs$lags_criterion <- 'AIC'
   specs$max_lags       <- 2L
   specs$trend          <- 0L
   specs$shock_type     <- 1L
@@ -70,8 +70,8 @@ Make list for input
 # Estimate model 
   results_lin  <- lp_lin(data_set_df, specs)
 ```
-
-```{r, message = FALSE }
+Show single plots
+```{r, fig.height = 3, fig.width = 3, fig.align = "center", message = FALSE }
 # Make plots
   linear_plots <- plot_lin_irfs(results_lin)
 
@@ -79,11 +79,13 @@ Make list for input
 # Show single plots
   linear_plots[[1]]
   linear_plots[[2]]
-
+```
+Show all plots
+```{r, fig.height = 6, fig.width = 6, fig.align = "center", message = FALSE }  
 # Show all plots
   library(ggpubr)
   library(gridExtra)
 
   lin_plots_all <- sapply(linear_plots, ggplotGrob)
-  marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df))
+  marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
 ```

@@ -85,7 +85,7 @@
 #'   library(gridExtra)
 #'
 #'   lin_plots_all <- sapply(linear_plots, ggplotGrob)
-#'   marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df))
+#'   marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
 #'
 #'  }
 lp_lin <- function(data_set_df, specs){
@@ -112,7 +112,8 @@ lp_lin <- function(data_set_df, specs){
 
 
   # Check whether wrong lag length criterion is given
-  if(!(specs$lags_criterion == 'AICc'| specs$lags_criterion == 'AIC' | specs$lags_criterion == 'BIC'    ) == TRUE){
+  if(!(is.nan(specs$lags_criterion) == TRUE | specs$lags_criterion == 'AICc'|
+       specs$lags_criterion == 'AIC' | specs$lags_criterion == 'BIC'    ) == TRUE){
     stop('Possible lag length criteria are AICc, AIC or BIC.')
   }
 

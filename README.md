@@ -51,8 +51,8 @@ Make list for input
   specs <- list()
 
 # Specify inputs
-  specs$lags_lin       <- 4L
-  specs$lags_criterion <- NaN
+  specs$lags_lin       <- NaN
+  specs$lags_criterion <- 'AIC'
   specs$max_lags       <- 2L
   specs$trend          <- 0L
   specs$shock_type     <- 1L
@@ -67,6 +67,8 @@ Make list for input
   results_lin  <- lp_lin(data_set_df, specs)
 ```
 
+Show single plots
+
 ``` r
 # Make plots
   linear_plots <- plot_lin_irfs(results_lin)
@@ -76,22 +78,21 @@ Make list for input
   linear_plots[[1]]
 ```
 
-![](README-unnamed-chunk-7-1.png)
+<img src="README-unnamed-chunk-7-1.png" style="display: block; margin: auto;" />
 
 ``` r
   linear_plots[[2]]
 ```
 
-![](README-unnamed-chunk-7-2.png)
+<img src="README-unnamed-chunk-7-2.png" style="display: block; margin: auto;" /> Show all plots
 
 ``` r
-
 # Show all plots
   library(ggpubr)
   library(gridExtra)
 
   lin_plots_all <- sapply(linear_plots, ggplotGrob)
-  marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df))
+  marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
 ```
 
-![](README-unnamed-chunk-7-3.png)
+<img src="README-unnamed-chunk-8-1.png" style="display: block; margin: auto;" />
