@@ -14,21 +14,77 @@ knitr::opts_chunk$set(
 
 # lpirfs
 
-The goal of lpirfs is to ...
+An R-package which estimates linear and non-linear impulse responses
+with local projections by Jordà (2005).
+
+## Main features
+
+- Linear impulse responses with local projections
+- Non-linear impulse responses with local projections
+- Functions to plot impulse responses
 
 ## Installation
 
-You can install lpirfs from github with:
+You can install the released version of **lpirfs** from [CRAN](https://CRAN.R-project.org) 
+or from github:
 
-```{r gh-installation, eval = FALSE}
+```{r, eval = FALSE}
+install.packages("lpirfs")
 # install.packages("devtools")
 devtools::install_github("AdaemmerP/lpirfs")
 ```
 
-## Example
+## Example: Linear impulse responses
+Load libraries:
+```{r, message = FALSE }
+# Load packages
+  library(dplyr)
+  library(doSNOW)
+  library(parallel)
+  library(Rcpp)
+  library(lpirfs)
+```
 
-This is a basic example which shows you how to solve a common problem:
+Load data set from package 
+```{r, message = FALSE }
+# Load data (from package)
+  data_set_df <- interest_rules_var_data
+```
 
-```{r example}
-## basic example code
+Make list for input 
+```{r, message = FALSE }
+# Create list for input
+  specs <- list()
+
+# Specify inputs
+  specs$lags_lin       <- 4L
+  specs$lags_criterion <- NaN
+  specs$max_lags       <- 2L
+  specs$trend          <- 0L
+  specs$shock_type     <- 1L
+  specs$confint        <- 1.96
+  specs$hor            <- 12L
+```
+Make list for input 
+```{r, message = FALSE }  
+# Estimate model 
+  results_lin  <- lp_lin(data_set_df, specs)
+```
+
+```{r, message = FALSE }
+# Make plots
+  linear_plots <- plot_lin_irfs(results_lin)
+
+
+  
+# Show single plots
+  linear_plots[[1]]
+  linear_plots[[2]]
+
+# Show all plots
+  library(ggpubr)
+  library(gridExtra)
+
+  lin_plots_all <- sapply(linear_plots, ggplotGrob)
+  marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df))
 ```

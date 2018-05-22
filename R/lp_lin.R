@@ -70,10 +70,10 @@
 #'   specs$confint        <- 1.96
 #'   specs$hor            <- 12L
 #'
-#'# Estimate model and save results
+#'# Estimate model
 #'   results_lin  <- lp_lin(data_set_df, specs)
 #'
-#'# Make and save plots
+#'# Make plots
 #'   linear_plots <- plot_lin_irfs(results_lin)
 #'
 #'# Show single plots
@@ -90,14 +90,42 @@
 #'  }
 lp_lin <- function(data_set_df, specs){
 
+  # Check whether 'trend' is given
+  if(is.null(specs$trend) == TRUE){
+    stop('Please specify whether and which type of trend to include.')
+  }
+
+  # Check whether 'shock_type' is given
+  if(is.null(specs$shock_type) == TRUE){
+    stop('Please specify which type of shock to use.')
+  }
+
+  # Check whether 'shock_type' is given
+  if(is.null(specs$confint) == TRUE){
+    stop('Please specify a value for the width of the confidence bands.')
+  }
+
+  # Check whether 'shock_type' is given
+  if(is.null(specs$hor) == TRUE){
+    stop('Please specify the number of horizons.')
+  }
+
+
+  # Check whether wrong lag length criterion is given
+  if(!(specs$lags_criterion == 'AICc'| specs$lags_criterion == 'AIC' | specs$lags_criterion == 'BIC'    ) == TRUE){
+    stop('Possible lag length criteria are AICc, AIC or BIC.')
+  }
+
+
   # Check whether lags criterion and maximum number of lags is given
-    if( (is.character(specs$lags_criterion) == TRUE) &
+  if((is.character(specs$lags_criterion) == TRUE) &
       (!is.na(specs$lags_lin) == TRUE)){
      stop('You can not provide a lag criterion (AICc, AIC or BIC) and a fixed number of lags.')
     }
 
+
   # Check whether no lag length criterion and number of lags is given
-  if( (is.na(specs$lags_criterion)  == TRUE) &
+  if((is.na(specs$lags_criterion)  == TRUE) &
       (is.na(specs$lags_lin)        == TRUE)){
     stop('You have to at least provide a lag criterion (AICc, AIC or BIC) or a fixed number of lags.')
   }

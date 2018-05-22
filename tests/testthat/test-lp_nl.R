@@ -1,27 +1,27 @@
 context("check_input_lp_nl")
 
 # Load data
-data_set_df <- monetary_var_data
+  data_set_df <- monetary_var_data
 
 # Create list for input
-specs <- list()
+  specs <- list()
 
 # Fill list
-specs$lags_nl        <- NaN
-specs$lags_criterion <- 'AIC'
-specs$max_lags       <- 2
-specs$trend          <- 1
-specs$shock_type     <- 1
+  specs$lags_nl        <- NaN
+  specs$lags_criterion <- 'AIC'
+  specs$max_lags       <- 2
+  specs$trend          <- 1
+  specs$shock_type     <- 1
 
 # Specifications for switching variable
-specs$switching      <- data_set_df$FF
-specs$hp_filter      <- 1
-specs$lambda         <- 129600
-specs$gamma          <- -3
+  specs$switching      <- data_set_df$FF
+  specs$hp_filter      <- 1
+  specs$lambda         <- 129600
+  specs$gamma          <- -3
 
 # Horizons and cinfidence intervals
-specs$confint        <- 1.96
-specs$hor            <- 24
+  specs$confint        <- 1.96
+  specs$hor            <- 24
 
 
 test_that("Check whether trend is given", {
