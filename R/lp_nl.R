@@ -144,15 +144,32 @@
 #'  }
 lp_nl <- function(data_set_df, specs){
 
+# Check inputs
+
+  # Check whether 'trend' is provided
+  if(is.null(specs$trend) == TRUE){
+    stop('Please specify whether and which type of trend to include.')
+  }
+
+  # Check whether 'shock_type' is provided
+  if(is.null(specs$shock_type) == TRUE){
+    stop('Please specify which type of shock to use.')
+  }
+
+
+
+
+
+
   # Check whether lags criterion and maximum number of lags is given
-  if( (is.character(specs$lags_criterion) == TRUE) &
-      (!is.na(specs$lags_nl) == TRUE)){
+  if((is.character(specs$lags_criterion) == TRUE) &
+     (!is.na(specs$lags_nl) == TRUE)){
     stop('You can not provide a lag criterion (AICc, AIC or BIC) and a fixed number of lags.')
   }
 
   # Check whether no lag length criterion and number of lags is given
-  if( (is.na(specs$lags_criterion) == TRUE) &
-      (is.na(specs$lags_nl)        == TRUE)){
+  if((is.na(specs$lags_criterion) == TRUE) &
+     (is.na(specs$lags_nl)        == TRUE)){
     stop('You have to at least provide a lag criterion (AICc, AIC or BIC) or a fixed number of lags.')
   }
 
