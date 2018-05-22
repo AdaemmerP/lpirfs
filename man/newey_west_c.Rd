@@ -18,3 +18,7 @@ This function estimates OLS's coefficients and the corresponding covariance matr
 based on Newey and West (1987).
 The function is based on the Matlab code by James LeSage.
 }
+\references{
+Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
+Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–708.
+}

@@ -1,7 +1,7 @@
 #' Function to estimate transition values. It uses a smooth transition function as
 #' proposed by Auerbach & Gorodnichenko (2012)  <doi:10.1257/pol.4.2.1>.
 #' The standardized time series is either pre-defined or will be estimated via
-#' the Hodrick-Prescott as suggested by Ramey & Zubairy (2018) <doi:10.1086/696277>
+#' the Hodrick-Prescott as proposed by Ramey & Zubairy (2018) <doi:10.1086/696277>
 #'
 #' @param switching_data A vector with data to construct the smooth transition variable.
 #' @param specs A list with specifications as in \link{lp_nl}.
