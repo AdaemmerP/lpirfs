@@ -72,7 +72,6 @@ Make list for input
   linear_plots <- plot_lin_irfs(results_lin)
 
 
-  
 # Show single plots
   linear_plots[[1]]
 ```
