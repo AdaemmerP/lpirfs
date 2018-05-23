@@ -112,9 +112,9 @@ lp_lin <- function(data_set_df, specs){
 
 
   # Check whether wrong lag length criterion is given
-  if(!(is.nan(specs$lags_criterion) == TRUE | specs$lags_criterion == 'AICc'|
-       specs$lags_criterion == 'AIC' | specs$lags_criterion == 'BIC'    ) == TRUE){
-    stop('Possible lag length criteria are AICc, AIC or BIC.')
+  if(!(is.nan(specs$lags_criterion)          | specs$lags_criterion == 'AICc'|
+       specs$lags_criterion         == 'AIC' | specs$lags_criterion == 'BIC') == TRUE){
+    stop('Possible lag length criteria are AICc, AIC or BIC or NaN if lag length is specified.')
   }
 
 

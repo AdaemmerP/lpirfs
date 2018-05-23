@@ -57,21 +57,21 @@ Make list for input
   specs <- list()
 
 # Specify inputs
-  specs$lags_lin       <- NaN
-  specs$lags_criterion <- 'AIC'
+  specs$lags_lin       <- 4
+  specs$lags_criterion <- NaN
   specs$max_lags       <- 2L
   specs$trend          <- 0L
   specs$shock_type     <- 1L
   specs$confint        <- 1.96
   specs$hor            <- 12L
 ```
-Make list for input 
+Estimate impulse responses 
 ```{r, message = FALSE }  
 # Estimate model 
   results_lin  <- lp_lin(data_set_df, specs)
 ```
 Show single plots
-```{r, fig.height = 3, fig.width = 3, fig.align = "center", message = FALSE }
+```{r, fig.height = 3, fig.width = 4, fig.align = "center", message = FALSE }
 # Make plots
   linear_plots <- plot_lin_irfs(results_lin)
 
@@ -80,8 +80,8 @@ Show single plots
   linear_plots[[1]]
   linear_plots[[2]]
 ```
-Show all plots
-```{r, fig.height = 6, fig.width = 6, fig.align = "center", message = FALSE }  
+Show all plots. This graph replicates Figure 5 on page 176 in Jordà (2005) 
+```{r, fig.height = 6, fig.width = 8, fig.align = "center", message = FALSE }  
 # Show all plots
   library(ggpubr)
   library(gridExtra)
@@ -89,3 +89,10 @@ Show all plots
   lin_plots_all <- sapply(linear_plots, ggplotGrob)
   marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
 ```
+
+## References
+* Auerbach, A. J., and Gorodnichenko Y. (2012). "Measuring the Output Responses to Fiscal Policy." *American Economic Journal: Economic Policy*, 4 (2):   1-27.
+
+* Jordà, O. (2005) "Estimation and Inference of Impulse Responses by Local Projections." *American Economic Review*, 95 (1): 161-182.
+
+* Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and Autocorrelation Consistent Covariance Matrix.” *Econometrica*, 55, 703–708.

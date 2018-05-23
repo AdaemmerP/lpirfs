@@ -51,8 +51,8 @@ Make list for input
   specs <- list()
 
 # Specify inputs
-  specs$lags_lin       <- NaN
-  specs$lags_criterion <- 'AIC'
+  specs$lags_lin       <- 4
+  specs$lags_criterion <- NaN
   specs$max_lags       <- 2L
   specs$trend          <- 0L
   specs$shock_type     <- 1L
@@ -60,7 +60,7 @@ Make list for input
   specs$hor            <- 12L
 ```
 
-Make list for input
+Estimate impulse responses
 
 ``` r
 # Estimate model 
@@ -84,7 +84,7 @@ Show single plots
   linear_plots[[2]]
 ```
 
-<img src="README-unnamed-chunk-7-2.png" style="display: block; margin: auto;" /> Show all plots
+<img src="README-unnamed-chunk-7-2.png" style="display: block; margin: auto;" /> Show all plots. This graph replicates Figure 5 on page 176 in Jordà (2005)
 
 ``` r
 # Show all plots
@@ -96,3 +96,12 @@ Show single plots
 ```
 
 <img src="README-unnamed-chunk-8-1.png" style="display: block; margin: auto;" />
+
+References
+----------
+
+-   Auerbach, A. J., and Gorodnichenko Y. (2012). "Measuring the Output Responses to Fiscal Policy." *American Economic Journal: Economic Policy*, 4 (2): 1-27.
+
+-   Jordà, O. (2005) "Estimation and Inference of Impulse Responses by Local Projections." *American Economic Review*, 95 (1): 161-182.
+
+-   Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and Autocorrelation Consistent Covariance Matrix.” *Econometrica*, 55, 703–708.

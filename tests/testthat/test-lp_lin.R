@@ -47,7 +47,7 @@ test_that("Check whether number of horizons is given", {
 test_that("Check whether wrong lag length is given", {
   specs$lags_criterion <- 'AICCd'
   expect_error(lp_lin(data_set_df, specs),
-               'Possible lag length criteria are AICc, AIC or BIC.', fixed = TRUE)
+               'Possible lag length criteria are AICc, AIC or BIC or NaN if lag length is specified.', fixed = TRUE)
 } )
 
 test_that("Check whether lag criterion AND fixed number of lags is given", {
