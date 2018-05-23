@@ -1,23 +1,12 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-``` r
-#library(htmltools)
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  fig.align = "center"
-)
-# knitr::knit_hooks$set(imgcenter = function(before, options, envir){
-#   if (before) {
-#     HTML("<p align='center'>")
-#   } else {
-#     HTML("</p>")
-#   }
-#})
-```
+`{r} #library(htmltools) # knitr::opts_chunk$set( #   collapse = TRUE, #   comment = "#>", #   fig.path = "man/figures/README-", #   fig.align = "center" #) # knitr::knit_hooks$set(imgcenter = function(before, options, envir){ #   if (before) { #     HTML("<p align='center'>") #   } else { #     HTML("</p>") #   } #}) #`
+==================================================================================================================================================================================================================================================================================================================================
 
-s \# lpirfs An R-package which estimates linear and non-linear impulse responses with local projections by Jordà (2005).
+lpirfs
+======
+
+An R-package which estimates linear and non-linear impulse responses with local projections by Jordà (2005).
 
 Main features
 -------------
@@ -107,13 +96,13 @@ Display single plots:
   linear_plots[[1]]
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-1.png" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" style="display: block; margin: auto;" />
 
 ``` r
   linear_plots[[2]]
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-2.png" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-7-2.png" width="100%" style="display: block; margin: auto;" />
 
 Display all plots:
 
@@ -129,7 +118,7 @@ Display all plots:
   marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-1.png" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" style="display: block; margin: auto;" />
 
 Example: Non-linear impulse responses
 -------------------------------------
@@ -222,13 +211,13 @@ Show first irf of each state:
   plot(s1_plots[[1]])
 ```
 
-<img src="man/figures/README-unnamed-chunk-16-1.png" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" style="display: block; margin: auto;" />
 
 ``` r
   plot(s2_plots[[1]])
 ```
 
-<img src="man/figures/README-unnamed-chunk-16-2.png" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-15-2.png" width="100%" style="display: block; margin: auto;" />
 
 References
 ----------
