@@ -78,13 +78,15 @@ Show single plots
   linear_plots[[1]]
 ```
 
-<img src="README-unnamed-chunk-7-1.png" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-7-1.png" style="display: block; margin: auto;" />
 
 ``` r
   linear_plots[[2]]
 ```
 
-<img src="README-unnamed-chunk-7-2.png" style="display: block; margin: auto;" /> Show all plots. This graph replicates Figure 5 on page 176 in Jordà (2005)
+<img src="man/figures/README-unnamed-chunk-7-2.png" style="display: block; margin: auto;" />
+
+Show all plots. This graph replicates Figure 5 on page 176 in Jordà (2005). Note that these
 
 ``` r
 # Show all plots
@@ -95,7 +97,7 @@ Show single plots
   marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
 ```
 
-<img src="README-unnamed-chunk-8-1.png" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-8-1.png" style="display: block; margin: auto;" />
 
 References
 ----------

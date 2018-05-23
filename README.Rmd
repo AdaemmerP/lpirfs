@@ -8,7 +8,7 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "README-"
+  fig.path = "man/figures/README-"
 )
 ```
 
@@ -80,7 +80,9 @@ Show single plots
   linear_plots[[1]]
   linear_plots[[2]]
 ```
-Show all plots. This graph replicates Figure 5 on page 176 in Jordà (2005) 
+
+Show all plots. This graph replicates Figure 5 on page 176 in Jordà (2005). 
+Note that these 
 ```{r, fig.height = 6, fig.width = 8, fig.align = "center", message = FALSE }  
 # Show all plots
   library(ggpubr)
