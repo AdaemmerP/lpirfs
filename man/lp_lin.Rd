@@ -50,6 +50,7 @@ Compute impulse responses with local projections by Jordà (2005).
 # Load packages
   library(dplyr)
   library(doSNOW)
+  library(vars)
   library(parallel)
   library(Rcpp)
   library(lpirfs)
@@ -64,16 +65,16 @@ Compute impulse responses with local projections by Jordà (2005).
 # Specify inputs
   specs$lags_lin       <- 4L
   specs$lags_criterion <- NaN
-  specs$max_lags       <- 2L
+  specs$max_lags       <- NaN
   specs$trend          <- 0L
   specs$shock_type     <- 1L
   specs$confint        <- 1.96
   specs$hor            <- 12L
 
-# Estimate model and save results
+# Estimate model
   results_lin  <- lp_lin(data_set_df, specs)
 
-# Make and save plots
+# Make plots
   linear_plots <- plot_lin_irfs(results_lin)
 
 # Show single plots
@@ -85,7 +86,7 @@ Compute impulse responses with local projections by Jordà (2005).
   library(gridExtra)
 
   lin_plots_all <- sapply(linear_plots, ggplotGrob)
-  marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df))
+  marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
 
  }
 }

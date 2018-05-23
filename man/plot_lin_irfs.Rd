@@ -17,6 +17,7 @@ Compute (linear) irf plots estimated with \link{lp_lin}.
 # Load packages
   library(dplyr)
   library(doSNOW)
+  library(vars)
   library(parallel)
   library(Rcpp)
 

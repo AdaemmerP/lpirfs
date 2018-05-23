@@ -8,10 +8,9 @@ An R-package which estimates linear and non-linear impulse responses with local 
 Main features
 -------------
 
--   Estimate linear impulse responses with local projections
--   Estimate non-linear impulse responses with local projections
--   Plot functions to visualize impulse responses
--   To improve efficiency, functions are partly implemented using Rcpp, RcppArmadillo
+-   Estimate linear and non-linear impulse responses with local projections
+-   Functions to plot linear and non-linear impulse responses
+-   Functions are partly implemented in Rcpp and RcppArmadillo to improve efficiency
 -   High performance with parallel computation
 
 Installation
@@ -48,14 +47,14 @@ Load libraries:
   library(lpirfs)
 ```
 
-Load data set from package to estimate a simple, new-Keynesian, closed- economy model. This data set is used by Jordà (2005) in chapter IV. of his paper. The data description can be found in the data's help file.
+Load data set from package to estimate a simple, new-Keynesian, closed- economy model. This data are used by Jordà (2005) in chapter IV. Please see the data's help file or the original paper for a detailed description.
 
 ``` r
 # Load data (from package)
   data_set_df <- interest_rules_var_data
 ```
 
-Make list and specify input variables to estimate linear irfs.
+Make list and specify input variables to estimate linear impulse responses.
 
 ``` r
 # Create list for input
@@ -67,7 +66,7 @@ Make list and specify input variables to estimate linear irfs.
   specs$max_lags       <- NaN     # If lags_criterion is chosen, set maximum number of lags  
   specs$trend          <- 0L      # 0 = no trend, 1 = trend, 2 = trend and quadratic trend
   specs$shock_type     <- 1L      # 0 = standard deviation shock, 1 = unit shock
-  specs$confint        <- 1.96    # Width of confidence bands: 1 = 68%, 1.67 = 90%, 1.96 = 95%
+  specs$confint        <- 1.67    # Width of confidence bands: 1 = 68%, 1.67 = 90%, 1.96 = 95%
   specs$hor            <- 12L     # Length of horizon
 ```
 
@@ -77,17 +76,14 @@ Estimate linear impulse responses
   results_lin  <- lp_lin(data_set_df, specs)
 ```
 
-Make all plots with package function
+Build all plots with package function
 
 ``` r
 # Make plots
   linear_plots <- plot_lin_irfs(results_lin)
 ```
 
-Display single plots:
-
--   The first plot shows the response of the first variable (GDP\_gap) to the shock of the first variable in 'data\_set\_df'.
--   The second plot shows the response of the second variable (Inflation) to the shock of the first variable (GDP\_gap) in 'data\_set\_df'.
+Display single plots: - The first plot shows the response of the first variable (GDP\_gap) to a shock to the first variable in. - The second plot shows the response of the second variable (Inflation) to the shock to the first variable (GDP\_gap).
 
 ``` r
   linear_plots[[1]]
@@ -101,10 +97,7 @@ Display single plots:
 
 <img src="man/figures/README-unnamed-chunk-7-2.png" style="display: block; margin: auto;" />
 
-Display all plots:
-
--   This graph replicates Figure 5 in Jordà (2005), p. 176.
--   Note that the confidence bands are slightly wider (more conservative) than in the original paper.
+Display all plots: - This graph is similar to Figure 5 in Jordà (2005), p. 176. - Figure 5 in Jordà (2005) is replicatedS when specs$confint = 1.67 (90% error bands).
 
 ``` r
 # Show all plots
@@ -133,7 +126,7 @@ Load libraries:
   library(vars)
 ```
 
-Load data set from package to estimate a non-linear, new-Keynesian, closed- economy model. This data set is used by Jordà (2005) in chapter IV. The data description can be found in the data's help file.
+Load data set from package to estimate a non-linear, new-Keynesian, closed- economy model. This data set are used by Jordà (2005) in chapter IV. Please see the data's help file or the original paper for a detailed description.
 
 ``` r
 # Load data (from package)
@@ -156,11 +149,11 @@ Make list and specify input variables to estimate non-linear irfs.
   specs$hor            <- 12L     # Length of horizon
 ```
 
-To estimate the non-linear model, provide a switching variable:
+Provide a switching variable to separate the data into two regimes.
 
 ``` r
 # Specifications for switching variable
-  specs$switching      <- data_set_df$GDP_gap # The federal funds rate is used here for the tranistion function
+  specs$switching      <- data_set_df$GDP_gap # The output_gap is used as input into the tranistion function
   specs$hp_filter      <- 1               # 0 = Do not use HP-filter to decompose switching-variable, 
                                           # 1 = Use HP-filter to decompose switching-variable
   specs$lambda         <- 1600            # Monthly   = 129600,
@@ -169,14 +162,14 @@ To estimate the non-linear model, provide a switching variable:
   specs$gamma          <- 3               # Numeric value > 0
 ```
 
-To differentiate between two regimes, the defined switching variable (z) is plugged into the follwing switching function:
+The switching variable (z) is either decomposed by the Hodrick-Prescott filter (*hp\_filter = 1*) or directly plugged into the follwing switching function.
 
 -   $F\_{z\_t} = \\frac{exp(-\\gamma z\_t)}{1 + exp(-\\gamma z\_t)}$
 
-IMPORTANT: To avoid contemporaneous feedback from the switching variable, the index of z is set to *t − 1* (for details see Auerbach and Gorodnichenko; 2012). This is done automatically done in the function *create\_nl\_data*. If you do not want the switching function to be lagged, please provide the switching variable with a lead of one.
+IMPORTANT: To avoid contemporaneous feedback, the index of z is set to *t − 1* (for details see [Auerbach and Gorodnichenko; 2012)](https://www.aeaweb.org/articles?id=10.1257/pol.4.2.1) This is done automatically *create\_nl\_data* of the package. If you do not want the switching function to be lagged, please provide the switching variable with a lead of one.
 
--   Regime 1 is defined as: *X*<sub>*t* − *p*</sub> \* (1 − *F*(*z*<sub>*t*</sub>))
--   Regime 2 is defined as: *X*<sub>*t* − *p*</sub> \* (*F*(*z*<sub>*t*</sub>))
+-   Data for regime 1 are calculated as: *X*<sub>*t* − *p*</sub> \* (1 − *F*(*z*<sub>*t* − 1</sub>))
+-   Data for regime 2 are calculated as: *X*<sub>*t* − *p*</sub> \* *F*(*z*<sub>*t* − 1</sub>)
 
 Estimate non-linear impulse responses
 
@@ -184,10 +177,10 @@ Estimate non-linear impulse responses
   results_nl <- lp_nl(data_set_df, specs)
 ```
 
-Plot transition function and switching variable
+Plot switching variable and transition function
 
 ``` r
-  # Extract values of transition function
+  # Extract values of transition function from *results_nl*
   fz      <- results_nl$fz
   # Make date sequence. Start with sequnce in October because the model is estimated with three lags
   dates   <- seq(as.Date("1955/10/1"), as.Date("2003/1/1"), by = "quarter")
@@ -275,6 +268,15 @@ References
 
 -   Ramey, V.A., and Zubairy, S. (2018). "Government Spending Multipliers in Good Times and in Bad: Evidence from US Historical Data." Journal of Political Economy, 126 (2), 850-901. [doi:10.1086/696277](https://www.journals.uchicago.edu/doi/10.1086/696277)
 
+Acknowledgements
+----------------
+
+I greatly benefitted from the profound R and Rcpp knowledge of [Philipp Wittenberg](https://github.com/wittenberg). I am also thankful to [Sarah Zubairy](https://sites.google.com/site/sarahzubairy/) for providing me the *Matlab* code before the publication their paper.
+
 ### Author
 
 Philipp Adämmer
+
+### License
+
+GPL (&gt;= 2)

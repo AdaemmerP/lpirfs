@@ -80,6 +80,7 @@ data are separated into two states with a smooth transition function as in Auerb
   library(dplyr)
   library(doSNOW)
   library(parallel)
+  library(vars)
   library(mFilter)
   library(Rcpp)
   library(lpirfs)
@@ -103,7 +104,7 @@ data are separated into two states with a smooth transition function as in Auerb
   specs$lambda         <- 129600 # Suggestions: Monthly   = 129600,
                                  #              Quarterly = 1600,
                                  #              Annual = 6.25
-  specs$gamma          <- -3
+  specs$gamma          <- 3
 
 # Horizons and cinfidence intervals
   specs$confint        <- 1.96
@@ -128,8 +129,8 @@ data are separated into two states with a smooth transition function as in Auerb
   plot(s2_plots[[1]])
 
 # Plot plots
-  marrangeGrob(s1_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df))
-  marrangeGrob(s2_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df))
+  marrangeGrob(s1_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
+  marrangeGrob(s2_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
 
 # Plot transition function
 # Make date time series
