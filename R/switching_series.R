@@ -19,12 +19,12 @@ switching_series <- function(switching_data, specs){
    filter_results  <-   mFilter::hpfilter(switching_data, freq = specs$lambda, type = 'lambda')
    gamma_fz        <-   specs$gamma
    z_0             <-   as.numeric(scale(filter_results$cycle, center = TRUE))
-   fz              <-   exp(gamma_fz*z_0)/(1 + exp(gamma_fz*z_0))
+   fz              <-   exp((-1)*gamma_fz*z_0)/(1 + exp((-1)*gamma_fz*z_0))
    return(fz)
 
                     }  else {
 
-    fz              <-   exp(specs$gamma*switching_data)/(1 + exp(specs$gamma*switching_data))
+    fz              <-   exp((-1)*specs$gamma*switching_data)/(1 + exp((-1)*specs$gamma*switching_data))
     return(fz)
   }
 

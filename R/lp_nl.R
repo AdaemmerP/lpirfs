@@ -86,6 +86,7 @@
 #'   library(dplyr)
 #'   library(doSNOW)
 #'   library(parallel)
+#'   library(vars)
 #'   library(mFilter)
 #'   library(Rcpp)
 #'   library(lpirfs)
@@ -109,7 +110,7 @@
 #'   specs$lambda         <- 129600 # Suggestions: Monthly   = 129600,
 #'                                  #              Quarterly = 1600,
 #'                                  #              Annual = 6.25
-#'   specs$gamma          <- -3
+#'   specs$gamma          <- 3
 #'
 #'# Horizons and cinfidence intervals
 #'   specs$confint        <- 1.96

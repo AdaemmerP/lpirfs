@@ -50,6 +50,7 @@
 #'# Load packages
 #'   library(dplyr)
 #'   library(doSNOW)
+#'   library(vars)
 #'   library(parallel)
 #'   library(Rcpp)
 #'   library(lpirfs)
@@ -64,7 +65,7 @@
 #'# Specify inputs
 #'   specs$lags_lin       <- 4L
 #'   specs$lags_criterion <- NaN
-#'   specs$max_lags       <- 2L
+#'   specs$max_lags       <- NaN
 #'   specs$trend          <- 0L
 #'   specs$shock_type     <- 1L
 #'   specs$confint        <- 1.96

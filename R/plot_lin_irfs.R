@@ -13,6 +13,7 @@
 #'# Load packages
 #'   library(dplyr)
 #'   library(doSNOW)
+#'   library(vars)
 #'   library(parallel)
 #'   library(Rcpp)
 #'
@@ -76,9 +77,7 @@ plot_lin_irfs <- function(results_lin){
       gg_lin[[plot_num]] <- ggplot()+
                             geom_line(data     = tbl_lin, aes(y = mean, x = x)) +
                             geom_ribbon(data   = tbl_lin, aes(x = x, ymin = low, ymax = up), col = 'grey',
-                                        fill   = 'grey', alpha  = 0.2) +
-                            geom_line(data     = tbl_lin, aes(y = low, x = x), linetype = 'dotted', alpha  = 0.2) +
-                            geom_line(data     = tbl_lin, aes(y = up, x  = x), linetype = 'dotted', alpha  = 0.2) +
+                                        fill   = 'grey', alpha  = 0.3) +
                             theme_classic() +
                             ggtitle(paste(specs$columns[ss], 'on', specs$columns[rr], sep=" ")) +
                             xlab('') +
