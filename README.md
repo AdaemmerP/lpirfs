@@ -90,13 +90,13 @@ Display single plots:
   linear_plots[[1]]
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-1.png" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="50%" style="display: block; margin: auto;" />
 
 ``` r
   linear_plots[[2]]
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-2.png" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-7-2.png" width="50%" style="display: block; margin: auto;" />
 
 Display all plots:
 
@@ -112,7 +112,7 @@ Display all plots:
   marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-1.png" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-8-1.png" width="50%" style="display: block; margin: auto;" />
 
 Example: Non-linear impulse responses
 -------------------------------------
@@ -205,13 +205,13 @@ Show first irf of each state:
   plot(s1_plots[[1]])
 ```
 
-<img src="man/figures/README-unnamed-chunk-15-1.png" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-15-1.png" width="50%" style="display: block; margin: auto;" />
 
 ``` r
   plot(s2_plots[[1]])
 ```
 
-<img src="man/figures/README-unnamed-chunk-15-2.png" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-15-2.png" width="50%" style="display: block; margin: auto;" />
 
 References
 ----------

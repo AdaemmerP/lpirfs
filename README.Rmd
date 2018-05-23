@@ -10,7 +10,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  fig.align = "center"
+  fig.align = "center",
+  out.width = "50%"
 )
 ```
 Sss
