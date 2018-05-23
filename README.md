@@ -1,5 +1,22 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+``` r
+#library(htmltools)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  fig.align = "center"
+)
+# knitr::knit_hooks$set(imgcenter = function(before, options, envir){
+#   if (before) {
+#     HTML("<p align='center'>")
+#   } else {
+#     HTML("</p>")
+#   }
+#})
+```
+
 s \# lpirfs An R-package which estimates linear and non-linear impulse responses with local projections by Jordà (2005).
 
 Main features
