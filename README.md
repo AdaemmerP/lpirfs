@@ -1,9 +1,6 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-lpirfs
-======
-
-An R-package which estimates linear and non-linear impulse responses with local projections by Jordà (2005).
+So \# lpirfs An R-package which estimates linear and non-linear impulse responses with local projections by Jordà (2005).
 
 Main features
 -------------
@@ -173,7 +170,7 @@ To differentiate between two regimes, the defined switching variable (z) is plug
 
 -   $F\_{z\_t} = \\frac{exp(-\\gamma z\_t)}{1 + exp(-\\gamma z\_t)}$
 
-WARNING: To avoid contemporaneous feedback from the switching variable, the index of z is set to *t − 1* (for details see Auerbach and Gorodnichenko; 2012). This is done automatically done in the function *create\_nl\_data*. If you do not want the switching function to be lagged, please provide the switching variable with a lead of one.
+IMPORTANT: To avoid contemporaneous feedback from the switching variable, the index of z is set to *t − 1* (for details see Auerbach and Gorodnichenko; 2012). This is done automatically done in the function *create\_nl\_data*. If you do not want the switching function to be lagged, please provide the switching variable with a lead of one.
 
 -   Regime 1 is defined as: *X*<sub>*t* − *p*</sub> \* (1 − *F*(*z*<sub>*t*</sub>))
 -   Regime 2 is defined as: *X*<sub>*t* − *p*</sub> \* (*F*(*z*<sub>*t*</sub>))
@@ -198,20 +195,21 @@ Plot transition function and switching variable
     geom_line(aes(x = x, y = fz)) +
     theme_light() +
     ylab("") +
-    xlab("Date") #+
+    xlab("Date") +
+    scale_x_date(date_breaks = "5 year",  date_labels = "%Y")
 ```
 
 <img src="man/figures/README-unnamed-chunk-14-1.png" style="display: block; margin: auto;" />
 
 ``` r
-   # scale_x_datetime(date_breaks = "5 years")
   
   # Plot  federal funds rate which is used as the switching variable
   ggplot(data = data_df) +
     geom_line(aes(x = x, y = ff)) +
     theme_light() +
     ylab("") +
-    xlab("Date")
+    xlab("Date") +
+    scale_x_date(date_breaks = "5 year",  date_labels = "%Y")
 ```
 
 <img src="man/figures/README-unnamed-chunk-14-2.png" style="display: block; margin: auto;" />
@@ -242,13 +240,13 @@ Show first irf of each state:
   plot(s1_plots[[1]])
 ```
 
-<img src="man/figures/README-imgcenter-1.png" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-16-1.png" style="display: block; margin: auto;" />
 
 ``` r
   plot(s2_plots[[1]])
 ```
 
-<img src="man/figures/README-imgcenter-2.png" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-16-2.png" style="display: block; margin: auto;" />
 
 References
 ----------

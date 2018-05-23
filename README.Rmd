@@ -6,22 +6,14 @@ output: github_document
 
 
 ```{r setup, include = FALSE}
-library(htmltools)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
   fig.align = "center"
 )
-knitr::knit_hooks$set(imgcenter = function(before, options, envir){
-  if (before) {
-    HTML("<p align='center'>")
-  } else {
-    HTML("</p>")
-  }
-  })
 ```
-
+So
 # lpirfs
 An R-package which estimates linear and non-linear impulse responses
 with local projections by Jordà (2005).
@@ -172,7 +164,7 @@ switching function:
 - $F_{z_t} = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)}$
 
 
-WARNING: To avoid contemporaneous feedback from the switching variable, the index of z is set to *t − 1* (for details see Auerbach and Gorodnichenko; 2012). This is done automatically done in the function *create_nl_data*. If you do not want the switching function to be lagged, please provide the switching variable with a lead of one.
+IMPORTANT: To avoid contemporaneous feedback from the switching variable, the index of z is set to *t − 1* (for details see Auerbach and Gorodnichenko; 2012). This is done automatically done in the function *create_nl_data*. If you do not want the switching function to be lagged, please provide the switching variable with a lead of one.
 
 - Regime 1 is defined as: $X_{t-p}*(1-F(z_t))$
 - Regime 2 is defined as: $X_{t-p}*(F(z_t))$
@@ -196,15 +188,16 @@ Plot transition function and switching variable
     geom_line(aes(x = x, y = fz)) +
     theme_light() +
     ylab("") +
-    xlab("Date") #+
-   # scale_x_datetime(date_breaks = "5 years")
+    xlab("Date") +
+    scale_x_date(date_breaks = "5 year",  date_labels = "%Y")
   
   # Plot  federal funds rate which is used as the switching variable
   ggplot(data = data_df) +
     geom_line(aes(x = x, y = ff)) +
     theme_light() +
     ylab("") +
-    xlab("Date")
+    xlab("Date") +
+    scale_x_date(date_breaks = "5 year",  date_labels = "%Y")
     
 ```
 
@@ -218,7 +211,7 @@ Show first irf of each state:
 
 - The first plot shows the response of the first variable (GDP_gap) to the shock of the first variable in 'data_set_df'. 
 - The second plot shows the response of the second variable (Inflation) to the shock of the first variable (GDP_gap) in 'data_set_df'. 
-```{r, fig.height = 3, fig.width = 4, fig.align = "center", message = FALSE, imgcenter }
+```{r, fig.height = 3, fig.width = 4, fig.align = "center", message = FALSE }
 # Load packages
   library(ggpubr)
   library(gridExtra)
