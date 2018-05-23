@@ -4,30 +4,13 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-#```{r}
-#library(htmltools)
-# knitr::opts_chunk$set(
-#   collapse = TRUE,
-#   comment = "#>",
-#   fig.path = "man/figures/README-",
-#   fig.align = "center"
-#)
-# knitr::knit_hooks$set(imgcenter = function(before, options, envir){
-#   if (before) {
-#     HTML("<p align='center'>")
-#   } else {
-#     HTML("</p>")
-#   }
-#})
-#```
-
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "100%"
+  fig.align = "center"
 )
 ```
 
