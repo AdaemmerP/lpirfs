@@ -12,6 +12,13 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   fig.align = "center"
 )
+knitr::knit_hooks$set(imgcenter = function(before, options, envir){
+  if (before) {
+    MD("<center>")
+  } else {
+    MD("</center>")
+  }
+  })
 ```
 
 # lpirfs
@@ -175,19 +182,29 @@ Estimate non-linear impulse responses
   results_nl <- lp_nl(data_set_df, specs)
 ```
 
-Plot transition function 
+Plot transition function and switching variable  
 ```{r, message = FALSE } 
   # Extract values of transition function
   fz      <- results_nl$fz
   # Make date sequence. Start with sequnce in October because the model is estimated with three lags
   dates   <- seq(as.Date("1955/10/1"), as.Date("2003/1/1"), by = "quarter")
-  data_df <- data_frame(x = dates, y = fz)
+  data_df <- data_frame(x = dates, fz = fz, ff = data_set_df$FF[(specs$lags_nl+1):length(data_set_df$FF)])
   
+  # Plot transition function
   ggplot(data = data_df) +
-    geom_line(aes(x = x, y = y)) +
+    geom_line(aes(x = x, y = fz)) +
+    theme_light() +
+    ylab("") +
+    xlab("Date") #+
+   # scale_x_datetime(date_breaks = "5 years")
+  
+  # Plot  federal funds rate which is used as the switching variable
+  ggplot(data = data_df) +
+    geom_line(aes(x = x, y = ff)) +
     theme_light() +
     ylab("") +
     xlab("Date")
+    
 ```
 
 Plot 
@@ -215,14 +232,14 @@ Show first irf of each state:
 ```
 
 ## References
-* Auerbach, A. J., and Gorodnichenko Y. (2012). "Measuring the Output Responses to Fiscal Policy." *American Economic Journal: Economic Policy*, 4    (2):   1-27. [Link](https://www.aeaweb.org/articles?id=10.1257/pol.4.2.1)
+* Auerbach, A. J., and Gorodnichenko Y. (2012). "Measuring the Output Responses to Fiscal Policy." *American Economic Journal: Economic Policy*, 4    (2):   1-27. [doi:10.1257/pol.4.2.1](https://www.aeaweb.org/articles?id=10.1257/pol.4.2.1)
 
 * Jordà, O. (2005) "Estimation and Inference of Impulse Responses by Local Projections." *American Economic Review*, 95 (1): 161-182.
-[Link](https://www.aeaweb.org/articles?id=10.1257/0002828053828518)
+[doi:10.1257/0002828053828518](https://www.aeaweb.org/articles?id=10.1257/0002828053828518)
 
-* Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and Autocorrelation Consistent Covariance Matrix.” *Econometrica*, 55, 703–708. [Link](https://www.jstor.org/stable/1913610?seq=1#page_scan_tab_contents)
+* Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and Autocorrelation Consistent Covariance Matrix.” *Econometrica*, 55, 703–708. [doi:10.2307/1913610](https://www.jstor.org/stable/1913610?seq=1#page_scan_tab_contents)
 
-* Ramey, V.A., and Zubairy, S. (2018). "Government Spending Multipliers in Good Times and in Bad: Evidence from US Historical Data." Journal of        Political Economy, 126 (2), 850-901. [Link](https://www.journals.uchicago.edu/doi/10.1086/696277)
+* Ramey, V.A., and Zubairy, S. (2018). "Government Spending Multipliers in Good Times and in Bad: Evidence from US Historical Data." Journal of        Political Economy, 126 (2), 850-901. [doi:10.1086/696277](https://www.journals.uchicago.edu/doi/10.1086/696277)
 
 ### Author
 Philipp Adämmer

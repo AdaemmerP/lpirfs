@@ -119,13 +119,13 @@ create_nl_data <- function(specs, data_set_df){
         x_nl[[i]]            <-   x_nl[[i]] %>%
                                          as.matrix()
 
-       } else if (specs$trend == 1){
+               } else if (specs$trend == 1){
         # Constant and trend
          x_nl[[i]]            <-   x_nl[[i]]                                 %>%
                                        dplyr::mutate(trend  = row_number()   %>%
                                        as.matrix())
 
-      }  else {
+                 }  else {
         x_nl[[i]]            <-   x_nl[[i]]                                     %>%
                                        dplyr::mutate(trend    = row_number())   %>%
                                        dplyr::mutate(sq_trend = trend^2)        %>%
