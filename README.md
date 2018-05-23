@@ -1,6 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-So \# lpirfs An R-package which estimates linear and non-linear impulse responses with local projections by Jordà (2005).
+lpirfs
+======
+
+An R-package which estimates linear and non-linear impulse responses with local projections by Jordà (2005).
 
 Main features
 -------------
@@ -157,7 +160,7 @@ To estimate the non-linear model, provide a switching variable:
 
 ``` r
 # Specifications for switching variable
-  specs$switching      <- data_set_df$FF  # The federal funds rate is used here for the tranistion function
+  specs$switching      <- data_set_df$GDP_gap # The federal funds rate is used here for the tranistion function
   specs$hp_filter      <- 1               # 0 = Do not use HP-filter to decompose switching-variable, 
                                           # 1 = Use HP-filter to decompose switching-variable
   specs$lambda         <- 1600            # Monthly   = 129600,
@@ -188,11 +191,11 @@ Plot transition function and switching variable
   fz      <- results_nl$fz
   # Make date sequence. Start with sequnce in October because the model is estimated with three lags
   dates   <- seq(as.Date("1955/10/1"), as.Date("2003/1/1"), by = "quarter")
-  data_df <- data_frame(x = dates, fz = fz, ff = data_set_df$FF[(specs$lags_nl+1):length(data_set_df$FF)])
+  data_df <- data_frame(x = dates, fz = fz, ff = specs$switching[(specs$lags_nl+1):length(data_set_df$FF)])
   
-  # Plot transition function
+  # Plot output gap rate which is used as the switching variable
   ggplot(data = data_df) +
-    geom_line(aes(x = x, y = fz)) +
+    geom_line(aes(x = x, y = ff)) +
     theme_light() +
     ylab("") +
     xlab("Date") +
@@ -203,9 +206,9 @@ Plot transition function and switching variable
 
 ``` r
   
-  # Plot  federal funds rate which is used as the switching variable
+  # Plot transition function
   ggplot(data = data_df) +
-    geom_line(aes(x = x, y = ff)) +
+    geom_line(aes(x = x, y = fz)) +
     theme_light() +
     ylab("") +
     xlab("Date") +
@@ -247,6 +250,19 @@ Show first irf of each state:
 ```
 
 <img src="man/figures/README-unnamed-chunk-16-2.png" style="display: block; margin: auto;" />
+
+``` r
+# Plot plots
+  marrangeGrob(s1_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df))
+```
+
+<img src="man/figures/README-unnamed-chunk-17-1.png" style="display: block; margin: auto;" />
+
+``` r
+  marrangeGrob(s2_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df))
+```
+
+<img src="man/figures/README-unnamed-chunk-17-2.png" style="display: block; margin: auto;" />
 
 References
 ----------

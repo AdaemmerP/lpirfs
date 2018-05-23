@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
   fig.align = "center"
 )
 ```
-So
+
 # lpirfs
 An R-package which estimates linear and non-linear impulse responses
 with local projections by Jordà (2005).
@@ -90,7 +90,7 @@ Display single plots:
 
 - The first plot shows the response of the first variable (GDP_gap) to the shock of the first variable in 'data_set_df'. 
 - The second plot shows the response of the second variable (Inflation) to the shock of the first variable (GDP_gap) in 'data_set_df'. 
-```{r, fig.height = 3, fig.width = 4, fig.align = "center", message = FALSE }
+```{r, fig.height = 2, fig.width = 3, fig.align = "center", message = FALSE }
   linear_plots[[1]]
   linear_plots[[2]]
 ```
@@ -149,7 +149,7 @@ To estimate the non-linear model, provide a switching variable:
 
 ```{r, message = FALSE }
 # Specifications for switching variable
-  specs$switching      <- data_set_df$FF  # The federal funds rate is used here for the tranistion function
+  specs$switching      <- data_set_df$GDP_gap # The federal funds rate is used here for the tranistion function
   specs$hp_filter      <- 1               # 0 = Do not use HP-filter to decompose switching-variable, 
                                           # 1 = Use HP-filter to decompose switching-variable
   specs$lambda         <- 1600            # Monthly   = 129600,
@@ -181,7 +181,15 @@ Plot transition function and switching variable
   fz      <- results_nl$fz
   # Make date sequence. Start with sequnce in October because the model is estimated with three lags
   dates   <- seq(as.Date("1955/10/1"), as.Date("2003/1/1"), by = "quarter")
-  data_df <- data_frame(x = dates, fz = fz, ff = data_set_df$FF[(specs$lags_nl+1):length(data_set_df$FF)])
+  data_df <- data_frame(x = dates, fz = fz, ff = specs$switching[(specs$lags_nl+1):length(data_set_df$FF)])
+  
+  # Plot output gap rate which is used as the switching variable
+  ggplot(data = data_df) +
+    geom_line(aes(x = x, y = ff)) +
+    theme_light() +
+    ylab("") +
+    xlab("Date") +
+    scale_x_date(date_breaks = "5 year",  date_labels = "%Y")
   
   # Plot transition function
   ggplot(data = data_df) +
@@ -191,13 +199,7 @@ Plot transition function and switching variable
     xlab("Date") +
     scale_x_date(date_breaks = "5 year",  date_labels = "%Y")
   
-  # Plot  federal funds rate which is used as the switching variable
-  ggplot(data = data_df) +
-    geom_line(aes(x = x, y = ff)) +
-    theme_light() +
-    ylab("") +
-    xlab("Date") +
-    scale_x_date(date_breaks = "5 year",  date_labels = "%Y")
+ 
     
 ```
 
@@ -211,7 +213,7 @@ Show first irf of each state:
 
 - The first plot shows the response of the first variable (GDP_gap) to the shock of the first variable in 'data_set_df'. 
 - The second plot shows the response of the second variable (Inflation) to the shock of the first variable (GDP_gap) in 'data_set_df'. 
-```{r, fig.height = 3, fig.width = 4, fig.align = "center", message = FALSE }
+```{r, fig.height = 2, fig.width = 3, fig.align = "center", message = FALSE }
 # Load packages
   library(ggpubr)
   library(gridExtra)
@@ -223,6 +225,11 @@ Show first irf of each state:
 
   plot(s1_plots[[1]])
   plot(s2_plots[[1]])
+```
+```{r, fig.height = 6, fig.width = 8, fig.align = "center", message = FALSE }
+# Plot plots
+  marrangeGrob(s1_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df))
+  marrangeGrob(s2_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df))
 ```
 
 ## References
