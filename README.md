@@ -271,7 +271,7 @@ References
 Acknowledgements
 ----------------
 
-I greatly benefitted from the profound R and Rcpp knowledge of [Philipp Wittenberg](https://github.com/wittenberg). I am also thankful to [Sarah Zubairy](https://sites.google.com/site/sarahzubairy/) for providing me the *Matlab* code before the publication their paper.
+I greatly benefitted from the profound *R* and *Rcpp* knowledge of [Philipp Wittenberg](https://github.com/wittenberg). I am also thankful to [Sarah Zubairy](https://sites.google.com/site/sarahzubairy/) for giving me the *Matlab* code before the publication their paper.
 
 ### Author
 

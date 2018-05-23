@@ -239,7 +239,7 @@ Show first irf of each state:
 * Ramey, V.A., and Zubairy, S. (2018). "Government Spending Multipliers in Good Times and in Bad: Evidence from US Historical Data." Journal of        Political Economy, 126 (2), 850-901. [doi:10.1086/696277](https://www.journals.uchicago.edu/doi/10.1086/696277)
 
 ## Acknowledgements
-I greatly benefitted from the profound R and Rcpp knowledge of [Philipp Wittenberg](https://github.com/wittenberg). I am also thankful to [Sarah Zubairy](https://sites.google.com/site/sarahzubairy/) for providing me the *Matlab* code before the publication their paper.
+I greatly benefitted from the profound *R* and *Rcpp* knowledge of [Philipp Wittenberg](https://github.com/wittenberg). I am also thankful to [Sarah Zubairy](https://sites.google.com/site/sarahzubairy/) for giving me the *Matlab* code before the publication their paper.
 
 ### Author
 Philipp Adämmer
