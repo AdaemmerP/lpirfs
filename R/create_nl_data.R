@@ -27,34 +27,55 @@ create_nl_data <- function(specs, data_set_df){
 
    # Create tibbles with exogenous regime data and combine them to one data set
     x_nl_s1      <- x_nl %>%
-                      dplyr::mutate_all(funs(expans      = .*(1 - fz)))  %>%
+                      dplyr::mutate_all(funs(s1      = .*(1 - fz)))  %>%
                       dplyr::select(-one_of(linear_names))
 
     x_nl_s2      <- x_nl %>%
-                      dplyr::mutate_all(funs(recess      = .*fz))  %>%
+                      dplyr::mutate_all(funs(s2      = .*fz))  %>%
                       dplyr::select(-one_of(linear_names))
 
     x_nl         <- cbind(x_nl_s1, x_nl_s2)
 
-    # Include no trend, trend or quadratic trend
-    switch(specs$trend,
 
-     # Only constant
-       x_nl            <-   x_nl %>%
-                                as.matrix(),
+   # Include no trend, trend or quadratic trend
+    if(specs$trend == 0){
 
-     # Constant and trend
-       x_nl            <-   x_nl %>%
-                                   dplyr::mutate(trend    = row_number()) %>%
-                                                                     as.matrix() ,
+        # Only constant
+        x_nl             <-   x_nl %>%
+                                as.matrix()
 
-     # Constant, trend and quadratice trend
-       x_nl            <-   x_nl %>%
-                                   dplyr::mutate(trend    = row_number())  %>%
-                                   dplyr::mutate(sq_trend = trend^2)       %>%
-                                                                      as.matrix()
+           } else if (specs$trend == 1){
 
-    )
+        # Constant and trend
+         x_nl            <-   x_nl %>%
+                                 dplyr::mutate(trend    = row_number()) %>%
+                                 as.matrix()
+
+              }  else {
+      x_nl               <-   x_nl %>%
+                                  dplyr::mutate(trend    = row_number())  %>%
+                                  dplyr::mutate(sq_trend = trend^2)       %>%
+                                  as.matrix()
+    }
+
+    # switch(specs$trend,
+    #
+    #  # Only constant
+    #    x_nl            <-   x_nl %>%
+    #                             as.matrix(),
+    #
+    #  # Constant and trend
+    #    x_nl            <-   x_nl %>%
+    #                                dplyr::mutate(trend    = row_number()) %>%
+    #                                                                  as.matrix() ,
+    #
+    #  # Constant, trend and quadratice trend
+    #    x_nl            <-   x_nl %>%
+    #                                dplyr::mutate(trend    = row_number())  %>%
+    #                                dplyr::mutate(sq_trend = trend^2)       %>%
+    #                                                                   as.matrix()
+    #
+    # )
 
 ################################################################################
                               } else {
@@ -79,29 +100,54 @@ create_nl_data <- function(specs, data_set_df){
       linear_names   <- names(x_nl_temp)
 
       x_nl_s1        <- x_nl_temp %>%
-                           dplyr::mutate_all(funs(expans      = .*(1 - fz))) %>%
+                           dplyr::mutate_all(funs(s1      = .*(1 - fz))) %>%
                            dplyr::select(-one_of(linear_names))
 
       x_nl_s2        <- x_nl_temp %>%
-                           dplyr::mutate_all(funs(recess      = .*fz))        %>%
+                           dplyr::mutate_all(funs(s2      = .*fz))        %>%
                            dplyr::select(-one_of(linear_names))
 
       x_nl[[i]]      <- cbind(x_nl_s1, x_nl_s2)
 
+
+
+
+
+      if(specs$trend == 0){
+
+        # Only constant
+        x_nl[[i]]            <-   x_nl[[i]] %>%
+                                         as.matrix()
+
+       } else if (specs$trend == 1){
+        # Constant and trend
+         x_nl[[i]]            <-   x_nl[[i]]                                 %>%
+                                       dplyr::mutate(trend  = row_number()   %>%
+                                       as.matrix())
+
+      }  else {
+        x_nl[[i]]            <-   x_nl[[i]]                                     %>%
+                                       dplyr::mutate(trend    = row_number())   %>%
+                                       dplyr::mutate(sq_trend = trend^2)        %>%
+                                       as.matrix()
+      }
+
+
+
       # Include no trend, trend or quadratic trend
-      switch(specs$trend,
-
-             x_nl[[i]]            <-   x_nl[[i]]                                 %>%
-                                                                    as.matrix() ,
-
-             x_nl[[i]]            <-   x_nl[[i]]                                 %>%
-                                            dplyr::mutate(trend  = row_number()  %>%
-                                                                     as.matrix()),
-
-             x_nl[[i]]            <-   x_nl[[i]]                                     %>%
-                                            dplyr::mutate(trend    = row_number())   %>%
-                                            dplyr::mutate(sq_trend = trend^2)        %>%
-                                                                     as.matrix()  )
+      # switch(specs$trend,
+      #
+      #        x_nl[[i]]            <-   x_nl[[i]]                                 %>%
+      #                                                               as.matrix() ,
+      #
+      #        x_nl[[i]]            <-   x_nl[[i]]                                 %>%
+      #                                       dplyr::mutate(trend  = row_number()  %>%
+      #                                                                as.matrix()),
+      #
+      #        x_nl[[i]]            <-   x_nl[[i]]                                     %>%
+      #                                       dplyr::mutate(trend    = row_number())   %>%
+      #                                       dplyr::mutate(sq_trend = trend^2)        %>%
+      #                                                                as.matrix()  )
 
 
     }

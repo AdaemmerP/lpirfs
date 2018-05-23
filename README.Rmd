@@ -10,11 +10,10 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  fig.align = "center",
-  out.width = "50%"
+  fig.align = "center"
 )
 ```
-Sss
+
 # lpirfs
 An R-package which estimates linear and non-linear impulse responses
 with local projections by Jordà (2005).
@@ -131,16 +130,16 @@ The data description can be found in the data's help file.
 ```
 
 
-Make list and specify input variables to estimate linear irfs. 
+Make list and specify input variables to estimate non-linear irfs. 
 ```{r, message = FALSE }
 # Create list for input
   specs <- list()
 
 # Specify inputs
-  specs$lags_nl        <- 2L      # Number of lags
+  specs$lags_nl        <- 3L      # Number of lags
   specs$lags_criterion <- NaN     # Lag length criterion (AICc, AIC or BIC)
   specs$max_lags       <- NaN     # If lags_criterion is chosen, maximum number of lags  
-  specs$trend          <- 2L      # 0 = no trend, 1 = trend, 2 = trend and quadratic trend
+  specs$trend          <- 0L      # 0 = no trend, 1 = trend, 2 = trend and quadratic trend
   specs$shock_type     <- 1L      # 0 = standard deviation shock, 1 = unit shock
   specs$confint        <- 1.96    # Width of confidence bands: 1 = 68%, 1.67 = 90%, 1.96 = 95%
   specs$hor            <- 12L     # Length of horizon
@@ -150,7 +149,7 @@ To estimate the non-linear model, provide a switching variable:
 
 ```{r, message = FALSE }
 # Specifications for switching variable
-  specs$switching      <- data_set_df$FF
+  specs$switching      <- data_set_df$FF  # The federal funds rate is used here for the tranistion function
   specs$hp_filter      <- 1               # 0 = Do not use HP-filter to decompose switching-variable, 
                                           # 1 = Use HP-filter to decompose switching-variable
   specs$lambda         <- 1600            # Monthly   = 129600,
@@ -170,10 +169,28 @@ WARNING: To avoid contemporaneous feedback from the switching variable, the inde
 - Regime 1 is defined as: $X_{t-p}*(1-F(z_t))$
 - Regime 2 is defined as: $X_{t-p}*(F(z_t))$
 
+
 Estimate non-linear impulse responses 
 ```{r, message = FALSE }  
   results_nl <- lp_nl(data_set_df, specs)
 ```
+
+Plot transition function 
+```{r, message = FALSE } 
+  # Extract values of transition function
+  fz      <- results_nl$fz
+  # Make date sequence. Start with sequnce in October because the model is estimated with three lags
+  dates   <- seq(as.Date("1955/10/1"), as.Date("2003/1/1"), by = "quarter")
+  data_df <- data_frame(x = dates, y = fz)
+  
+  ggplot(data = data_df) +
+    geom_line(aes(x = x, y = y)) +
+    theme_light() +
+    ylab("") +
+    xlab("Date")
+```
+
+Plot 
 
 Make all plots with package function
 ```{r, message = FALSE }

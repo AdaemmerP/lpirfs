@@ -1,6 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-Sss \# lpirfs An R-package which estimates linear and non-linear impulse responses with local projections by Jordà (2005).
+lpirfs
+======
+
+An R-package which estimates linear and non-linear impulse responses with local projections by Jordà (2005).
 
 Main features
 -------------
@@ -90,13 +93,13 @@ Display single plots:
   linear_plots[[1]]
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-1.png" width="50%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-7-1.png" style="display: block; margin: auto;" />
 
 ``` r
   linear_plots[[2]]
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-2.png" width="50%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-7-2.png" style="display: block; margin: auto;" />
 
 Display all plots:
 
@@ -112,7 +115,7 @@ Display all plots:
   marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-1.png" width="50%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-8-1.png" style="display: block; margin: auto;" />
 
 Example: Non-linear impulse responses
 -------------------------------------
@@ -137,17 +140,17 @@ Load data set from package to estimate a non-linear, new-Keynesian, closed- econ
   data_set_df <- interest_rules_var_data
 ```
 
-Make list and specify input variables to estimate linear irfs.
+Make list and specify input variables to estimate non-linear irfs.
 
 ``` r
 # Create list for input
   specs <- list()
 
 # Specify inputs
-  specs$lags_nl        <- 2L      # Number of lags
+  specs$lags_nl        <- 3L      # Number of lags
   specs$lags_criterion <- NaN     # Lag length criterion (AICc, AIC or BIC)
   specs$max_lags       <- NaN     # If lags_criterion is chosen, maximum number of lags  
-  specs$trend          <- 2L      # 0 = no trend, 1 = trend, 2 = trend and quadratic trend
+  specs$trend          <- 0L      # 0 = no trend, 1 = trend, 2 = trend and quadratic trend
   specs$shock_type     <- 1L      # 0 = standard deviation shock, 1 = unit shock
   specs$confint        <- 1.96    # Width of confidence bands: 1 = 68%, 1.67 = 90%, 1.96 = 95%
   specs$hor            <- 12L     # Length of horizon
@@ -157,7 +160,7 @@ To estimate the non-linear model, provide a switching variable:
 
 ``` r
 # Specifications for switching variable
-  specs$switching      <- data_set_df$FF
+  specs$switching      <- data_set_df$FF  # The federal funds rate is used here for the tranistion function
   specs$hp_filter      <- 1               # 0 = Do not use HP-filter to decompose switching-variable, 
                                           # 1 = Use HP-filter to decompose switching-variable
   specs$lambda         <- 1600            # Monthly   = 129600,
@@ -180,6 +183,26 @@ Estimate non-linear impulse responses
 ``` r
   results_nl <- lp_nl(data_set_df, specs)
 ```
+
+Plot transition function
+
+``` r
+  # Extract values of transition function
+  fz      <- results_nl$fz
+  # Make date sequence. Start with sequnce in October because the model is estimated with three lags
+  dates   <- seq(as.Date("1955/10/1"), as.Date("2003/1/1"), by = "quarter")
+  data_df <- data_frame(x = dates, y = fz)
+  
+  ggplot(data = data_df) +
+    geom_line(aes(x = x, y = y)) +
+    theme_light() +
+    ylab("") +
+    xlab("Date")
+```
+
+<img src="man/figures/README-unnamed-chunk-14-1.png" style="display: block; margin: auto;" />
+
+Plot
 
 Make all plots with package function
 
@@ -205,13 +228,13 @@ Show first irf of each state:
   plot(s1_plots[[1]])
 ```
 
-<img src="man/figures/README-unnamed-chunk-15-1.png" width="50%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-16-1.png" style="display: block; margin: auto;" />
 
 ``` r
   plot(s2_plots[[1]])
 ```
 
-<img src="man/figures/README-unnamed-chunk-15-2.png" width="50%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-16-2.png" style="display: block; margin: auto;" />
 
 References
 ----------
