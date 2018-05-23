@@ -1,6 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-g \# lpirfs An R-package which estimates linear and non-linear impulse responses with local projections by Jordà (2005).
+lpirfs
+======
+
+An R-package which estimates linear and non-linear impulse responses with local projections by Jordà (2005).
 
 Main features
 -------------

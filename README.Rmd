@@ -4,7 +4,7 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, echo = FALSE}
+```{r echo = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -19,7 +19,7 @@ knitr::knit_hooks$set(imgcenter = function(before, options, envir){
   }
 })
 ```
-g
+
 # lpirfs
 An R-package which estimates linear and non-linear impulse responses
 with local projections by Jordà (2005).
