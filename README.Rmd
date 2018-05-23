@@ -8,12 +8,19 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/README-"
+  fig.path = "man/figures/README-",
+  fig.align = "center"
 )
+knitr::knit_hooks$set(imgcenter = function(before, options, envir){
+  if (before) {
+    HTML("<p align='center'>")
+  } else {
+    HTML("</p>")
+  }
+})
 ```
-
+g
 # lpirfs
-
 An R-package which estimates linear and non-linear impulse responses
 with local projections by Jordà (2005).
 
