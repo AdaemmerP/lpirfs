@@ -242,13 +242,13 @@ Show first irf of each state:
   plot(s1_plots[[1]])
 ```
 
-<img src="man/figures/README-unnamed-chunk-16-1.png" style="display: block; margin: auto;" />
+<img src="man/figures/README-imgcenter-1.png" style="display: block; margin: auto;" />
 
 ``` r
   plot(s2_plots[[1]])
 ```
 
-<img src="man/figures/README-unnamed-chunk-16-2.png" style="display: block; margin: auto;" />
+<img src="man/figures/README-imgcenter-2.png" style="display: block; margin: auto;" />
 
 References
 ----------

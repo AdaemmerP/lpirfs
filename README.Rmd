@@ -6,6 +6,7 @@ output: github_document
 
 
 ```{r setup, include = FALSE}
+library(htmltools)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -14,9 +15,9 @@ knitr::opts_chunk$set(
 )
 knitr::knit_hooks$set(imgcenter = function(before, options, envir){
   if (before) {
-    MD("<center>")
+    HTML("<p align='center'>")
   } else {
-    MD("</center>")
+    HTML("</p>")
   }
   })
 ```
@@ -217,7 +218,7 @@ Show first irf of each state:
 
 - The first plot shows the response of the first variable (GDP_gap) to the shock of the first variable in 'data_set_df'. 
 - The second plot shows the response of the second variable (Inflation) to the shock of the first variable (GDP_gap) in 'data_set_df'. 
-```{r, fig.height = 3, fig.width = 4, fig.align = "center", message = FALSE }
+```{r, fig.height = 3, fig.width = 4, fig.align = "center", message = FALSE, imgcenter }
 # Load packages
   library(ggpubr)
   library(gridExtra)
