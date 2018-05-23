@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
   fig.align = "center"
 )
 ```
-
+Sss
 # lpirfs
 An R-package which estimates linear and non-linear impulse responses
 with local projections by Jordà (2005).
