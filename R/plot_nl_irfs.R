@@ -2,10 +2,9 @@
 #'
 #' @param results_nl List with estimated results from lp_nl function
 #'
-#' @return
+#' @return A list with (gg-)plots of impulse responses for two regimes
 #' @export
 #'
-#' @examples
 plot_nl_irfs <- function(results_nl){
 
   irf_s1_mean <- results_nl[[1]]
@@ -82,13 +81,6 @@ plot_nl_irfs <- function(results_nl){
 
   }
 
-  # Save plots
-#  s1_plots <- sapply(gg_s1, ggplotGrob)
-#  s2_plots <- sapply(gg_s2, ggplotGrob)
-
-  # Plot plots
- # marrangeGrob(s1_plots, nrow = specs$endog, ncol = specs$endog)
-#  marrangeGrob(s2_plots, nrow = specs$endog, ncol = specs$endog)
 
   list (gg_s1 = gg_s1, gg_s2 = gg_s2)
 

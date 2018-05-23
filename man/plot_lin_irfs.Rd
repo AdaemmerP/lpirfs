@@ -9,6 +9,9 @@ plot_lin_irfs(results_lin)
 \arguments{
 \item{results_lin}{A list with KXK plots constructed with ggplot2}
 }
+\value{
+gg_lin List with plots for linear impulse responses
+}
 \description{
 Compute (linear) irf plots estimated with \link{lp_lin}.
 }

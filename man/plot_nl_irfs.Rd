@@ -9,6 +9,9 @@ plot_nl_irfs(results_nl)
 \arguments{
 \item{results_nl}{List with estimated results from lp_nl function}
 }
+\value{
+A list with (gg-)plots of impulse responses for two regimes
+}
 \description{
 Function to plot irfs, estimated with lp_lin function
 }

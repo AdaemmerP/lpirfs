@@ -5,7 +5,7 @@
 #'
 #' @param results_lin A list with KXK plots constructed with ggplot2
 #'
-#' @return
+#' @return gg_lin List with plots for linear impulse responses
 #' @export
 #' @import ggplot2
 #' @examples
