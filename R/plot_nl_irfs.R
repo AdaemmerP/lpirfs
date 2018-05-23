@@ -4,7 +4,6 @@
 #'
 #' @return A list with (gg-)plots of impulse responses for two regimes
 #' @export
-#'
 plot_nl_irfs <- function(results_nl){
 
   irf_s1_mean <- results_nl[[1]]

@@ -8,10 +8,10 @@ An R-package which estimates linear and non-linear impulse responses with local 
 Main features
 -------------
 
--   Estimate linear and non-linear impulse responses with local projections
--   Functions to plot linear and non-linear impulse responses
--   Functions are partly implemented in *Rcpp* and *RcppArmadillo* to improve efficiency
--   High performance with parallel computation
+-   Estimate linear and non-linear impulse responses with local projections.
+-   Functions to plot linear and non-linear impulse responses.
+-   Functions are partly implemented in *Rcpp* and *RcppArmadillo* to improve efficiency.
+-   High performance with parallel computation.
 
 Installation
 ------------

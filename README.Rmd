@@ -14,16 +14,17 @@ knitr::opts_chunk$set(
 )
 ```
 
+
 # lpirfs
 An R-package which estimates linear and non-linear impulse responses
 with local projections by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518).
 
 ## Main features
 
-- Estimate linear and non-linear impulse responses with local projections
-- Functions to plot linear and non-linear impulse responses
-- Functions are partly implemented in *Rcpp* and *RcppArmadillo* to improve efficiency
-- High performance with parallel computation
+- Estimate linear and non-linear impulse responses with local projections.
+- Functions to plot linear and non-linear impulse responses.
+- Functions are partly implemented in *Rcpp* and *RcppArmadillo* to improve efficiency.
+- High performance with parallel computation.
 
 ## Installation
 
