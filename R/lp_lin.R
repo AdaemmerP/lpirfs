@@ -5,7 +5,7 @@
 #' @param data_set_df A \link{data.frame}() containing all endogenous variables for the VAR. The column order
 #'                    is used for the Cholesky decomposition.
 #' @param specs A \link{list}() with the following inputs:
-#'
+#' @author Philipp Adämmer
 #' \itemize{
 #' \item{\strong{lags_criterion} NaN or character. NaN means that the number of lags
 #'         has to be given at \emph{lags_lin}. The character refers to the corresponding lag length criterion ('AICc', 'AIC' or 'BIC').}

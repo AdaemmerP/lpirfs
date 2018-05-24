@@ -44,7 +44,7 @@ Load libraries:
   library(lpirfs)
 ```
 
-Load data set from package to estimate a simple, new-Keynesian, closed- economy model. These data are used by Jordà (2005) in chapter IV. Please see the data's help file or the original paper for a detailed description.
+Load data set from package to estimate a simple, new-Keynesian, closed- economy model. These data are used by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) in chapter IV. Please see the data's help file or the original paper for a detailed description.
 
 ``` r
 # Load data (from package)
@@ -54,7 +54,7 @@ Load data set from package to estimate a simple, new-Keynesian, closed- economy 
 Make list and specify input variables to estimate linear impulse responses.
 
 ``` r
-# Create list for input
+# Make list for inputs
   specs <- list()
 
 # Specify inputs
@@ -67,22 +67,21 @@ Make list and specify input variables to estimate linear impulse responses.
   specs$hor            <- 12L     # Length of horizon
 ```
 
-Estimate linear impulse responses
+Estimate linear impulse responses.
 
 ``` r
   results_lin  <- lp_lin(data_set_df, specs)
 ```
 
-Save all plots with package function
+Make plots for impulse responses of linear model.
 
 ``` r
-# Make plots
   linear_plots <- plot_lin_irfs(results_lin)
 ```
 
 Display single impulse responses:
 
--   The first plot shows the response of the first variable (GDP\_gap) to a shock in the first variable in.
+-   The first plot shows the response of the first variable (GDP\_gap) to a shock in the first variable in (GDP\_gap).
 -   The second plot shows the response of the first variable (GDP\_gap) to a shock in the second variable (Inflation).
 
 ``` r
@@ -99,7 +98,7 @@ Display single impulse responses:
 
 Display all plots:
 
--   This graph is similar to Figure 5 in Jordà (2005), p. 176, but has wider confidence bands.
+-   This graph is similar to Figure 5 in Jordà (2005), p. 176, but has slightly wider confidence bands.
 -   Figure 5 in Jordà (2005) is replicated when specs$confint = 1.67 (90% error bands).
 
 ``` r
@@ -129,17 +128,17 @@ Load libraries:
   library(vars)
 ```
 
-Load data set from package to estimate a non-linear, new-Keynesian, closed- economy model. This data set is used by Jordà (2005) in chapter IV, p.174. Please see the data's help file or the original paper for a detailed description.
+Load data set from package to estimate a non-linear, new-Keynesian, closed- economy model. This data set is used by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) in chapter IV. Please see the data's help file or the original paper for a detailed description.
 
 ``` r
 # Load data (from package)
   data_set_df <- interest_rules_var_data
 ```
 
-Make list and specify input variables to estimate non-linear irfs.
+Make list and specify input variables to estimate non-linear impulse responses.
 
 ``` r
-# Create list for input
+# Make list for inputs
   specs <- list()
 
 # Specify inputs
@@ -156,44 +155,45 @@ Provide a switching variable to separate the data into two regimes.
 
 ``` r
 # Specifications for switching variable
-  specs$switching      <- data_set_df$GDP_gap # The output_gap is used as input into the tranistion function
+  specs$switching      <- data_set_df$GDP_gap # The output gap is used to differentiate between two regimes
   specs$hp_filter      <- 1                   # 0 = Do not use HP-filter to decompose switching-variable, 
                                               # 1 = Use HP-filter to decompose switching-variable
   specs$lambda         <- 1600                # Monthly = 129600, Quarterly = 1600, Annual = 6.25
   specs$gamma          <- 3                   # Numeric value > 0
 ```
 
-The switching variable (*z*) is either decomposed by the Hodrick-Prescott filter (*hp\_filter = 1*) or directly plugged into the follwing switching function.
+The switching variable (*z*) is either decomposed by the Hodrick-Prescott filter (*specs$hp\_filter = 1*) or directly plugged into the follwing switching function.
 
-$F\_{z\_t}=\\frac{exp(-\\gamma z\_t)}{1 + exp(-\\gamma z\_t)}$
+    $F_{z_t}=\frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)}$
 
 -   Data for regime 1 are calculated as: *X*<sub>*t* − *p*</sub> \* (1 − *F*(*z*<sub>*t* − 1</sub>))
 -   Data for regime 2 are calculated as: *X*<sub>*t* − *p*</sub> \* *F*(*z*<sub>*t* − 1</sub>)
 
-IMPORTANT: To avoid contemporaneous feedback, the index of *z* is set to *t − 1* (for details see [Auerbach and Gorodnichenko; 2012)](https://www.aeaweb.org/articles?id=10.1257/pol.4.2.1) This is done automatically in the function *create\_nl\_data*. If you do not want the switching function to be lagged, please provide the switching variable with a lead of one.
+IMPORTANT: To avoid contemporaneous feedback, the index of *z* is set to *t − 1* (see [Auerbach and Gorodnichenko; 2012)](https://www.aeaweb.org/articles?id=10.1257/pol.4.2.1) for details) The lag is created automatically in *create\_nl\_data* of the package. If you do not want the switching function to be lagged, please provide the switching variable with a lead of one.
 
-Estimate non-linear impulse responses
+Estimate non-linear impulse responses.
 
 ``` r
   results_nl <- lp_nl(data_set_df, specs)
 ```
 
-Extract values of transition function from *results\_nl* and make date sequence.
+Save values from transition function.
 
 ``` r
   fz      <- results_nl$fz
-
-# Start with sequence in October because the non-linear model is estimated with three lags.
-  dates   <- seq(as.Date("1955/10/1"), as.Date("2003/1/1"), by = "quarter")
-  data_df <- data_frame(x = dates, fz = fz, gdp_gap = specs$switching[(specs$lags_nl+1):length(data_set_df$FF)])
 ```
 
 Plot output gap
 
 ``` r
+# Make date sequence. Start in October because the non-linear model is estimated with three lags.
+  dates   <- seq(as.Date("1955/10/1"), as.Date("2003/1/1"), by = "quarter")
+  data_df <- data_frame(x = dates, fz = fz, gdp_gap = specs$switching[(specs$lags_nl+1):length(data_set_df$FF)])
+
+# Plot  
   ggplot(data = data_df) +
     geom_line(aes(x = x, y = gdp_gap)) +
-    theme_light() +
+    theme_bw() +
     ylab("") +
     xlab("Date") +
     scale_x_date(date_breaks = "5 year",  date_labels = "%Y")
@@ -206,7 +206,7 @@ Plot tranistion function
 ``` r
   ggplot(data = data_df) +
     geom_line(aes(x = x, y = fz)) +
-    theme_light() +
+    theme_bw() +
     ylab("") +
     xlab("Date") +
     scale_x_date(date_breaks = "5 year",  date_labels = "%Y")
@@ -214,7 +214,7 @@ Plot tranistion function
 
 <img src="man/figures/README-unnamed-chunk-16-1.png" style="display: block; margin: auto;" />
 
-Make all plots with package function
+Create and save all plots.
 
 ``` r
     nl_plots <- plot_nl_irfs(results_nl)
@@ -222,8 +222,8 @@ Make all plots with package function
 
 Show first impulse response of each regime:
 
--   The first plot shows the response of the first variable (GDP\_gap) to the shock in the first variable in regime 1.
--   The second plot shows the response of the first variable (GDP\_gap) to the shock in the first in regime 2.
+-   The first plot shows the response of the first variable (GDP\_gap) to a shock in the first variable (GDP\_gap) in regime 1.
+-   The second plot shows the response of the first variable (GDP\_gap) to a shock in the second variable (Inflation) in regime 2.
 
 ``` r
 # Load packages
@@ -231,7 +231,6 @@ Show first impulse response of each regime:
   library(gridExtra)
 
 # Save plots based on states
-  # State 1: High Inflation rates
   s1_plots <- sapply(nl_plots$gg_s1, ggplotGrob)
   s2_plots <- sapply(nl_plots$gg_s2, ggplotGrob)
 
@@ -241,12 +240,12 @@ Show first impulse response of each regime:
 <img src="man/figures/README-unnamed-chunk-18-1.png" style="display: block; margin: auto;" />
 
 ``` r
-  plot(s2_plots[[1]])
+  plot(s2_plots[[2]])
 ```
 
 <img src="man/figures/README-unnamed-chunk-18-2.png" style="display: block; margin: auto;" />
 
-Show all impulse responses of regime 1
+Show all impulse responses of regime 1.
 
 ``` r
   marrangeGrob(s1_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top =  NULL)
@@ -254,7 +253,7 @@ Show all impulse responses of regime 1
 
 <img src="man/figures/README-unnamed-chunk-19-1.png" style="display: block; margin: auto;" />
 
-Show all impulse responses of regime 2
+Show all impulse responses of regime 2.
 
 ``` r
   marrangeGrob(s2_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top = NULL)
@@ -276,7 +275,7 @@ References
 Acknowledgements
 ----------------
 
-I greatly benefitted from the profound *R* and *Rcpp* knowledge of [Philipp Wittenberg](https://github.com/wittenberg). I am also thankful to [Sarah Zubairy](https://sites.google.com/site/sarahzubairy/) for giving me the *Matlab* code before the publication their paper.
+I greatly benefitted from the profound *R* and *Rcpp* knowledge of [Philipp Wittenberg](https://github.com/wittenberg). I am also grateful to [Sarah Zubairy](https://sites.google.com/site/sarahzubairy/) for sending me the *Matlab* code before the publication their [paper](https://www.journals.uchicago.edu/doi/10.1086/696277).
 
 ### Author
 

@@ -1,9 +1,11 @@
-#'  Function to plot irfs, estimated with lp_lin function
-#'
-#' @param results_nl List with estimated results from lp_nl function
-#'
-#' @return A list with (gg-)plots of impulse responses for two regimes
+#' @name plot_nl_irfs
+#' @title Compute (non-linear) irf plots
+#' @description Compute (non-linear) irf plots irf plots estimated with \link{lp_nl}.
+#' @param results_nl A list with 3D arrays estimated in \link{lp_nl}.
+#' @return A list with plots for non-linear impulse responses
 #' @export
+#' @import ggplot2
+#' @author Philipp Adämmer
 plot_nl_irfs <- function(results_nl){
 
   irf_s1_mean <- results_nl[[1]]

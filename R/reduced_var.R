@@ -1,9 +1,9 @@
-#' Function to estimate structural shock matrix via Cholesky decomposition.
-#'
+#' @name reduced_var
+#' @title Estimate structural shock matrix via Cholesky decomposition.
 #' @param y_lin A data frame for the exogenous variables.
 #' @param x_lin A list with exogenous variables.
 #' @param data_set_df Data frame with all endogenous variables.
-#' @param specs A list with specifications that go into 'lin_lp' or 'nl_lp' function.
+#' @param specs A list with specifications from \link{lp_lin}.
 #' @return Shock matrix (d)
 #' @author Philipp Adämmer
 

@@ -1,6 +1,6 @@
-#' Function to create data for non-linear model.
-#'
-#' @param specs A list with specifications used as input for \link{lp_nl}.
+#' @name create_nl_data
+#' @title Function to create data for non-linear model.
+#' @param specs A \link{list}(). Inputs are outlined in \link(lp_nl).
 #' @param data_set_df A data frame with all endogenous variables
 #' @return A list with lagged data for non-linear model.
 #' @author Philipp Adämmer
@@ -58,24 +58,6 @@ create_nl_data <- function(specs, data_set_df){
                                   as.matrix()
     }
 
-    # switch(specs$trend,
-    #
-    #  # Only constant
-    #    x_nl            <-   x_nl %>%
-    #                             as.matrix(),
-    #
-    #  # Constant and trend
-    #    x_nl            <-   x_nl %>%
-    #                                dplyr::mutate(trend    = row_number()) %>%
-    #                                                                  as.matrix() ,
-    #
-    #  # Constant, trend and quadratice trend
-    #    x_nl            <-   x_nl %>%
-    #                                dplyr::mutate(trend    = row_number())  %>%
-    #                                dplyr::mutate(sq_trend = trend^2)       %>%
-    #                                                                   as.matrix()
-    #
-    # )
 
 ################################################################################
                               } else {
@@ -131,23 +113,6 @@ create_nl_data <- function(specs, data_set_df){
                                        dplyr::mutate(sq_trend = trend^2)        %>%
                                        as.matrix()
       }
-
-
-
-      # Include no trend, trend or quadratic trend
-      # switch(specs$trend,
-      #
-      #        x_nl[[i]]            <-   x_nl[[i]]                                 %>%
-      #                                                               as.matrix() ,
-      #
-      #        x_nl[[i]]            <-   x_nl[[i]]                                 %>%
-      #                                       dplyr::mutate(trend  = row_number()  %>%
-      #                                                                as.matrix()),
-      #
-      #        x_nl[[i]]            <-   x_nl[[i]]                                     %>%
-      #                                       dplyr::mutate(trend    = row_number())   %>%
-      #                                       dplyr::mutate(sq_trend = trend^2)        %>%
-      #                                                                as.matrix()  )
 
 
     }

@@ -1,14 +1,8 @@
-#' Function to create data for linear model.
-#'
-#' @param specs A list with specifications that go into 'lp_lin' or 'lp_nl' function.
-#'        specs$lags_criterion: Either NaN (given lag length) or 'AICc'|'AIC'|'BIC'|
-#'        specs$lags_lin:       Lag length
-#'        specs$trend:          1 (no trend), 2 (trend), 3 (quadratic trend)
-#'        specs$max_lags:       Maximum number of lags to determine lag length criteria
-#' @param data_set_df A data frame with all endogenous variables for VAR.
+#' @name create_lin_data
+#' @title Function to create data for linear model.
+#' @param specs A \link{list}(). Inputs are outlined in \link(lp_lin).
 #' @return List with filled matrices of lagged left (y_lin) and right hand side (x_lin) variables
 #' @author Philipp Adämmer
-
 
 create_lin_data     <- function(specs, data_set_df){
 
