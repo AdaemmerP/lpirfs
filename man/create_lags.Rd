@@ -12,7 +12,7 @@ create_lags(data, lags)
 \item{lags}{Integer for the number of lags.}
 }
 \value{
-lag_data: A data frame with lagged values from 'data'.
+A data frame with lagged values from 'data'.
 }
 \description{
 Creates a data frame with lagged exogenous variables.

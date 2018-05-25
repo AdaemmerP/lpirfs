@@ -7,13 +7,9 @@
 create_lin_data(specs, data_set_df)
 }
 \arguments{
-\item{specs}{A list with specifications that go into 'lp_lin' or 'lp_nl' function.
-specs$lags_criterion: Either NaN (given lag length) or 'AICc'|'AIC'|'BIC'|
-specs$lags_lin:       Lag length
-specs$trend:          1 (no trend), 2 (trend), 3 (quadratic trend)
-specs$max_lags:       Maximum number of lags to determine lag length criteria}
+\item{specs}{A \link{list}(). Inputs are outlined in \link{lp_lin}.}
 
-\item{data_set_df}{A data frame with all endogenous variables for VAR.}
+\item{data_set_df}{A \link{data.frame} with all endogenous variables.}
 }
 \value{
 List with filled matrices of lagged left (y_lin) and right hand side (x_lin) variables

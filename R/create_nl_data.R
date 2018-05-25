@@ -1,6 +1,7 @@
 #' @name create_nl_data
 #' @title Function to create data for non-linear model.
-#' @param specs A \link{list}(). Inputs are outlined in \link(lp_nl).
+#' @description Function to create data for non-linear model.
+#' @param specs A \link{list}(). Inputs are outlined in \link{lp_nl}.
 #' @param data_set_df A data frame with all endogenous variables
 #' @return A list with lagged data for non-linear model.
 #' @author Philipp Adämmer

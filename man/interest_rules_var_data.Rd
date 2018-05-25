@@ -5,7 +5,7 @@
 \alias{interest_rules_var_data}
 \title{Data to estimate the effects of interest rate rules for monetary policy, applied in the AER article by Jordà (2005).
 <doi:10.1257/0002828053828518>}
-\format{A data frame with 193 observations (rows) and 3 variables:
+\format{A data frame with 193 quarterly observations (rows) and 3 variables:
 \describe{
   \item{GDP_gap}{Percentage difference between real GDP and potential GDP (Congressional Budget Office.}
   \item{Infl}{Inflation: Percentage change in the GDP, chain weighted price index at annual rate.}

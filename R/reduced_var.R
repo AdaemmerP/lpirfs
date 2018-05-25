@@ -1,5 +1,6 @@
 #' @name reduced_var
 #' @title Estimate structural shock matrix via Cholesky decomposition.
+#' @description Estimate structural shock matrix via Cholesky decomposition.
 #' @param y_lin A data frame for the exogenous variables.
 #' @param x_lin A list with exogenous variables.
 #' @param data_set_df Data frame with all endogenous variables.
@@ -67,7 +68,7 @@ reduced_var  <- function(y_lin, x_lin, data_set_df, specs){
   resid_all     <- matrix(unlist(resids_all), ncol = specs$endog, byrow = F )
 
   # Make covariance matrix
-  cov_var       <- cov(resid_all)
+  cov_var       <- stats::cov(resid_all)
 
   # Cholesky decomposition
   A             <- t(chol(cov_var))

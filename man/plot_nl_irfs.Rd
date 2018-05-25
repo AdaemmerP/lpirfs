@@ -2,16 +2,19 @@
 % Please edit documentation in R/plot_nl_irfs.R
 \name{plot_nl_irfs}
 \alias{plot_nl_irfs}
-\title{Function to plot irfs, estimated with lp_lin function}
+\title{Compute (non-linear) irf plots}
 \usage{
 plot_nl_irfs(results_nl)
 }
 \arguments{
-\item{results_nl}{List with estimated results from lp_nl function}
+\item{results_nl}{A list with 3D arrays estimated in \link{lp_nl}.}
 }
 \value{
-A list with (gg-)plots of impulse responses for two regimes
+A list with plots for non-linear impulse responses
 }
 \description{
-Function to plot irfs, estimated with lp_lin function
+Compute (non-linear) irf plots irf plots estimated with \link{lp_nl}.
+}
+\author{
+Philipp Adämmer
 }

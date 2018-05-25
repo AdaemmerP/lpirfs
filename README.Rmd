@@ -87,7 +87,7 @@ Display single impulse responses:
 
 - The first plot shows the response of the first variable (GDP_gap) to a shock in the first variable in (GDP_gap). 
 - The second plot shows the response of the first variable (GDP_gap) to a shock in the second variable (Inflation). 
-```{r, fig.height = 3, fig.width = 4, fig.align = "center", message = FALSE }
+```{r, fig.height = 2.5, fig.width = 3.5, fig.align = "center", message = FALSE }
   linear_plots[[1]]
   linear_plots[[2]]
 ```
@@ -153,16 +153,19 @@ Provide a switching variable to separate the data into two regimes.
 
 The switching variable ($z$) is either decomposed by the Hodrick-Prescott filter (*specs$hp_filter = 1*) or directly plugged into the follwing switching function.
 
-    $F_{z_t}=\frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)}$
 
-- Data for regime 1 are calculated as: $X_{t-p}*(1-F(z_{t-1}))$
-- Data for regime 2 are calculated as: $X_{t-p}*F(z_{t-1})$
+ -  $F({z_t}) \ = \  exp(-\gamma \ z_t)/(1 + exp(-\gamma \ z_t))$
+   
+The lagged exogenous variables ($X_{t-p}$) are then multiplied with the values of the transition function at *t − 1* where 
+
+- Regime 1: $X_{t-p}*(1-F(z_{t-1}))$,
+- Regime 2: $X_{t-p}*F(z_{t-1})$.
 
 
-IMPORTANT: To avoid contemporaneous feedback, the index of $z$ is set to *t − 1* (see 
-[Auerbach and Gorodnichenko; 2012)](https://www.aeaweb.org/articles?id=10.1257/pol.4.2.1) for details) 
+IMPORTANT:The index of $z$ is set to *t − 1* to avoid contemporaneous feedback (see 
+[Auerbach and Gorodnichenko; 2012](https://www.aeaweb.org/articles?id=10.1257/pol.4.2.1) for details). 
 The lag is created  automatically in *create_nl_data* of the package. 
-If you do not want the switching function to be lagged, please provide the switching variable with a lead of one.
+If you do not want that the exogenous variables are multiplied with lagged values of $F({z_t})$, you have to provide the switching variable with a lead of one.
 
 
 Estimate non-linear impulse responses. 
@@ -209,7 +212,7 @@ Show first impulse response of each regime:
 
 - The first plot shows the response of the first variable (GDP_gap) to a shock in the first variable (GDP_gap) in regime 1. 
 - The second plot shows the response of the first variable (GDP_gap) to a shock in the second variable (Inflation) in regime 2. 
-```{r, fig.height = 3, fig.width = 4, fig.align = "center", message = FALSE }
+```{r, fig.height = 2.5, fig.width = 3.5, fig.align = "center", message = FALSE }
 # Load packages
   library(ggpubr)
   library(gridExtra)

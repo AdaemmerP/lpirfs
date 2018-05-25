@@ -164,12 +164,14 @@ Provide a switching variable to separate the data into two regimes.
 
 The switching variable (*z*) is either decomposed by the Hodrick-Prescott filter (*specs$hp\_filter = 1*) or directly plugged into the follwing switching function.
 
-    $F_{z_t}=\frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)}$
+-   *F*(*z*<sub>*t*</sub>)  =  *e**x**p*(−*γ* *z*<sub>*t*</sub>)/(1 + *e**x**p*(−*γ* *z*<sub>*t*</sub>))
 
--   Data for regime 1 are calculated as: *X*<sub>*t* − *p*</sub> \* (1 − *F*(*z*<sub>*t* − 1</sub>))
--   Data for regime 2 are calculated as: *X*<sub>*t* − *p*</sub> \* *F*(*z*<sub>*t* − 1</sub>)
+The lagged exogenous variables (*X*<sub>*t* − *p*</sub>) are then multiplied with the values of the transition function at *t − 1* where
 
-IMPORTANT: To avoid contemporaneous feedback, the index of *z* is set to *t − 1* (see [Auerbach and Gorodnichenko; 2012)](https://www.aeaweb.org/articles?id=10.1257/pol.4.2.1) for details) The lag is created automatically in *create\_nl\_data* of the package. If you do not want the switching function to be lagged, please provide the switching variable with a lead of one.
+-   Regime 1: *X*<sub>*t* − *p*</sub> \* (1 − *F*(*z*<sub>*t* − 1</sub>)),
+-   Regime 2: *X*<sub>*t* − *p*</sub> \* *F*(*z*<sub>*t* − 1</sub>).
+
+IMPORTANT:The index of *z* is set to *t − 1* to avoid contemporaneous feedback (see [Auerbach and Gorodnichenko; 2012](https://www.aeaweb.org/articles?id=10.1257/pol.4.2.1) for details). The lag is created automatically in *create\_nl\_data* of the package. If you do not want that the exogenous variables are multiplied with lagged values of *F*(*z*<sub>*t*</sub>), you have to provide the switching variable with a lead of one.
 
 Estimate non-linear impulse responses.
 

@@ -2,24 +2,21 @@
 % Please edit documentation in R/switching_series.R
 \name{switching_series}
 \alias{switching_series}
-\title{Function to estimate transition values. It uses a smooth transition function as
-proposed by Auerbach & Gorodnichenko (2012)  <doi:10.1257/pol.4.2.1>.
-The standardized time series is either pre-defined or will be estimated via
-the Hodrick-Prescott as proposed by Ramey & Zubairy (2018) <doi:10.1086/696277>}
+\title{Function to estimate transition values.}
 \usage{
 switching_series(switching_data, specs)
 }
 \arguments{
 \item{switching_data}{A vector with data to construct the smooth transition variable.}
 
-\item{specs}{A list with specifications as in \link{lp_nl}.}
+\item{specs}{A list with specifications for \link{lp_nl}.}
 }
 \value{
 fz: Vector with values from smooth transition function.
 }
 \description{
 Function to estimate transition values. It uses a smooth transition function as
-proposed by Auerbach & Gorodnichenko (2012)  <doi:10.1257/pol.4.2.1>.
+used by Auerbach & Gorodnichenko (2012)  <doi:10.1257/pol.4.2.1>.
 The standardized time series is either pre-defined or will be estimated via
 the Hodrick-Prescott as proposed by Ramey & Zubairy (2018) <doi:10.1086/696277>
 }

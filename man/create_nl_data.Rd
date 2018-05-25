@@ -7,7 +7,7 @@
 create_nl_data(specs, data_set_df)
 }
 \arguments{
-\item{specs}{A list with specifications used as input for \link{lp_nl}.}
+\item{specs}{A \link{list}(). Inputs are outlined in \link{lp_nl}.}
 
 \item{data_set_df}{A data frame with all endogenous variables}
 }

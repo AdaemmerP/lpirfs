@@ -2,7 +2,7 @@
 % Please edit documentation in R/lm_function.R
 \name{lm_function}
 \alias{lm_function}
-\title{lm function which returns OLS parameter estimates}
+\title{Estimate residuals from OLS model.}
 \usage{
 lm_function(y_data, x_data)
 }
@@ -15,5 +15,8 @@ lm_function(y_data, x_data)
 Vector with residuals from OLS regression.
 }
 \description{
-lm function which returns OLS parameter estimates
+Estimate residuals from OLS model.
+}
+\author{
+Philipp Adämmer
 }

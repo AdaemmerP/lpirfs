@@ -260,7 +260,7 @@ lp_nl <- function(data_set_df, specs){
 
   # Make cluster
   numb_cores     <- min(specs$endog, parallel::detectCores() - 1)
-  cl             <- makeCluster(numb_cores)
+  cl             <- parallel::makeCluster(numb_cores)
   doSNOW::registerDoSNOW(cl)
 
  # Determine whether manual lag lengths are given or have to be determined
@@ -427,7 +427,7 @@ lp_nl <- function(data_set_df, specs){
  }
 
 # Close cluster
-  stopCluster(cl)
+  parallel::stopCluster(cl)
 
   list(irf_s1_mean = irf_s1_mean, irf_s1_low = irf_s1_low, irf_s1_up = irf_s1_up,
        irf_s2_mean = irf_s2_mean, irf_s2_low = irf_s2_low, irf_s2_up = irf_s2_up,

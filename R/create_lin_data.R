@@ -1,6 +1,8 @@
 #' @name create_lin_data
 #' @title Function to create data for linear model.
-#' @param specs A \link{list}(). Inputs are outlined in \link(lp_lin).
+#' @description Function to create data for linear model.
+#' @param specs A \link{list}(). Inputs are outlined in \link{lp_lin}.
+#' @param data_set_df A \link{data.frame} with all endogenous variables.
 #' @return List with filled matrices of lagged left (y_lin) and right hand side (x_lin) variables
 #' @author Philipp Adämmer
 

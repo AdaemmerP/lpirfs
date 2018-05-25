@@ -7,10 +7,10 @@
 plot_lin_irfs(results_lin)
 }
 \arguments{
-\item{results_lin}{A list with KXK plots constructed with ggplot2}
+\item{results_lin}{A list with 3D arrays estimated in \link{lp_lin}.}
 }
 \value{
-gg_lin List with plots for linear impulse responses
+A list with plots for linear impulse responses
 }
 \description{
 Compute (linear) irf plots estimated with \link{lp_lin}.
@@ -59,4 +59,7 @@ Compute (linear) irf plots estimated with \link{lp_lin}.
  }
 
 
+}
+\author{
+Philipp Adämmer
 }

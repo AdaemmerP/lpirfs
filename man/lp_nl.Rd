@@ -10,31 +10,7 @@ lp_nl(data_set_df, specs)
 \item{data_set_df}{A \link{data.frame}() containing all endogenous variables for the VAR. The column order
 is also used for the Cholesky decomposition.}
 
-\item{specs}{A \link{list}() with the following inputs:
-
-\itemize{
-\item{\strong{lags_criterion} NaN or character. NaN means that the number of lags
-        will be given at \emph{lags_nl}. The character denotes the lag length criterion ('AICc', 'AIC' or 'BIC').}
-\item{\strong{lags_nl} Integer. Number of lags for (non-linear) VAR (if \emph{lags_criterion} = NaN).}
-\item{\strong{max_lags} Integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC').}
-\item{\strong{trend} Integer. Include no trend =  0 , include trend = 1, include trend and quadratic trend = 2.}
-\item{\strong{shock_type} Integer. Standard deviation shock = 0, Unit shock = 1.}
-\item{\strong{confint} Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.}
-\item{\strong{hor} Integer. Number of horizons for impulse responses. }
-\item{\strong{switching} Vector. A column vector with the same length as \emph{data_set_df}. This series (\eqn{z_t}) can either
-              be first decomposed by the Hodrick-Prescott filter as proposed by Ramey and Zubairy (2018) or
-              directly plugged into the smooth transition function:
-              \deqn{ F_{z_t}) = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)} }
-              Warning: \eqn{F_{z_t}} will be lagged in \link{create_nl_data} by one and then multiplied with the data.
-              If the variable shall not be lagged, the vector has to be given with a lead of one.
-              The exogonous data for the transition states are prepared as follows: \cr
-              State 1 = (1-\eqn{F(z_t)})*X, state 2 = \eqn{F(z_t)}*X \cr
-              Please read Auerbach and Gorodnichenko (2012) for further details on the transition function.
-                }
-\item{\strong{hp_filter} Integer. No HP-filter = 0. Use HP-filter = 1. }
-\item{\strong{lambda} Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter if \emph{hp_filter} = 1. }
-\item{\strong{gamma} Double. Value of \eqn{\gamma} which is used in the transition function in \link{switching_series}. }
-}}
+\item{specs}{A \link{list}() with the following inputs:}
 }
 \value{
 A list with impulse responses and their robust confidence bands.
@@ -150,4 +126,30 @@ Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–
 
 Ramey, V.A., and Zubairy, S. (2018). "Government Spending Multipliers in Good Times and in Bad:
 Evidence from US Historical Data." \emph{Journal of Political Economy}, 126 (2), 850-901.
+}
+\author{
+Philipp Adämmer
+\itemize{
+\item{\strong{lags_criterion} NaN or character. NaN means that the number of lags
+        will be given at \emph{lags_nl}. The character denotes the lag length criterion ('AICc', 'AIC' or 'BIC').}
+\item{\strong{lags_nl} Integer. Number of lags for (non-linear) VAR (if \emph{lags_criterion} = NaN).}
+\item{\strong{max_lags} Integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC').}
+\item{\strong{trend} Integer. Include no trend =  0 , include trend = 1, include trend and quadratic trend = 2.}
+\item{\strong{shock_type} Integer. Standard deviation shock = 0, Unit shock = 1.}
+\item{\strong{confint} Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.}
+\item{\strong{hor} Integer. Number of horizons for impulse responses. }
+\item{\strong{switching} Vector. A column vector with the same length as \emph{data_set_df}. This series (\eqn{z_t}) can either
+              be first decomposed by the Hodrick-Prescott filter as proposed by Ramey and Zubairy (2018) or
+              directly plugged into the smooth transition function:
+              \deqn{ F_{z_t}) = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)} }
+              Warning: \eqn{F_{z_t}} will be lagged in \link{create_nl_data} by one and then multiplied with the data.
+              If the variable shall not be lagged, the vector has to be given with a lead of one.
+              The exogonous data for the transition states are prepared as follows: \cr
+              State 1 = (1-\eqn{F(z_t)})*X, state 2 = \eqn{F(z_t)}*X \cr
+              Please read Auerbach and Gorodnichenko (2012) for further details on the transition function.
+                }
+\item{\strong{hp_filter} Integer. No HP-filter = 0. Use HP-filter = 1. }
+\item{\strong{lambda} Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter if \emph{hp_filter} = 1. }
+\item{\strong{gamma} Double. Value of \eqn{\gamma} which is used in the transition function in \link{switching_series}. }
+}
 }

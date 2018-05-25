@@ -10,18 +10,7 @@ lp_lin(data_set_df, specs)
 \item{data_set_df}{A \link{data.frame}() containing all endogenous variables for the VAR. The column order
 is used for the Cholesky decomposition.}
 
-\item{specs}{A \link{list}() with the following inputs:
-
-\itemize{
-\item{\strong{lags_criterion} NaN or character. NaN means that the number of lags
-        has to be given at \emph{lags_lin}. The character refers to the corresponding lag length criterion ('AICc', 'AIC' or 'BIC').}
-\item{\strong{lags_lin} Integer. Number of lags for (linear) VAR (if \emph{lags_criterion} = NaN).}
-\item{\strong{max_lags} Integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC').}
-\item{\strong{trend} Integer. No trend =  0 , Include trend = 1, Include trend and quadratic trend = 2.}
-\item{\strong{shock_type} Integer. Standard deviation shock = 0, Unit shock = 1.}
-\item{\strong{confint} Double. Width of confidence bands. 68\% = 1, 90\% = 1.65, 95\% = 1.96.}
-\item{\strong{hor} Integer. Number of horizons for impulse responses. }
-}}
+\item{specs}{A \link{list}() with the following inputs:}
 }
 \value{
 A list with impulse responses and their robust confidence bands.
@@ -97,4 +86,17 @@ Jordà, O. (2005) "Estimation and Inference of Impulse Responses by Local Projec
 
 Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
 Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–708.
+}
+\author{
+Philipp Adämmer
+\itemize{
+\item{\strong{lags_criterion} NaN or character. NaN means that the number of lags
+        has to be given at \emph{lags_lin}. The character refers to the corresponding lag length criterion ('AICc', 'AIC' or 'BIC').}
+\item{\strong{lags_lin} Integer. Number of lags for (linear) VAR (if \emph{lags_criterion} = NaN).}
+\item{\strong{max_lags} Integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC').}
+\item{\strong{trend} Integer. No trend =  0 , Include trend = 1, Include trend and quadratic trend = 2.}
+\item{\strong{shock_type} Integer. Standard deviation shock = 0, Unit shock = 1.}
+\item{\strong{confint} Double. Width of confidence bands. 68\% = 1, 90\% = 1.65, 95\% = 1.96.}
+\item{\strong{hor} Integer. Number of horizons for impulse responses. }
+}
 }
