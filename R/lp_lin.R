@@ -132,6 +132,12 @@ lp_lin <- function(data_set_df, specs){
     stop('You have to at least provide a lag criterion (AICc, AIC or BIC) or a fixed number of lags.')
   }
 
+  # Check whether maximum number of lags is given for lag length criterion
+  if((is.character(specs$lags_criterion)  == TRUE) &
+     (is.na(specs$max_lags)               == TRUE)){
+    stop('Please provide a maximum number of lags for the lag length criterion.')
+  }
+
 
   # Safe data frame specifications in 'specs for functions
    specs$starts         <- 1                        # Sample Start

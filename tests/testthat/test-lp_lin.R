@@ -56,3 +56,10 @@ test_that("Check whether lag criterion AND fixed number of lags is given", {
                'You can not provide a lag criterion (AICc, AIC or BIC) and a fixed number of lags.', fixed = TRUE)
 } )
 
+
+test_that("Check whether lag criterion AND maximum number of lags is given", {
+  specs$max_lags <- NaN
+  expect_error(lp_lin(data_set_df, specs),
+               'Please provide a maximum number of lags for the lag length criterion.', fixed = TRUE)
+} )
+

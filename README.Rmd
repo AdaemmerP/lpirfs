@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-
+s
 # lpirfs
 An R-package which estimates linear and non-linear impulse responses
 with local projections by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518).
@@ -87,7 +87,7 @@ Display single impulse responses:
 
 - The first plot shows the response of the first variable (GDP_gap) to a shock in the first variable in (GDP_gap). 
 - The second plot shows the response of the first variable (GDP_gap) to a shock in the second variable (Inflation). 
-```{r, fig.height = 2.5, fig.width = 3.5, fig.align = "center", message = FALSE }
+```{r, fig.height = 2.5, fig.width = 3, fig.align = "center", message = FALSE }
   linear_plots[[1]]
   linear_plots[[2]]
 ```
@@ -212,7 +212,7 @@ Show first impulse response of each regime:
 
 - The first plot shows the response of the first variable (GDP_gap) to a shock in the first variable (GDP_gap) in regime 1. 
 - The second plot shows the response of the first variable (GDP_gap) to a shock in the second variable (Inflation) in regime 2. 
-```{r, fig.height = 2.5, fig.width = 3.5, fig.align = "center", message = FALSE }
+```{r, fig.height = 2.5, fig.width = 3, fig.align = "center", message = FALSE }
 # Load packages
   library(ggpubr)
   library(gridExtra)

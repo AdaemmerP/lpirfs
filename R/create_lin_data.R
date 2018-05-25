@@ -26,13 +26,13 @@ create_lin_data     <- function(specs, data_set_df){
              } else if (specs$trend == 1){
 
       x_lin            <-   x_lin                                        %>%
-                             dplyr::mutate(trend    = row_number())      %>%
+                             dplyr::mutate(trend = row_number())      %>%
                                                                    as.matrix()
 
              } else {
 
        x_lin            <-   x_lin               %>%
-                                dplyr::mutate(trend    = row_number())  %>%
+                                dplyr::mutate(trend = row_number())  %>%
                                 dplyr::mutate(sq_trend = trend^2)       %>%
                                                                         as.matrix()
 }

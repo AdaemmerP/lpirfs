@@ -18,7 +18,7 @@ create_nl_data <- function(specs, data_set_df){
 
    # Select data for endogenous variables
     y_nl         <- data_set_df[(specs$lags_nl + 1):dim(data_set_df)[1],] %>%
-                    as.matrix()
+                                                                      as.matrix()
 
    # Make exogenous lagged data
     x_nl         <- create_lags(data_set_df, specs$lags_nl)
@@ -28,11 +28,11 @@ create_nl_data <- function(specs, data_set_df){
 
    # Create tibbles with exogenous regime data and combine them to one data set
     x_nl_s1      <- x_nl %>%
-                      dplyr::mutate_all(funs(s1      = .*(1 - fz)))  %>%
+                      dplyr::mutate_all(funs(s1 = .*(1 - fz)))  %>%
                       dplyr::select(-one_of(linear_names))
 
     x_nl_s2      <- x_nl %>%
-                      dplyr::mutate_all(funs(s2      = .*fz))  %>%
+                      dplyr::mutate_all(funs(s2 = .*fz))  %>%
                       dplyr::select(-one_of(linear_names))
 
     x_nl         <- cbind(x_nl_s1, x_nl_s2)
@@ -49,12 +49,12 @@ create_nl_data <- function(specs, data_set_df){
 
         # Constant and trend
          x_nl            <-   x_nl %>%
-                                 dplyr::mutate(trend    = row_number()) %>%
+                                 dplyr::mutate(trend = row_number()) %>%
                                  as.matrix()
 
               }  else {
       x_nl               <-   x_nl %>%
-                                  dplyr::mutate(trend    = row_number())  %>%
+                                  dplyr::mutate(trend = row_number())  %>%
                                   dplyr::mutate(sq_trend = trend^2)       %>%
                                   as.matrix()
     }
@@ -83,11 +83,11 @@ create_nl_data <- function(specs, data_set_df){
       linear_names   <- names(x_nl_temp)
 
       x_nl_s1        <- x_nl_temp %>%
-                           dplyr::mutate_all(funs(s1      = .*(1 - fz))) %>%
+                           dplyr::mutate_all(funs(s1 = .*(1 - fz))) %>%
                            dplyr::select(-one_of(linear_names))
 
       x_nl_s2        <- x_nl_temp %>%
-                           dplyr::mutate_all(funs(s2      = .*fz))        %>%
+                           dplyr::mutate_all(funs(s2 = .*fz))        %>%
                            dplyr::select(-one_of(linear_names))
 
       x_nl[[i]]      <- cbind(x_nl_s1, x_nl_s2)
@@ -105,14 +105,14 @@ create_nl_data <- function(specs, data_set_df){
                } else if (specs$trend == 1){
         # Constant and trend
          x_nl[[i]]            <-   x_nl[[i]]                                 %>%
-                                       dplyr::mutate(trend  = row_number()   %>%
+                                       dplyr::mutate(trend = row_number()    %>%
                                        as.matrix())
 
                  }  else {
         x_nl[[i]]            <-   x_nl[[i]]                                     %>%
-                                       dplyr::mutate(trend    = row_number())   %>%
+                                       dplyr::mutate(trend = row_number())      %>%
                                        dplyr::mutate(sq_trend = trend^2)        %>%
-                                       as.matrix()
+                                                                as.matrix()
       }
 
 
