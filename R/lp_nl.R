@@ -219,14 +219,14 @@ lp_nl <- function(data_set_df, specs){
 
   # Construct data for non-linear model
   data_nl <- create_nl_data(specs, data_set_df)
-  y_nl <- data_nl[[1]]
-  x_nl <- data_nl[[2]]
-  fz   <- data_nl[[3]]
+  y_nl    <- data_nl[[1]]
+  x_nl    <- data_nl[[2]]
+  fz      <- data_nl[[3]]
 
   # Construct data for linear model for reduced shocks
-  data_lin               <- create_lin_data(specs, data_set_df)
-  y_lin                  <- data_lin[[1]]
-  x_lin                  <- data_lin[[2]]
+  data_lin   <- create_lin_data(specs, data_set_df)
+  y_lin      <- data_lin[[1]]
+  x_lin      <- data_lin[[2]]
 
   # Construct shock matrix
   d <- reduced_var(y_lin, x_lin, data_set_df, specs)

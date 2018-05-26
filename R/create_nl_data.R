@@ -23,6 +23,16 @@ create_nl_data <- function(specs, data_set_df){
    # Make exogenous lagged data
     x_nl         <- create_lags(data_set_df, specs$lags_nl)
 
+
+    # Add exogenous data if provided
+    # if (!is.null(specs$exogen)){
+    #
+    #   x_nl$exogen       <- specs$exogen %>%
+    #                                as.matrix()
+    #
+    # }
+
+
    # Save names of exogenous variables
     linear_names <- names(x_nl)
 
@@ -53,7 +63,7 @@ create_nl_data <- function(specs, data_set_df){
                                  as.matrix()
 
               }  else {
-      x_nl               <-   x_nl %>%
+        x_nl             <-   x_nl %>%
                                   dplyr::mutate(trend = row_number())  %>%
                                   dplyr::mutate(sq_trend = trend^2)       %>%
                                   as.matrix()

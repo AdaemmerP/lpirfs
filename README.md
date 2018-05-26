@@ -279,6 +279,11 @@ Acknowledgements
 
 I greatly benefitted from the profound *R* and *Rcpp* knowledge of [Philipp Wittenberg](https://github.com/wittenberg). I am also grateful to [Sarah Zubairy](https://sites.google.com/site/sarahzubairy/) for sending me the *Matlab* code before the publication their [paper](https://www.journals.uchicago.edu/doi/10.1086/696277).
 
+Development
+-----------
+
+I am currently working on a function to include exogenous variables to give a matrix as input for the shock identification.
+
 ### Author
 
 Philipp Adämmer
