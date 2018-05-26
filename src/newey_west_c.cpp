@@ -21,7 +21,7 @@ List newey_west_c(NumericVector y, NumericMatrix x, int h){
   List ret(2);
 
   xx       = as<arma::mat>(x);
-  xx_one   = arma::ones<arma::mat>(xx.n_rows, 1);
+  xx_one   = arma::ones<arma::mat>(xx.n_rows, 1); // Insert ones for constant
   xx.insert_cols(0, xx_one);
 
   yy       = as<arma::vec>(y);
