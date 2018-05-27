@@ -169,6 +169,7 @@ The switching variable (*z*) is either decomposed by the Hodrick-Prescott filter
 
 The lagged exogenous variables (*X*<sub>*t* − *p*</sub>) are then multiplied with the values of the transition function at *t − 1* where
 
+-   $(t,s,d) = \_{1, }^s $
 -   Regime 1: *X*<sub>*t* − *p*</sub> \* (1 − *F*(*z*<sub>*t* − 1</sub>)),
 -   Regime 2: *X*<sub>*t* − *p*</sub> \* *F*(*z*<sub>*t* − 1</sub>).
 

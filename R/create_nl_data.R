@@ -13,7 +13,7 @@ create_nl_data <- function(specs, data_set_df){
   if (is.nan(specs$lags_criterion) == TRUE) {
 
    # Load switching variable
-    fz  <- switching_series(specs)
+    fz  <- switching_series(specs$switching, specs)
     fz  <- fz[specs$lags_nl:(length(fz) - 1)]  # Make lagged data so that (F_{z_(t-1)})
 
    # Select data for endogenous variables

@@ -156,9 +156,11 @@ The switching variable ($z$) is either decomposed by the Hodrick-Prescott filter
 
 
  -  $F({z_t}) \ = \  exp(-\gamma \ z_t)/(1 + exp(-\gamma \ z_t))$
-   
+ 
+
 The lagged exogenous variables ($X_{t-p}$) are then multiplied with the values of the transition function at *t − 1* where 
 
+-  $\hat{IR}(t,s,d) = \hat{B}_{1, }^s   $
 - Regime 1: $X_{t-p}*(1-F(z_{t-1}))$,
 - Regime 2: $X_{t-p}*F(z_{t-1})$.
 

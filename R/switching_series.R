@@ -5,14 +5,15 @@
 #' The standardized time series is either pre-defined or will be estimated via
 #' the Hodrick-Prescott as used in Ramey & Zubairy (2018) <doi:10.1086/696277>
 #' @param specs A list with specifications for \link{lp_nl}.
+#' @param specs A vector.
 #' @return fz: Vector with values from smooth transition function.
 #' @author Philipp Adämmer
 
 
 
-switching_series <- function(specs){
+switching_series <- function(switching_data, specs){
 
-  switching_data <- specs$switching
+ # switching_data <- specs$switching
 
  # Decide whether to use HP filter.
   if(specs$hp_filter == 1){

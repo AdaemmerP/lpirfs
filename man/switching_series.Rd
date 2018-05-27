@@ -4,10 +4,12 @@
 \alias{switching_series}
 \title{Function to estimate transition values.}
 \usage{
-switching_series(specs)
+switching_series(switching_data, specs)
 }
 \arguments{
 \item{specs}{A list with specifications for \link{lp_nl}.}
+
+\item{specs}{A vector.}
 }
 \value{
 fz: Vector with values from smooth transition function.
@@ -16,7 +18,7 @@ fz: Vector with values from smooth transition function.
 Function to estimate transition values. It uses a smooth transition function as
 used by Auerbach & Gorodnichenko (2012)  <doi:10.1257/pol.4.2.1>.
 The standardized time series is either pre-defined or will be estimated via
-the Hodrick-Prescott as proposed by Ramey & Zubairy (2018) <doi:10.1086/696277>
+the Hodrick-Prescott as used in Ramey & Zubairy (2018) <doi:10.1086/696277>
 }
 \author{
 Philipp Adämmer
