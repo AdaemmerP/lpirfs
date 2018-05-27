@@ -171,7 +171,7 @@ lp_lin <- function(data_set_df, specs){
  # Make cluster
   numb_cores     <- min(specs$endog, parallel::detectCores() - 1)
   cl             <- parallel::makeCluster(numb_cores)
-  doSNOW::registerDoSNOW(cl)
+  doParallel::registerDoParallel(cl)
 
  # Decide whether lag lengths are given or have to be estimated
   if(is.nan(specs$lags_criterion) == TRUE){

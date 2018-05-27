@@ -10,6 +10,7 @@
 #' \itemize{
 #' \item{\strong{lags_criterion} NaN or character. NaN means that the number of lags
 #'         will be given at \emph{lags_nl}. The character denotes the lag length criterion ('AICc', 'AIC' or 'BIC').}
+#'  \item{\strong{lags_lin} Integer. Number of lags for linear VAR to identify shock.}
 #' \item{\strong{lags_nl} Integer. Number of lags for (non-linear) VAR (if \emph{lags_criterion} = NaN).}
 #' \item{\strong{max_lags} Integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC').}
 #' \item{\strong{trend} Integer. Include no trend =  0 , include trend = 1, include trend and quadratic trend = 2.}
@@ -98,6 +99,7 @@
 #'   specs <- list()
 #'
 #'# Fill list
+#'   specs$lags_lin       <- NaN
 #'   specs$lags_nl        <- NaN
 #'   specs$lags_criterion <- 'AIC'
 #'   specs$max_lags       <- 2
@@ -210,12 +212,17 @@ lp_nl <- function(data_set_df, specs){
   }
 
 
+  # Check whether lin lags is given if nl_lags is given
+  if((is.numeric(specs$lags_nl) == TRUE) &
+     ( is.null(specs$lags_lin) == TRUE)){
+    stop('Please provide a lag length for the linear model to identify the shock.')
+  }
+
   # Safe data frame specifications in 'specs for functions
   specs$starts         <- 1                        # Sample Start
   specs$ends           <- dim(data_set_df)[1]      # Sample end
   specs$columns        <- names(data_set_df)       # Name endogenous variables
   specs$endog          <- ncol(data_set_df)        # Set the number of endogenous variables
-  specs$lags_lin       <- specs$lags_nl            # Number of lags for shock matrix
 
   # Construct data for non-linear model
   data_nl <- create_nl_data(specs, data_set_df)
@@ -263,10 +270,11 @@ lp_nl <- function(data_set_df, specs){
   end_nl_s1     <- specs$endog + 1
   samp_nl_s1    <- start_nl_s1:end_nl_s1
 
+
   # Make cluster
   numb_cores     <- min(specs$endog, parallel::detectCores() - 1)
   cl             <- parallel::makeCluster(numb_cores)
-  doSNOW::registerDoSNOW(cl)
+  doParallel::registerDoParallel(cl)
 
  # Determine whether manual lag lengths are given or have to be determined
   if(is.nan(specs$lags_criterion) == TRUE) {
@@ -348,11 +356,6 @@ lp_nl <- function(data_set_df, specs){
                            'AICc'= 1,
                            'AIC' = 2,
                            'BIC' = 3)
-
- # Set starting values for parameters of regime 1
-  start_nl_s1      <- 2
-  end_nl_s1        <- specs$endog + 1
-  samp_nl_s1       <- start_nl_s1:end_nl_s1
 
  # --- Loops to estimate local projections.
   nl_irfs <- foreach(s         = 1:specs$endog,

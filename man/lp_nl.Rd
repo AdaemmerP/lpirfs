@@ -68,6 +68,7 @@ data are separated into two states with a smooth transition function as in Auerb
   specs <- list()
 
 # Fill list
+  specs$lags_lin       <- NaN
   specs$lags_nl        <- NaN
   specs$lags_criterion <- 'AIC'
   specs$max_lags       <- 2
@@ -132,6 +133,7 @@ Philipp Adämmer
 \itemize{
 \item{\strong{lags_criterion} NaN or character. NaN means that the number of lags
         will be given at \emph{lags_nl}. The character denotes the lag length criterion ('AICc', 'AIC' or 'BIC').}
+ \item{\strong{lags_lin} Integer. Number of lags for linear VAR to identify shock.}
 \item{\strong{lags_nl} Integer. Number of lags for (non-linear) VAR (if \emph{lags_criterion} = NaN).}
 \item{\strong{max_lags} Integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC').}
 \item{\strong{trend} Integer. Include no trend =  0 , include trend = 1, include trend and quadratic trend = 2.}

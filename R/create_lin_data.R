@@ -18,11 +18,11 @@ create_lin_data     <- function(specs, data_set_df){
     # Make exogenous lagged data
     x_lin <- create_lags(data_set_df, specs$lags_lin)
 
-    # # Add exogenous data if provided
+    # Add exogenous data if provided
     # if (!is.null(specs$exogen)){
     #
-    #   x_lin$exogen       <- specs$exogen %>%
-    #                                as.matrix()
+    #   x_lin_exogen       <- create_lags(specs$exogen, specs$lags_lin)
+    #   x_lin              <- cbind(x_lin, x_lin_exogen)
     #
     # }
 

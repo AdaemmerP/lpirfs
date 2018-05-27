@@ -132,6 +132,7 @@ Make list and specify input variables to estimate non-linear impulse responses.
   specs <- list()
 
 # Specify inputs
+  specs$lags_lin       <- 4L      # Number of lags for linear VAR to identify the shock
   specs$lags_nl        <- 3L      # Number of lags
   specs$lags_criterion <- NaN     # Lag length criterion (AICc, AIC or BIC)
   specs$max_lags       <- NaN     # If lags_criterion is chosen, maximum number of lags  
@@ -250,7 +251,8 @@ Show all impulse responses of regime 2.
 I greatly benefitted from the profound *R* and *Rcpp* knowledge of [Philipp Wittenberg](https://github.com/wittenberg). I am also grateful to [Sarah Zubairy](https://sites.google.com/site/sarahzubairy/) for sending me the *Matlab* code before the publication their [paper](https://www.journals.uchicago.edu/doi/10.1086/696277).
 
 ## Development
-I am currently working on a function to include exogenous variables to give a matrix as input for the shock identification. 
+I am currently working on a function to include exogenous variables and a function that 
+allows to identify the shocks besides a Cholesky decomposition.  
 
 ### Author
 Philipp Adämmer

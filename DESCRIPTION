@@ -1,11 +1,11 @@
 Package: lpirfs
 Type: Package
-Title: Estimate Impulse Response Functions based on Local Projections by Jordà (2005)
+Title: Estimate Impulse Response Functions Based on Local Projections by Jordà (2005)
 Version: 0.1.0
 Author: Philipp Adämmer
 Maintainer: Philipp Adämmer <adaemmer@hsu-hh.de>
 BugReports: https://github.com/AdaemmerP/lpirfs/issues
-Description: The package contains functions to estimate linear and non-linear impulse 
+Description: Contains functions to estimate linear and non-linear impulse 
              responses based on the local projection method by Jordà (2005) <doi:10.1257/0002828053828518>
              Non-linear impulse responses are estimated for two regimes which are estimated with 
              a transition function, proposed by Auerbach and Gorodnichenko (2012) <doi:10.1257/pol.4.2.1>.
@@ -13,7 +13,7 @@ License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    doSNOW(>= 1.0.15),
+    doParallel(>= 1.0.11),
     dplyr(>= 0.7.4),
     foreach(>= 1.4.3),
     ggplot2(>= 2.2.1),

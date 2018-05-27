@@ -4,11 +4,9 @@
 \alias{switching_series}
 \title{Function to estimate transition values.}
 \usage{
-switching_series(switching_data, specs)
+switching_series(specs)
 }
 \arguments{
-\item{switching_data}{A vector with data to construct the smooth transition variable.}
-
 \item{specs}{A list with specifications for \link{lp_nl}.}
 }
 \value{

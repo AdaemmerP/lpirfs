@@ -111,7 +111,6 @@ test_that("Check whether wrong lag length is given", {
 } )
 
 
-
 test_that("Check whether lag criterion AND fixed number of lags is given", {
   specs$lags_nl <- 1
   expect_error(lp_nl(data_set_df, specs),
@@ -123,6 +122,16 @@ test_that("Check whether lag criterion AND maximum number of lags is given", {
   expect_error(lp_nl(data_set_df, specs),
                'Please provide a maximum number of lags for the lag length criterion.', fixed = TRUE)
 } )
+
+
+test_that("Check whether lin lags is given if nl_lags is given", {
+  specs$lags_criterion <- NaN
+  specs$lags_nl        <- 3
+  specs$lags_lin       <- NULL
+  expect_error(lp_nl(data_set_df, specs),
+               'Please provide a lag length for the linear model to identify the shock.', fixed = TRUE)
+} )
+
 
 
 

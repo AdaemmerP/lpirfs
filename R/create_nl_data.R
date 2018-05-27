@@ -13,7 +13,7 @@ create_nl_data <- function(specs, data_set_df){
   if (is.nan(specs$lags_criterion) == TRUE) {
 
    # Load switching variable
-    fz  <- switching_series(specs$switching, specs)
+    fz  <- switching_series(specs)
     fz  <- fz[specs$lags_nl:(length(fz) - 1)]  # Make lagged data so that (F_{z_(t-1)})
 
    # Select data for endogenous variables
@@ -23,14 +23,6 @@ create_nl_data <- function(specs, data_set_df){
    # Make exogenous lagged data
     x_nl         <- create_lags(data_set_df, specs$lags_nl)
 
-
-    # Add exogenous data if provided
-    # if (!is.null(specs$exogen)){
-    #
-    #   x_nl$exogen       <- specs$exogen %>%
-    #                                as.matrix()
-    #
-    # }
 
 
    # Save names of exogenous variables
