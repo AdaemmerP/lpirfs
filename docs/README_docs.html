@@ -227,14 +227,19 @@ devtools::install_github(&quot;AdaemmerP/lpirfs&quot;)</code></pre>
                                               # 1 = Use HP-filter to decompose switching-variable
   specs$lambda         &lt;- 1600                # Monthly = 129600, Quarterly = 1600, Annual = 6.25
   specs$gamma          &lt;- 3                   # Numeric value &gt; 0</code></pre>
-<p>The switching variable (<span class="math inline">\(z\)</span>) is either decomposed by the Hodrick-Prescott filter (<em>specs$hp_filter = 1</em>) or directly plugged into the follwing switching function.</p>
-<p><span class="math display">\[F({z_t})  = \  \frac{exp(-\gamma \ z_t)}{(1 + exp(-\gamma \ z_t))}\]</span></p>
-<p>The lagged exogenous variables (<span class="math inline">\(X_{t-p}\)</span>) are then multiplied with the values of the transition function at <em>t − 1</em> where</p>
-<p><span class="math display">\[\hat{IR}(t,s,d) = \hat{B}_{1, }^s   \]</span> - Regime 1: <span class="math inline">\(X_{t-p}*(1-F(z_{t-1}))\)</span>, - Regime 2: <span class="math inline">\(X_{t-p}*F(z_{t-1})\)</span>.</p>
-<p><span class="math display">\[
-E = \frac{mc^2}{\sqrt{1-\frac{v^2}{c^2}}}
-\]</span></p>
+<p>The switching variable (<span class="math inline">\(z\)</span>) can either be decomposed by the Hodrick-Prescott (see <a href="http://www.nber.org/papers/w17447.pdf">Auerbach and Gorodnichenko, 2013</a>) directly plugged into the following transition function:</p>
+<p><span class="math display">\[F({z_t})  = \  \frac{exp(-\gamma z_t)}{(1 + exp(-\gamma z_t))}\]</span></p>
 <p>IMPORTANT:The index of <span class="math inline">\(z\)</span> is set to <em>t − 1</em> to avoid contemporaneous feedback (see <a href="https://www.aeaweb.org/articles?id=10.1257/pol.4.2.1">Auerbach and Gorodnichenko; 2012</a> for details). The lag is created automatically in <em>create_nl_data</em> of the package. If you do not want the exogenous variables to be multiplied with lagged values of <span class="math inline">\(F({z_t})\)</span>, you have to provide the switching variable with a lead of one.</p>
+<p>To differentiate between the two regimes, the exogenous variables (<span class="math inline">\(X_{t-p}\)</span>) are multiplied with the values of the transition function at <em>t − 1</em> where</p>
+<ul>
+<li><p>Regime 1 (<span class="math inline">\(R_1\)</span>): <span class="math inline">\(X_{t-i}\cdot(1-F(z_{t-1}))\)</span>, with <span class="math inline">\(i = 1, ...p\)</span>,</p></li>
+<li><p>Regime 2 (<span class="math inline">\(R_1\)</span>): <span class="math inline">\(X_{t-i}\cdot F(z_{t-1})\)</span>, with <span class="math inline">\(i = 1, ...p\)</span>.</p></li>
+</ul>
+<p>Non-linear impulses responses are computed as in <a href="https://www.sciencedirect.com/science/article/pii/S0164070416300490">Ahmed and Cassou (2016)</a>. First, a reduced VAR is estimated to obtain the covariance matrix of the residuals <span class="math inline">\(\Sigma\)</span>. The Cholesky decomposition is then applied to obatin the shock matrix <span class="math inline">\(D\)</span> where <span class="math inline">\(d_i\)</span> denotes a column vector containing the structural shock.<br />
+IRFs for both regimes are estimated via:</p>
+<p><span class="math display">\[\hat{IR}^{R1}(t,s,d_i) = \hat{B}_{1, R1}^s d_i \ \ \ \ \ \ \ \ \ s = 0, ..., h, \]</span> and</p>
+<p><span class="math display">\[\hat{IR}^{R2}(t,s,d_i) = \hat{B}_{1, R2}^s d_i \ \ \ \ \ \ \ \ \ s = 0, ..., h, \]</span></p>
+<p>with normalizations <span class="math inline">\(\hat{B}_{1, R2}^0 = I\)</span> and <span class="math inline">\(\hat{B}_{1, R2}^0 = I\)</span>.</p>
 <p>Estimate non-linear impulse responses.</p>
 <pre class="r"><code>  results_nl &lt;- lp_nl(data_set_df, specs)</code></pre>
 <p>Save values from transition function.</p>
@@ -289,19 +294,21 @@ E = \frac{mc^2}{\sqrt{1-\frac{v^2}{c^2}}}
 <div id="references" class="section level2">
 <h2>References</h2>
 <ul>
+<li><p>Ahmed, M.I. , Cassou, S.C. (2016) “Does Consumer Confidence Affect Durable Goods Spending During Bad and Good Economic Times Equally?” <em>Journal of Macroeconomics</em>, 50(1): 86-97. <a href="https://www.sciencedirect.com/science/article/pii/S0164070416300490">doi:10.1016/j.jmacro.2016.08.008</a></p></li>
 <li><p>Auerbach, A. J., and Gorodnichenko Y. (2012). “Measuring the Output Responses to Fiscal Policy.” <em>American Economic Journal: Economic Policy</em>, 4 (2): 1-27. <a href="https://www.aeaweb.org/articles?id=10.1257/pol.4.2.1">doi:10.1257/pol.4.2.1</a></p></li>
+<li><p>Auerbach, A. J., and Gorodnichenko Y. (2013). “Fiscal Multipliers in Recession and Expansion” <em>NBER Working Paper Series</em>. Nr 17447. <a href="http://www.nber.org/papers/w17447.pdf">NATIONAL BUREAU OF ECONOMIC RESEARCH</a></p></li>
 <li><p>Jordà, O. (2005) “Estimation and Inference of Impulse Responses by Local Projections.” <em>American Economic Review</em>, 95 (1): 161-182. <a href="https://www.aeaweb.org/articles?id=10.1257/0002828053828518">doi:10.1257/0002828053828518</a></p></li>
-<li><p>Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and Autocorrelation Consistent Covariance Matrix.” <em>Econometrica</em>, 55, 703–708. <a href="https://www.jstor.org/stable/1913610?seq=1#page_scan_tab_contents">doi:10.2307/1913610</a></p></li>
+<li><p>Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and Autocorrelation Consistent Covariance Matrix.” <em>Econometrica</em>, 55: 703–708. <a href="https://www.jstor.org/stable/1913610?seq=1#page_scan_tab_contents">doi:10.2307/1913610</a></p></li>
 <li><p>Ramey, V.A., and Zubairy, S. (2018). “Government Spending Multipliers in Good Times and in Bad: Evidence from US Historical Data.” Journal of Political Economy, 126 (2), 850-901. <a href="https://www.journals.uchicago.edu/doi/10.1086/696277">doi:10.1086/696277</a></p></li>
 </ul>
 </div>
 <div id="acknowledgements" class="section level2">
 <h2>Acknowledgements</h2>
-<p>I greatly benefitted from the profound <em>R</em> and <em>Rcpp</em> knowledge of <a href="https://github.com/wittenberg">Philipp Wittenberg</a>. I am also grateful to <a href="https://sites.google.com/site/sarahzubairy/">Sarah Zubairy</a> for sending me the <em>Matlab</em> code before the publication their <a href="https://www.journals.uchicago.edu/doi/10.1086/696277">paper</a>.</p>
+<p>I greatly benefitted from the profound <em>R</em> and <em>Rcpp</em> knowledge of <a href="https://github.com/wittenberg">Philipp Wittenberg</a>.</p>
 </div>
 <div id="development" class="section level2">
 <h2>Development</h2>
-<p>I am currently working on a function to include exogenous variables and a function that allows to identify the shocks besides a Cholesky decomposition.</p>
+<p>I am currently working on a function to include exogenous variables and a function which allows to identify the shocks besides a Cholesky decomposition.</p>
 <div id="author" class="section level3">
 <h3>Author</h3>
 <p>Philipp Adämmer</p>

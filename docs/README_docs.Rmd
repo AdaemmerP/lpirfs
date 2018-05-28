@@ -152,26 +152,36 @@ Provide a switching variable to separate the data into two regimes.
   specs$gamma          <- 3                   # Numeric value > 0
 ```
 
-The switching variable ($z$) is either decomposed by the Hodrick-Prescott filter (*specs$hp_filter = 1*) or directly plugged into the follwing switching function.
+The switching variable ($z$) can either be decomposed by the Hodrick-Prescott (see [Auerbach and Gorodnichenko, 2013](http://www.nber.org/papers/w17447.pdf)) directly plugged into the following transition function:  
 
 
- $$F({z_t})  = \  \frac{exp(-\gamma \ z_t)}{(1 + exp(-\gamma \ z_t))}$$
+ $$F({z_t})  = \  \frac{exp(-\gamma z_t)}{(1 + exp(-\gamma z_t))}$$
  
-
-The lagged exogenous variables ($X_{t-p}$) are then multiplied with the values of the transition function at *t − 1* where 
-
-$$\hat{IR}(t,s,d) = \hat{B}_{1, }^s   $$
-- Regime 1: $X_{t-p}*(1-F(z_{t-1}))$,
-- Regime 2: $X_{t-p}*F(z_{t-1})$.
-
-$$
-E = \frac{mc^2}{\sqrt{1-\frac{v^2}{c^2}}}
-$$
-
-IMPORTANT:The index of $z$ is set to *t − 1* to avoid contemporaneous feedback (see 
+ IMPORTANT:The index of $z$ is set to *t − 1* to avoid contemporaneous feedback (see 
 [Auerbach and Gorodnichenko; 2012](https://www.aeaweb.org/articles?id=10.1257/pol.4.2.1) for details). 
 The lag is created  automatically in *create_nl_data* of the package. 
 If you do not want the exogenous variables to be multiplied with lagged values of $F({z_t})$, you have to provide the switching variable with a lead of one.
+
+To differentiate between the two regimes, the exogenous variables ($X_{t-p}$) are multiplied with the values of the transition function at *t − 1* where
+
+- Regime 1 ($R_1$): $X_{t-i}\cdot(1-F(z_{t-1}))$, with $i = 1, ...p$,
+
+- Regime 2 ($R_1$): $X_{t-i}\cdot F(z_{t-1})$,   with $i = 1, ...p$.
+
+Non-linear impulses responses are computed as in [Ahmed and Cassou (2016)](https://www.sciencedirect.com/science/article/pii/S0164070416300490). 
+First, a reduced VAR is estimated to obtain the covariance matrix of the residuals $\Sigma$. The Cholesky decomposition is then applied to obatin the shock matrix $D$ where $d_i$ denotes a column vector containing the structural shock.  
+IRFs for both regimes are estimated via:
+
+$$\hat{IR}^{R1}(t,s,d_i) = \hat{B}_{1, R1}^s d_i \ \ \ \ \ \ \ \ \ s = 0, ..., h, $$ 
+and 
+
+$$\hat{IR}^{R2}(t,s,d_i) = \hat{B}_{1, R2}^s d_i \ \ \ \ \ \ \ \ \ s = 0, ..., h, $$ 
+
+
+with normalizations $\hat{B}_{1, R2}^0 = I$ and $\hat{B}_{1, R2}^0 = I$. 
+
+
+
 
 
 Estimate non-linear impulse responses. 
@@ -243,20 +253,26 @@ Show all impulse responses of regime 2.
 
 
 ## References
+* Ahmed, M.I. , Cassou, S.C. (2016) "Does Consumer Confidence Affect Durable Goods Spending
+During Bad and Good Economic Times Equally?" *Journal of Macroeconomics*, 50(1): 86-97.
+[doi:10.1016/j.jmacro.2016.08.008](https://www.sciencedirect.com/science/article/pii/S0164070416300490)
+
 * Auerbach, A. J., and Gorodnichenko Y. (2012). "Measuring the Output Responses to Fiscal Policy." *American Economic Journal: Economic Policy*, 4    (2):   1-27. [doi:10.1257/pol.4.2.1](https://www.aeaweb.org/articles?id=10.1257/pol.4.2.1)
+
+*  Auerbach, A. J., and Gorodnichenko Y. (2013). "Fiscal Multipliers in Recession and Expansion" *NBER Working Paper Series*. Nr 17447.  [NATIONAL BUREAU OF ECONOMIC RESEARCH](http://www.nber.org/papers/w17447.pdf)
 
 * Jordà, O. (2005) "Estimation and Inference of Impulse Responses by Local Projections." *American Economic Review*, 95 (1): 161-182.
 [doi:10.1257/0002828053828518](https://www.aeaweb.org/articles?id=10.1257/0002828053828518)
 
-* Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and Autocorrelation Consistent Covariance Matrix.” *Econometrica*, 55, 703–708. [doi:10.2307/1913610](https://www.jstor.org/stable/1913610?seq=1#page_scan_tab_contents)
+* Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and Autocorrelation Consistent Covariance Matrix.” *Econometrica*, 55: 703–708. [doi:10.2307/1913610](https://www.jstor.org/stable/1913610?seq=1#page_scan_tab_contents)
 
 * Ramey, V.A., and Zubairy, S. (2018). "Government Spending Multipliers in Good Times and in Bad: Evidence from US Historical Data." Journal of        Political Economy, 126 (2), 850-901. [doi:10.1086/696277](https://www.journals.uchicago.edu/doi/10.1086/696277)
 
 ## Acknowledgements
-I greatly benefitted from the profound *R* and *Rcpp* knowledge of [Philipp Wittenberg](https://github.com/wittenberg). I am also grateful to [Sarah Zubairy](https://sites.google.com/site/sarahzubairy/) for sending me the *Matlab* code before the publication their [paper](https://www.journals.uchicago.edu/doi/10.1086/696277).
+I greatly benefitted from the profound *R* and *Rcpp* knowledge of [Philipp Wittenberg](https://github.com/wittenberg). 
 
 ## Development
-I am currently working on a function to include exogenous variables and a function that 
+I am currently working on a function to include exogenous variables and a function which 
 allows to identify the shocks besides a Cholesky decomposition.  
 
 ### Author

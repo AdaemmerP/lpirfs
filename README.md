@@ -1,5 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+A detailed description can be found [here.](https://adaemmerp.github.io/lpirfs/README_docs.html)
+
 lpirfs
 ======
 
