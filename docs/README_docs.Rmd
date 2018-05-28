@@ -15,35 +15,9 @@ knitr::opts_chunk$set(
 ```
 
 
-# lpirfs
-An R-package which estimates linear and non-linear impulse responses
-with local projections by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518).
-
-## Main features
-
-- Estimate linear and non-linear impulse responses with local projections.
-- Functions to plot linear and non-linear impulse responses.
-- Functions are partly implemented in *Rcpp* and *RcppArmadillo* to improve efficiency.
-- High performance with parallel computation.
-
-## Installation
-
-You can install the released version of **lpirfs** from [CRAN](https://CRAN.R-project.org):
-
-```{r, eval = FALSE}
-install.packages("lpirfs")
-```
-
-And the development version from [GitHub](https://github.com/):
-
-``` r
-# install.packages("devtools")
-devtools::install_github("AdaemmerP/lpirfs")
-```
 ## Example: Linear impulse responses
 Load libraries:
 ```{r, message = FALSE }
-# Load packages
   library(dplyr)
   library(doSNOW)
   library(parallel)
@@ -54,9 +28,8 @@ Load libraries:
 
 Load data set from package to estimate a simple, new-Keynesian, closed-
 economy model. These data are used by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) in chapter IV. 
-Please see the data's help file or the original paper for a detailed description. 
+See the data's help file or the paper  by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) for a detailed description. 
 ```{r, message = FALSE }
-# Load data (from package)
   data_set_df <- interest_rules_var_data
 ```
 
@@ -74,12 +47,12 @@ Make list and specify input variables to estimate linear impulse responses.
   specs$confint        <- 1.96    # Width of confidence bands: 1 = 68%, 1.67 = 90%, 1.96 = 95%
   specs$hor            <- 12L     # Length of horizon
 ```
-Estimate linear impulse responses. 
+Estimate linear impulse responses with package function *lp_lin*.  
 ```{r, message = FALSE }  
   results_lin  <- lp_lin(data_set_df, specs)
 ```
 
-Make plots for impulse responses of linear model.
+Create plots for impulse responses of linear model with package function *plot_lin_irfs*.
 ```{r, message = FALSE }
   linear_plots <- plot_lin_irfs(results_lin)
 ```
@@ -97,10 +70,11 @@ Display all plots:
 - This graph is similar to Figure 5 in Jordà (2005), p. 176, but has slightly wider confidence bands. 
 - Figure 5 in Jordà (2005) is replicated when specs$confint = 1.67 (90% error bands).
 ```{r, fig.height = 6, fig.width = 8, fig.align = "center", message = FALSE }  
-# Show all plots
+# Load further libraries
   library(ggpubr)
   library(gridExtra)
 
+# Show all plots 
   lin_plots_all <- sapply(linear_plots, ggplotGrob)
   marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
 ```
@@ -108,7 +82,6 @@ Display all plots:
 ## Example: Non-linear impulse responses
 Load libraries:
 ```{r, message = FALSE }
-# Load packages
   library(dplyr)
   library(doSNOW)
   library(parallel)
@@ -119,10 +92,9 @@ Load libraries:
 ```
 
 Load data set from package to estimate a non-linear, new-Keynesian, closed-
-economy model. This data set is used by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) in chapter IV.
-Please see the data's help file or the original paper for a detailed description. 
+economy model. These data are used by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) in chapter IV. 
+See the data's help file or the paper  by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) for a detailed description. 
 ```{r, message = FALSE }
-# Load data (from package)
   data_set_df <- interest_rules_var_data
 ```
 
@@ -145,14 +117,14 @@ Make list and specify input variables to estimate non-linear impulse responses.
 Provide a switching variable to separate the data into two regimes.
 ```{r, message = FALSE }
 # Specifications for switching variable
-  specs$switching      <- data_set_df$GDP_gap # The output gap is used to differentiate between two regimes
+  specs$switching      <- data_set_df$GDP_gap # The output gap 
   specs$hp_filter      <- 1                   # 0 = Do not use HP-filter to decompose switching-variable, 
                                               # 1 = Use HP-filter to decompose switching-variable
   specs$lambda         <- 1600                # Monthly = 129600, Quarterly = 1600, Annual = 6.25
   specs$gamma          <- 3                   # Numeric value > 0
 ```
 
-The switching variable ($z$) can either be decomposed by the Hodrick-Prescott (see [Auerbach and Gorodnichenko, 2013](http://www.nber.org/papers/w17447.pdf)) directly plugged into the following transition function:  
+The switching variable ($z$) can either be decomposed by the Hodrick-Prescott filter as proposed by [Auerbach and Gorodnichenko (2013)](http://www.nber.org/papers/w17447.pdf) or directly plugged into the following transition function:  
 
 
  $$F({z_t})  = \  \frac{exp(-\gamma z_t)}{(1 + exp(-\gamma z_t))}$$
@@ -161,28 +133,30 @@ The switching variable ($z$) can either be decomposed by the Hodrick-Prescott (s
 
 To differentiate between the two regimes, the exogenous variables ($X_{t-p}$) are multiplied with the values of the transition function at *t − 1* where
 
-- Regime 1 ($R_1$): $X_{t-i}\cdot(1-F(z_{t-1}))$, with $i = 1, ...p$,
+- Regime 1 ($R_1$): $Y_{t-i}\cdot(1-F(z_{t-1}))$, with $i = 1, ...p$,
 
-- Regime 2 ($R_2$): $X_{t-i}\cdot F(z_{t-1})$,   with $i = 1, ...p$.
+- Regime 2 ($R_2$): $Y_{t-i}\cdot F(z_{t-1})$,   with $i = 1, ...p$.
 
- IMPORTANT:The index of $z$ is *t − 1* to avoid contemporaneous feedback (see 
+ IMPORTANT:The index of $z$ is set to *t − 1* in order to avoid contemporaneous feedback (see 
 [Auerbach and Gorodnichenko; 2012](https://www.aeaweb.org/articles?id=10.1257/pol.4.2.1) for details). 
-The lag is created  automatically in *create_nl_data* of the package. 
+The lag is automatically created in the package function *create_nl_data*. 
 If you do not want the exogenous variables to be multiplied with lagged values of $F({z_t})$, you have to provide the switching variable with a lead of one.
 
 Non-linear impulses responses are computed as in [Ahmed and Cassou (2016)](https://www.sciencedirect.com/science/article/pii/S0164070416300490). 
-First, a reduced VAR is estimated to obtain the covariance matrix of the residuals $\Sigma$. The Cholesky decomposition is then applied to obatin the shock matrix $D$ where $d_i$ denotes a column vector containing the structural shock. IRFs for both regimes are estimated via:
+First, a reduced VAR is estimated to obtain the covariance matrix of the residuals $\Sigma$. The Cholesky decomposition is then applied to obatin the shock matrix $D$. IRFs for both regimes are estimated via:
 
-$$\hat{IR}^{R1}(t,s,d_i) = \hat{B}_{1, R1}^s d_i \ \ \ \ \ \ \ \ \ s = 0, ..., h, $$ 
+$$\hat{IR}^{R_1}(t,s,d_i) = \hat{B}_{1, R_1}^s d_i \ \ \ \ \ \ \ \ \ s = 0, ..., h, $$ 
 and 
 
-$$\hat{IR}^{R2}(t,s,d_i) = \hat{B}_{1, R2}^s d_i \ \ \ \ \ \ \ \ \ s = 0, ..., h, $$ 
+$$\hat{IR}^{R_2}(t,s,d_i) = \hat{B}_{1, R_2}^s d_i \ \ \ \ \ \ \ \ \ s = 0, ..., h, $$ 
 
 
-with normalizations $\hat{B}_{1, R2}^0 = I$ and $\hat{B}_{1, R2}^0 = I$. $\hat{B}_{1, R1}^s$ and $\hat{B}_{1, R2}^s$ are obtained by running a sequence of forecast equations whose details can be found in  [Ahmed and Cassou (2016)](https://www.sciencedirect.com/science/article/pii/S0164070416300490) or [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518).   
+with normalizations $\hat{B}_{1, R2}^0 = I$ and $\hat{B}_{1, R2}^0 = I$ and where $d_i$ is the $i^{th}$ column from $D$. $\hat{B}_{1, R1}^s$ and $\hat{B}_{1, R2}^s$ are obtained by running a sequence of OLS equation for equation forecasts (local projections):
 
-
-
+$$ \bf y_{t+s} = \bf \alpha^s + B_{1, R_1}^s \left(Y_{t-1}\cdot(1-F(z_{t-1})\right) + ... +
+    B_{1, R_1}^s \left(Y_{t-p}\cdot(1-F(z_{t-1})\right) + \\
+B_{1, R_2}^s \left(Y_{t-1}\cdot F(z_{t-1}\right) + ... + B_{1, R_2}^s \left(Y_{t-p}\cdot F(z_{t-1}\right).
+$$
 
 
 Estimate non-linear impulse responses. 
@@ -267,14 +241,6 @@ During Bad and Good Economic Times Equally?" *Journal of Macroeconomics*, 50(1):
 
 * Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and Autocorrelation Consistent Covariance Matrix.” *Econometrica*, 55: 703–708. [doi:10.2307/1913610](https://www.jstor.org/stable/1913610?seq=1#page_scan_tab_contents)
 
-* Ramey, V.A., and Zubairy, S. (2018). "Government Spending Multipliers in Good Times and in Bad: Evidence from US Historical Data." Journal of        Political Economy, 126 (2), 850-901. [doi:10.1086/696277](https://www.journals.uchicago.edu/doi/10.1086/696277)
-
-## Acknowledgements
-I greatly benefitted from the profound *R* and *Rcpp* knowledge of [Philipp Wittenberg](https://github.com/wittenberg) and from Detlef (overflow) Steuer. 
-
-## Development
-I am currently working on a function to include exogenous variables and a function which 
-allows to identify the shocks besides a Cholesky decomposition.  
 
 ### Author
 Philipp Adämmer
