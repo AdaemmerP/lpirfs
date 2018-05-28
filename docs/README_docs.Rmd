@@ -157,20 +157,21 @@ The switching variable ($z$) can either be decomposed by the Hodrick-Prescott (s
 
  $$F({z_t})  = \  \frac{exp(-\gamma z_t)}{(1 + exp(-\gamma z_t))}$$
  
- IMPORTANT:The index of $z$ is set to *t − 1* to avoid contemporaneous feedback (see 
-[Auerbach and Gorodnichenko; 2012](https://www.aeaweb.org/articles?id=10.1257/pol.4.2.1) for details). 
-The lag is created  automatically in *create_nl_data* of the package. 
-If you do not want the exogenous variables to be multiplied with lagged values of $F({z_t})$, you have to provide the switching variable with a lead of one.
+
 
 To differentiate between the two regimes, the exogenous variables ($X_{t-p}$) are multiplied with the values of the transition function at *t − 1* where
 
 - Regime 1 ($R_1$): $X_{t-i}\cdot(1-F(z_{t-1}))$, with $i = 1, ...p$,
 
-- Regime 2 ($R_1$): $X_{t-i}\cdot F(z_{t-1})$,   with $i = 1, ...p$.
+- Regime 2 ($R_2$): $X_{t-i}\cdot F(z_{t-1})$,   with $i = 1, ...p$.
+
+ IMPORTANT:The index of $z$ is *t − 1* to avoid contemporaneous feedback (see 
+[Auerbach and Gorodnichenko; 2012](https://www.aeaweb.org/articles?id=10.1257/pol.4.2.1) for details). 
+The lag is created  automatically in *create_nl_data* of the package. 
+If you do not want the exogenous variables to be multiplied with lagged values of $F({z_t})$, you have to provide the switching variable with a lead of one.
 
 Non-linear impulses responses are computed as in [Ahmed and Cassou (2016)](https://www.sciencedirect.com/science/article/pii/S0164070416300490). 
-First, a reduced VAR is estimated to obtain the covariance matrix of the residuals $\Sigma$. The Cholesky decomposition is then applied to obatin the shock matrix $D$ where $d_i$ denotes a column vector containing the structural shock.  
-IRFs for both regimes are estimated via:
+First, a reduced VAR is estimated to obtain the covariance matrix of the residuals $\Sigma$. The Cholesky decomposition is then applied to obatin the shock matrix $D$ where $d_i$ denotes a column vector containing the structural shock. IRFs for both regimes are estimated via:
 
 $$\hat{IR}^{R1}(t,s,d_i) = \hat{B}_{1, R1}^s d_i \ \ \ \ \ \ \ \ \ s = 0, ..., h, $$ 
 and 
@@ -178,7 +179,7 @@ and
 $$\hat{IR}^{R2}(t,s,d_i) = \hat{B}_{1, R2}^s d_i \ \ \ \ \ \ \ \ \ s = 0, ..., h, $$ 
 
 
-with normalizations $\hat{B}_{1, R2}^0 = I$ and $\hat{B}_{1, R2}^0 = I$. 
+with normalizations $\hat{B}_{1, R2}^0 = I$ and $\hat{B}_{1, R2}^0 = I$. $\hat{B}_{1, R1}^s$ and $\hat{B}_{1, R2}^s$ are obtained by running a sequence of forecast equations whose details can be found in  [Ahmed and Cassou (2016)](https://www.sciencedirect.com/science/article/pii/S0164070416300490) or [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518).   
 
 
 
@@ -269,7 +270,7 @@ During Bad and Good Economic Times Equally?" *Journal of Macroeconomics*, 50(1):
 * Ramey, V.A., and Zubairy, S. (2018). "Government Spending Multipliers in Good Times and in Bad: Evidence from US Historical Data." Journal of        Political Economy, 126 (2), 850-901. [doi:10.1086/696277](https://www.journals.uchicago.edu/doi/10.1086/696277)
 
 ## Acknowledgements
-I greatly benefitted from the profound *R* and *Rcpp* knowledge of [Philipp Wittenberg](https://github.com/wittenberg). 
+I greatly benefitted from the profound *R* and *Rcpp* knowledge of [Philipp Wittenberg](https://github.com/wittenberg) and from Detlef (overflow) Steuer. 
 
 ## Development
 I am currently working on a function to include exogenous variables and a function which 
