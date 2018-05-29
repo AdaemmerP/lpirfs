@@ -13,8 +13,8 @@ create_lags  <- function(data, lags){
   for (i in 1:lags){
 
     lags_column  <- data %>%
-                      dplyr::mutate_all(funs(lag(., i)))       %>%
-                      dplyr::rename_all(funs(paste0(.,"_", "lag_", i)))
+                      dplyr::mutate_all(funs(lag(.data, i)))       %>%
+                      dplyr::rename_all(funs(paste0(.data,"_", "lag_", i)))
 
               if(i == 1){
 

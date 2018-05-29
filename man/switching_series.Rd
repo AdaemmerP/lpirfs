@@ -7,9 +7,9 @@
 switching_series(switching_data, specs)
 }
 \arguments{
-\item{specs}{A list with specifications for \link{lp_nl}.}
+\item{switching_data}{A vector.}
 
-\item{specs}{A vector.}
+\item{specs}{A list with specifications for \link{lp_nl}.}
 }
 \value{
 fz: Vector with values from smooth transition function.

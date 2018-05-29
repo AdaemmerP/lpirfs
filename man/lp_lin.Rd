@@ -38,7 +38,7 @@ Compute impulse responses with local projections by Jordà (2005).
 \dontrun{
 # Load packages
   library(dplyr)
-  library(doSNOW)
+  library(doParallel)
   library(vars)
   library(parallel)
   library(Rcpp)

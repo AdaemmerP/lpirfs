@@ -19,7 +19,7 @@ Compute (linear) irf plots estimated with \link{lp_lin}.
  \dontrun{
 # Load packages
   library(dplyr)
-  library(doSNOW)
+  library(doParallel)
   library(vars)
   library(parallel)
   library(Rcpp)
@@ -57,8 +57,6 @@ Compute (linear) irf plots estimated with \link{lp_lin}.
   marrangeGrob(lin_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df))
 
  }
-
-
 }
 \author{
 Philipp Adämmer

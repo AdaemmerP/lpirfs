@@ -4,9 +4,10 @@
 #' data are separated into two states with a smooth transition function as in Auerbach and Gorodnichenko (2012).
 #'
 #' @param data_set_df A \link{data.frame}() containing all endogenous variables for the VAR. The column order
-#'                     is also used for the Cholesky decomposition.
+#'                     is used for the Cholesky decomposition.
 #' @param specs A \link{list}() with the following inputs:
 #' @author Philipp Adämmer
+#'
 #' \itemize{
 #' \item{\strong{lags_criterion} NaN or character. NaN means that the number of lags
 #'         will be given at \emph{lags_nl}. The character denotes the lag length criterion ('AICc', 'AIC' or 'BIC').}
@@ -18,7 +19,7 @@
 #' \item{\strong{confint} Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.}
 #' \item{\strong{hor} Integer. Number of horizons for impulse responses. }
 #' \item{\strong{switching} Vector. A column vector with the same length as \emph{data_set_df}. This series (\eqn{z_t}) can either
-#'               be first decomposed by the Hodrick-Prescott filter as proposed by Ramey and Zubairy (2018) or
+#'               be decomposed by the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013) or
 #'               directly plugged into the smooth transition function:
 #'               \deqn{ F_{z_t}) = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)} }
 #'               Warning: \eqn{F_{z_t}} will be lagged in \link{create_nl_data} by one and then multiplied with the data.
@@ -71,21 +72,21 @@
 #' Auerbach, A. J., and  Gorodnichenko Y. (2012). "Measuring the Output Responses to Fiscal Policy."
 #' \emph{American Economic Journal: Economic Policy}, 4 (2): 1-27.
 #'
+#' Auerbach, A. J., and Gorodnichenko Y. (2013). "Fiscal Multipliers in Recession and Expansion."
+#' \emph{NBER Working Paper Series}. Nr 17447.
+#'
 #' Jordà, O. (2005) "Estimation and Inference of Impulse Responses by Local Projections."
 #' \emph{American Economic Review}, 95 (1): 161-182.
 #'
 #' Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
 #' Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–708.
 #'
-#' Ramey, V.A., and Zubairy, S. (2018). "Government Spending Multipliers in Good Times and in Bad:
-#' Evidence from US Historical Data." \emph{Journal of Political Economy}, 126 (2), 850-901.
-#'
 #' @import foreach
 #' @examples
 #' \dontrun{
 #'# Load packages
 #'   library(dplyr)
-#'   library(doSNOW)
+#'   library(doParallel)
 #'   library(parallel)
 #'   library(vars)
 #'   library(mFilter)
@@ -140,14 +141,15 @@
 #'   marrangeGrob(s1_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
 #'   marrangeGrob(s2_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
 #'
-#'# Plot transition function
-#' # Make date time series
-#' start_date <-
-#' end_date   <-
-#'  }
+#'}
 lp_nl <- function(data_set_df, specs){
 
 #--- Check inputs
+
+  # Check whether data is a data.frame
+  if(!(is.data.frame(data_set_df))){
+    stop('The data has to be a data.frame().')
+  }
 
   # Check whether 'trend' is given
   if(is.null(specs$trend) == TRUE){
@@ -198,9 +200,16 @@ lp_nl <- function(data_set_df, specs){
   }
 
 
-  # Check whether lags criterion and maximum number of lags is given
+  # Check whether lags criterion and fixed number of lags for non-linear model is given
   if((is.character(specs$lags_criterion) == TRUE) &
      (!is.na(specs$lags_nl) == TRUE)){
+    stop('You can not provide a lag criterion (AICc, AIC or BIC) and a fixed number of lags.')
+  }
+
+
+  # Check whether lags criterion and fixed number of lags for linear model is given
+  if((is.character(specs$lags_criterion) == TRUE) &
+     (!is.na(specs$lags_lin) == TRUE)){
     stop('You can not provide a lag criterion (AICc, AIC or BIC) and a fixed number of lags.')
   }
 
@@ -212,9 +221,9 @@ lp_nl <- function(data_set_df, specs){
   }
 
 
-  # Check whether lin lags is given if nl_lags is given
+  # Check whether lin_lags is given if nl_lags is given
   if((is.numeric(specs$lags_nl) == TRUE) &
-     ( is.null(specs$lags_lin) == TRUE)){
+     (is.null(specs$lags_lin) == TRUE)){
     stop('Please provide a lag length for the linear model to identify the shock.')
   }
 

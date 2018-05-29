@@ -30,11 +30,11 @@ create_nl_data <- function(specs, data_set_df){
 
    # Create tibbles with exogenous regime data and combine them to one data set
     x_nl_s1      <- x_nl %>%
-                      dplyr::mutate_all(funs(s1 = .*(1 - fz)))  %>%
+                      dplyr::mutate_all(funs(s1 = .data*(1 - fz)))  %>%
                       dplyr::select(-one_of(linear_names))
 
     x_nl_s2      <- x_nl %>%
-                      dplyr::mutate_all(funs(s2 = .*fz))  %>%
+                      dplyr::mutate_all(funs(s2 = .data*fz))  %>%
                       dplyr::select(-one_of(linear_names))
 
     x_nl         <- cbind(x_nl_s1, x_nl_s2)
@@ -85,11 +85,11 @@ create_nl_data <- function(specs, data_set_df){
       linear_names   <- names(x_nl_temp)
 
       x_nl_s1        <- x_nl_temp %>%
-                           dplyr::mutate_all(funs(s1 = .*(1 - fz))) %>%
+                           dplyr::mutate_all(funs(s1 = .data*(1 - fz))) %>%
                            dplyr::select(-one_of(linear_names))
 
       x_nl_s2        <- x_nl_temp %>%
-                           dplyr::mutate_all(funs(s2 = .*fz))        %>%
+                           dplyr::mutate_all(funs(s2 = .data*fz))        %>%
                            dplyr::select(-one_of(linear_names))
 
       x_nl[[i]]      <- cbind(x_nl_s1, x_nl_s2)
@@ -107,14 +107,14 @@ create_nl_data <- function(specs, data_set_df){
                } else if (specs$trend == 1){
         # Constant and trend
          x_nl[[i]]            <-   x_nl[[i]]                                 %>%
-                                       dplyr::mutate(trend = row_number()    %>%
-                                       as.matrix())
+                                       dplyr::mutate(trend = row_number())    %>%
+                                                                   as.matrix()
 
                  }  else {
         x_nl[[i]]            <-   x_nl[[i]]                                     %>%
                                        dplyr::mutate(trend = row_number())      %>%
                                        dplyr::mutate(sq_trend = trend^2)        %>%
-                                                                as.matrix()
+                                                                   as.matrix()
       }
 
 

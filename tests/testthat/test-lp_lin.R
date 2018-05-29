@@ -16,6 +16,13 @@ context("check_input_lp_nl")
   specs$hor            <- 12L
 
 
+
+test_that("Check whether data is a data.frame", {
+    data_set_df   <- as.matrix(data_set_df)
+    expect_error(lp_nl(data_set_df, specs),
+                 'The data has to be a data.frame().', fixed = TRUE)
+})
+
 test_that("Check whether trend is given", {
     specs$trend   <- NULL
     expect_error(lp_lin(data_set_df, specs),
@@ -50,14 +57,14 @@ test_that("Check whether wrong lag length is given", {
                'Possible lag length criteria are AICc, AIC or BIC or NaN if lag length is specified.', fixed = TRUE)
 } )
 
-test_that("Check whether lag criterion AND fixed number of lags is given", {
+test_that("Check whether lag criterion AND fixed number of lags are given", {
   specs$lags_lin <- 1
   expect_error(lp_lin(data_set_df, specs),
                'You can not provide a lag criterion (AICc, AIC or BIC) and a fixed number of lags.', fixed = TRUE)
 } )
 
 
-test_that("Check whether lag criterion AND maximum number of lags is given", {
+test_that("Check whether lag criterion AND maximum number of lags are given", {
   specs$max_lags <- NaN
   expect_error(lp_lin(data_set_df, specs),
                'Please provide a maximum number of lags for the lag length criterion.', fixed = TRUE)

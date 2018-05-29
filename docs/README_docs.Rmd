@@ -15,20 +15,20 @@ knitr::opts_chunk$set(
 ```
 
 
-## Example: Linear impulse responses
+## Example: Estimate linear impulse responses
 Load libraries:
 ```{r, message = FALSE }
   library(dplyr)
-  library(doSNOW)
+  library(doParallel)
   library(parallel)
   library(vars)
   library(Rcpp)
   library(lpirfs)
 ```
 
-Load data set from package to estimate a simple, new-Keynesian, closed-
+Load data.frame from package to estimate a simple, new-Keynesian, closed-
 economy model. These data are used by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) in chapter IV. 
-See the data's help file or the paper  by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) for a detailed description. 
+See the data's help file or the [paper](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) for a detailed description. 
 ```{r, message = FALSE }
   data_set_df <- interest_rules_var_data
 ```
@@ -45,9 +45,10 @@ Make list and specify input variables to estimate linear impulse responses.
   specs$trend          <- 0L      # 0 = no trend, 1 = trend, 2 = trend and quadratic trend
   specs$shock_type     <- 1L      # 0 = standard deviation shock, 1 = unit shock
   specs$confint        <- 1.96    # Width of confidence bands: 1 = 68%, 1.67 = 90%, 1.96 = 95%
-  specs$hor            <- 12L     # Length of horizon
+  specs$hor            <- 24L     # Length of horizon
 ```
-Estimate linear impulse responses with package function *lp_lin*.  
+Estimate linear impulse responses with the package function *lp_lin*. Note that the VAR's endogenous variables (*data_set_df*) have to be 
+a data.frame(). 
 ```{r, message = FALSE }  
   results_lin  <- lp_lin(data_set_df, specs)
 ```
@@ -56,7 +57,7 @@ Create plots for impulse responses of linear model with package function *plot_l
 ```{r, message = FALSE }
   linear_plots <- plot_lin_irfs(results_lin)
 ```
-Display single impulse responses: 
+Display single impulse responses with 95% confidence bands: 
 
 - The first plot shows the response of the first variable (GDP_gap) to a shock in the first variable in (GDP_gap). 
 - The second plot shows the response of the first variable (GDP_gap) to a shock in the second variable (Inflation). 
@@ -65,10 +66,7 @@ Display single impulse responses:
   linear_plots[[2]]
 ```
 
-Display all plots:
-
-- This graph is similar to Figure 5 in Jordà (2005), p. 176, but has slightly wider confidence bands. 
-- Figure 5 in Jordà (2005) is replicated when specs$confint = 1.67 (90% error bands).
+Display all plots (compare with Figure 5 in Jordà (2005), p. 176):
 ```{r, fig.height = 6, fig.width = 8, fig.align = "center", message = FALSE }  
 # Load further libraries
   library(ggpubr)
@@ -83,7 +81,7 @@ Display all plots:
 Load libraries:
 ```{r, message = FALSE }
   library(dplyr)
-  library(doSNOW)
+  library(doParallel)
   library(parallel)
   library(Rcpp)
   library(lpirfs)
@@ -105,61 +103,65 @@ Make list and specify input variables to estimate non-linear impulse responses.
 
 # Specify inputs
   specs$lags_lin       <- 4L      # Number of lags for linear VAR to identify the shock
-  specs$lags_nl        <- 3L      # Number of lags
+  specs$lags_nl        <- 4L      # Number of lags
   specs$lags_criterion <- NaN     # Lag length criterion (AICc, AIC or BIC)
   specs$max_lags       <- NaN     # If lags_criterion is chosen, maximum number of lags  
-  specs$trend          <- 0L      # 0 = no trend, 1 = trend, 2 = trend and quadratic trend
-  specs$shock_type     <- 1L      # 0 = standard deviation shock, 1 = unit shock
-  specs$confint        <- 1.96    # Width of confidence bands: 1 = 68%, 1.67 = 90%, 1.96 = 95%
-  specs$hor            <- 12L     # Length of horizon
+  specs$trend          <- 1L      # 0 = no trend, 1 = trend, 2 = trend and quadratic trend
+  specs$shock_type     <- 0L      # 0 = standard deviation shock, 1 = unit shock
+  specs$confint        <- 1.67    # Width of confidence bands: 1 = 68%, 1.67 = 90%, 1.96 = 95%
+  specs$hor            <- 24L     # Length of horizon
 ```
 
 Provide a switching variable to separate the data into two regimes.
 ```{r, message = FALSE }
 # Specifications for switching variable
-  specs$switching      <- data_set_df$GDP_gap # The output gap 
-  specs$hp_filter      <- 1                   # 0 = Do not use HP-filter to decompose switching-variable, 
-                                              # 1 = Use HP-filter to decompose switching-variable
-  specs$lambda         <- 1600                # Monthly = 129600, Quarterly = 1600, Annual = 6.25
-  specs$gamma          <- 3                   # Numeric value > 0
+  specs$switching      <- data_set_df$Infl # The output gap 
+  specs$hp_filter      <- 1                # 0 = Do not use HP-filter to decompose switching-variable, 
+                                           # 1 = Use HP-filter to decompose switching-variable
+  specs$lambda         <- 1600             # Monthly = 129600, Quarterly = 1600, Annual = 6.25
+  specs$gamma          <- 6                # Numeric value > 0
 ```
 
-The switching variable ($z$) can either be decomposed by the Hodrick-Prescott filter as proposed by [Auerbach and Gorodnichenko (2013)](http://www.nber.org/papers/w17447.pdf) or directly plugged into the following transition function:  
+$$ $$
+The switching variable ($z_t$) can either be decomposed by the Hodrick-Prescott filter (see [Auerbach and Gorodnichenko, 2013](http://www.nber.org/papers/w17447.pdf)) or directly plugged into the following transition function:  
 
 
- $$F({z_t})  = \  \frac{exp(-\gamma z_t)}{(1 + exp(-\gamma z_t))}$$
+ $$F({z_t})  = \  \frac{e^{(-\gamma z_t)}}{(1 + e^{(-\gamma z_t)})},$$
  
 
 
-To differentiate between the two regimes, the exogenous variables ($X_{t-p}$) are multiplied with the values of the transition function at *t − 1* where
+where $\gamma > 0$. To differentiate between the two regimes, the exogenous variables ($\boldsymbol{y}_{t-p}$) are multiplied with the values of the transition function at *t − 1* where
 
-- Regime 1 ($R_1$): $Y_{t-i}\cdot(1-F(z_{t-1}))$, with $i = 1, ...p$,
+- Regime 1 ($R_1$): $\boldsymbol{y}_{t-i}\cdot(1-F(z_{t-1}))$,  with $i = 1, ...p$, and
 
-- Regime 2 ($R_2$): $Y_{t-i}\cdot F(z_{t-1})$,   with $i = 1, ...p$.
+- Regime 2 ($R_2$): $\boldsymbol{y}_{t-i}\cdot F(z_{t-1})$,  with $i = 1, ...p$.
 
- IMPORTANT:The index of $z$ is set to *t − 1* in order to avoid contemporaneous feedback (see 
-[Auerbach and Gorodnichenko; 2012](https://www.aeaweb.org/articles?id=10.1257/pol.4.2.1) for details). 
+ IMPORTANT: The index of $z$ is set to *t − 1* in order to avoid contemporaneous feedback (see 
+[Auerbach and Gorodnichenko 2012](https://www.aeaweb.org/articles?id=10.1257/pol.4.2.1)). 
 The lag is automatically created in the package function *create_nl_data*. 
 If you do not want the exogenous variables to be multiplied with lagged values of $F({z_t})$, you have to provide the switching variable with a lead of one.
 
 Non-linear impulses responses are computed as in [Ahmed and Cassou (2016)](https://www.sciencedirect.com/science/article/pii/S0164070416300490). 
-First, a reduced VAR is estimated to obtain the covariance matrix of the residuals $\Sigma$. The Cholesky decomposition is then applied to obatin the shock matrix $D$. IRFs for both regimes are estimated via:
+First, a reduced VAR is estimated to obtain the covariance matrix of the residuals $\Sigma$. The Cholesky decomposition is then applied to obatin the shock matrix with columns denoted by $d_i$. IRFs for both regimes are estimated via:
 
-$$\hat{IR}^{R_1}(t,s,d_i) = \hat{B}_{1, R_1}^s d_i \ \ \ \ \ \ \ \ \ s = 0, ..., h, $$ 
+$$\hat{IR}^{R_1}(t,s,d_i) = \hat{\boldsymbol{B}}_{1, R_1}^s d_i \ \ \ \ \ \ \ \ \ s = 0, ..., h, $$ 
 and 
 
-$$\hat{IR}^{R_2}(t,s,d_i) = \hat{B}_{1, R_2}^s d_i \ \ \ \ \ \ \ \ \ s = 0, ..., h, $$ 
+$$\hat{IR}^{R_2}(t,s,d_i) = \hat{\boldsymbol{B}}_{1, R_2}^s d_i \ \ \ \ \ \ \ \ \ s = 0, ..., h, $$ 
 
 
-with normalizations $\hat{B}_{1, R2}^0 = I$ and $\hat{B}_{1, R2}^0 = I$ and where $d_i$ is the $i^{th}$ column from $D$. $\hat{B}_{1, R1}^s$ and $\hat{B}_{1, R2}^s$ are obtained by running a sequence of OLS equation for equation forecasts (local projections):
+with normalizations $\hat{\boldsymbol{B}}_{1, R2}^0 = I$ and $\hat{\boldsymbol{B}}_{1, R2}^0 = I$.The parameters are obtained by running a sequence of OLS forecasts (local projections):
 
-$$ \bf y_{t+s} = \bf \alpha^s + B_{1, R_1}^s \left(Y_{t-1}\cdot(1-F(z_{t-1})\right) + ... +
-    B_{1, R_1}^s \left(Y_{t-p}\cdot(1-F(z_{t-1})\right) + \\
-B_{1, R_2}^s \left(Y_{t-1}\cdot F(z_{t-1}\right) + ... + B_{1, R_2}^s \left(Y_{t-p}\cdot F(z_{t-1}\right).
+$$ \boldsymbol{y}_{t+s} = \boldsymbol{\alpha}^s + \boldsymbol{B}_{1, R_1}^s \left(\boldsymbol{y}_{t-1}\cdot(1-F(z_{t-1})\right) \ + \ ...\ +\ 
+    \boldsymbol{B}_{p, R_1}^s \left(\boldsymbol{y}_{t-p}\cdot(1-F(z_{t-1})\right) + \\
+\boldsymbol{B}_{1, R_2}^s \left(\boldsymbol{y}_{t-1}\cdot F(z_{t-1}\right)) \ + \ ... \  + \  \boldsymbol{B}_{p, R_2}^s \left(\boldsymbol{y}_{t-p}\cdot F(z_{t-1}\right)) + \boldsymbol{\varepsilon}_{t+s}^s,
 $$
+with $s = 0,..., h.$
 
+$$ $$
 
-Estimate non-linear impulse responses. 
+Estimate non-linear impulse responses with package function * lp_nl*. Note that the VAR's endogenous variables (*data_set_df*) have to be 
+a data.frame(). 
 ```{r, message = FALSE }  
   results_nl <- lp_nl(data_set_df, specs)
 ```
@@ -171,8 +173,8 @@ Save values from transition function.
 
 Plot output gap
 ```{r, fig.height = 4, fig.width = 6, fig.align = "center", message = FALSE } 
-# Make date sequence. Start in October because the non-linear model is estimated with three lags.
-  dates   <- seq(as.Date("1955/10/1"), as.Date("2003/1/1"), by = "quarter")
+# Make date sequence. Start in December because the non-linear model is estimated with four lags.
+  dates   <- seq(as.Date("1955/12/1"), as.Date("2003/1/1"), by = "quarter")
   data_df <- data_frame(x = dates, fz = fz, gdp_gap = specs$switching[(specs$lags_nl+1):length(data_set_df$FF)])
 
 # Plot  
@@ -194,7 +196,7 @@ Plot tranistion function
     scale_x_date(date_breaks = "5 year",  date_labels = "%Y")
 ```
 
-Create and save all plots.
+Create and save all plots with package function *plot_nl_irfs*
 ```{r, message = FALSE }
     nl_plots <- plot_nl_irfs(results_nl)
 ```
@@ -216,15 +218,17 @@ Show first impulse response of each regime:
   plot(s2_plots[[2]])
 ```
 
-Show all impulse responses of regime 1.
+Show all impulse responses of regime 1 (high inflation rates) with 90% confidence bands:
 ```{r, fig.height = 6, fig.width = 8, fig.align = "center", message = FALSE }
   marrangeGrob(s1_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top =  NULL)
 ```
 
-Show all impulse responses of regime 2.
+Show all impulse responses of regime 2 (low inflation rates) with 90% confidence bands:
 ```{r, fig.height = 6, fig.width = 8, fig.align = "center", message = FALSE }
   marrangeGrob(s2_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top = NULL)
 ```
+
+Findings are similar to those in [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518), namely that inflation and output are, in absolute terms,  more responsive to interest rates in the low-inflation regime than in the high-inflation regime.
 
 
 ## References
@@ -234,7 +238,7 @@ During Bad and Good Economic Times Equally?" *Journal of Macroeconomics*, 50(1):
 
 * Auerbach, A. J., and Gorodnichenko Y. (2012). "Measuring the Output Responses to Fiscal Policy." *American Economic Journal: Economic Policy*, 4    (2):   1-27. [doi:10.1257/pol.4.2.1](https://www.aeaweb.org/articles?id=10.1257/pol.4.2.1)
 
-*  Auerbach, A. J., and Gorodnichenko Y. (2013). "Fiscal Multipliers in Recession and Expansion" *NBER Working Paper Series*. Nr 17447.  [NATIONAL BUREAU OF ECONOMIC RESEARCH](http://www.nber.org/papers/w17447.pdf)
+*  Auerbach, A. J., and Gorodnichenko Y. (2013). "Fiscal Multipliers in Recession and Expansion" *NBER Working Paper Series*. Nr 17447.  [National Bureau of Economic Research](http://www.nber.org/papers/w17447.pdf)
 
 * Jordà, O. (2005) "Estimation and Inference of Impulse Responses by Local Projections." *American Economic Review*, 95 (1): 161-182.
 [doi:10.1257/0002828053828518](https://www.aeaweb.org/articles?id=10.1257/0002828053828518)

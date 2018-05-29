@@ -15,6 +15,67 @@ A list with plots for non-linear impulse responses
 \description{
 Compute (non-linear) irf plots irf plots estimated with \link{lp_nl}.
 }
+\examples{
+\dontrun{
+# Load packages
+  library(dplyr)
+  library(doParallel)
+  library(parallel)
+  library(vars)
+  library(mFilter)
+  library(Rcpp)
+  library(lpirfs)
+
+# Load data
+  data_set_df <- monetary_var_data
+
+# Create list for input
+  specs <- list()
+
+# Fill list
+  specs$lags_lin       <- NaN
+  specs$lags_nl        <- NaN
+  specs$lags_criterion <- 'AIC'
+  specs$max_lags       <- 2
+  specs$trend          <- 1
+  specs$shock_type     <- 1
+
+# Specifications for switching variable
+  specs$switching      <- data_set_df$FF
+  specs$hp_filter      <- 1
+  specs$lambda         <- 129600 # Suggestions: Monthly   = 129600,
+                                 #              Quarterly = 1600,
+                                 #              Annual = 6.25
+  specs$gamma          <- 3
+
+# Horizons and cinfidence intervals
+  specs$confint        <- 1.96
+  specs$hor            <- 24
+
+# Estimate model and save results
+  results_nl <- lp_nl(data_set_df, specs)
+
+# Make and save all plots
+  nl_plots <- plot_nl_irfs(results_nl)
+
+# Show all plots
+  library(ggpubr)
+  library(gridExtra)
+
+# Save plots based on states
+  s1_plots <- sapply(nl_plots$gg_s1, ggplotGrob)
+  s2_plots <- sapply(nl_plots$gg_s2, ggplotGrob)
+
+# Show first irf of each state
+  plot(s1_plots[[1]])
+  plot(s2_plots[[1]])
+
+# Plot plots
+  marrangeGrob(s1_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
+  marrangeGrob(s2_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
+
+ }
+}
 \author{
 Philipp Adämmer
 }

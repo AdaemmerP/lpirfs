@@ -34,17 +34,17 @@ You can install the released version of **lpirfs** from [CRAN](https://CRAN.R-pr
 install.packages("lpirfs")
 ```
 
-And the development version from [GitHub](https://github.com/):
+or the development version from [GitHub](https://github.com/):
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("AdaemmerP/lpirfs")
 ```
-## Description and examples
-A detailed description and examples can be found [here.](https://adaemmerp.github.io/lpirfs/README_docs.html)
+## Examples
+Examples can be found [here.](https://adaemmerp.github.io/lpirfs/README_docs.html)
 
 ## Acknowledgements
-I greatly benefitted from the profound *R*, *Rcpp* and *Github* knowledge of [Philipp Wittenberg](https://github.com/wittenberg) and [Detlef (overflow) Steuer](https://github.com/dsteuer). All remaning mistakes are obviously mine. 
+I greatly benefitted from the profound *R*, *Rcpp* and *Github* knowledge of [Philipp Wittenberg](https://github.com/wittenberg) and [Detlef (overflow) Steuer](https://github.com/dsteuer). All errors are obviously mine. 
 
 ## Development
 I am working on a function to include exogenous variables and a function that 

@@ -4,8 +4,8 @@
 #' used by Auerbach & Gorodnichenko (2012)  <doi:10.1257/pol.4.2.1>.
 #' The standardized time series is either pre-defined or will be estimated via
 #' the Hodrick-Prescott as used in Ramey & Zubairy (2018) <doi:10.1086/696277>
+#' @param switching_data A vector.
 #' @param specs A list with specifications for \link{lp_nl}.
-#' @param specs A vector.
 #' @return fz: Vector with values from smooth transition function.
 #' @author Philipp Adämmer
 

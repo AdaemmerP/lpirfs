@@ -10,7 +10,7 @@
 #'  \dontrun{
 #'# Load packages
 #'   library(dplyr)
-#'   library(doSNOW)
+#'   library(doParallel)
 #'   library(vars)
 #'   library(parallel)
 #'   library(Rcpp)
@@ -48,8 +48,6 @@
 #'   marrangeGrob(lin_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df))
 #'
 #'  }
-#'
-#'
 plot_lin_irfs <- function(results_lin){
 
   irf_lin_mean <- results_lin[[1]]

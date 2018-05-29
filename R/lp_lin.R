@@ -49,7 +49,7 @@
 #' \dontrun{
 #'# Load packages
 #'   library(dplyr)
-#'   library(doSNOW)
+#'   library(doParallel)
 #'   library(vars)
 #'   library(parallel)
 #'   library(Rcpp)
@@ -90,6 +90,11 @@
 #'
 #'  }
 lp_lin <- function(data_set_df, specs){
+
+  # Check whether data is a data.frame
+  if(!(is.data.frame(data_set_df))){
+    stop('The data has to be a data.frame().')
+  }
 
   # Check whether 'trend' is given
   if(is.null(specs$trend) == TRUE){
