@@ -4,6 +4,7 @@
 #' @param specs A \link{list}(). Inputs are outlined in \link{lp_nl}.
 #' @param data_set_df A data frame with all endogenous variables
 #' @return A list with lagged data for non-linear model.
+#' @import dplyr
 #' @author Philipp Adämmer
 #'
 #'
