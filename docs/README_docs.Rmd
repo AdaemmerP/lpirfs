@@ -57,7 +57,7 @@ Create plots for impulse responses of linear model with package function *plot_l
 ```{r, message = FALSE }
   linear_plots <- plot_lin_irfs(results_lin)
 ```
-Display single impulse responses with 95% confidence bands: 
+Display single impulse responses: 
 
 - The first plot shows the response of the first variable (GDP_gap) to a shock in the first variable in (GDP_gap). 
 - The second plot shows the response of the first variable (GDP_gap) to a shock in the second variable (Inflation). 
@@ -90,8 +90,8 @@ Load libraries:
 ```
 
 Load data set from package to estimate a non-linear, new-Keynesian, closed-
-economy model. These data are used by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) in chapter IV. 
-See the data's help file or the paper  by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) for a detailed description. 
+economy model. These data are used by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) in chapter IV, p.176. 
+See the data's help file or the [paper](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) for a detailed description. 
 ```{r, message = FALSE }
   data_set_df <- interest_rules_var_data
 ```
@@ -102,7 +102,7 @@ Make list and specify input variables to estimate non-linear impulse responses.
   specs <- list()
 
 # Specify inputs
-  specs$lags_lin       <- 4L      # Number of lags for linear VAR to identify the shock
+  specs$lags_lin       <- 4L      # Number of lags for (reduced) linear VAR 
   specs$lags_nl        <- 4L      # Number of lags
   specs$lags_criterion <- NaN     # Lag length criterion (AICc, AIC or BIC)
   specs$max_lags       <- NaN     # If lags_criterion is chosen, maximum number of lags  
@@ -115,7 +115,7 @@ Make list and specify input variables to estimate non-linear impulse responses.
 Provide a switching variable to separate the data into two regimes.
 ```{r, message = FALSE }
 # Specifications for switching variable
-  specs$switching      <- data_set_df$Infl # The output gap 
+  specs$switching      <- data_set_df$Infl # Inflation rate
   specs$hp_filter      <- 1                # 0 = Do not use HP-filter to decompose switching-variable, 
                                            # 1 = Use HP-filter to decompose switching-variable
   specs$lambda         <- 1600             # Monthly = 129600, Quarterly = 1600, Annual = 6.25
@@ -126,15 +126,15 @@ $$ $$
 The switching variable ($z_t$) can either be decomposed by the Hodrick-Prescott filter (see [Auerbach and Gorodnichenko, 2013](http://www.nber.org/papers/w17447.pdf)) or directly plugged into the following transition function:  
 
 
- $$F({z_t})  = \  \frac{e^{(-\gamma z_t)}}{(1 + e^{(-\gamma z_t)})},$$
+ $$F({z_t})  = \  \frac{e^{(-\gamma z_t)}}{\left(1 + e^{(-\gamma z_t)})\right)},$$
  
 
 
 where $\gamma > 0$. To differentiate between the two regimes, the exogenous variables ($\boldsymbol{y}_{t-p}$) are multiplied with the values of the transition function at *t − 1* where
 
-- Regime 1 ($R_1$): $\boldsymbol{y}_{t-i}\cdot(1-F(z_{t-1}))$,  with $i = 1, ...p$, and
+- Regime 1 $(R_1)$: $\boldsymbol{y}_{t-i}\cdot(1-F(z_{t-1}))$,  $\qquad i = 1, ..., p$, and
 
-- Regime 2 ($R_2$): $\boldsymbol{y}_{t-i}\cdot F(z_{t-1})$,  with $i = 1, ...p$.
+- Regime 2 $(R_2)$: $\boldsymbol{y}_{t-i}\cdot F(z_{t-1})$,  $\hskip 4.5em i = 1, ..., p$.
 
  IMPORTANT: The index of $z$ is set to *t − 1* in order to avoid contemporaneous feedback (see 
 [Auerbach and Gorodnichenko 2012](https://www.aeaweb.org/articles?id=10.1257/pol.4.2.1)). 
@@ -144,23 +144,23 @@ If you do not want the exogenous variables to be multiplied with lagged values o
 Non-linear impulses responses are computed as in [Ahmed and Cassou (2016)](https://www.sciencedirect.com/science/article/pii/S0164070416300490). 
 First, a reduced VAR is estimated to obtain the covariance matrix of the residuals $\Sigma$. The Cholesky decomposition is then applied to obatin the shock matrix with columns denoted by $d_i$. IRFs for both regimes are estimated via:
 
-$$\hat{IR}^{R_1}(t,s,d_i) = \hat{\boldsymbol{B}}_{1, R_1}^s d_i \ \ \ \ \ \ \ \ \ s = 0, ..., h, $$ 
+$$\hat{IR}^{R_1}(t,h,d_i) = \hat{\boldsymbol{B}}_{1, R_1}^h d_i, \ \ \ \ \ \ \ \ \ h = 1, ..., H, $$ 
 and 
 
-$$\hat{IR}^{R_2}(t,s,d_i) = \hat{\boldsymbol{B}}_{1, R_2}^s d_i \ \ \ \ \ \ \ \ \ s = 0, ..., h, $$ 
+$$\hat{IR}^{R_2}(t,h,d_i) = \hat{\boldsymbol{B}}_{1, R_2}^h d_i, \ \ \ \ \ \ \ \ \ h = 1, ..., H, $$ 
 
 
-with normalizations $\hat{\boldsymbol{B}}_{1, R2}^0 = I$ and $\hat{\boldsymbol{B}}_{1, R2}^0 = I$.The parameters are obtained by running a sequence of OLS forecasts (local projections):
+with $\hat{\boldsymbol{B}}_{1, R1}^0 = I$ and $\hat{\boldsymbol{B}}_{1, R1}^0 = I$. The parameters are obtained by running a sequence of OLS forecasts (local projections):
 
-$$ \boldsymbol{y}_{t+s} = \boldsymbol{\alpha}^s + \boldsymbol{B}_{1, R_1}^s \left(\boldsymbol{y}_{t-1}\cdot(1-F(z_{t-1})\right) \ + \ ...\ +\ 
-    \boldsymbol{B}_{p, R_1}^s \left(\boldsymbol{y}_{t-p}\cdot(1-F(z_{t-1})\right) + \\
-\boldsymbol{B}_{1, R_2}^s \left(\boldsymbol{y}_{t-1}\cdot F(z_{t-1}\right)) \ + \ ... \  + \  \boldsymbol{B}_{p, R_2}^s \left(\boldsymbol{y}_{t-p}\cdot F(z_{t-1}\right)) + \boldsymbol{\varepsilon}_{t+s}^s,
+$$ \boldsymbol{y}_{t+h} = \boldsymbol{\alpha}^h + \boldsymbol{B}_{1, R_1}^{h} \left(\boldsymbol{y}_{t-1}\cdot(1-F(z_{t-1})\right) \ + \ ...\ +\ 
+    \boldsymbol{B}_{p, R_1}^{h} \left(\boldsymbol{y}_{t-p}\cdot(1-F(z_{t-1})\right) + \\
+\boldsymbol{B}_{1, R_2}^{h} \left(\boldsymbol{y}_{t-1}\cdot F(z_{t-1}\right)) \ + \ ... \  + \  \boldsymbol{B}_{p, R_2}^{h} \left(\boldsymbol{y}_{t-p}\cdot F(z_{t-1}\right)) + \boldsymbol{\varepsilon}_{t+h}^h,
 $$
-with $s = 0,..., h.$
+with $h = 1,..., H.$
 
 $$ $$
 
-Estimate non-linear impulse responses with package function * lp_nl*. Note that the VAR's endogenous variables (*data_set_df*) have to be 
+Estimate non-linear impulse responses with package function *lp_nl*. Note that the VAR's data set (*data_set_df*) has to be 
 a data.frame(). 
 ```{r, message = FALSE }  
   results_nl <- lp_nl(data_set_df, specs)
@@ -173,7 +173,7 @@ Save values from transition function.
 
 Plot output gap
 ```{r, fig.height = 4, fig.width = 6, fig.align = "center", message = FALSE } 
-# Make date sequence. Start in December because the non-linear model is estimated with four lags.
+# Make date sequence and store data in data_frame.
   dates   <- seq(as.Date("1955/12/1"), as.Date("2003/1/1"), by = "quarter")
   data_df <- data_frame(x = dates, fz = fz, gdp_gap = specs$switching[(specs$lags_nl+1):length(data_set_df$FF)])
 
@@ -186,7 +186,7 @@ Plot output gap
     scale_x_date(date_breaks = "5 year",  date_labels = "%Y")
 ```
 
-Plot tranistion function
+Plot transition function
 ```{r, fig.height = 4, fig.width = 6, fig.align = "center", message = FALSE }  
   ggplot(data = data_df) +
     geom_line(aes(x = x, y = fz)) +
@@ -201,7 +201,7 @@ Create and save all plots with package function *plot_nl_irfs*
     nl_plots <- plot_nl_irfs(results_nl)
 ```
 
-Show first impulse response of each regime: 
+Show single impulse responses for each regime:
 
 - The first plot shows the response of the first variable (GDP_gap) to a shock in the first variable (GDP_gap) in regime 1. 
 - The second plot shows the response of the first variable (GDP_gap) to a shock in the second variable (Inflation) in regime 2. 
@@ -218,17 +218,15 @@ Show first impulse response of each regime:
   plot(s2_plots[[2]])
 ```
 
-Show all impulse responses of regime 1 (high inflation rates) with 90% confidence bands:
+Show all impulse responses of regime 1 (high inflation rates):
 ```{r, fig.height = 6, fig.width = 8, fig.align = "center", message = FALSE }
   marrangeGrob(s1_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top =  NULL)
 ```
 
-Show all impulse responses of regime 2 (low inflation rates) with 90% confidence bands:
+Show all impulse responses of regime 2 (low inflation rates):
 ```{r, fig.height = 6, fig.width = 8, fig.align = "center", message = FALSE }
   marrangeGrob(s2_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top = NULL)
 ```
-
-Findings are similar to those in [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518), namely that inflation and output are, in absolute terms,  more responsive to interest rates in the low-inflation regime than in the high-inflation regime.
 
 
 ## References
