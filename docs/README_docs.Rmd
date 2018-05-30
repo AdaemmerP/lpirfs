@@ -132,7 +132,9 @@ The switching variable ($z_t$) can either be decomposed by the Hodrick-Prescott 
 
 where $\gamma > 0$. To differentiate between the two regimes, the exogenous variables ($\boldsymbol{y}_{t-p}$) are multiplied with the values of the transition function at *t − 1* where
 
-- Regime 1 $(R_1)$: $\boldsymbol{y}_{t-i}\cdot(1-F(z_{t-1}))$,  $\qquad i = 1, ..., p$, and
+- Regime 1 $(R_1)$: $\boldsymbol{y}_{t-i}\cdot(1-F(z_{t-1}))$,  $\qquad i = 1, ..., p$,
+
+and
 
 - Regime 2 $(R_2)$: $\boldsymbol{y}_{t-i}\cdot F(z_{t-1})$,  $\hskip 4.5em i = 1, ..., p$.
 
@@ -154,7 +156,7 @@ with $\hat{\boldsymbol{B}}_{1, R1}^0 = I$ and $\hat{\boldsymbol{B}}_{1, R1}^0 = 
 
 $$ \boldsymbol{y}_{t+h} = \boldsymbol{\alpha}^h + \boldsymbol{B}_{1, R_1}^{h} \left(\boldsymbol{y}_{t-1}\cdot(1-F(z_{t-1})\right) \ + \ ...\ +\ 
     \boldsymbol{B}_{p, R_1}^{h} \left(\boldsymbol{y}_{t-p}\cdot(1-F(z_{t-1})\right) + \\
-\boldsymbol{B}_{1, R_2}^{h} \left(\boldsymbol{y}_{t-1}\cdot F(z_{t-1}\right)) \ + \ ... \  + \  \boldsymbol{B}_{p, R_2}^{h} \left(\boldsymbol{y}_{t-p}\cdot F(z_{t-1}\right)) + \boldsymbol{\varepsilon}_{t+h}^h,
+\hskip 7.6em \boldsymbol{B}_{1, R_2}^{h} \left(\boldsymbol{y}_{t-1}\cdot F(z_{t-1}\right)) \ + \ ... \  + \  \boldsymbol{B}_{p, R_2}^{h} \left(\boldsymbol{y}_{t-p}\cdot F(z_{t-1}\right)) + \boldsymbol{\varepsilon}_{t+h}^h,
 $$
 with $h = 1,..., H.$
 
