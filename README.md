@@ -16,7 +16,7 @@ Main features
 Installation
 ------------
 
-You can install the the development version of **lpirfs** from [GitHub](https://github.com/):
+You can install the development version of **lpirfs** from [GitHub](https://github.com/):
 
 ``` r
 # install.packages("devtools")
