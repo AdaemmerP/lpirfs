@@ -26,8 +26,8 @@ Load libraries:
   library(lpirfs)
 ```
 
-Load data.frame from package to estimate a simple, new-Keynesian, closed-
-economy model. These data are used by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) in chapter IV. 
+Load data from package to estimate a simple, new-Keynesian, closed-
+economy model. These data are used by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) in chapter IV, p. 174. 
 See the data's help file or the [paper](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) for a detailed description. 
 ```{r, message = FALSE }
   data_set_df <- interest_rules_var_data
