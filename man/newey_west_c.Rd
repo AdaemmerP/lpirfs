@@ -14,9 +14,11 @@ newey_west_c(y, x, h)
 \item{h}{Integer}
 }
 \description{
-This function estimates OLS's coefficients and the corresponding covariance matrix
+Compute linear OLS coefficients and robust covariance matrix
 based on Newey and West (1987).
-The function is based on the Matlab code by James LeSage.
+
+Compute OLS parameters and robust standard errors based on Newey and West (1987).
+The function is based on the Matlab code by James P. LeSage.
 }
 \references{
 Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and

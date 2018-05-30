@@ -2,14 +2,14 @@
 % Please edit documentation in R/create_lin_data.R
 \name{create_lin_data}
 \alias{create_lin_data}
-\title{Function to create data for linear model.}
+\title{Function to create data for linear model}
 \usage{
 create_lin_data(specs, data_set_df)
 }
 \arguments{
-\item{specs}{A \link{list}(). Inputs are outlined in \link{lp_lin}.}
+\item{specs}{A \link{list}(). Inputs are outlined in \link{lp_lin}().}
 
-\item{data_set_df}{A \link{data.frame} with all endogenous variables.}
+\item{data_set_df}{A \link{data.frame}() with all endogenous variables.}
 }
 \value{
 List with filled matrices of lagged left (y_lin) and right hand side (x_lin) variables

@@ -1,8 +1,8 @@
 #' @name plot_lin_irfs
-#' @title Compute (linear) irf plots
-#' @description Compute (linear) irf plots estimated with \link{lp_lin}.
+#' @title Compute and display (linear) impulse responses
+#' @description Compute and display (linear) impulse responses estimated with \link{lp_lin}.
 #' @param results_lin A list with 3D arrays estimated in \link{lp_lin}.
-#' @return A list with plots for linear impulse responses
+#' @return A list with (gg-)plots for linear impulse responses
 #' @export
 #' @import ggplot2
 #' @author Philipp Adämmer

@@ -1,8 +1,8 @@
 #' @name plot_nl_irfs
-#' @title Compute (non-linear) irf plots
-#' @description Compute (non-linear) irf plots irf plots estimated with \link{lp_nl}.
-#' @param results_nl A list with 3D arrays estimated in \link{lp_nl}.
-#' @return A list with plots for non-linear impulse responses
+#' @title Create and display (non-linear) impulse responses
+#' @description Compute and display (non-linear) impulse responses estimated with \link{lp_nl}().
+#' @param results_nl A list with 3D arrays estimated in \link{lp_nl}().
+#' @return A list with (gg-)plots for non-linear impulse responses
 #' @export
 #' @import ggplot2
 #' @author Philipp Adämmer
@@ -34,12 +34,12 @@
 #'# Specifications for switching variable
 #'   specs$switching      <- data_set_df$FF
 #'   specs$hp_filter      <- 1
-#'   specs$lambda         <- 129600 # Suggestions: Monthly   = 129600,
-#'                                  #              Quarterly = 1600,
-#'                                  #              Annual = 6.25
+#'   specs$lambda         <- 129600 # Monthly   = 129600,
+#'                                  # Quarterly = 1600,
+#'                                  # Annual    = 6.25
 #'   specs$gamma          <- 3
 #'
-#'# Horizons and cinfidence intervals
+#'# Horizons and confidence intervals
 #'   specs$confint        <- 1.96
 #'   specs$hor            <- 24
 #'
@@ -61,7 +61,7 @@
 #'   plot(s1_plots[[1]])
 #'   plot(s2_plots[[1]])
 #'
-#'# Plot plots
+#'# Display plots
 #'   marrangeGrob(s1_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
 #'   marrangeGrob(s2_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
 #'
@@ -92,16 +92,16 @@ plot_nl_irfs <- function(results_nl){
       tbl_s1_low  <- as.matrix(t(irf_s1_low[,   1:specs$hor , ss]))[, rr]
       tbl_s1_up   <- as.matrix(t(irf_s1_up[,    1:specs$hor , ss]))[, rr]
 
-      tbl_s1     <- tibble(x   = 1:specs$hor,  mean = tbl_s1_mean,
-                           low = tbl_s1_low,   up   = tbl_s1_up)
+      tbl_s1     <- data.frame(x   = 1:specs$hor,  mean = tbl_s1_mean,
+                               low = tbl_s1_low,   up   = tbl_s1_up)
 
       # Tibbles for recessions irfs
       tbl_s1_mean <- as.matrix(t(irf_s2_mean[,  1:specs$hor , ss]))[, rr]
       tbl_s2_low  <- as.matrix(t(irf_s2_low[,   1:specs$hor , ss]))[, rr]
       tbl_s2_up   <- as.matrix(t(irf_s2_up[,    1:specs$hor , ss]))[, rr]
 
-      tbl_s2      <- tibble(x   = 1:specs$hor,  mean   = tbl_s1_mean,
-                            low = tbl_s2_low,   up     = tbl_s2_up)
+      tbl_s2      <- data.frame(x   = 1:specs$hor,  mean   = tbl_s1_mean,
+                               low  = tbl_s2_low,   up     = tbl_s2_up)
 
 
       gg_s1[[plot_num]] <- ggplot() +

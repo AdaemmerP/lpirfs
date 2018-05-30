@@ -37,12 +37,12 @@ Examples can be found [here.](https://adaemmerp.github.io/lpirfs/README_docs.htm
 Acknowledgements
 ----------------
 
-I greatly benefitted from the profound *R*, *Rcpp* and *Github* knowledge of [Philipp Wittenberg](https://github.com/wittenberg) and [Detlef (overflow) Steuer](https://github.com/dsteuer). All errors are obviously mine.
+I greatly benefitted from the profound *R*, *Rcpp* and *Github* knowledge of [Philipp (stack) Wittenberg](https://github.com/wittenberg) and [Detlef (overflow) Steuer](https://github.com/dsteuer). All errors are obviously mine.
 
 Development
 -----------
 
-I am working on a function to include exogenous variables and a function that allows to identify the shocks besides the Cholesky decomposition.
+I am working on a function to include exogenous variables and a function which allows to manually identify the linear combinations of the reduced form residuals.
 
 ### Author
 

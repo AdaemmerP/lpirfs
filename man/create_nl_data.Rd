@@ -2,20 +2,20 @@
 % Please edit documentation in R/create_nl_data.R
 \name{create_nl_data}
 \alias{create_nl_data}
-\title{Function to create data for non-linear model.}
+\title{Function to create data for non-linear model}
 \usage{
 create_nl_data(specs, data_set_df)
 }
 \arguments{
-\item{specs}{A \link{list}(). Inputs are outlined in \link{lp_nl}.}
+\item{specs}{A \link{list}(). Inputs are outlined in \link{lp_nl}}
 
 \item{data_set_df}{A data frame with all endogenous variables}
 }
 \value{
-A list with lagged data for non-linear model.
+List with filled matrices of lagged left (y_lin) and right hand side (x_lin) variables
 }
 \description{
-Function to create data for non-linear model.
+Function to create data for non-linear model
 }
 \author{
 Philipp Adämmer

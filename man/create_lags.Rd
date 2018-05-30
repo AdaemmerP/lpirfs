@@ -2,20 +2,20 @@
 % Please edit documentation in R/create_lags.R
 \name{create_lags}
 \alias{create_lags}
-\title{Creates a data frame with lagged exogenous variables.}
+\title{Create a data frame with lagged exogenous variables}
 \usage{
 create_lags(data, lags)
 }
 \arguments{
-\item{data}{A data frame.}
+\item{data}{A data.frame()}
 
-\item{lags}{Integer for the number of lags.}
+\item{lags}{Integer for the number of lags}
 }
 \value{
-A data frame with lagged values from 'data'.
+A data.frame() with lagged values
 }
 \description{
-Creates a data frame with lagged exogenous variables.
+Create a data frame with lagged exogenous variables
 }
 \author{
 Philipp Adämmer

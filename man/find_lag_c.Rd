@@ -2,18 +2,14 @@
 % Please edit documentation in R/RcppExports.R
 \name{find_lag_c}
 \alias{find_lag_c}
-\title{Determines optimal lag length}
+\title{Determine optimal lag length}
 \arguments{
-\item{y}{List with left (endogenous variables)}
+\item{y}{List with left (endogenous) variables}
 
-\item{x}{List with right (exogenous variables)}
+\item{x}{List with right (exogenous) variables}
 
 \item{lag_crit}{Integer: 'AICc'= 1, 'AIC' = 2, 'BIC' = 3.}
 }
 \description{
-Determines optimal lag length based on 'AICc', 'AIC', or 'BIC' criterion.
-}
-\references{
-Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
-Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–708.
+Determine optimal lag length based on 'AICc', 'AIC', or 'BIC' criterion.
 }

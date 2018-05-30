@@ -1,13 +1,12 @@
 #' @name reduced_var
-#' @title Estimate structural shock matrix via Cholesky decomposition.
-#' @description Estimate structural shock matrix via Cholesky decomposition.
-#' @param y_lin A data frame for the exogenous variables.
-#' @param x_lin A list with exogenous variables.
-#' @param data_set_df Data frame with all endogenous variables.
-#' @param specs A list with specifications from \link{lp_lin}.
+#' @title Estimate structural shock matrix via Cholesky decomposition
+#' @description Estimate structural shock matrix via Cholesky decomposition
+#' @param y_lin A matrix with all endogenous variables
+#' @param x_lin A matrix with lagged endogenous variables
+#' @param data_set_df A data.frame with all endogenous variables
+#' @param specs A list with specifications from \link{lp_lin} or \link{lp_nl}
 #' @return Shock matrix (d)
 #' @author Philipp Adämmer
-
 
 reduced_var  <- function(y_lin, x_lin, data_set_df, specs){
 

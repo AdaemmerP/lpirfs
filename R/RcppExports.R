@@ -2,15 +2,13 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #' @name find_lag_c
-#' @title Determines optimal lag length
-#' @description Determines optimal lag length based on 'AICc', 'AIC', or 'BIC' criterion.
+#' @title Determine optimal lag length
+#' @description Determine optimal lag length based on 'AICc', 'AIC', or 'BIC' criterion.
 #'
-#' @param y List with left (endogenous variables)
-#' @param x List with right (exogenous variables)
+#' @param y List with left (endogenous) variables
+#' @param x List with right (exogenous) variables
 #' @param lag_crit Integer: 'AICc'= 1, 'AIC' = 2, 'BIC' = 3.
 #' @references
-#' Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
-#' Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–708.
 NULL
 
 find_lag_c <- function(y, x, lag_crit, h, k, max_lags) {
@@ -19,9 +17,12 @@ find_lag_c <- function(y, x, lag_crit, h, k, max_lags) {
 
 #' @name newey_west_c
 #' @title Compute newey west covariance matrix
-#' @description This function estimates OLS's coefficients and the corresponding covariance matrix
+#' @description Compute linear OLS coefficients and robust covariance matrix
 #' based on Newey and West (1987).
-#' The function is based on the Matlab code by James LeSage.
+#' @name newey_west_c
+#' @title Compute robust standard errors
+#' @description  Compute OLS parameters and robust standard errors based on Newey and West (1987).
+#' The function is based on the Matlab code by James P. LeSage.
 #'
 #' @param y Numeric vector
 #' @param x Numeric Matrix

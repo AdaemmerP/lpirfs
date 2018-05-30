@@ -1,9 +1,9 @@
 #' @name create_lags
-#' @title Creates a data frame with lagged exogenous variables.
-#' @description Creates a data frame with lagged exogenous variables.
-#' @param data A data frame.
-#' @param lags Integer for the number of lags.
-#' @return A data frame with lagged values from 'data'.
+#' @title Create a data frame with lagged exogenous variables
+#' @description Create a data frame with lagged exogenous variables
+#' @param data A data.frame()
+#' @param lags Integer for the number of lags
+#' @return A data.frame() with lagged values
 #' @import dplyr
 #' @author Philipp Adämmer
 
@@ -13,8 +13,8 @@ create_lags  <- function(data, lags){
   for (i in 1:lags){
 
     lags_column  <- data %>%
-                      dplyr::mutate_all(funs(lag(.data, i)))       %>%
-                      dplyr::rename_all(funs(paste0(.data,"_", "lag_", i)))
+                      dplyr::mutate_all(funs(lag(., i)))       %>%
+                      dplyr::rename_all(funs(paste0(.,"_", "lag_", i)))
 
               if(i == 1){
 

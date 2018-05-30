@@ -2,18 +2,18 @@
 % Please edit documentation in R/plot_nl_irfs.R
 \name{plot_nl_irfs}
 \alias{plot_nl_irfs}
-\title{Compute (non-linear) irf plots}
+\title{Create and display (non-linear) impulse responses}
 \usage{
 plot_nl_irfs(results_nl)
 }
 \arguments{
-\item{results_nl}{A list with 3D arrays estimated in \link{lp_nl}.}
+\item{results_nl}{A list with 3D arrays estimated in \link{lp_nl}().}
 }
 \value{
-A list with plots for non-linear impulse responses
+A list with (gg-)plots for non-linear impulse responses
 }
 \description{
-Compute (non-linear) irf plots irf plots estimated with \link{lp_nl}.
+Compute and display (non-linear) impulse responses estimated with \link{lp_nl}().
 }
 \examples{
 \dontrun{
@@ -43,12 +43,12 @@ Compute (non-linear) irf plots irf plots estimated with \link{lp_nl}.
 # Specifications for switching variable
   specs$switching      <- data_set_df$FF
   specs$hp_filter      <- 1
-  specs$lambda         <- 129600 # Suggestions: Monthly   = 129600,
-                                 #              Quarterly = 1600,
-                                 #              Annual = 6.25
+  specs$lambda         <- 129600 # Monthly   = 129600,
+                                 # Quarterly = 1600,
+                                 # Annual    = 6.25
   specs$gamma          <- 3
 
-# Horizons and cinfidence intervals
+# Horizons and confidence intervals
   specs$confint        <- 1.96
   specs$hor            <- 24
 
@@ -70,7 +70,7 @@ Compute (non-linear) irf plots irf plots estimated with \link{lp_nl}.
   plot(s1_plots[[1]])
   plot(s2_plots[[1]])
 
-# Plot plots
+# Display plots
   marrangeGrob(s1_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
   marrangeGrob(s2_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
 

@@ -10,45 +10,70 @@ lp_nl(data_set_df, specs)
 \item{data_set_df}{A \link{data.frame}() containing all endogenous variables for the VAR. The column order
 is used for the Cholesky decomposition.}
 
-\item{specs}{A \link{list}() with the following inputs:}
+\item{specs}{A \link{list}() with the following inputs:
+
+\itemize{
+\item{\strong{lags_criterion} NaN or character. NaN means that the number of lags
+        will be given at \emph{lags_nl} and \emph{lags_lin}. The lag length criteria are 'AICc', 'AIC' and 'BIC'.}
+ \item{\strong{lags_lin} Integer. Number of lags for linear VAR to identify shock.}
+\item{\strong{lags_nl} Integer. Number of lags for (non-linear) VAR (if \emph{lags_criterion} = NaN).}
+\item{\strong{max_lags} Integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC').}
+\item{\strong{trend} Integer. Include no trend =  0 , include trend = 1, include trend and quadratic trend = 2.}
+\item{\strong{shock_type} Integer. Standard deviation shock = 0, Unit shock = 1.}
+\item{\strong{confint} Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.}
+\item{\strong{hor} Integer. Number of horizons for impulse responses. }
+\item{\strong{switching} Vector. A column vector with the same length as \emph{data_set_df}. This series can either
+              be decomposed by the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013) or
+              directly plugged into the smooth transition function:
+              \deqn{ F_{z_t}) = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)} }
+              Warning: \eqn{F_{z_t}} will be lagged in \link{create_nl_data} by one and then multiplied with the data.
+              If the variable shall not be lagged, the vector has to be given with a lead of one.
+              The data for the two regimes are: \cr
+              Regime 1 = (1-\eqn{F(z_{t-1})})*y_{t-p}, \cr
+              Regime 2 = \eqn{F(z_{t-1})}*y_{t-p}.
+                }
+\item{\strong{gamma} Double. Value of \eqn{\gamma} which is used in the transition function.}
+\item{\strong{hp_filter} Integer. No HP-filter = 0. Use HP-filter = 1. }
+\item{\strong{lambda} Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter if \emph{hp_filter} = 1. }
+}}
 }
 \value{
 A list with impulse responses and their robust confidence bands.
-It also returns an updated list of \emph{specs} with further properties of \emph{data_set_df} for the plot function.
+It also contains an updated list of \emph{specs} with further properties of \emph{data_set_df} for the plot function.
 
-\item{irf_s1_mean}{A three 3D \link{array}, containing all impulse responses for all endogenous variables of the first state.
+\item{irf_s1_mean}{A three 3D \link{array}(), containing all impulse responses for all endogenous variables of the first state.
                    The last dimension denotes the shock variable. The row in each matrix
                    denotes the respones of the \emph{ith} variable ordered as in \emph{data_set_df}. The columns are the horizons.
-                   For example, if the results are saved in \emph{results_lin}, results_lin$irf_lin_mean[, , 1] returns a KXH matrix,
-                   where K is the number of variables and H the number of horizons. '1' is the first shock variable corresponding to the
+                   For example, if the results are saved in \emph{results_nl}, results_nl$irf_s1_mean[, , 1] returns a KXH matrix,
+                   where K is the number of variables and H the number of horizons. '1' is the variable which shocks, i.e. the
                    variable in the first column of \emph{data_set_df}.}
 
-\item{irf_s1_low}{A three 3D \link{array}, containing all lower confidence bands of the impulse responses, based on
+\item{irf_s1_low}{A three 3D \link{array}(), containing all lower confidence bands of the impulse responses, based on
                    robust standard standard errors by Newey and West (1987). Properties are equal to \emph{irf_s1_mean}.}
 
-\item{irf_s1_up}{A three 3D \link{array}, containing all upper confidence bands of the impulse responses, based on
+\item{irf_s1_up}{A three 3D \link{array}(), containing all upper confidence bands of the impulse responses, based on
                    robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s1_mean}.}
 
-\item{irf_s2_mean}{A three 3D \link{array}, containing all impulse responses for all endogenous variables of the second state.
+\item{irf_s2_mean}{A three 3D \link{array}(), containing all impulse responses for all endogenous variables of the second state.
                    The last dimension denotes the shock variable. The row in each matrix
                    denotes the respones of the \emph{ith} variable as ordered in data_set_df. The columns denote the horizon.
-                   For example, if the results are saved in \emph{results_lin}, results_lin$irf_lin_mean[, , 1] returns a KXH matrix,
+                   For example, if the results are saved in \emph{results_nl}, results_nl$irf_s2_mean[, , 1] returns a KXH matrix,
                    where K is the number of variables and H the number of horizons. '1' is the first shock variable corresponding to the
                    variable in the first column of \emph{data_set_df}.}
 
-\item{irf_s2_low}{A three 3D \link{array}, containing all lower confidence bands of the responses,
+\item{irf_s2_low}{A three 3D \link{array}(), containing all lower confidence bands of the responses,
                    based on robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s2_mean}.}
 
-\item{irf_s2_up}{A three 3D \link{array}, containing all upper confidence bands of the responses, based on
+\item{irf_s2_up}{A three 3D \link{array}(), containing all upper confidence bands of the responses, based on
                    robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s2_mean}.}
 
 \item{specs}{An updated list of \emph{specs} for the plot function.}
 
-\item{fz}{Soso}
+\item{fz}{A vector containing the values of the transition function F(z_{t-1})}
 }
 \description{
 Compute non-linear impulse responses with local projections by Jordà (2005). The
-data are separated into two states with a smooth transition function as in Auerbach and Gorodnichenko (2012).
+data are separated into two states with a smooth transition function as proposed by Auerbach and Gorodnichenko (2012).
 }
 \examples{
 \dontrun{
@@ -61,7 +86,7 @@ data are separated into two states with a smooth transition function as in Auerb
   library(Rcpp)
   library(lpirfs)
 
-# Load data
+# Load data (from package)
   data_set_df <- monetary_var_data
 
 # Create list for input
@@ -80,10 +105,10 @@ data are separated into two states with a smooth transition function as in Auerb
   specs$hp_filter      <- 1
   specs$lambda         <- 129600 # Suggestions: Monthly   = 129600,
                                  #              Quarterly = 1600,
-                                 #              Annual = 6.25
+                                 #              Annual    = 6.25
   specs$gamma          <- 3
 
-# Horizons and cinfidence intervals
+# Horizons and confidence intervals
   specs$confint        <- 1.96
   specs$hor            <- 24
 
@@ -105,7 +130,7 @@ data are separated into two states with a smooth transition function as in Auerb
   plot(s1_plots[[1]])
   plot(s2_plots[[1]])
 
-# Plot plots
+# Show all plots
   marrangeGrob(s1_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
   marrangeGrob(s2_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
 
@@ -126,29 +151,4 @@ Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–
 }
 \author{
 Philipp Adämmer
-
-\itemize{
-\item{\strong{lags_criterion} NaN or character. NaN means that the number of lags
-        will be given at \emph{lags_nl}. The character denotes the lag length criterion ('AICc', 'AIC' or 'BIC').}
- \item{\strong{lags_lin} Integer. Number of lags for linear VAR to identify shock.}
-\item{\strong{lags_nl} Integer. Number of lags for (non-linear) VAR (if \emph{lags_criterion} = NaN).}
-\item{\strong{max_lags} Integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC').}
-\item{\strong{trend} Integer. Include no trend =  0 , include trend = 1, include trend and quadratic trend = 2.}
-\item{\strong{shock_type} Integer. Standard deviation shock = 0, Unit shock = 1.}
-\item{\strong{confint} Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.}
-\item{\strong{hor} Integer. Number of horizons for impulse responses. }
-\item{\strong{switching} Vector. A column vector with the same length as \emph{data_set_df}. This series (\eqn{z_t}) can either
-              be decomposed by the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013) or
-              directly plugged into the smooth transition function:
-              \deqn{ F_{z_t}) = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)} }
-              Warning: \eqn{F_{z_t}} will be lagged in \link{create_nl_data} by one and then multiplied with the data.
-              If the variable shall not be lagged, the vector has to be given with a lead of one.
-              The exogonous data for the transition states are prepared as follows: \cr
-              State 1 = (1-\eqn{F(z_t)})*X, state 2 = \eqn{F(z_t)}*X \cr
-              Please read Auerbach and Gorodnichenko (2012) for further details on the transition function.
-                }
-\item{\strong{hp_filter} Integer. No HP-filter = 0. Use HP-filter = 1. }
-\item{\strong{lambda} Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter if \emph{hp_filter} = 1. }
-\item{\strong{gamma} Double. Value of \eqn{\gamma} which is used in the transition function in \link{switching_series}. }
-}
 }

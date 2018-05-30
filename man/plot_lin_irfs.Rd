@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_lin_irfs.R
 \name{plot_lin_irfs}
 \alias{plot_lin_irfs}
-\title{Compute (linear) irf plots}
+\title{Compute and display (linear) impulse responses}
 \usage{
 plot_lin_irfs(results_lin)
 }
@@ -10,10 +10,10 @@ plot_lin_irfs(results_lin)
 \item{results_lin}{A list with 3D arrays estimated in \link{lp_lin}.}
 }
 \value{
-A list with plots for linear impulse responses
+A list with (gg-)plots for linear impulse responses
 }
 \description{
-Compute (linear) irf plots estimated with \link{lp_lin}.
+Compute and display (linear) impulse responses estimated with \link{lp_lin}.
 }
 \examples{
  \dontrun{

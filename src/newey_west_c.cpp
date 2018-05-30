@@ -2,9 +2,12 @@
 using namespace Rcpp;
 //' @name newey_west_c
 //' @title Compute newey west covariance matrix
-//' @description This function estimates OLS's coefficients and the corresponding covariance matrix
+//' @description Compute linear OLS coefficients and robust covariance matrix
 //' based on Newey and West (1987).
-//' The function is based on the Matlab code by James LeSage.
+//' @name newey_west_c
+//' @title Compute robust standard errors
+//' @description  Compute OLS parameters and robust standard errors based on Newey and West (1987).
+//' The function is based on the Matlab code by James P. LeSage.
 //'
 //' @param y Numeric vector
 //' @param x Numeric Matrix

@@ -2,20 +2,20 @@
 % Please edit documentation in R/lm_function.R
 \name{lm_function}
 \alias{lm_function}
-\title{Estimate residuals from OLS model.}
+\title{Estimate residuals from OLS model}
 \usage{
 lm_function(y_data, x_data)
 }
 \arguments{
 \item{y_data}{A vector for the left hand variable.}
 
-\item{x_data}{A data frame with exogenous variables.}
+\item{x_data}{A matrix with right hand variables.}
 }
 \value{
 Vector with residuals from OLS regression.
 }
 \description{
-Estimate residuals from OLS model.
+Estimate residuals from OLS model
 }
 \author{
 Philipp Adämmer

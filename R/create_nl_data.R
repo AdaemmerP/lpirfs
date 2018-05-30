@@ -1,9 +1,9 @@
 #' @name create_nl_data
-#' @title Function to create data for non-linear model.
-#' @description Function to create data for non-linear model.
-#' @param specs A \link{list}(). Inputs are outlined in \link{lp_nl}.
+#' @title Function to create data for non-linear model
+#' @description Function to create data for non-linear model
+#' @param specs A \link{list}(). Inputs are outlined in \link{lp_nl}
 #' @param data_set_df A data frame with all endogenous variables
-#' @return A list with lagged data for non-linear model.
+#' @return  List with filled matrices of lagged left (y_lin) and right hand side (x_lin) variables
 #' @import dplyr
 #' @author Philipp Adämmer
 #'
@@ -31,11 +31,11 @@ create_nl_data <- function(specs, data_set_df){
 
    # Create tibbles with exogenous regime data and combine them to one data set
     x_nl_s1      <- x_nl %>%
-                      dplyr::mutate_all(funs(s1 = .data*(1 - fz)))  %>%
+                      dplyr::mutate_all(funs(s1 = .*(1 - fz)))  %>%
                       dplyr::select(-one_of(linear_names))
 
     x_nl_s2      <- x_nl %>%
-                      dplyr::mutate_all(funs(s2 = .data*fz))  %>%
+                      dplyr::mutate_all(funs(s2 = .*fz))  %>%
                       dplyr::select(-one_of(linear_names))
 
     x_nl         <- cbind(x_nl_s1, x_nl_s2)
@@ -86,11 +86,11 @@ create_nl_data <- function(specs, data_set_df){
       linear_names   <- names(x_nl_temp)
 
       x_nl_s1        <- x_nl_temp %>%
-                           dplyr::mutate_all(funs(s1 = .data*(1 - fz))) %>%
+                           dplyr::mutate_all(funs(s1 = .*(1 - fz))) %>%
                            dplyr::select(-one_of(linear_names))
 
       x_nl_s2        <- x_nl_temp %>%
-                           dplyr::mutate_all(funs(s2 = .data*fz))        %>%
+                           dplyr::mutate_all(funs(s2 = .*fz))        %>%
                            dplyr::select(-one_of(linear_names))
 
       x_nl[[i]]      <- cbind(x_nl_s1, x_nl_s2)
