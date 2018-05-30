@@ -8,7 +8,7 @@ An R-package which estimates linear and non-linear impulse responses with local 
 Main features
 -------------
 
--   Estimate linear and non-linear impulse responses with local projections.
+-   Estimates linear and non-linear impulse responses with local projections.
 -   Functions to plot linear and non-linear impulse responses.
 -   Functions are partly implemented in *Rcpp* and *RcppArmadillo* to improve efficiency.
 -   High performance with parallel computation.
@@ -16,13 +16,7 @@ Main features
 Installation
 ------------
 
-You can install the released version of **lpirfs** from [CRAN](https://CRAN.R-project.org):
-
-``` r
-install.packages("lpirfs")
-```
-
-or the development version from [GitHub](https://github.com/):
+You can install the the development version of **lpirfs** from [GitHub](https://github.com/):
 
 ``` r
 # install.packages("devtools")
