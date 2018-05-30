@@ -31,7 +31,7 @@ Examples can be found [here.](https://adaemmerp.github.io/lpirfs/README_docs.htm
 Acknowledgements
 ----------------
 
-I greatly benefitted from the profound *R*, *Rcpp* and *GitHub* knowledge of [Philipp (stack) Wittenberg](https://github.com/wittenberg) and [Detlef (overflow) Steuer](https://github.com/dsteuer). All errors are obviously mine.
+I greatly benefitted from the profound *R*, *Rcpp* and *GitHub* knowledge of Philipp (stack) [Wittenberg](https://github.com/wittenberg) and Detlef (overflow) [Steuer](https://github.com/dsteuer). Remaining errors are obviously mine.
 
 Development
 -----------

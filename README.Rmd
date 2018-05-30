@@ -38,7 +38,7 @@ devtools::install_github("AdaemmerP/lpirfs")
 Examples can be found [here.](https://adaemmerp.github.io/lpirfs/README_docs.html)
 
 ## Acknowledgements
-I greatly benefitted from the profound *R*, *Rcpp* and *GitHub* knowledge of [Philipp (stack) Wittenberg](https://github.com/wittenberg) and [Detlef (overflow) Steuer](https://github.com/dsteuer). All errors are obviously mine. 
+I greatly benefitted from the profound *R*, *Rcpp* and *GitHub* knowledge of Philipp (stack) [Wittenberg](https://github.com/wittenberg) and Detlef (overflow) [Steuer](https://github.com/dsteuer). Remaining errors are obviously mine. 
 
 ## Development
 I am working on a function to include exogenous variables and a function which allows to manually
