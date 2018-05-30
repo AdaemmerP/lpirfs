@@ -26,8 +26,8 @@ Load libraries:
   library(lpirfs)
 ```
 
-Load data from package to estimate a simple, new-Keynesian, closed-
-economy model. These data are used by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) in chapter IV, p. 174. 
+Load data from package to estimate a simple, new-Keynesian, closed-economy 
+model. These data are used by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) in chapter IV, p. 174. 
 See the data's help file or the [paper](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) for a detailed description. 
 ```{r, message = FALSE }
   data_set_df <- interest_rules_var_data
@@ -60,7 +60,7 @@ Create plots for impulse responses of linear model with package function *plot_l
 Display single impulse responses: 
 
 - The first plot shows the response of the first variable (GDP_gap) to a shock in the first variable in (GDP_gap). 
-- The second plot shows the response of the first variable (GDP_gap) to a shock in the second variable (Inflation). 
+- The second plot shows the response of the first variable (GDP_gap) to a shock in the second variable (inflation). 
 ```{r, fig.height = 2.5, fig.width = 3, fig.align = "center", message = FALSE }
   linear_plots[[1]]
   linear_plots[[2]]
@@ -89,8 +89,8 @@ Load libraries:
   library(vars)
 ```
 
-Load data set from package to estimate a non-linear, new-Keynesian, closed-
-economy model. These data are used by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) in chapter IV, p.176. 
+Load data set from package to estimate a non-linear, new-Keynesian, closed-economy 
+model. These data are used by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) in chapter IV, p.176. 
 See the data's help file or the [paper](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) for a detailed description. 
 ```{r, message = FALSE }
   data_set_df <- interest_rules_var_data
@@ -116,8 +116,8 @@ Provide a switching variable to separate the data into two regimes.
 ```{r, message = FALSE }
 # Specifications for switching variable
   specs$switching      <- data_set_df$Infl # Inflation rate
-  specs$hp_filter      <- 1                # 0 = Do not use HP-filter to decompose switching-variable, 
-                                           # 1 = Use HP-filter to decompose switching-variable
+  specs$hp_filter      <- 1                # 0 = Do not use HP-filter to decompose switching variable, 
+                                           # 1 = Use HP-filter to decompose switching variable
   specs$lambda         <- 1600             # Monthly = 129600, Quarterly = 1600, Annual = 6.25
   specs$gamma          <- 6                # Numeric value > 0
 ```
@@ -143,8 +143,8 @@ and
 The lag is automatically created in the package function *create_nl_data*. 
 If you do not want the exogenous variables to be multiplied with lagged values of $F({z_t})$, you have to provide the switching variable with a lead of one.
 
-Non-linear impulses responses are computed as in [Ahmed and Cassou (2016)](https://www.sciencedirect.com/science/article/pii/S0164070416300490). 
-First, a reduced VAR is estimated to obtain the covariance matrix of the residuals $\Sigma$. The Cholesky decomposition is then applied to obatin the shock matrix with columns denoted by $d_i$. IRFs for both regimes are estimated via:
+Non-linear impulse responses are computed as in [Ahmed and Cassou (2016)](https://www.sciencedirect.com/science/article/pii/S0164070416300490). 
+First, a reduced VAR is estimated to obtain the covariance matrix of the residuals $\Sigma$. The Cholesky decomposition is then applied to obtain the shock matrix with columns denoted by $d_i$. IRFs for both regimes are estimated via:
 
 $$\hat{IR}^{R_1}(t,h,d_i) = \hat{\boldsymbol{B}}_{1, R_1}^h d_i, \ \ \ \ \ \ \ \ \ h = 1, ..., H, $$ 
 and 
@@ -152,7 +152,7 @@ and
 $$\hat{IR}^{R_2}(t,h,d_i) = \hat{\boldsymbol{B}}_{1, R_2}^h d_i, \ \ \ \ \ \ \ \ \ h = 1, ..., H, $$ 
 
 
-with $\hat{\boldsymbol{B}}_{1, R1}^0 = I$ and $\hat{\boldsymbol{B}}_{1, R1}^0 = I$. The parameters are obtained by running a sequence of OLS forecasts (local projections):
+with $\hat{\boldsymbol{B}}_{1, R1}^0 = I$ and $\hat{\boldsymbol{B}}_{1, R2}^0 = I$. The parameters are obtained by running a sequence of OLS forecasts (local projections):
 
 $$ \boldsymbol{y}_{t+h} = \boldsymbol{\alpha}^h + \boldsymbol{B}_{1, R_1}^{h} \left(\boldsymbol{y}_{t-1}\cdot(1-F(z_{t-1})\right) \ + \ ...\ +\ 
     \boldsymbol{B}_{p, R_1}^{h} \left(\boldsymbol{y}_{t-p}\cdot(1-F(z_{t-1})\right) + \\
@@ -168,7 +168,7 @@ a data.frame().
   results_nl <- lp_nl(data_set_df, specs)
 ```
 
-Save values from transition function.
+Save values from transition function
 ```{r, message = FALSE } 
   fz      <- results_nl$fz
 ```
@@ -220,12 +220,12 @@ Show single impulse responses for each regime:
   plot(s2_plots[[2]])
 ```
 
-Show all impulse responses of regime 1 (high inflation rates):
+Show all impulse responses of regime 1 (high inflation rates)
 ```{r, fig.height = 6, fig.width = 8, fig.align = "center", message = FALSE }
   marrangeGrob(s1_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top =  NULL)
 ```
 
-Show all impulse responses of regime 2 (low inflation rates):
+Show all impulse responses of regime 2 (low inflation rates)
 ```{r, fig.height = 6, fig.width = 8, fig.align = "center", message = FALSE }
   marrangeGrob(s2_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top = NULL)
 ```
