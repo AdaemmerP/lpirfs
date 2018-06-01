@@ -1,5 +1,8 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+lpirfs [![Build Status](https://travis-ci.com/AdaemmerP/lpirfs.svg?branch=master)](https://travis-ci.com/AdaemmerP/lpirfs)
+==========================================================================================================================
+
 lpirfs
 ======
 
