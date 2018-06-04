@@ -19,7 +19,7 @@ reduced_var(y_lin, x_lin, data_set_df, specs)
 Shock matrix (d)
 }
 \description{
-Estimate structural shock matrix via Cholesky decomposition
+Estimate structural shock matrix via Cholesky decomposition.
 }
 \author{
 Philipp Adämmer

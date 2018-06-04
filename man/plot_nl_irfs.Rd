@@ -10,7 +10,7 @@ plot_nl_irfs(results_nl)
 \item{results_nl}{A list with 3D arrays estimated in \link{lp_nl}().}
 }
 \value{
-A list with (gg-)plots for non-linear impulse responses
+A list with (gg-)plots for non-linear impulse responses.
 }
 \description{
 Compute and display (non-linear) impulse responses estimated with \link{lp_nl}().

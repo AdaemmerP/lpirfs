@@ -3,9 +3,8 @@
 \docType{data}
 \name{monetary_var_data}
 \alias{monetary_var_data}
-\title{Data applied in the AER article by Jordà (2005).
-<doi:10.1257/0002828053828518>}
-\format{A data frame with 494 monthly observations (rows) and 6 variables:
+\title{A data frame to estimate a standard monetary VAR}
+\format{A data frame with 494 monthly observations (rows) and 6 variables (clumns):
 \describe{
   \item{EM}{Log of non-agricultural payroll employment.}
   \item{P}{Log of personal consumption expenditures deflator (1996 = 100).}
@@ -24,7 +23,6 @@ Sample: 1960:01 - 2001:02.}
 monetary_var_data
 }
 \description{
-Data applied in the AER article by Jordà (2005).
-<doi:10.1257/0002828053828518>
+A data frame to estimate a standard monetary VAR
 }
 \keyword{datasets}

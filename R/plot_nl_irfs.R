@@ -2,7 +2,7 @@
 #' @title Create and display (non-linear) impulse responses
 #' @description Compute and display (non-linear) impulse responses estimated with \link{lp_nl}().
 #' @param results_nl A list with 3D arrays estimated in \link{lp_nl}().
-#' @return A list with (gg-)plots for non-linear impulse responses
+#' @return A list with (gg-)plots for non-linear impulse responses.
 #' @export
 #' @import ggplot2
 #' @author Philipp Adämmer
