@@ -4,7 +4,7 @@
 #' created in \link{lp_lin} or \link{lp_nl}.
 #' @param y_lin A matrix with all endogenous variables
 #' @param x_lin A matrix with lagged endogenous variables
-#' @param data_set_df A \link(data.frame}() with all endogenous variables
+#' @param data_set_df A \link{data.frame}() with all endogenous variables
 #' @param specs A list with specifications from \link{lp_lin} or \link{lp_nl}
 #' @return Shock matrix (d)
 #' @author Philipp Adämmer
