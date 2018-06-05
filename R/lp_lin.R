@@ -89,57 +89,88 @@
 #'  }
 lp_lin <- function(data_set_df, specs){
 
-  # Check whether data is a data.frame
+  # Check whether data is a data.frame()
   if(!(is.data.frame(data_set_df))){
     stop('The data has to be a data.frame().')
   }
 
   # Check whether 'trend' is given
-  if(is.null(specs$trend) == TRUE){
+  if(is.null(specs$trend)){
     stop('Please specify whether and which type of trend to include.')
   }
 
   # Check whether 'shock_type' is given
-  if(is.null(specs$shock_type) == TRUE){
+  if(is.null(specs$shock_type)){
     stop('Please specify which type of shock to use.')
   }
 
-  # Check whether 'shock_type' is given
-  if(is.null(specs$confint) == TRUE){
+  # Check whether width for confidence intervals is given
+  if(is.null(specs$confint)){
     stop('Please specify a value for the width of the confidence bands.')
   }
 
-  # Check whether 'shock_type' is given
-  if(is.null(specs$hor) == TRUE){
+  # Check whether number of horizons is given
+  if(is.null(specs$hor)){
     stop('Please specify the number of horizons.')
   }
 
 
   # Check whether wrong lag length criterion is given
   if(!(is.nan(specs$lags_criterion)          | specs$lags_criterion == 'AICc'|
-       specs$lags_criterion         == 'AIC' | specs$lags_criterion == 'BIC') == TRUE){
+       specs$lags_criterion         == 'AIC' | specs$lags_criterion == 'BIC')){
     stop('Possible lag length criteria are AICc, AIC or BIC or NaN if lag length is specified.')
   }
 
 
-  # Check whether lags criterion and maximum number of lags is given
-  if((is.character(specs$lags_criterion) == TRUE) &
-      (!is.na(specs$lags_lin) == TRUE)){
+  # Check whether lags criterion and maximum number of lags are given
+  if((is.character(specs$lags_criterion)) &
+      (!is.na(specs$lags_lin))){
      stop('You can not provide a lag criterion (AICc, AIC or BIC) and a fixed number of lags.')
     }
 
 
-  # Check whether no lag length criterion and number of lags is given
-  if((is.na(specs$lags_criterion)  == TRUE) &
-      (is.na(specs$lags_lin)        == TRUE)){
+  # Check whether no lag length criterion and number of lags are given
+  if((is.na(specs$lags_criterion)) &
+      (is.na(specs$lags_lin))){
     stop('You have to at least provide a lag criterion (AICc, AIC or BIC) or a fixed number of lags.')
   }
 
+
   # Check whether maximum number of lags is given for lag length criterion
-  if((is.character(specs$lags_criterion)  == TRUE) &
-     (is.na(specs$max_lags)               == TRUE)){
+  if((is.character(specs$lags_criterion)) &
+     (is.na(specs$max_lags)            )){
     stop('Please provide a maximum number of lags for the lag length criterion.')
   }
+
+
+  # Check whether values for horizons are correct
+  if(!(specs$hor > 0) | is.nan(specs$hor) | !(specs$hor %% 1 == 0)){
+    stop('The number of horizons has to be an integer and > 0.')
+  }
+
+  # Check whether lags are integers
+  if(!is.nan(specs$lags_lin) &
+    !(specs$lags_lin %% 1 == 0) | !(specs$max_lags %% 1 == 0)){
+    stop('The numbers of lags have to be an integer.')
+  }
+
+  # Check whether trend is correctly specified
+  if(!(specs$trend %in% c(0,1,2))){
+    stop('For trend please enter 0 = no trend, 1 = trend, 2 = trend and quadratic trend.')
+  }
+
+  # Check whether shock type is correctly specified
+  if(!(specs$shock_type %in% c(0|1))){
+    stop('The shock_type has to be 0 = standard deviation shock and 1 = unit shock.')
+  }
+
+
+  # Check whether width of confidence bands is >=0
+  if(!(specs$confint >=0)){
+    stop('The width of the confidence bands has to be >=0.')
+  }
+
+
 
 
   # Safe data frame specifications in 'specs for functions

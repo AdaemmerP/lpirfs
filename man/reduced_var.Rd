@@ -2,7 +2,7 @@
 % Please edit documentation in R/reduced_var.R
 \name{reduced_var}
 \alias{reduced_var}
-\title{Estimate structural shock matrix via Cholesky decomposition}
+\title{Compute structural shock matrix via Cholesky decomposition}
 \usage{
 reduced_var(y_lin, x_lin, data_set_df, specs)
 }
@@ -11,15 +11,14 @@ reduced_var(y_lin, x_lin, data_set_df, specs)
 
 \item{x_lin}{A matrix with lagged endogenous variables}
 
-\item{data_set_df}{A data.frame with all endogenous variables}
-
 \item{specs}{A list with specifications from \link{lp_lin} or \link{lp_nl}}
 }
 \value{
 Shock matrix (d)
 }
 \description{
-Estimate structural shock matrix via Cholesky decomposition.
+Compute structural shock matrix via Cholesky decomposition with input variables
+created in \link{lp_lin} or \link{lp_nl}.
 }
 \author{
 Philipp Adämmer

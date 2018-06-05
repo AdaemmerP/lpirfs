@@ -15,8 +15,8 @@ switching_series(switching_data, specs)
 \item{fz:}{A vector with values from smooth transition function for \eqn{F(z_{t-1})}}
 }
 \description{
-Function to estimate transition values. It uses a smooth transition function as
-proposed by Auerbach & Gorodnichenko (2012). The time series, which is used in the transition function,
+Function to estimate transition values, which uses a smooth transition function as
+proposed by Auerbach & Gorodnichenko (2012). The time series used in the transition function
 can be de-trended via the Hodrick-Prescott (see Auerbach and Gorodnichenko, 2013).
 }
 \references{

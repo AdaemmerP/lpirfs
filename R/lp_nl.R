@@ -228,6 +228,35 @@ lp_nl <- function(data_set_df, specs){
     stop('Please provide a lag length for the linear model to identify the shock.')
   }
 
+
+  # Check whether values for horizons are correct
+  if(!(specs$hor > 0) | is.nan(specs$hor) |  !(specs$hor %% 1 == 0)){
+    stop('The number of horizons has to be an integer and > 0.')
+  }
+
+  # Check whether lags are integers
+  if(!is.integer(specs$lags_lin) | !is.integer(specs$lags_nl) | !is.integer(specs$max_lags)){
+    stop('The numbers of lags have to be an integer.')
+  }
+
+
+  # Check whether trend is correctly specified
+  if(!(specs$trend %in% c(0,1,2))){
+    stop('For trend please enter 0 = no trend, 1 = trend, 2 = trend and quadratic trend.')
+  }
+
+
+  # Check whether shock type is correctly specified
+  if(!(specs$shock_type %in% c(0|1))){
+    stop('The shock_type has to be 0 = standard deviation shock and 1 = unit shock.')
+  }
+
+
+  # Check whether width of confidence bands is >=0
+  if(!(specs$confint >=0)){
+    stop('The width of the confidence bands has to be >=0.')
+  }
+
   # Safe data frame specifications in 'specs for functions
   specs$starts         <- 1                        # Sample Start
   specs$ends           <- dim(data_set_df)[1]      # Sample end

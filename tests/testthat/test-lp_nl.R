@@ -120,15 +120,40 @@ test_that("Check whether lag criterion AND maximum number of lags are given", {
 } )
 
 
-# test_that("Check whether lin lags is given if nl_lags is given", {
-#   specs$lags_criterion <- NaN
-#   specs$lags_nl        <- 3
-#   specs$lags_lin       <- NULL
-#   expect_error(lp_nl(data_set_df, specs),
-#                'Please provide a lag length for the linear model to identify the shock.', fixed = TRUE)
-# } )
-#
+
+test_that("Check whether values for horizons are correct", {
+  specs$hor <- -1
+  expect_error(lp_nl(data_set_df, specs),
+               'The number of horizons has to be an integer and > 0.', fixed = TRUE)
+} )
 
 
+test_that("Check whether lags are integers", {
+  specs$lags_lin         <- 1.4
+  specs$lags_nl          <- 2
+  specs$lags_criterion   <- NaN
+  expect_error(lp_nl(data_set_df, specs),
+               'The numbers of lags have to be an integer.', fixed = TRUE)
+} )
+
+
+test_that("Check whether trend is correctly specified", {
+  specs$trend <- 12
+  expect_error(lp_lin(data_set_df, specs),
+               'For trend please enter 0 = no trend, 1 = trend, 2 = trend and quadratic trend.', fixed = TRUE)
+} )
+
+
+test_that("Check shock type is correctly specified", {
+  specs$shock_type <- 12
+  expect_error(lp_lin(data_set_df, specs),
+               'The shock_type has to be 0 = standard deviation shock and 1 = unit shock.', fixed = TRUE)
+} )
+
+test_that("Check whether width of confidence bands is correctly specified", {
+  specs$confint <- -1
+  expect_error(lp_lin(data_set_df, specs),
+               'The width of the confidence bands has to be >=0.', fixed = TRUE)
+} )
 
 
