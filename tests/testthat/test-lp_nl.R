@@ -130,10 +130,10 @@ test_that("Check whether values for horizons are correct", {
 
 test_that("Check whether lags are integers", {
   specs$lags_lin         <- 1.4
-  specs$lags_nl          <- 2
+  specs$lags_nl          <- -2
   specs$lags_criterion   <- NaN
   expect_error(lp_nl(data_set_df, specs),
-               'The numbers of lags have to be an integer.', fixed = TRUE)
+               'The numbers of lags have to be a positive integer.', fixed = TRUE)
 } )
 
 

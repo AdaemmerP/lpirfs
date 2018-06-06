@@ -1,5 +1,5 @@
 #' @name plot_nl_irfs
-#' @title Create and display (non-linear) impulse responses
+#' @title Compute and display (non-linear) impulse responses
 #' @description Compute and display (non-linear) impulse responses estimated with \link{lp_nl}().
 #' @param results_nl A list with 3D arrays estimated in \link{lp_nl}().
 #' @return A list with (gg-)plots for non-linear impulse responses.

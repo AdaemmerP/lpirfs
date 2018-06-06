@@ -8,7 +8,6 @@
 #' @param y List with left (endogenous) variables
 #' @param x List with right (exogenous) variables
 #' @param lag_crit Integer: 'AICc'= 1, 'AIC' = 2, 'BIC' = 3.
-#' @references
 NULL
 
 find_lag_c <- function(y, x, lag_crit, h, k, max_lags) {

@@ -83,7 +83,7 @@ test_that("Check whether lags are integers", {
   specs$lags_lin <- 1.5
   specs$lags_criterion <- NaN
   expect_error(lp_lin(data_set_df, specs),
-               'The numbers of lags have to be an integer.', fixed = TRUE)
+               'The numbers of lags have to be a positive integer.', fixed = TRUE)
 } )
 
 

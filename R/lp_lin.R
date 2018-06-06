@@ -148,11 +148,12 @@ lp_lin <- function(data_set_df, specs){
     stop('The number of horizons has to be an integer and > 0.')
   }
 
-  # Check whether lags are integers
-  if(!is.nan(specs$lags_lin) &
-    !(specs$lags_lin %% 1 == 0) | !(specs$max_lags %% 1 == 0)){
-    stop('The numbers of lags have to be an integer.')
-  }
+  # Check whether lags for linear model are integers
+  if(is.numeric(specs$lags_lin) & !is.nan(specs$lags_lin)){
+    if(!(specs$lags_lin %% 1 == 0)  | specs$lags_lin < 0){
+      stop('The numbers of lags have to be a positive integer.')
+    }
+  } else {}
 
   # Check whether trend is correctly specified
   if(!(specs$trend %in% c(0,1,2))){

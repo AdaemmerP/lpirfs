@@ -7,7 +7,6 @@ using namespace Rcpp;
 //' @param y List with left (endogenous) variables
 //' @param x List with right (exogenous) variables
 //' @param lag_crit Integer: 'AICc'= 1, 'AIC' = 2, 'BIC' = 3.
-//' @references
 
 // [[Rcpp::export]]
 NumericVector find_lag_c(List y, List x, int lag_crit, int h, int k, int max_lags){
