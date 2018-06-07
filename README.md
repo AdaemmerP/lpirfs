@@ -25,6 +25,12 @@ You can install the development version of **lpirfs** from [GitHub](https://gith
 devtools::install_github("AdaemmerP/lpirfs")
 ```
 
+The package compiles some C++ source code for installation, which is why you need the appropriate compilers:
+
+On Windows you need the [Rtools](https://cran.r-project.org/bin/windows/Rtools/) available from CRAN.
+
+On macOS you need the the Clang 6.x compiler from [macOS tools](https://cran.r-project.org/bin/macosx/tools/).
+
 Examples
 --------
 
