@@ -124,13 +124,8 @@ $(document).ready(function () {
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <div id="example-estimate-linear-impulse-responses" class="section level2">
 <h2>Example: Estimate linear impulse responses</h2>
-<p>Load libraries:</p>
-<pre class="r"><code>  library(dplyr)
-  library(doParallel)
-  library(parallel)
-  library(vars)
-  library(Rcpp)
-  library(lpirfs)</code></pre>
+<p>Load library:</p>
+<pre class="r"><code>  library(lpirfs)</code></pre>
 <p>Load data from package to estimate a simple, new-Keynesian, closed-economy model. These data are used by <a href="https://www.aeaweb.org/articles?id=10.1257/0002828053828518">Jordà (2005)</a> in chapter IV, p. 174. See the data’s help file or the <a href="https://www.aeaweb.org/articles?id=10.1257/0002828053828518">paper</a> for a detailed description.</p>
 <pre class="r"><code>  data_set_df &lt;- interest_rules_var_data</code></pre>
 <p>Make list and specify input variables to estimate linear impulse responses.</p>
@@ -227,7 +222,7 @@ $(document).ready(function () {
 <p>Plot output gap</p>
 <pre class="r"><code># Make date sequence and store data in data_frame.
   dates   &lt;- seq(as.Date(&quot;1955/12/1&quot;), as.Date(&quot;2003/1/1&quot;), by = &quot;quarter&quot;)
-  data_df &lt;- data_frame(x = dates, fz = fz, gdp_gap = specs$switching[(specs$lags_nl+1):length(data_set_df$FF)])
+  data_df &lt;- data.frame(x = dates, fz = fz, gdp_gap = specs$switching[(specs$lags_nl+1):length(data_set_df$FF)])
 
 # Plot  
   ggplot(data = data_df) +

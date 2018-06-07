@@ -16,13 +16,8 @@ knitr::opts_chunk$set(
 
 
 ## Example: Estimate linear impulse responses
-Load libraries:
+Load library:
 ```{r, message = FALSE }
-  library(dplyr)
-  library(doParallel)
-  library(parallel)
-  library(vars)
-  library(Rcpp)
   library(lpirfs)
 ```
 
@@ -177,7 +172,7 @@ Plot output gap
 ```{r, fig.height = 4, fig.width = 6, fig.align = "center", message = FALSE } 
 # Make date sequence and store data in data_frame.
   dates   <- seq(as.Date("1955/12/1"), as.Date("2003/1/1"), by = "quarter")
-  data_df <- data_frame(x = dates, fz = fz, gdp_gap = specs$switching[(specs$lags_nl+1):length(data_set_df$FF)])
+  data_df <- data.frame(x = dates, fz = fz, gdp_gap = specs$switching[(specs$lags_nl+1):length(data_set_df$FF)])
 
 # Plot  
   ggplot(data = data_df) +
