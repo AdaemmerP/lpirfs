@@ -18,7 +18,7 @@ context("check_input_lp_nl")
   specs$switching      <- data_set_df$FF
   specs$hp_filter      <- 1
   specs$lambda         <- 129600
-  specs$gamma          <- -3
+  specs$gamma          <- 3
 
 # Horizons and cinfidence intervals
   specs$confint        <- 1.96
@@ -139,21 +139,34 @@ test_that("Check whether lags are integers", {
 
 test_that("Check whether trend is correctly specified", {
   specs$trend <- 12
-  expect_error(lp_lin(data_set_df, specs),
-               'For trend please enter 0 = no trend, 1 = trend, 2 = trend and quadratic trend.', fixed = TRUE)
+  expect_error(lp_nl(data_set_df, specs),
+               'For trend please put 0 = no trend, 1 = trend, 2 = trend and quadratic trend.', fixed = TRUE)
 } )
 
 
 test_that("Check shock type is correctly specified", {
   specs$shock_type <- 12
-  expect_error(lp_lin(data_set_df, specs),
-               'The shock_type has to be 0 = standard deviation shock and 1 = unit shock.', fixed = TRUE)
+  expect_error(lp_nl(data_set_df, specs),
+               'The shock_type has to be 0 = standard deviation shock or 1 = unit shock.', fixed = TRUE)
 } )
 
 test_that("Check whether width of confidence bands is correctly specified", {
   specs$confint <- -1
-  expect_error(lp_lin(data_set_df, specs),
+  expect_error(lp_nl(data_set_df, specs),
                'The width of the confidence bands has to be >=0.', fixed = TRUE)
 } )
 
+
+test_that("Check whether gamma is positive", {
+  specs$gamma <- -1
+  expect_error(lp_nl(data_set_df, specs),
+               'Gamma has to be a positive number.', fixed = TRUE)
+} )
+
+
+test_that("Check whether hp_filter is 0 or 1", {
+  specs$hp_filter <- - 2
+  expect_error(lp_nl(data_set_df, specs),
+               'Please set hp_filter = 0 (do not use HP-filter), or hp_filter = 1 (use HP-filter).', fixed = TRUE)
+} )
 

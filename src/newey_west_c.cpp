@@ -32,7 +32,7 @@ List newey_west_c(NumericVector y, NumericMatrix x, int h){
   num_exog = xx.n_cols;
   nobs     = xx.n_rows;
 
-  nlag     = h; // Based on Ramey and Zubairy (2018);
+  nlag     = h; // The lag increases with the horizons
   xpxi     = inv(xx.t()*xx);
   beta     = xpxi*xx.t()*yy;
   resids   = yy - xx*beta;

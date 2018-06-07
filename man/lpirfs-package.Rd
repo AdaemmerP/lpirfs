@@ -5,7 +5,7 @@
 \alias{lpirfs-package}
 \title{Local Projection Impulse Response Functions}
 \description{
-Contains functions to estimate linear and non-linear impulse
+Contains functions to estimate linear and nonlinear impulse
 responses based on local projections by Jordà (2005) <doi:10.1257/0002828053828518>.
 Non-linear impulse responses are estimated for two regimes, identified by
 a transition function, proposed by Auerbach and Gorodnichenko (2012) <doi:10.1257/pol.4.2.1>.

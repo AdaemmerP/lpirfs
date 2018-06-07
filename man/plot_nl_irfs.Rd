@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_nl_irfs.R
 \name{plot_nl_irfs}
 \alias{plot_nl_irfs}
-\title{Compute and display (non-linear) impulse responses}
+\title{Compute and display (nonlinear) impulse responses}
 \usage{
 plot_nl_irfs(results_nl)
 }
@@ -10,10 +10,10 @@ plot_nl_irfs(results_nl)
 \item{results_nl}{A list with 3D arrays estimated in \link{lp_nl}().}
 }
 \value{
-A list with (gg-)plots for non-linear impulse responses.
+A list with (gg-)plots for nonlinear impulse responses.
 }
 \description{
-Compute and display (non-linear) impulse responses estimated with \link{lp_nl}().
+Compute and display (nonlinear) impulse responses estimated with \link{lp_nl}().
 }
 \examples{
 \dontrun{

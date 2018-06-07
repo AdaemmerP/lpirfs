@@ -98,7 +98,7 @@ test_that("Check whether trend is correctly specified", {
 test_that("Check shock type is correctly specified", {
   specs$shock_type <- 12
   expect_error(lp_lin(data_set_df, specs),
-               'The shock_type has to be 0 = standard deviation shock and 1 = unit shock.', fixed = TRUE)
+               'The shock_type has to be 0 = standard deviation shock or 1 = unit shock.', fixed = TRUE)
 } )
 
 test_that("Check whether width of confidence bands is correctly specified", {
@@ -122,7 +122,7 @@ test_that("Check whether width of confidence bands is correctly specified", {
   specs$max_lags       <- NaN     # If lags_criterion is chosen, set maximum number of lags
   specs$trend          <- 0L      # 0 = no trend, 1 = trend, 2 = trend and quadratic trend
   specs$shock_type     <- 0L      # 0 = standard deviation shock, 1 = unit shock
-  specs$confint        <- 1.67    # Width of confidence bands: 1 = 68%, 1.67 = 90%, 1.96 = 95%
+  specs$confint        <- 1.96    # Width of confidence bands: 1 = 68%, 1.67 = 90%, 1.96 = 95%
   specs$hor            <- 24L     # Length of horizon
 
 
@@ -294,8 +294,6 @@ test_that("Check whether results from lp_lin are in region of results from Jord�
        irf_lin_up   = irf_lin_up, spes = specs)
 
 
-
-
   # Save results
     results_mean_2 <- results_lin$irf_lin_mean[1,2,1]
     results_low_2  <- results_lin$irf_lin_mean[1,2,1]
@@ -303,11 +301,11 @@ test_that("Check whether results from lp_lin are in region of results from Jord�
 
 
     # Results from Jordà (2005)
-    jorda_results_mean_2 <- 0.9   # Approximate from figure in Jordà (2005) plot, p.176
-    jorda_results_low_2  <- 0.78  # Approximate from figure in Jordà (2005) plot, p.176
-    jorda_results_up_2   <- 1     # Approximate from figure in Jordà (2005) plot, p.176
+    jorda_results_mean_2 <- 0.9   # Approximation from figure 5 in Jordà (2005) plot, p.176
+    jorda_results_low_2  <- 0.8   # Approximation from figure 5 in Jordà (2005) plot, p.176
+    jorda_results_up_2   <- 1     # Approximation from figure 5 in Jordà (2005) plot, p.176
 
-    expect_equal(results_mean_2, jorda_results_mean_2, tolerance = 5e-2)
+    expect_equal(results_mean_2, jorda_results_mean_2, tolerance =5e-2)
 } )
 
 

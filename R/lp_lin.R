@@ -162,7 +162,7 @@ lp_lin <- function(data_set_df, specs){
 
   # Check whether shock type is correctly specified
   if(!(specs$shock_type %in% c(0,1))){
-    stop('The shock_type has to be 0 = standard deviation shock and 1 = unit shock.')
+    stop('The shock_type has to be 0 = standard deviation shock or 1 = unit shock.')
   }
 
 

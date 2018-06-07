@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 
-## Example: Estimate linear impulse responses
+## Example: Linear impulse responses
 Load library:
 ```{r, message = FALSE }
   library(lpirfs)
@@ -72,26 +72,16 @@ Display all plots (compare with Figure 5 in Jordà (2005), p. 176):
   marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
 ```
 
-## Example: Non-linear impulse responses
-Load libraries:
-```{r, message = FALSE }
-  library(dplyr)
-  library(doParallel)
-  library(parallel)
-  library(Rcpp)
-  library(lpirfs)
-  library(mFilter)
-  library(vars)
-```
+## Example: Nonlinear impulse responses
 
-Load data set from package to estimate a non-linear, new-Keynesian, closed-economy 
+Load data set from package to estimate a nonlinear, new-Keynesian, closed-economy 
 model. These data are used by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) in chapter IV, p.176. 
 See the data's help file or the [paper](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) for a detailed description. 
 ```{r, message = FALSE }
   data_set_df <- interest_rules_var_data
 ```
 
-Make list and specify input variables to estimate non-linear impulse responses. 
+Make list and specify input variables to estimate nonlinear impulse responses. 
 ```{r, message = FALSE }
 # Make list for inputs
   specs <- list()
@@ -138,7 +128,7 @@ and
 The lag is automatically created in the package function *create_nl_data*. 
 If you do not want the exogenous variables to be multiplied with lagged values of $F({z_t})$, you have to provide the switching variable with a lead of one.
 
-Non-linear impulse responses are computed as in [Ahmed and Cassou (2016)](https://www.sciencedirect.com/science/article/pii/S0164070416300490). 
+Nonlinear impulse responses are computed as in [Ahmed and Cassou (2016)](https://www.sciencedirect.com/science/article/pii/S0164070416300490). 
 First, a reduced VAR is estimated to obtain the covariance matrix of the residuals $\Sigma$. The Cholesky decomposition is then applied to obtain the shock matrix with columns denoted by $d_j$. IRFs for both regimes are estimated via:
 
 $$\hat{IR}^{R_1}(t,h,d_i) = \hat{\boldsymbol{B}}_{1, R_1}^h d_j, \ \ \ \ \ \ \ \ \ h = 1, ..., H, $$ 
@@ -157,7 +147,7 @@ with $h = 1,..., H.$
 
 $$ $$
 
-Estimate non-linear impulse responses with package function *lp_nl*. Note that the VAR's data set (*data_set_df*) has to be 
+Estimate nonlinear impulse responses with package function *lp_nl*. Note that the VAR's data set (*data_set_df*) has to be 
 a data.frame(). 
 ```{r, message = FALSE }  
   results_nl <- lp_nl(data_set_df, specs)

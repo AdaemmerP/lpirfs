@@ -1,8 +1,8 @@
 #' @name plot_nl_irfs
-#' @title Compute and display (non-linear) impulse responses
-#' @description Compute and display (non-linear) impulse responses estimated with \link{lp_nl}().
+#' @title Compute and display (nonlinear) impulse responses
+#' @description Compute and display (nonlinear) impulse responses estimated with \link{lp_nl}().
 #' @param results_nl A list with 3D arrays estimated in \link{lp_nl}().
-#' @return A list with (gg-)plots for non-linear impulse responses.
+#' @return A list with (gg-)plots for nonlinear impulse responses.
 #' @export
 #' @import ggplot2
 #' @author Philipp Adämmer

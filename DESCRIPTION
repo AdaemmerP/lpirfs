@@ -9,9 +9,9 @@ Authors@R: c(
             role = c("aut", "cre")))
 Maintainer: Philipp Adämmer <adaemmer@hsu-hh.de>
 BugReports: https://github.com/adaemmerp/lpirfs/issues
-Description: Contains functions to estimate linear and non-linear impulse 
+Description: Contains functions to estimate linear and nonlinear impulse 
              responses based on local projections by Jordà (2005) <doi:10.1257/0002828053828518>
-             Non-linear impulse responses are estimated for two regimes which are estimated with 
+             Nonlinear impulse responses are estimated for two regimes which are estimated with 
              a transition function, proposed by Auerbach and Gorodnichenko (2012) <doi:10.1257/pol.4.2.1>.
 License: GPL (>= 2)
 Depends: R (>= 3.1.2)

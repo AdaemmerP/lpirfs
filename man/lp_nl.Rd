@@ -2,7 +2,7 @@
 % Please edit documentation in R/lp_nl.R
 \name{lp_nl}
 \alias{lp_nl}
-\title{Compute (non-linear) impulse responses}
+\title{Compute (nonlinear) impulse responses}
 \usage{
 lp_nl(data_set_df, specs)
 }
@@ -16,7 +16,7 @@ is used for the Cholesky decomposition.}
 \item{\strong{lags_criterion} NaN or character. NaN means that the number of lags
         will be given at \emph{lags_nl} and \emph{lags_lin}. The lag length criteria are 'AICc', 'AIC' and 'BIC'.}
  \item{\strong{lags_lin} Integer. Number of lags for linear VAR to identify shock.}
-\item{\strong{lags_nl} Integer. Number of lags for (non-linear) VAR (if \emph{lags_criterion} = NaN).}
+\item{\strong{lags_nl} Integer. Number of lags for (nonlinear) VAR (if \emph{lags_criterion} = NaN).}
 \item{\strong{max_lags} Integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC').}
 \item{\strong{trend} Integer. Include no trend =  0 , include trend = 1, include trend and quadratic trend = 2.}
 \item{\strong{shock_type} Integer. Standard deviation shock = 0, Unit shock = 1.}
@@ -72,7 +72,7 @@ It also contains an updated list of \emph{specs} with further properties of \emp
 \item{fz}{A vector containing the values of the transition function F(z_{t-1})}
 }
 \description{
-Compute non-linear impulse responses with local projections by Jordà (2005). The
+Compute nonlinear impulse responses with local projections by Jordà (2005). The
 data are separated into two states with a smooth transition function as proposed by Auerbach and Gorodnichenko (2012).
 }
 \examples{

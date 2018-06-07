@@ -5,13 +5,13 @@
 lpirfs
 ======
 
-An R-package which estimates linear and non-linear impulse responses with local projections by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518).
+An R-package which estimates linear and nonlinear impulse responses with local projections by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518).
 
 Main features
 -------------
 
--   Estimates linear and non-linear impulse responses with local projections.
--   Functions to plot linear and non-linear impulse responses.
+-   Estimates linear and nonlinear impulse responses with local projections.
+-   Functions to plot linear and nonlinear impulse responses.
 -   Functions are partly implemented in *Rcpp* and *RcppArmadillo* to improve efficiency.
 -   High performance with parallel computation.
 
@@ -29,7 +29,7 @@ The package compiles some C++ source code for installation, which is why you nee
 
 On Windows you need the [Rtools](https://cran.r-project.org/bin/windows/Rtools/) available from CRAN.
 
-On macOS you need the the Clang 6.x compiler and the GNU Fortran compiler from [macOS tools](https://cran.r-project.org/bin/macosx/tools/).
+On macOS you need the Clang 6.x compiler and the GNU Fortran compiler from [macOS tools](https://cran.r-project.org/bin/macosx/tools/).
 
 Examples
 --------
@@ -39,7 +39,7 @@ Examples can be found [here.](https://adaemmerp.github.io/lpirfs/README_docs.htm
 Acknowledgements
 ----------------
 
-I greatly benefitted from the profound *R*, *Rcpp* and *GitHub* knowledge of Philipp (stack) [Wittenberg](https://github.com/wittenberg) and Detlef (overflow) [Steuer](https://github.com/dsteuer). Remaining errors are obviously mine.
+I greatly benefit from the profound *R*, *Rcpp* and *GitHub* knowledge of Philipp (stack) [Wittenberg](https://github.com/wittenberg) and Detlef (overflow) [Steuer](https://github.com/dsteuer). Remaining errors are obviously mine.
 
 Development
 -----------

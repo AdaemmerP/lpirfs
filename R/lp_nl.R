@@ -1,6 +1,6 @@
 #' @name lp_nl
-#' @title Compute (non-linear) impulse responses
-#' @description Compute non-linear impulse responses with local projections by Jordà (2005). The
+#' @title Compute (nonlinear) impulse responses
+#' @description Compute nonlinear impulse responses with local projections by Jordà (2005). The
 #' data are separated into two states with a smooth transition function as proposed by Auerbach and Gorodnichenko (2012).
 #'
 #' @param data_set_df A \link{data.frame}() containing all endogenous variables for the VAR. The column order
@@ -11,7 +11,7 @@
 #' \item{\strong{lags_criterion} NaN or character. NaN means that the number of lags
 #'         will be given at \emph{lags_nl} and \emph{lags_lin}. The lag length criteria are 'AICc', 'AIC' and 'BIC'.}
 #'  \item{\strong{lags_lin} Integer. Number of lags for linear VAR to identify shock.}
-#' \item{\strong{lags_nl} Integer. Number of lags for (non-linear) VAR (if \emph{lags_criterion} = NaN).}
+#' \item{\strong{lags_nl} Integer. Number of lags for (nonlinear) VAR (if \emph{lags_criterion} = NaN).}
 #' \item{\strong{max_lags} Integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC').}
 #' \item{\strong{trend} Integer. Include no trend =  0 , include trend = 1, include trend and quadratic trend = 2.}
 #' \item{\strong{shock_type} Integer. Standard deviation shock = 0, Unit shock = 1.}
@@ -201,7 +201,7 @@ lp_nl <- function(data_set_df, specs){
   }
 
 
-  # Check whether lags criterion and fixed number of lags for non-linear model is given
+  # Check whether lags criterion and fixed number of lags for nonlinear model is given
   if((is.character(specs$lags_criterion) == TRUE) &
      (!is.na(specs$lags_nl) == TRUE)){
     stop('You can not provide a lag criterion (AICc, AIC or BIC) and a fixed number of lags.')
@@ -253,13 +253,13 @@ lp_nl <- function(data_set_df, specs){
 
   # Check whether trend is correctly specified
   if(!(specs$trend %in% c(0,1,2))){
-    stop('For trend please enter 0 = no trend, 1 = trend, 2 = trend and quadratic trend.')
+    stop('For trend please put 0 = no trend, 1 = trend, 2 = trend and quadratic trend.')
   }
 
 
   # Check whether shock type is correctly specified
   if(!(specs$shock_type %in% c(0,1))){
-    stop('The shock_type has to be 0 = standard deviation shock and 1 = unit shock.')
+    stop('The shock_type has to be 0 = standard deviation shock or 1 = unit shock.')
   }
 
 
@@ -268,13 +268,25 @@ lp_nl <- function(data_set_df, specs){
     stop('The width of the confidence bands has to be >=0.')
   }
 
+  # Check whether gamma is positive
+  if((specs$gamma < 0)){
+    stop('Gamma has to be a positive number.')
+  }
+
+  # Check whether hp_filter is either 0 or 1 is positive
+  if(!(specs$hp_filter %in% c(0, 1))){
+    stop('Please set hp_filter = 0 (do not use HP-filter), or hp_filter = 1 (use HP-filter).')
+  }
+
+
+
   # Safe data frame specifications in 'specs for functions
   specs$starts         <- 1                        # Sample Start
   specs$ends           <- dim(data_set_df)[1]      # Sample end
   specs$columns        <- names(data_set_df)       # Name endogenous variables
   specs$endog          <- ncol(data_set_df)        # Set the number of endogenous variables
 
-  # Construct data for non-linear model
+  # Construct data for nonlinear model
   data_nl <- create_nl_data(specs, data_set_df)
   y_nl    <- data_nl[[1]]
   x_nl    <- data_nl[[2]]
