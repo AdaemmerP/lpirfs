@@ -109,3 +109,40 @@ test_that("Check whether width of confidence bands is correctly specified", {
 
 
 
+  test_that("Check whether results from lp_lin are in region of results from Jordà (2005)", {
+
+    # --- Check whether results from lp_lin are in region of results from Jordà (2005)
+    # Load data set
+    data_set_df <- interest_rules_var_data
+
+    # Make list for inputs
+    specs <- list()
+
+    # Specify inputs
+    specs$lags_lin       <- 4L      # Number of lags
+    specs$lags_criterion <- NaN     # Lag length criterion (AICc, AIC or BIC)
+    specs$max_lags       <- NaN     # If lags_criterion is chosen, set maximum number of lags
+    specs$trend          <- 0L      # 0 = no trend, 1 = trend, 2 = trend and quadratic trend
+    specs$shock_type     <- 0L      # 0 = standard deviation shock, 1 = unit shock
+    specs$confint        <- 1.67    # Width of confidence bands: 1 = 68%, 1.67 = 90%, 1.96 = 95%
+    specs$hor            <- 24L     # Length of horizon
+
+
+    # Estimate model
+    results_lin  <- lp_lin(data_set_df, specs)
+
+    # Save results
+    results_mean_2 <- results_lin$irf_lin_mean[1,2,1]
+    results_low_2  <- results_lin$irf_lin_mean[1,2,1]
+    results_up     <- results_lin$irf_lin_mean[1,2,1]
+
+    # Results from Jordà (2005)
+    jorda_results_mean_2 <- 0.9   # Approximate from figure in Jordà (2005) plot, p.176
+    jorda_results_low_2  <- 0.78  # Approximate from figure in Jordà (2005) plot, p.176
+    jorda_results_up_2   <- 1     # Approximate from figure in Jordà (2005) plot, p.176
+
+    expect_equal(results_mean_2, jorda_results_mean_2, tolerance = 5e-2)
+  } )
+
+
+
