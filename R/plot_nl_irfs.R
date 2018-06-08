@@ -120,7 +120,7 @@ plot_nl_irfs <- function(results_nl){
                   scale_y_continuous(expand = c(0, 0))  +
                   scale_x_continuous(expand = c(0, 0),
                                      breaks = seq(0, specs$hor, 2))  +
-                  geom_hline(yintercept = 0, col = "red")
+                  geom_hline(yintercept = 0, col = "black", size = 0.25, linetype = "dashed")
 
 
       gg_s2[[plot_num]] <- ggplot() +
@@ -136,7 +136,7 @@ plot_nl_irfs <- function(results_nl){
                   scale_y_continuous(expand = c(0, 0))  +
                   scale_x_continuous(expand = c(0, 0),
                                      breaks = seq(0, specs$hor, 2))  +
-                  geom_hline(yintercept = 0, col = "red")
+                  geom_hline(yintercept = 0, col = "black", size = 0.25, linetype = "dashed")
 
       plot_num <- plot_num + 1
 
