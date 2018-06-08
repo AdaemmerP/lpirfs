@@ -131,10 +131,10 @@ If you do not want the exogenous variables to be multiplied with lagged values o
 Nonlinear impulse responses are computed as in [Ahmed and Cassou (2016)](https://www.sciencedirect.com/science/article/pii/S0164070416300490). 
 First, a reduced VAR is estimated to obtain the covariance matrix of the residuals $\Sigma$. The Cholesky decomposition is then applied to obtain the shock matrix with columns denoted by $d_j$. IRFs for both regimes are estimated via:
 
-$$\hat{IR}^{R_1}(t,h,d_i) = \hat{\boldsymbol{B}}_{1, R_1}^h d_j, \ \ \ \ \ \ \ \ \ h = 1, ..., H, $$ 
+$$\hat{IR}^{R_1}(t,h,d_j) = \hat{\boldsymbol{B}}_{1, R_1}^h d_j, \ \ \ \ \ \ \ \ \ h = 1, ..., H, $$ 
 and 
 
-$$\hat{IR}^{R_2}(t,h,d_i) = \hat{\boldsymbol{B}}_{1, R_2}^h d_j, \ \ \ \ \ \ \ \ \ h = 1, ..., H, $$ 
+$$\hat{IR}^{R_2}(t,h,d_j) = \hat{\boldsymbol{B}}_{1, R_2}^h d_j, \ \ \ \ \ \ \ \ \ h = 1, ..., H, $$ 
 
 
 with $\hat{\boldsymbol{B}}_{1, R1}^0 = I$ and $\hat{\boldsymbol{B}}_{1, R2}^0 = I$. The parameters are obtained by running a sequence of OLS forecasts (local projections):
