@@ -68,6 +68,9 @@
 #'  }
 plot_nl_irfs <- function(results_nl){
 
+  col_regime_1 <-"#21618C"
+  col_regime_2 <- "#138D75"
+
   irf_s1_mean <- results_nl[[1]]
   irf_s1_low  <- results_nl[[2]]
   irf_s1_up   <- results_nl[[3]]
@@ -105,7 +108,7 @@ plot_nl_irfs <- function(results_nl){
 
 
       gg_s1[[plot_num]] <- ggplot() +
-                  geom_line(data     = tbl_s1, aes(y = mean, x = x), col = 'darkgreen') +
+                  geom_line(data     = tbl_s1, aes(y = mean, x = x), col = col_regime_1) +
                   geom_ribbon(data   = tbl_s1, aes(x = x, ymin = low, ymax = up), col = 'grey',
                               fill = 'grey', alpha = 0.3) +
                   theme_classic() +
@@ -121,7 +124,7 @@ plot_nl_irfs <- function(results_nl){
 
 
       gg_s2[[plot_num]] <- ggplot() +
-                  geom_line(data     = tbl_s2, aes(y = mean, x = x), col = 'darkred') +
+                  geom_line(data     = tbl_s2, aes(y = mean, x = x) , col = col_regime_2) +
                   geom_ribbon(data   = tbl_s2, aes(x = x, ymin = low, ymax = up), col = 'grey',
                               fill = 'grey', alpha = 0.3) +
                   theme_classic() +
