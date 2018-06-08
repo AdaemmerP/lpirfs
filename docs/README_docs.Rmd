@@ -35,7 +35,7 @@ Make list and specify input variables to estimate linear impulse responses.
 
 # Specify inputs
   specs$lags_lin       <- 4L      # Number of lags
-  specs$lags_criterion <- NaN     # Lag length criterion (AICc, AIC or BIC)
+  specs$lags_criterion <- NaN     # Lag length criterion (AICc, AIC or BIC) or NaN
   specs$max_lags       <- NaN     # If lags_criterion is chosen, set maximum number of lags  
   specs$trend          <- 0L      # 0 = no trend, 1 = trend, 2 = trend and quadratic trend
   specs$shock_type     <- 1L      # 0 = standard deviation shock, 1 = unit shock
@@ -89,7 +89,7 @@ Make list and specify input variables to estimate nonlinear impulse responses.
 # Specify inputs
   specs$lags_lin       <- 4L      # Number of lags for (reduced) linear VAR 
   specs$lags_nl        <- 4L      # Number of lags
-  specs$lags_criterion <- NaN     # Lag length criterion (AICc, AIC or BIC)
+  specs$lags_criterion <- NaN     # Lag length criterion (AICc, AIC or BIC) or NaN
   specs$max_lags       <- NaN     # If lags_criterion is chosen, maximum number of lags  
   specs$trend          <- 1L      # 0 = no trend, 1 = trend, 2 = trend and quadratic trend
   specs$shock_type     <- 0L      # 0 = standard deviation shock, 1 = unit shock
@@ -225,7 +225,7 @@ During Bad and Good Economic Times Equally?" *Journal of Macroeconomics*, 50(1):
 
 *  Auerbach, A. J., and Gorodnichenko Y. (2013). "Fiscal Multipliers in Recession and Expansion" *NBER Working Paper Series*. Nr 17447.  [National Bureau of Economic Research](http://www.nber.org/papers/w17447.pdf)
 
-* Jordà, O. (2005) "Estimation and Inference of Impulse Responses by Local Projections." *American Economic Review*, 95 (1): 161-182.
+* Jordà, Ò. (2005) "Estimation and Inference of Impulse Responses by Local Projections." *American Economic Review*, 95 (1): 161-182.
 [doi:10.1257/0002828053828518](https://www.aeaweb.org/articles?id=10.1257/0002828053828518)
 
 * Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and Autocorrelation Consistent Covariance Matrix.” *Econometrica*, 55: 703–708. [doi:10.2307/1913610](https://www.jstor.org/stable/1913610?seq=1#page_scan_tab_contents)

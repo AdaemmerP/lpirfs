@@ -74,7 +74,7 @@
 #' Auerbach, A. J., and Gorodnichenko Y. (2013). "Fiscal Multipliers in Recession and Expansion."
 #' \emph{NBER Working Paper Series}. Nr 17447.
 #'
-#' Jordà, O. (2005) "Estimation and Inference of Impulse Responses by Local Projections."
+#' Jordà, Ò. (2005) "Estimation and Inference of Impulse Responses by Local Projections."
 #' \emph{American Economic Review}, 95 (1): 161-182.
 #'
 #' Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
