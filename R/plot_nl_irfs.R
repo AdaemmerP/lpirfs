@@ -69,7 +69,7 @@
 plot_nl_irfs <- function(results_nl){
 
   col_regime_1 <-"#21618C"
-  col_regime_2 <- "#138D75"
+  col_regime_2 <- "#D68910"
 
   irf_s1_mean <- results_nl[[1]]
   irf_s1_low  <- results_nl[[2]]
