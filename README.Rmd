@@ -40,9 +40,13 @@ devtools::install_github("AdaemmerP/lpirfs")
 
 The package compiles some C++ source code for installation, which is why you need the appropriate compilers:
 
-On Windows you need the [Rtools](https://cran.r-project.org/bin/windows/Rtools/) available from CRAN. 
+On Windows you need [Rtools](https://cran.r-project.org/bin/windows/Rtools/) available from CRAN. 
 
 On macOS you need the Clang 6.x compiler and the GNU Fortran compiler from [macOS tools](https://cran.r-project.org/bin/macosx/tools/).
+After installation, you have to open a terminal and start R via 'PATH=/usr/local/clang6/bin:$PATH R'. 
+Yo then have to install the package via *devtools::install_github("AdaemmerP/lpirfs")*
+
+
 
 ## Examples
 Examples can be found [here.](https://adaemmerp.github.io/lpirfs/README_docs.html)
