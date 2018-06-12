@@ -7,14 +7,14 @@
 #' @param lags_criterion NaN or character. NaN means that the number of lags
 #'         will be given at \emph{lags_lin}. The character refers to the corresponding lag length criterion ('AICc', 'AIC' or 'BIC').
 #' @param lags_lin Integer or NaN. Number of lags for (linear) VAR (if \emph{lags_criterion} = NaN). NaN if lags_criterion is given.
-#' @param max_lags NaN or integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC'). NaN otherwise
+#' @param max_lags NaN or integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC'). NaN otherwise.
 #' @param trend Integer. No trend =  0 , Include trend = 1, Include trend and quadratic trend = 2.
 #' @param shock_type Integer. Standard deviation shock = 0, Unit shock = 1.
 #' @param confint Double. Width of confidence bands. 68\% = 1, 90\% = 1.65, 95\% = 1.96.
 #' @param hor Integer. Number of horizons for impulse responses.
 #'
 #' @return A list with impulse responses and their robust confidence bands.
-#' It also returns an updated list of \emph{specs} with further properties of \emph{data_set_df} for the plot function.
+#' It also returns a list named \emph{specs} with properties of \emph{data_set_df} for the plot function.
 #'
 #'\item{irf_lin_mean}{A three 3D \link{array}(), containing all impulse responses for all endogenous variables.
 #'                    The last dimension denotes the shock variable. The row in each matrix

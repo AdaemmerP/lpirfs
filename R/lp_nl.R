@@ -30,7 +30,7 @@
 #'
 #'
 #' @return A list with impulse responses and their robust confidence bands.
-#' It also contains an updated list of \emph{specs} with further properties of \emph{data_set_df} for the plot function.
+#' It also contains a list named \emph{specs} with properties of \emph{data_set_df} for the plot function.
 #'
 #'\item{irf_s1_mean}{A three 3D \link{array}(), containing all impulse responses for all endogenous variables of the first state.
 #'                    The last dimension denotes the shock variable. The row in each matrix
