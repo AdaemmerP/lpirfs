@@ -128,20 +128,14 @@ $(document).ready(function () {
 <pre class="r"><code>  library(lpirfs)</code></pre>
 <p>Load data from package to estimate a simple, new-Keynesian, closed-economy model. These data are used by <a href="https://www.aeaweb.org/articles?id=10.1257/0002828053828518">Jordà (2005)</a> in chapter IV, p. 174. See the data’s help file or the <a href="https://www.aeaweb.org/articles?id=10.1257/0002828053828518">paper</a> for a detailed description.</p>
 <pre class="r"><code>  data_set_df &lt;- interest_rules_var_data</code></pre>
-<p>Make list and specify input variables to estimate linear impulse responses.</p>
-<pre class="r"><code># Make list for inputs
-  specs &lt;- list()
-
-# Specify inputs
-  specs$lags_lin       &lt;- 4L      # Number of lags
-  specs$lags_criterion &lt;- NaN     # Lag length criterion (AICc, AIC or BIC) or NaN
-  specs$max_lags       &lt;- NaN     # If lags_criterion is chosen, set maximum number of lags  
-  specs$trend          &lt;- 0L      # 0 = no trend, 1 = trend, 2 = trend and quadratic trend
-  specs$shock_type     &lt;- 1L      # 0 = standard deviation shock, 1 = unit shock
-  specs$confint        &lt;- 1.96    # Width of confidence bands: 1 = 68%, 1.67 = 90%, 1.96 = 95%
-  specs$hor            &lt;- 24L     # Length of horizon</code></pre>
 <p>Estimate linear impulse responses with the package function <em>lp_lin</em>. Note that the VAR’s endogenous variables (<em>data_set_df</em>) have to be a data.frame().</p>
-<pre class="r"><code>  results_lin  &lt;- lp_lin(data_set_df, specs)</code></pre>
+<pre class="r"><code>  results_lin  &lt;- lp_lin(data_set_df, lags_lin       = 4L, 
+                                      lags_criterion = NaN, 
+                                      max_lags       = NaN,
+                                      trend          = 0L, 
+                                      shock_type     = 1L,  
+                                      confint        = 1.96, 
+                                      hor            = 24L)</code></pre>
 <p>Create plots for impulse responses of linear model with package function <em>plot_lin_irfs</em>.</p>
 <pre class="r"><code>  linear_plots &lt;- plot_lin_irfs(results_lin)</code></pre>
 <p>Display single impulse responses:</p>
@@ -167,26 +161,6 @@ $(document).ready(function () {
 <h2>Example: Nonlinear impulse responses</h2>
 <p>Load data set from package to estimate a nonlinear, new-Keynesian, closed-economy model. These data are used by <a href="https://www.aeaweb.org/articles?id=10.1257/0002828053828518">Jordà (2005)</a> in chapter IV, p.176. See the data’s help file or the <a href="https://www.aeaweb.org/articles?id=10.1257/0002828053828518">paper</a> for a detailed description.</p>
 <pre class="r"><code>  data_set_df &lt;- interest_rules_var_data</code></pre>
-<p>Make list and specify input variables to estimate nonlinear impulse responses.</p>
-<pre class="r"><code># Make list for inputs
-  specs &lt;- list()
-
-# Specify inputs
-  specs$lags_lin       &lt;- 4L      # Number of lags for (reduced) linear VAR 
-  specs$lags_nl        &lt;- 4L      # Number of lags
-  specs$lags_criterion &lt;- NaN     # Lag length criterion (AICc, AIC or BIC) or NaN
-  specs$max_lags       &lt;- NaN     # If lags_criterion is chosen, maximum number of lags  
-  specs$trend          &lt;- 1L      # 0 = no trend, 1 = trend, 2 = trend and quadratic trend
-  specs$shock_type     &lt;- 0L      # 0 = standard deviation shock, 1 = unit shock
-  specs$confint        &lt;- 1.67    # Width of confidence bands: 1 = 68%, 1.67 = 90%, 1.96 = 95%
-  specs$hor            &lt;- 24L     # Length of horizon</code></pre>
-<p>Provide a switching variable to separate the data into two regimes.</p>
-<pre class="r"><code># Specifications for switching variable
-  specs$switching      &lt;- data_set_df$Infl # Inflation rate
-  specs$hp_filter      &lt;- 1                # 0 = Do not use HP-filter to decompose switching variable, 
-                                           # 1 = Use HP-filter to decompose switching variable
-  specs$lambda         &lt;- 1600             # Monthly = 129600, Quarterly = 1600, Annual = 6.25
-  specs$gamma          &lt;- 6                # Numeric value &gt; 0</code></pre>
 <p><span class="math display">\[ \]</span> The switching variable (<span class="math inline">\(z_t\)</span>) can either be decomposed by the Hodrick-Prescott filter (see <a href="http://www.nber.org/papers/w17447.pdf">Auerbach and Gorodnichenko, 2013</a>) or directly plugged into the following transition function:</p>
 <p><span class="math display">\[F({z_t})  = \  \frac{e^{(-\gamma z_t)}}{\left(1 + e^{(-\gamma z_t)})\right)},\]</span></p>
 <p>where <span class="math inline">\(\gamma &gt; 0\)</span>. To differentiate between the two regimes, the exogenous variables (<span class="math inline">\(\boldsymbol{y}_{t-p}\)</span>) are multiplied with the values of the transition function at <em>t − 1</em> where</p>
@@ -208,9 +182,22 @@ $(document).ready(function () {
 \]</span> with <span class="math inline">\(h = 1,..., H.\)</span></p>
 <p><span class="math display">\[ \]</span></p>
 <p>Estimate nonlinear impulse responses with package function <em>lp_nl</em>. Note that the VAR’s data set (<em>data_set_df</em>) has to be a data.frame().</p>
-<pre class="r"><code>  results_nl &lt;- lp_nl(data_set_df, specs)</code></pre>
-<p>Save values from transition function</p>
-<pre class="r"><code>  fz      &lt;- results_nl$fz</code></pre>
+<pre class="r"><code>results_nl &lt;- lp_nl(data_set_df, lags_lin         = 4L,  # Number of lags for (reduced) linear VAR 
+                                   lags_nl        = 4L,  # Number of lags 
+                                   lags_criterion = NaN, # Lag length criterion (AICc, AIC or BIC) or NaN
+                                   max_lags       = NaN, # If lags_criterion is chosen, maximum number of lags  
+                                   trend          = 1L,  # 0 = no trend, 1 = trend, 2 = trend and quadratic trend
+                                   shock_type     = 0L,  # 0 = standard deviation shock, 1 = unit shock
+                                   confint        = 1.67, # Width of confidence bands: 1 = 68%, 1.67 = 90%, 1.96 = 95%
+                                   hor            = 24,  # Length of horizon
+                      
+                                   switching      = data_set_df$Infl, # Inflation rate
+                                   hp_filter      = 1,    # 0 = Do not use HP-filter to decompose switching variable,   
+                                   lambda         = 1600, # Monthly = 129600, Quarterly = 1600, Annual = 6.25
+                                   gamma          = 6)    # Numeric value &gt; 0 </code></pre>
+<p>Save values from transition function and list which contains data information.</p>
+<pre class="r"><code>  fz      &lt;- results_nl$fz
+  specs   &lt;- results_nl$specs</code></pre>
 <p>Plot output gap</p>
 <pre class="r"><code># Make date sequence and store data in data_frame.
   dates   &lt;- seq(as.Date(&quot;1955/12/1&quot;), as.Date(&quot;2003/1/1&quot;), by = &quot;quarter&quot;)

@@ -4,23 +4,27 @@
 \alias{lp_lin}
 \title{Compute (linear) impulse responses}
 \usage{
-lp_lin(data_set_df, specs)
+lp_lin(data_set_df, lags_lin = 4, lags_criterion = NaN, max_lags = NaN,
+  trend = 0L, shock_type = 1L, confint = 1.96, hor = 24)
 }
 \arguments{
 \item{data_set_df}{A \link{data.frame}() containing all endogenous variables for the VAR. The column order
 is used for the Cholesky decomposition.}
 
-\item{specs}{A \link{list}() with the following inputs:
-\itemize{
-\item{\strong{lags_criterion} NaN or character. NaN means that the number of lags.
-        has to be given at \emph{lags_lin}. The character refers to the corresponding lag length criterion ('AICc', 'AIC' or 'BIC').}
-\item{\strong{lags_lin} Integer. Number of lags for (linear) VAR (if \emph{lags_criterion} = NaN).}
-\item{\strong{max_lags} Integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC').}
-\item{\strong{trend} Integer. No trend =  0 , Include trend = 1, Include trend and quadratic trend = 2.}
-\item{\strong{shock_type} Integer. Standard deviation shock = 0, Unit shock = 1.}
-\item{\strong{confint} Double. Width of confidence bands. 68\% = 1, 90\% = 1.65, 95\% = 1.96.}
-\item{\strong{hor} Integer. Number of horizons for impulse responses. }
-}}
+\item{lags_lin}{Integer or NaN. Number of lags for (linear) VAR (if \emph{lags_criterion} = NaN). NaN if lags_criterion is given.}
+
+\item{lags_criterion}{NaN or character. NaN means that the number of lags
+will be given at \emph{lags_lin}. The character refers to the corresponding lag length criterion ('AICc', 'AIC' or 'BIC').}
+
+\item{max_lags}{NaN or integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC'). NaN otherwise}
+
+\item{trend}{Integer. No trend =  0 , Include trend = 1, Include trend and quadratic trend = 2.}
+
+\item{shock_type}{Integer. Standard deviation shock = 0, Unit shock = 1.}
+
+\item{confint}{Double. Width of confidence bands. 68\% = 1, 90\% = 1.65, 95\% = 1.96.}
+
+\item{hor}{Integer. Number of horizons for impulse responses.}
 }
 \value{
 A list with impulse responses and their robust confidence bands.
@@ -46,32 +50,20 @@ Compute linear impulse responses with local projections by Jordà (2005).
 }
 \examples{
 \dontrun{
-# Load packages
-  library(dplyr)
-  library(doParallel)
-  library(vars)
-  library(parallel)
-  library(Rcpp)
+# Load package
   library(lpirfs)
-
 
 # Load data (from package)
   data_set_df <- interest_rules_var_data
 
-# Create list for input
-  specs <- list()
-
-# Specify inputs
-  specs$lags_lin       <- 4L
-  specs$lags_criterion <- NaN
-  specs$max_lags       <- NaN
-  specs$trend          <- 0L
-  specs$shock_type     <- 1L
-  specs$confint        <- 1.96
-  specs$hor            <- 12L
-
-# Estimate model
-  results_lin  <- lp_lin(data_set_df, specs)
+# Estimate linear model
+  results_lin <- lp_lin(data_set_df, lags_lin    = 4,
+                                  lags_criterion = NaN,
+                                  max_lags       = 2L,
+                                  trend          = 0L,
+                                  shock_type     = 1L,
+                                  confint        = 1.96,
+                                  hor            = 12)
 
 # Make plots
   linear_plots <- plot_lin_irfs(results_lin)

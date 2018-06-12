@@ -28,24 +28,16 @@ See the data's help file or the [paper](https://www.aeaweb.org/articles?id=10.12
   data_set_df <- interest_rules_var_data
 ```
 
-Make list and specify input variables to estimate linear impulse responses. 
-```{r, message = FALSE }
-# Make list for inputs
-  specs <- list()
-
-# Specify inputs
-  specs$lags_lin       <- 4L      # Number of lags
-  specs$lags_criterion <- NaN     # Lag length criterion (AICc, AIC or BIC) or NaN
-  specs$max_lags       <- NaN     # If lags_criterion is chosen, set maximum number of lags  
-  specs$trend          <- 0L      # 0 = no trend, 1 = trend, 2 = trend and quadratic trend
-  specs$shock_type     <- 1L      # 0 = standard deviation shock, 1 = unit shock
-  specs$confint        <- 1.96    # Width of confidence bands: 1 = 68%, 1.67 = 90%, 1.96 = 95%
-  specs$hor            <- 24L     # Length of horizon
-```
 Estimate linear impulse responses with the package function *lp_lin*. Note that the VAR's endogenous variables (*data_set_df*) have to be 
 a data.frame(). 
 ```{r, message = FALSE }  
-  results_lin  <- lp_lin(data_set_df, specs)
+  results_lin  <- lp_lin(data_set_df, lags_lin       = 4L, 
+                                      lags_criterion = NaN, 
+                                      max_lags       = NaN,
+                                      trend          = 0L, 
+                                      shock_type     = 1L,  
+                                      confint        = 1.96, 
+                                      hor            = 24L)
 ```
 
 Create plots for impulse responses of linear model with package function *plot_lin_irfs*.
@@ -79,32 +71,6 @@ model. These data are used by [Jordà (2005)](https://www.aeaweb.org/articles?id
 See the data's help file or the [paper](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) for a detailed description. 
 ```{r, message = FALSE }
   data_set_df <- interest_rules_var_data
-```
-
-Make list and specify input variables to estimate nonlinear impulse responses. 
-```{r, message = FALSE }
-# Make list for inputs
-  specs <- list()
-
-# Specify inputs
-  specs$lags_lin       <- 4L      # Number of lags for (reduced) linear VAR 
-  specs$lags_nl        <- 4L      # Number of lags
-  specs$lags_criterion <- NaN     # Lag length criterion (AICc, AIC or BIC) or NaN
-  specs$max_lags       <- NaN     # If lags_criterion is chosen, maximum number of lags  
-  specs$trend          <- 1L      # 0 = no trend, 1 = trend, 2 = trend and quadratic trend
-  specs$shock_type     <- 0L      # 0 = standard deviation shock, 1 = unit shock
-  specs$confint        <- 1.67    # Width of confidence bands: 1 = 68%, 1.67 = 90%, 1.96 = 95%
-  specs$hor            <- 24L     # Length of horizon
-```
-
-Provide a switching variable to separate the data into two regimes.
-```{r, message = FALSE }
-# Specifications for switching variable
-  specs$switching      <- data_set_df$Infl # Inflation rate
-  specs$hp_filter      <- 1                # 0 = Do not use HP-filter to decompose switching variable, 
-                                           # 1 = Use HP-filter to decompose switching variable
-  specs$lambda         <- 1600             # Monthly = 129600, Quarterly = 1600, Annual = 6.25
-  specs$gamma          <- 6                # Numeric value > 0
 ```
 
 $$ $$
@@ -150,12 +116,25 @@ $$ $$
 Estimate nonlinear impulse responses with package function *lp_nl*. Note that the VAR's data set (*data_set_df*) has to be 
 a data.frame(). 
 ```{r, message = FALSE }  
-  results_nl <- lp_nl(data_set_df, specs)
+results_nl <- lp_nl(data_set_df, lags_lin         = 4L,  # Number of lags for (reduced) linear VAR 
+                                   lags_nl        = 4L,  # Number of lags 
+                                   lags_criterion = NaN, # Lag length criterion (AICc, AIC or BIC) or NaN
+                                   max_lags       = NaN, # If lags_criterion is chosen, maximum number of lags  
+                                   trend          = 1L,  # 0 = no trend, 1 = trend, 2 = trend and quadratic trend
+                                   shock_type     = 0L,  # 0 = standard deviation shock, 1 = unit shock
+                                   confint        = 1.67, # Width of confidence bands: 1 = 68%, 1.67 = 90%, 1.96 = 95%
+                                   hor            = 24,  # Length of horizon
+                      
+                                   switching      = data_set_df$Infl, # Inflation rate
+                                   hp_filter      = 1,    # 0 = Do not use HP-filter to decompose switching variable,   
+                                   lambda         = 1600, # Monthly = 129600, Quarterly = 1600, Annual = 6.25
+                                   gamma          = 6)    # Numeric value > 0 
 ```
 
-Save values from transition function
+Save values from transition function and list which contains data information. 
 ```{r, message = FALSE } 
   fz      <- results_nl$fz
+  specs   <- results_nl$specs
 ```
 
 Plot output gap

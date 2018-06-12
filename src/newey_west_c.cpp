@@ -20,7 +20,7 @@ List newey_west_c(NumericVector y, NumericMatrix x, int h){
   NumericMatrix V;
   arma::mat G, M, xx, xx_one, yy, M1, M2, ga, g1, w, za, xpxi, emat, hhat;
   arma::vec w1, beta, resids;
-  int nrow_hhat, a, p, nobs, num_exog, nlag;
+  int nrow_hhat, a, nobs, num_exog, nlag;
   List ret(2);
 
   xx       = as<arma::mat>(x);
