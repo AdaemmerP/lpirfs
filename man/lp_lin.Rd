@@ -16,7 +16,7 @@ is used for the Cholesky decomposition.}
 \item{lags_criterion}{NaN or character. NaN means that the number of lags
 will be given at \emph{lags_lin}. The character refers to the corresponding lag length criterion ('AICc', 'AIC' or 'BIC').}
 
-\item{max_lags}{NaN or integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC'). NaN otherwise}
+\item{max_lags}{NaN or integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC'). NaN otherwise.}
 
 \item{trend}{Integer. No trend =  0 , Include trend = 1, Include trend and quadratic trend = 2.}
 
@@ -28,7 +28,7 @@ will be given at \emph{lags_lin}. The character refers to the corresponding lag 
 }
 \value{
 A list with impulse responses and their robust confidence bands.
-It also returns an updated list of \emph{specs} with further properties of \emph{data_set_df} for the plot function.
+It also returns a list named \emph{specs} with properties of \emph{data_set_df} for the plot function.
 
 \item{irf_lin_mean}{A three 3D \link{array}(), containing all impulse responses for all endogenous variables.
                    The last dimension denotes the shock variable. The row in each matrix
@@ -82,11 +82,17 @@ Compute linear impulse responses with local projections by Jordà (2005).
  }
 }
 \references{
-Jordà, O. (2005) "Estimation and Inference of Impulse Responses by Local Projections."
+Akaike, H. (1974). "A new look at the statistical model identification", \emph{IEEE Transactions on Automatic Control}, 19 (6): 716–723
+
+Hurvich, C. M., and Tsai, C.-L. (1993) “A Corrected Akaike Information Criterion for
+Vector Autoregressive Model Selection.” \emph{Journal of Time Series Analysis}, 1993, 14(3):
+271–79.
+
+Jordà, O. (2005). "Estimation and Inference of Impulse Responses by Local Projections."
 \emph{American Economic Review}, 95 (1): 161-182.
 
 Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
-Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–708.
+Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55: 703–708.
 }
 \author{
 Philipp Adämmer

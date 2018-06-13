@@ -44,7 +44,12 @@ I greatly benefit from the profound *R*, *Rcpp* and *GitHub* knowledge of Philip
 Development
 -----------
 
-I am working on a function to include exogenous variables and a function which allows to manually identify the linear combinations of the reduced form residuals.
+I intend to extend the package with functions that
+
+-   allow to manually identify the linear combinations of the reduced form residuals,
+-   allow to include exogenous variables,
+-   conduct IV-lp estimation,
+-   conduct panel-lp estimation.
 
 ### Author
 

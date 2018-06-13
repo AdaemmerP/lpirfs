@@ -33,11 +33,20 @@
 #'
 #' @export
 #' @references
-#' Jordà, O. (2005) "Estimation and Inference of Impulse Responses by Local Projections."
+#' Akaike, H. (1974). "A new look at the statistical model identification", \emph{IEEE Transactions on Automatic Control}, 19 (6): 716–723.
+#'
+#' Hurvich, C. M., and Tsai, C.-L. (1993) “A Corrected Akaike Information Criterion for
+#' Vector Autoregressive Model Selection.” \emph{Journal of Time Series Analysis}, 1993, 14(3):
+#' 271–79.
+#'
+#' Jordà, O. (2005). "Estimation and Inference of Impulse Responses by Local Projections."
 #' \emph{American Economic Review}, 95 (1): 161-182.
 #'
 #' Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
-#' Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–708.
+#' Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55: 703–708.
+#'
+#' Schwarz, Gideon E. (1978). "Estimating the dimension of a model", \emph{Annals of Statistics}, 6 (2): 461–464.
+#'
 #' @author Philipp Adämmer
 #' @import foreach
 #' @examples
