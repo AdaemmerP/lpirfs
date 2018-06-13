@@ -15,6 +15,11 @@ Main features
 -   Functions are partly implemented in *Rcpp* and *RcppArmadillo* to improve efficiency.
 -   High performance with parallel computation.
 
+Examples
+--------
+
+Examples can be found [here.](https://adaemmerp.github.io/lpirfs/README_docs.html)
+
 Installation
 ------------
 
@@ -30,11 +35,6 @@ The package compiles some C++ source code for installation, which is why you nee
 On Windows you need [Rtools](https://cran.r-project.org/bin/windows/Rtools/) available from CRAN.
 
 On macOS you need the Clang 6.x compiler and the GNU Fortran compiler from [macOS tools](https://cran.r-project.org/bin/macosx/tools/). Having installed the compilers, you need to open a terminal and start R via 'PATH=/usr/local/clang6/bin:$PATH R'. Yo can then install the package via *devtools::install\_github("AdaemmerP/lpirfs")*
-
-Examples
---------
-
-Examples can be found [here.](https://adaemmerp.github.io/lpirfs/README_docs.html)
 
 Acknowledgements
 ----------------
