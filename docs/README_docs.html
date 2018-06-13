@@ -161,9 +161,9 @@ $(document).ready(function () {
 <h2>Example: Nonlinear impulse responses</h2>
 <p>Load data set from package to estimate a nonlinear, new-Keynesian, closed-economy model. These data are used by <a href="https://www.aeaweb.org/articles?id=10.1257/0002828053828518">Jordà (2005)</a> in chapter IV, p.176. See the data’s help file or the <a href="https://www.aeaweb.org/articles?id=10.1257/0002828053828518">paper</a> for a detailed description.</p>
 <pre class="r"><code>  data_set_df &lt;- interest_rules_var_data</code></pre>
-<p><span class="math display">\[ \]</span> The switching variable (<span class="math inline">\(z_t\)</span>) can either be decomposed by the Hodrick-Prescott filter (see <a href="http://www.nber.org/papers/w17447.pdf">Auerbach and Gorodnichenko, 2013</a>) or directly plugged into the following transition function:</p>
-<p><span class="math display">\[F({z_t})  = \  \frac{e^{(-\gamma z_t)}}{\left(1 + e^{(-\gamma z_t)})\right)},\]</span></p>
-<p>where <span class="math inline">\(\gamma &gt; 0\)</span>. To differentiate between the two regimes, the exogenous variables (<span class="math inline">\(\boldsymbol{y}_{t-p}\)</span>) are multiplied with the values of the transition function at <em>t − 1</em> where</p>
+<p><span class="math display">\[ \]</span> The switching variable (<span class="math inline">\(z_t\)</span>) can either be decomposed by the Hodrick-Prescott filter (see <a href="http://www.nber.org/papers/w17447.pdf">Auerbach and Gorodnichenko, 2013</a>) or directly plugged into the following logistic function:</p>
+<p><span class="math display">\[F({z_t})  = \  \frac{e^{(-\gamma z_t)}}{\left(1 + e^{(-\gamma z_t)}\right)},\]</span></p>
+<p>where <span class="math inline">\(\gamma &gt; 0\)</span>. To differentiate between the two regimes, the exogenous variables (<span class="math inline">\(\boldsymbol{y}_{t-p}\)</span>) are multiplied with the values of the transition function above at <em>t − 1</em> where</p>
 <ul>
 <li>Regime 1 <span class="math inline">\((R_1)\)</span>: <span class="math inline">\(\boldsymbol{y}_{t-i}\cdot(1-F(z_{t-1}))\)</span>, <span class="math inline">\(\qquad i = 1, ..., p\)</span>,</li>
 </ul>
