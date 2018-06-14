@@ -137,6 +137,29 @@ test_that("Check whether width of confidence bands is correctly specified", {
                'The width of the confidence bands has to be >=0.', fixed = TRUE)
 } )
 
+test_that("Check whether maximum lag length is given when no criterion is given", {
+  lags_lin       <- 3
+  lags_criterion <- NaN
+  max_lags       <- 3
+  expect_error(lp_lin(data_set_df, lags_lin    = lags_lin, lags_criterion = lags_criterion,
+                      max_lags   = max_lags, trend          = trend,
+                      shock_type = shock_type, confint      = confint,
+                      hor        = hor),
+               'The maximum number of lags is only used if you provide a lag length criterion.', fixed = TRUE)
+} )
+
+
+test_that("Check whether no lag length criterion and number of lags are given", {
+  lags_lin       <- NaN
+  lags_criterion <- NaN
+  expect_error(lp_lin(data_set_df, lags_lin    = lags_lin, lags_criterion = lags_criterion,
+                      max_lags   = max_lags, trend          = trend,
+                      shock_type = shock_type, confint      = confint,
+                      hor        = hor),
+               'You have to at least provide a lag criterion (AICc, AIC or BIC) or a fixed number of lags.', fixed = TRUE)
+} )
+
+
 
 
 # --- Check whether results from lp_lin are in region of results from Jordà (2005)

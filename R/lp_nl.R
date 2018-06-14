@@ -1,15 +1,15 @@
 #' @name lp_nl
 #' @title Compute (nonlinear) impulse responses
 #' @description Compute nonlinear impulse responses with local projections by Jordà (2005). The
-#' data are separated into two states with a smooth transition function as proposed by Auerbach and Gorodnichenko (2012).
+#' data are separated into two states with a smooth transition function as applied in Auerbach and Gorodnichenko (2012).
 #'
 #' @param data_set_df A \link{data.frame}() containing all endogenous variables for the VAR. The column order
 #'                     is used for the Cholesky decomposition.
 #' @param lags_criterion NaN or character. NaN means that the number of lags
 #'         will be given at \emph{lags_nl} and \emph{lags_lin}. The lag length criteria are 'AICc', 'AIC' and 'BIC'.
-#' @param lags_lin Integer. Number of lags for linear VAR to identify shock.
-#' @param lags_nl Integer. Number of lags for (nonlinear) VAR (if \emph{lags_criterion} = NaN).
-#' @param max_lags Integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC').
+#' @param lags_lin NaN or integer. Number of lags for linear VAR to identify shock. NaN if lag length criterion is given.
+#' @param lags_nl NaN or integer. Number of lags for (nonlinear) VAR (if \emph{lags_criterion} = NaN). NaN if lag length criterion is given.
+#' @param max_lags NaN or integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC'). NaN otherwise.
 #' @param trend Integer. Include no trend =  0 , include trend = 1, include trend and quadratic trend = 2.
 #' @param shock_type Integer. Standard deviation shock = 0, Unit shock = 1.
 #' @param confint Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.
@@ -32,33 +32,33 @@
 #' @return A list with impulse responses and their robust confidence bands.
 #' It also contains a list named \emph{specs} with properties of \emph{data_set_df} for the plot function.
 #'
-#'\item{irf_s1_mean}{A three 3D \link{array}(), containing all impulse responses for all endogenous variables of the first state.
+#'\item{irf_s1_mean}{A three 3D \link{array}() containing all impulse responses for all endogenous variables of the first state.
 #'                    The last dimension denotes the shock variable. The row in each matrix
 #'                    denotes the respones of the \emph{ith} variable ordered as in \emph{data_set_df}. The columns are the horizons.
 #'                    For example, if the results are saved in \emph{results_nl}, results_nl$irf_s1_mean[, , 1] returns a KXH matrix,
 #'                    where K is the number of variables and H the number of horizons. '1' is the variable which shocks, i.e. the
 #'                    variable in the first column of \emph{data_set_df}.}
 #'
-#'\item{irf_s1_low}{A three 3D \link{array}(), containing all lower confidence bands of the impulse responses, based on
+#'\item{irf_s1_low}{A three 3D \link{array}() containing all lower confidence bands of the impulse responses, based on
 #'                    robust standard standard errors by Newey and West (1987). Properties are equal to \emph{irf_s1_mean}.}
 #'
-#'\item{irf_s1_up}{A three 3D \link{array}(), containing all upper confidence bands of the impulse responses, based on
+#'\item{irf_s1_up}{A three 3D \link{array}() containing all upper confidence bands of the impulse responses, based on
 #'                    robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s1_mean}.}
 #'
-#'\item{irf_s2_mean}{A three 3D \link{array}(), containing all impulse responses for all endogenous variables of the second state.
+#'\item{irf_s2_mean}{A three 3D \link{array}() containing all impulse responses for all endogenous variables of the second state.
 #'                    The last dimension denotes the shock variable. The row in each matrix
 #'                    denotes the respones of the \emph{ith} variable as ordered in data_set_df. The columns denote the horizon.
 #'                    For example, if the results are saved in \emph{results_nl}, results_nl$irf_s2_mean[, , 1] returns a KXH matrix,
 #'                    where K is the number of variables and H the number of horizons. '1' is the first shock variable corresponding to the
 #'                    variable in the first column of \emph{data_set_df}.}
 #'
-#'\item{irf_s2_low}{A three 3D \link{array}(), containing all lower confidence bands of the responses,
+#'\item{irf_s2_low}{A three 3D \link{array}() containing all lower confidence bands of the responses,
 #'                    based on robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s2_mean}.}
 #'
 #'\item{irf_s2_up}{A three 3D \link{array}(), containing all upper confidence bands of the responses, based on
 #'                    robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s2_mean}.}
 #'
-#'\item{specs}{An updated list of \emph{specs} for the plot function.}
+#'\item{specs}{A list with properties of \emph{data_set_df} for the plot function.}
 #'
 #'\item{fz}{A vector containing the values of the transition function F(z_{t-1})}
 #'
@@ -91,7 +91,7 @@
 #'# Load package
 #'   library(lpirfs)
 #'
-#'# Load data (from package)
+#'# Load data
 #'   data_set_df <- monetary_var_data
 #'
 #'# Estimate model and save results
@@ -103,7 +103,7 @@
 #'                                    shock_type     = 1L,
 #'                                    confint        = 1.96,
 #'                                    hor            = 24L,
-#'                                    switching      = data_set_dff$FF,
+#'                                    switching      = data_set_df$FF,
 #'                                    hp_filter      = 1L,
 #'                                    lambda         = 1600,
 #'                                    gamma          = 3)
@@ -130,10 +130,10 @@
 #'}
 #' @author Philipp Adämmer
 #'
-lp_nl <- function(data_set_df, lags_lin  = 4, lags_nl = 3,  lags_criterion = NaN, max_lags = NaN,
-                               trend     = 0L, shock_type    = 1L,  confint  = 1.96,
-                               hor       = 24, switching     = data_set_df[, 1],
-                               hp_filter = 1, lambda         = 1600, gamma   = 3){
+lp_nl <- function(data_set_df, lags_lin  = NULL, lags_nl        = NULL,  lags_criterion = NULL, max_lags = NULL,
+                               trend     = NULL, shock_type     = NULL,  confint        = NULL,
+                               hor       = NULL, switching      = NULL,
+                               hp_filter = NULL, lambda         = NULL, gamma   = NULL){
 
   # Create list to store inputs
     specs <- list()
@@ -245,7 +245,7 @@ lp_nl <- function(data_set_df, lags_lin  = 4, lags_nl = 3,  lags_criterion = NaN
   # Check whether lags for linear model are integers
   if(is.numeric(specs$lags_nl) & !is.nan(specs$lags_nl)){
     if(!(specs$lags_nl %% 1 == 0) | specs$lags_nl < 0){
-      stop('The numbers of lags have to be a positive integer.')
+      stop('The number of lags have to be a positive integer.')
     }
   } else {}
 
@@ -261,7 +261,7 @@ lp_nl <- function(data_set_df, lags_lin  = 4, lags_nl = 3,  lags_criterion = NaN
 
   # Check whether trend is correctly specified
   if(!(specs$trend %in% c(0,1,2))){
-    stop('For trend please put 0 = no trend, 1 = trend, 2 = trend and quadratic trend.')
+    stop('For trend please set 0 = no trend, 1 = trend, 2 = trend and quadratic trend.')
   }
 
 
@@ -285,6 +285,12 @@ lp_nl <- function(data_set_df, lags_lin  = 4, lags_nl = 3,  lags_criterion = NaN
   if(!(specs$hp_filter %in% c(0, 1))){
     stop('Please set hp_filter = 0 (do not use HP-filter), or hp_filter = 1 (use HP-filter).')
   }
+
+  # Check whether hp_filter is either 0 or 1 is positive
+   if((specs$max_lags < 0 )){
+    stop('The maximum number of lags has to be a positive integer.')
+  }
+
 
 
 

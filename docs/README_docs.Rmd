@@ -55,7 +55,7 @@ Display single impulse responses:
 
 Display all plots (compare with Figure 5 in Jordà (2005), p. 176):
 ```{r, fig.height = 6, fig.width = 8, fig.align = "center", message = FALSE }  
-# Load further libraries
+# Load libraries to plot all impulse responses
   library(ggpubr)
   library(gridExtra)
 

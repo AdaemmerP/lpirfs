@@ -176,7 +176,7 @@ test_that("Check whether lags are integers", {
                                    max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
                                    switching = switching, hp_filter = hp_filter,
                                    lambda    = lambda, gamma        = gamma, confint          = confint, hor = hor),
-               'The numbers of lags have to be a positive integer.', fixed = TRUE)
+               'The number of lags have to be a positive integer.', fixed = TRUE)
 } )
 
 
@@ -186,7 +186,7 @@ test_that("Check whether trend is correctly specified", {
                                    max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
                                    switching = switching, hp_filter = hp_filter,
                                    lambda    = lambda, gamma        = gamma, confint          = confint, hor = hor),
-               'For trend please put 0 = no trend, 1 = trend, 2 = trend and quadratic trend.', fixed = TRUE)
+               'For trend please set 0 = no trend, 1 = trend, 2 = trend and quadratic trend.', fixed = TRUE)
 } )
 
 
@@ -228,3 +228,11 @@ test_that("Check whether hp_filter is 0 or 1", {
                'Please set hp_filter = 0 (do not use HP-filter), or hp_filter = 1 (use HP-filter).', fixed = TRUE)
 } )
 
+test_that("Check whether maximum number of lags is positive", {
+  max_lags <- - 2
+  expect_error(lp_nl(data_set_df, lags_lin   = lags_lin, lags_nl    = lags_nl, lags_criterion = lags_criterion,
+                     max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
+                     switching = switching, hp_filter = hp_filter,
+                     lambda    = lambda, gamma        = gamma, confint          = confint, hor = hor),
+               'The maximum number of lags has to be a positive integer.', fixed = TRUE)
+} )

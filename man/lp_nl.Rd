@@ -4,23 +4,23 @@
 \alias{lp_nl}
 \title{Compute (nonlinear) impulse responses}
 \usage{
-lp_nl(data_set_df, lags_lin = 4, lags_nl = 3, lags_criterion = NaN,
-  max_lags = NaN, trend = 0L, shock_type = 1L, confint = 1.96,
-  hor = 24, switching = data_set_df[, 1], hp_filter = 1, lambda = 1600,
-  gamma = 3)
+lp_nl(data_set_df, lags_lin = NULL, lags_nl = NULL, lags_criterion = NULL,
+  max_lags = NULL, trend = NULL, shock_type = NULL, confint = NULL,
+  hor = NULL, switching = NULL, hp_filter = NULL, lambda = NULL,
+  gamma = NULL)
 }
 \arguments{
 \item{data_set_df}{A \link{data.frame}() containing all endogenous variables for the VAR. The column order
 is used for the Cholesky decomposition.}
 
-\item{lags_lin}{Integer. Number of lags for linear VAR to identify shock.}
+\item{lags_lin}{NaN or integer. Number of lags for linear VAR to identify shock. NaN if lag length criterion is given.}
 
-\item{lags_nl}{Integer. Number of lags for (nonlinear) VAR (if \emph{lags_criterion} = NaN).}
+\item{lags_nl}{NaN or integer. Number of lags for (nonlinear) VAR (if \emph{lags_criterion} = NaN). NaN if lag length criterion is given.}
 
 \item{lags_criterion}{NaN or character. NaN means that the number of lags
 will be given at \emph{lags_nl} and \emph{lags_lin}. The lag length criteria are 'AICc', 'AIC' and 'BIC'.}
 
-\item{max_lags}{Integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC').}
+\item{max_lags}{NaN or integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC'). NaN otherwise.}
 
 \item{trend}{Integer. Include no trend =  0 , include trend = 1, include trend and quadratic trend = 2.}
 
@@ -50,46 +50,46 @@ Regime 2 = \eqn{F(z_{t-1})}*y_{t-p}.}
 A list with impulse responses and their robust confidence bands.
 It also contains a list named \emph{specs} with properties of \emph{data_set_df} for the plot function.
 
-\item{irf_s1_mean}{A three 3D \link{array}(), containing all impulse responses for all endogenous variables of the first state.
+\item{irf_s1_mean}{A three 3D \link{array}() containing all impulse responses for all endogenous variables of the first state.
                    The last dimension denotes the shock variable. The row in each matrix
                    denotes the respones of the \emph{ith} variable ordered as in \emph{data_set_df}. The columns are the horizons.
                    For example, if the results are saved in \emph{results_nl}, results_nl$irf_s1_mean[, , 1] returns a KXH matrix,
                    where K is the number of variables and H the number of horizons. '1' is the variable which shocks, i.e. the
                    variable in the first column of \emph{data_set_df}.}
 
-\item{irf_s1_low}{A three 3D \link{array}(), containing all lower confidence bands of the impulse responses, based on
+\item{irf_s1_low}{A three 3D \link{array}() containing all lower confidence bands of the impulse responses, based on
                    robust standard standard errors by Newey and West (1987). Properties are equal to \emph{irf_s1_mean}.}
 
-\item{irf_s1_up}{A three 3D \link{array}(), containing all upper confidence bands of the impulse responses, based on
+\item{irf_s1_up}{A three 3D \link{array}() containing all upper confidence bands of the impulse responses, based on
                    robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s1_mean}.}
 
-\item{irf_s2_mean}{A three 3D \link{array}(), containing all impulse responses for all endogenous variables of the second state.
+\item{irf_s2_mean}{A three 3D \link{array}() containing all impulse responses for all endogenous variables of the second state.
                    The last dimension denotes the shock variable. The row in each matrix
                    denotes the respones of the \emph{ith} variable as ordered in data_set_df. The columns denote the horizon.
                    For example, if the results are saved in \emph{results_nl}, results_nl$irf_s2_mean[, , 1] returns a KXH matrix,
                    where K is the number of variables and H the number of horizons. '1' is the first shock variable corresponding to the
                    variable in the first column of \emph{data_set_df}.}
 
-\item{irf_s2_low}{A three 3D \link{array}(), containing all lower confidence bands of the responses,
+\item{irf_s2_low}{A three 3D \link{array}() containing all lower confidence bands of the responses,
                    based on robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s2_mean}.}
 
 \item{irf_s2_up}{A three 3D \link{array}(), containing all upper confidence bands of the responses, based on
                    robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s2_mean}.}
 
-\item{specs}{An updated list of \emph{specs} for the plot function.}
+\item{specs}{A list with properties of \emph{data_set_df} for the plot function.}
 
 \item{fz}{A vector containing the values of the transition function F(z_{t-1})}
 }
 \description{
 Compute nonlinear impulse responses with local projections by Jordà (2005). The
-data are separated into two states with a smooth transition function as proposed by Auerbach and Gorodnichenko (2012).
+data are separated into two states with a smooth transition function as applied in Auerbach and Gorodnichenko (2012).
 }
 \examples{
 \dontrun{
 # Load package
   library(lpirfs)
 
-# Load data (from package)
+# Load data
   data_set_df <- monetary_var_data
 
 # Estimate model and save results
@@ -101,7 +101,7 @@ data are separated into two states with a smooth transition function as proposed
                                    shock_type     = 1L,
                                    confint        = 1.96,
                                    hor            = 24L,
-                                   switching      = data_set_dff$FF,
+                                   switching      = data_set_df$FF,
                                    hp_filter      = 1L,
                                    lambda         = 1600,
                                    gamma          = 3)
@@ -128,17 +128,25 @@ data are separated into two states with a smooth transition function as proposed
 }
 }
 \references{
+Akaike, H. (1974). "A new look at the statistical model identification", \emph{IEEE Transactions on Automatic Control}, 19 (6): 716–723.
+
 Auerbach, A. J., and  Gorodnichenko Y. (2012). "Measuring the Output Responses to Fiscal Policy."
 \emph{American Economic Journal: Economic Policy}, 4 (2): 1-27.
 
 Auerbach, A. J., and Gorodnichenko Y. (2013). "Fiscal Multipliers in Recession and Expansion."
 \emph{NBER Working Paper Series}. Nr 17447.
 
+Hurvich, C. M., and Tsai, C.-L. (1993) “A Corrected Akaike Information Criterion for
+Vector Autoregressive Model Selection.” \emph{Journal of Time Series Analysis}, 1993, 14(3):
+271–79.
+
 Jordà, Ò. (2005) "Estimation and Inference of Impulse Responses by Local Projections."
 \emph{American Economic Review}, 95 (1): 161-182.
 
 Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
 Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–708.
+
+Schwarz, Gideon E. (1978). "Estimating the dimension of a model", \emph{Annals of Statistics}, 6 (2): 461–464.
 }
 \author{
 Philipp Adämmer

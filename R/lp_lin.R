@@ -6,9 +6,9 @@
 #'                    is used for the Cholesky decomposition.
 #' @param lags_criterion NaN or character. NaN means that the number of lags
 #'         will be given at \emph{lags_lin}. The character refers to the corresponding lag length criterion ('AICc', 'AIC' or 'BIC').
-#' @param lags_lin Integer or NaN. Number of lags for (linear) VAR (if \emph{lags_criterion} = NaN). NaN if lags_criterion is given.
+#' @param lags_lin NaN or integer. Number of lags for (linear) VAR (if \emph{lags_criterion} = NaN). NaN if lags_criterion is given.
 #' @param max_lags NaN or integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC'). NaN otherwise.
-#' @param trend Integer. No trend =  0 , Include trend = 1, Include trend and quadratic trend = 2.
+#' @param trend Integer. No trend =  0 , include trend = 1, include trend and quadratic trend = 2.
 #' @param shock_type Integer. Standard deviation shock = 0, Unit shock = 1.
 #' @param confint Double. Width of confidence bands. 68\% = 1, 90\% = 1.65, 95\% = 1.96.
 #' @param hor Integer. Number of horizons for impulse responses.
@@ -16,20 +16,20 @@
 #' @return A list with impulse responses and their robust confidence bands.
 #' It also returns a list named \emph{specs} with properties of \emph{data_set_df} for the plot function.
 #'
-#'\item{irf_lin_mean}{A three 3D \link{array}(), containing all impulse responses for all endogenous variables.
+#'\item{irf_lin_mean}{A three 3D \link{array}() containing all impulse responses for all endogenous variables.
 #'                    The last dimension denotes the shock variable. The row in each matrix
 #'                    gives the respones of the \emph{ith} variable, ordered as in data_set_df. The columns denote the horizon.
-#'                    For example, if \emph{results_lin} contains the results, results_lin$irf_lin_mean[, , 1] returns a KXH matrix,
+#'                    For example, if \emph{results_lin} contains the list with results, results_lin$irf_lin_mean[, , 1] returns a KXH matrix,
 #'                    where K is the number of variables and H the number of horizons. '1' is the variable which shocks, i.e. the
 #'                    variable in the first column of \emph{data_set_df}.}
 #'
-#'\item{irf_lin_low}{A three 3D \link{array}(), containing all lower confidence bands of the responses,
+#'\item{irf_lin_low}{A three 3D \link{array}() containing all lower confidence bands of the responses,
 #'                    based on robust standard errors by Newey and West (1987). Properties are equal to irf_lin_mean.}
 #'
-#'\item{irf_lin_up}{A three 3D \link{array}(), containing all upper confidence bands of the responses,
-#'                    robust standard errors by Newey and West (1987). Properties are equal to irf_lin_mean.}
+#'\item{irf_lin_up}{A three 3D \link{array}() containing all upper confidence bands of the responses,
+#'                    based on robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_lin_mean}.}
 #'
-#'\item{specs}{An updated list of \emph{specs} for the plot function.}
+#'\item{specs}{A list with properties of \emph{data_set_df} for the plot function.}
 #'
 #' @export
 #' @references
@@ -54,17 +54,17 @@
 #'# Load package
 #'   library(lpirfs)
 #'
-#'# Load data (from package)
+#'# Load data
 #'   data_set_df <- interest_rules_var_data
 #'
 #'# Estimate linear model
-#'   results_lin <- lp_lin(data_set_df, lags_lin    = 4,
-#'                                   lags_criterion = NaN,
-#'                                   max_lags       = 2L,
-#'                                   trend          = 0L,
-#'                                   shock_type     = 1L,
-#'                                   confint        = 1.96,
-#'                                   hor            = 12)
+#'   results_lin <- lp_lin(data_set_df, lags_lin       = 4,
+#'                                      lags_criterion = NaN,
+#'                                      max_lags       = NaN,
+#'                                      trend          = 0L,
+#'                                      shock_type     = 1L,
+#'                                      confint        = 1.96,
+#'                                      hor            = 12)
 #'
 #'# Make plots
 #'   linear_plots <- plot_lin_irfs(results_lin)
@@ -81,8 +81,8 @@
 #'   marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
 #'
 #'  }
-lp_lin <- function(data_set_df, lags_lin = 4, lags_criterion = NaN, max_lags = NaN,
-                                trend    = 0L, shock_type    = 1L,  confint  = 1.96, hor = 24){
+lp_lin <- function(data_set_df, lags_lin = NULL, lags_criterion = NULL, max_lags = NULL,
+                                trend    = NULL, shock_type    = NULL,  confint  = NULL, hor = NULL){
 
   # Create list to store inputs
     specs <- list()
@@ -177,6 +177,12 @@ lp_lin <- function(data_set_df, lags_lin = 4, lags_criterion = NaN, max_lags = N
   if(!(specs$confint >=0)){
     stop('The width of the confidence bands has to be >=0.')
   }
+
+  # Check whether maximum lag length is given when no criterion is given
+    if(!is.character(specs$lags_criterion) & is.numeric(specs$max_lags) & !is.nan(specs$max_lags)){
+      stop('The maximum number of lags is only used if you provide a lag length criterion.')
+    }
+
 
 
 

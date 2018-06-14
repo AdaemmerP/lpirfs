@@ -4,21 +4,22 @@
 \alias{lp_lin}
 \title{Compute (linear) impulse responses}
 \usage{
-lp_lin(data_set_df, lags_lin = 4, lags_criterion = NaN, max_lags = NaN,
-  trend = 0L, shock_type = 1L, confint = 1.96, hor = 24)
+lp_lin(data_set_df, lags_lin = NULL, lags_criterion = NULL,
+  max_lags = NULL, trend = NULL, shock_type = NULL, confint = NULL,
+  hor = NULL)
 }
 \arguments{
 \item{data_set_df}{A \link{data.frame}() containing all endogenous variables for the VAR. The column order
 is used for the Cholesky decomposition.}
 
-\item{lags_lin}{Integer or NaN. Number of lags for (linear) VAR (if \emph{lags_criterion} = NaN). NaN if lags_criterion is given.}
+\item{lags_lin}{NaN or integer. Number of lags for (linear) VAR (if \emph{lags_criterion} = NaN). NaN if lags_criterion is given.}
 
 \item{lags_criterion}{NaN or character. NaN means that the number of lags
 will be given at \emph{lags_lin}. The character refers to the corresponding lag length criterion ('AICc', 'AIC' or 'BIC').}
 
 \item{max_lags}{NaN or integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC'). NaN otherwise.}
 
-\item{trend}{Integer. No trend =  0 , Include trend = 1, Include trend and quadratic trend = 2.}
+\item{trend}{Integer. No trend =  0 , include trend = 1, include trend and quadratic trend = 2.}
 
 \item{shock_type}{Integer. Standard deviation shock = 0, Unit shock = 1.}
 
@@ -30,20 +31,20 @@ will be given at \emph{lags_lin}. The character refers to the corresponding lag 
 A list with impulse responses and their robust confidence bands.
 It also returns a list named \emph{specs} with properties of \emph{data_set_df} for the plot function.
 
-\item{irf_lin_mean}{A three 3D \link{array}(), containing all impulse responses for all endogenous variables.
+\item{irf_lin_mean}{A three 3D \link{array}() containing all impulse responses for all endogenous variables.
                    The last dimension denotes the shock variable. The row in each matrix
                    gives the respones of the \emph{ith} variable, ordered as in data_set_df. The columns denote the horizon.
-                   For example, if \emph{results_lin} contains the results, results_lin$irf_lin_mean[, , 1] returns a KXH matrix,
+                   For example, if \emph{results_lin} contains the list with results, results_lin$irf_lin_mean[, , 1] returns a KXH matrix,
                    where K is the number of variables and H the number of horizons. '1' is the variable which shocks, i.e. the
                    variable in the first column of \emph{data_set_df}.}
 
-\item{irf_lin_low}{A three 3D \link{array}(), containing all lower confidence bands of the responses,
+\item{irf_lin_low}{A three 3D \link{array}() containing all lower confidence bands of the responses,
                    based on robust standard errors by Newey and West (1987). Properties are equal to irf_lin_mean.}
 
-\item{irf_lin_up}{A three 3D \link{array}(), containing all upper confidence bands of the responses,
-                   robust standard errors by Newey and West (1987). Properties are equal to irf_lin_mean.}
+\item{irf_lin_up}{A three 3D \link{array}() containing all upper confidence bands of the responses,
+                   based on robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_lin_mean}.}
 
-\item{specs}{An updated list of \emph{specs} for the plot function.}
+\item{specs}{A list with properties of \emph{data_set_df} for the plot function.}
 }
 \description{
 Compute linear impulse responses with local projections by Jordà (2005).
@@ -53,17 +54,17 @@ Compute linear impulse responses with local projections by Jordà (2005).
 # Load package
   library(lpirfs)
 
-# Load data (from package)
+# Load data
   data_set_df <- interest_rules_var_data
 
 # Estimate linear model
-  results_lin <- lp_lin(data_set_df, lags_lin    = 4,
-                                  lags_criterion = NaN,
-                                  max_lags       = 2L,
-                                  trend          = 0L,
-                                  shock_type     = 1L,
-                                  confint        = 1.96,
-                                  hor            = 12)
+  results_lin <- lp_lin(data_set_df, lags_lin       = 4,
+                                     lags_criterion = NaN,
+                                     max_lags       = NaN,
+                                     trend          = 0L,
+                                     shock_type     = 1L,
+                                     confint        = 1.96,
+                                     hor            = 12)
 
 # Make plots
   linear_plots <- plot_lin_irfs(results_lin)
@@ -82,7 +83,7 @@ Compute linear impulse responses with local projections by Jordà (2005).
  }
 }
 \references{
-Akaike, H. (1974). "A new look at the statistical model identification", \emph{IEEE Transactions on Automatic Control}, 19 (6): 716–723
+Akaike, H. (1974). "A new look at the statistical model identification", \emph{IEEE Transactions on Automatic Control}, 19 (6): 716–723.
 
 Hurvich, C. M., and Tsai, C.-L. (1993) “A Corrected Akaike Information Criterion for
 Vector Autoregressive Model Selection.” \emph{Journal of Time Series Analysis}, 1993, 14(3):
@@ -93,6 +94,8 @@ Jordà, O. (2005). "Estimation and Inference of Impulse Responses by Local Proje
 
 Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
 Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55: 703–708.
+
+Schwarz, Gideon E. (1978). "Estimating the dimension of a model", \emph{Annals of Statistics}, 6 (2): 461–464.
 }
 \author{
 Philipp Adämmer
