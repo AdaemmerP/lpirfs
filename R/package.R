@@ -2,8 +2,8 @@
 #'
 #' Contains functions to estimate linear and nonlinear impulse
 #' responses based on local projections by Jordà (2005) <doi:10.1257/0002828053828518>.
-#' Non-linear impulse responses are estimated for two regimes, identified by
-#' a transition function, proposed by Auerbach and Gorodnichenko (2012) <doi:10.1257/pol.4.2.1>.
+#' Nonlinear impulse responses are based on data separated by
+#' a transition function as in Auerbach and Gorodnichenko (2012) <doi:10.1257/pol.4.2.1>.
 #' @docType package
 #' @author Philipp Adämmer
 #' @importFrom Rcpp evalCpp

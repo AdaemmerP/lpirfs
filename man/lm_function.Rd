@@ -2,7 +2,7 @@
 % Please edit documentation in R/lm_function.R
 \name{lm_function}
 \alias{lm_function}
-\title{Estimate residuals from OLS model}
+\title{Compute residuals from OLS model}
 \usage{
 lm_function(y_data, x_data)
 }

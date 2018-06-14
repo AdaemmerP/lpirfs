@@ -63,7 +63,7 @@ test_that("Check whether a switching variable is given", {
                                    max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
                                    switching = switching, hp_filter = hp_filter,
                                    lambda    = lambda, gamma        = gamma, confint          = confint, hor = hor),
-              'Please specify a switching variable.', fixed = TRUE)
+              'Please provide a switching variable.', fixed = TRUE)
 })
 
 
@@ -231,8 +231,32 @@ test_that("Check whether hp_filter is 0 or 1", {
 test_that("Check whether maximum number of lags is positive", {
   max_lags <- - 2
   expect_error(lp_nl(data_set_df, lags_lin   = lags_lin, lags_nl    = lags_nl, lags_criterion = lags_criterion,
-                     max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
-                     switching = switching, hp_filter = hp_filter,
-                     lambda    = lambda, gamma        = gamma, confint          = confint, hor = hor),
+                                   max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
+                                   switching = switching, hp_filter = hp_filter,
+                                   lambda    = lambda, gamma        = gamma, confint          = confint, hor = hor),
                'The maximum number of lags has to be a positive integer.', fixed = TRUE)
 } )
+
+
+test_that("Check whether whether no lag length criterion is given but maximum number of lags.", {
+  lags_lin       <- 3
+  lags_nl        <- 2
+  lags_criterion <- NaN
+  max_lags       <- 3
+  expect_error(lp_nl(data_set_df, lags_lin   = lags_lin, lags_nl    = lags_nl, lags_criterion = lags_criterion,
+                                   max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
+                                   switching = switching, hp_filter = hp_filter,
+                                   lambda    = lambda, gamma        = gamma, confint          = confint, hor = hor),
+               'The maximum number of lags can only be used if a lag length criterion is given.', fixed = TRUE)
+} )
+
+# test_that("Give warning", {
+#    hp_filter <- 0
+#   expect_message(lp_nl(data_set_df, lags_lin   = lags_lin, lags_nl    = lags_nl, lags_criterion = lags_criterion,
+#                                      max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
+#                                      switching = switching, hp_filter = hp_filter,
+#                                      lambda    = lambda, gamma        = gamma, confint          = confint,
+#                                      hor       = hor),
+#                'A provided value for lambda will not be used as no HP-filter is applied.', fixed = TRUE)
+# } )
+#

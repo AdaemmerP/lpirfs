@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{newey_west_c}
 \alias{newey_west_c}
-\title{Compute newey west covariance matrix}
+\title{Compute OLS paramters and robust standard errors based on Newey-West estimator}
 \usage{
 newey_west_c(y, x, h)
 }
@@ -14,9 +14,6 @@ newey_west_c(y, x, h)
 \item{h}{Integer}
 }
 \description{
-Compute linear OLS coefficients and robust covariance matrix
-based on Newey and West (1987).
-
 Compute OLS parameters and robust standard errors based on Newey and West (1987).
 The function is based on the Matlab code by James P. LeSage.
 }

@@ -1,5 +1,5 @@
 #' @name lp_lin
-#' @title Compute (linear) impulse responses
+#' @title Compute linear impulse responses
 #' @description Compute linear impulse responses with local projections by Jordà (2005).
 #'
 #' @param data_set_df A \link{data.frame}() containing all endogenous variables for the VAR. The column order

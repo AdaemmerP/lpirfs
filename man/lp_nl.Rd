@@ -2,7 +2,7 @@
 % Please edit documentation in R/lp_nl.R
 \name{lp_nl}
 \alias{lp_nl}
-\title{Compute (nonlinear) impulse responses}
+\title{Compute nonlinear impulse responses}
 \usage{
 lp_nl(data_set_df, lags_lin = NULL, lags_nl = NULL, lags_criterion = NULL,
   max_lags = NULL, trend = NULL, shock_type = NULL, confint = NULL,

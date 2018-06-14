@@ -1,5 +1,5 @@
 #' @name lp_nl
-#' @title Compute (nonlinear) impulse responses
+#' @title Compute nonlinear impulse responses
 #' @description Compute nonlinear impulse responses with local projections by Jordà (2005). The
 #' data are separated into two states with a smooth transition function as applied in Auerbach and Gorodnichenko (2012).
 #'
@@ -172,7 +172,7 @@ lp_nl <- function(data_set_df, lags_lin  = NULL, lags_nl        = NULL,  lags_cr
 
   # Check whether switching variable is given
   if(is.null(specs$switching) == TRUE){
-    stop('Please specify a switching variable.')
+    stop('Please provide a switching variable.')
   }
 
   # Check whether 'hp_filter' is given
@@ -257,8 +257,6 @@ lp_nl <- function(data_set_df, lags_lin  = NULL, lags_nl        = NULL,  lags_cr
     }
   } else {}
 
-
-
   # Check whether trend is correctly specified
   if(!(specs$trend %in% c(0,1,2))){
     stop('For trend please set 0 = no trend, 1 = trend, 2 = trend and quadratic trend.')
@@ -287,11 +285,19 @@ lp_nl <- function(data_set_df, lags_lin  = NULL, lags_nl        = NULL,  lags_cr
   }
 
   # Check whether hp_filter is either 0 or 1 is positive
-   if((specs$max_lags < 0 )){
+   if(!is.na(specs$max_lags) & specs$max_lags < 0 ){
     stop('The maximum number of lags has to be a positive integer.')
   }
 
+  # Check whether whether no lag length criterion is given but maximum number of lags.
+    if(is.nan(specs$lags_criterion) & !is.nan(specs$max_lags)& is.numeric(specs$max_lags)){
+      stop('The maximum number of lags can only be used if a lag length criterion is given.')
+    }
 
+  # Give message if no hp_filter is used but gamma and lambda given
+    if(specs$hp_filter == 0 & !is.null(specs$lambda)){
+      message('A provided value for lambda will not be used as no HP-filter is applied.')
+    }
 
 
   # Safe data frame specifications in 'specs for functions

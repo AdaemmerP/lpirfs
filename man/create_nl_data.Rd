@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_nl_data.R
 \name{create_nl_data}
 \alias{create_nl_data}
-\title{Function to create data for non-linear model}
+\title{Function to create data for nonlinear model}
 \usage{
 create_nl_data(specs, data_set_df)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/lp_lin.R
 \name{lp_lin}
 \alias{lp_lin}
-\title{Compute (linear) impulse responses}
+\title{Compute linear impulse responses}
 \usage{
 lp_lin(data_set_df, lags_lin = NULL, lags_criterion = NULL,
   max_lags = NULL, trend = NULL, shock_type = NULL, confint = NULL,

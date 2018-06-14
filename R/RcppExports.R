@@ -15,14 +15,9 @@ find_lag_c <- function(y, x, lag_crit, h, k, max_lags) {
 }
 
 #' @name newey_west_c
-#' @title Compute newey west covariance matrix
-#' @description Compute linear OLS coefficients and robust covariance matrix
-#' based on Newey and West (1987).
-#' @name newey_west_c
-#' @title Compute robust standard errors
+#' @title Compute OLS paramters and robust standard errors based on Newey-West estimator
 #' @description  Compute OLS parameters and robust standard errors based on Newey and West (1987).
 #' The function is based on the Matlab code by James P. LeSage.
-#'
 #' @param y Numeric vector
 #' @param x Numeric Matrix
 #' @param h Integer
