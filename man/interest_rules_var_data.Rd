@@ -3,7 +3,7 @@
 \docType{data}
 \name{interest_rules_var_data}
 \alias{interest_rules_var_data}
-\title{A data frame containing data to estimate the effects of interest rate rules for monetary policy}
+\title{Data to estimate the effects of interest rate rules for monetary policy}
 \format{A data frame with 193 quarterly observations (rows) and 3 variables (columns):
 \describe{
   \item{GDP_gap}{Percentage difference between real GDP and potential GDP (Congressional Budget Office).}
@@ -18,6 +18,11 @@ Sample: 1955:I - 2003:I}
 interest_rules_var_data
 }
 \description{
-A data frame containing data to estimate the effects of interest rate rules for monetary policy
+A \link{tibble}() containing data to estimate the effects of interest rate rules for monetary policy.
+             The data are used in Jordá (2005).
+}
+\references{
+Jordà, Ò. (2005) "Estimation and Inference of Impulse Responses by Local Projections."
+\emph{American Economic Review}, 95 (1): 161-182.
 }
 \keyword{datasets}

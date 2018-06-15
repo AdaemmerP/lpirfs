@@ -7,12 +7,12 @@
 switching_series(switching_data, specs)
 }
 \arguments{
-\item{switching_data}{A vector}
+\item{switching_data}{A numeric vector.}
 
-\item{specs}{A list with specifications for \link{lp_nl}()}
+\item{specs}{A \link{list}() with inputs as in \link{lp_nl}().}
 }
 \value{
-\item{fz}{A vector with values from smooth transition function for \eqn{F(z_{t-1})}}
+\item{fz}{A numeric vector with values from smooth transition function \eqn{F(z_{t-1})}.}
 }
 \description{
 Function to estimate transition values, which uses a smooth transition function as

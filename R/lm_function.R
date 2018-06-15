@@ -1,9 +1,9 @@
 #' @name lm_function
 #' @title Compute residuals from OLS model
-#' @description Estimate residuals from OLS model
+#' @description Estimate residuals from OLS model.
 #' @param y_data A vector for the left hand variable.
 #' @param x_data A matrix with right hand variables.
-#' @return Vector with residuals from OLS regression.
+#' @return A numeric vector with residuals from OLS regression.
 #' @author Philipp Adämmer
 
 lm_function  <- function(y_data, x_data){

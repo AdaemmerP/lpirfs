@@ -1,39 +1,29 @@
 #' @name plot_lin_irfs
 #' @title Compute and display plots of linear impulse responses
-#' @description Compute and display (linear) impulse responses estimated with \link{lp_lin}.
-#' @param results_lin A list with 3D arrays estimated in \link{lp_lin}.
-#' @return A list with (gg-)plots for linear impulse responses
+#' @description Compute and display linear impulse responses estimated with \link{lp_lin}.
+#' @param results_lin A \link{list}() with 3D arrays estimated in \link{lp_lin}.
+#' @return A list with (gg-)plots for linear impulse responses.
 #' @export
 #' @import ggplot2
 #' @author Philipp Adämmer
 #' @examples
 #'  \dontrun{
-#'# Load packages
-#'   library(dplyr)
-#'   library(doParallel)
-#'   library(vars)
-#'   library(parallel)
-#'   library(Rcpp)
+#'# Load package
+#'   library(lpirfs)
 #'
 #'# Load data
 #'   data_set_df <- interest_rules_var_data
 #'
-#'# Create list for input
-#'   specs <- list()
+#'# Estimate linear model
+#'   results_lin <- lp_lin(data_set_df, lags_lin       = 4,
+#'                                      lags_criterion = NaN,
+#'                                      max_lags       = NaN,
+#'                                      trend          = 0L,
+#'                                      shock_type     = 1L,
+#'                                      confint        = 1.96,
+#'                                      hor            = 12)
 #'
-#'# Specify inputs
-#'   specs$lags_lin       <- 4L
-#'   specs$lags_criterion <- NaN
-#'   specs$max_lags       <- 2L
-#'   specs$trend          <- 0L
-#'   specs$shock_type     <- 1L
-#'   specs$confint        <- 1.96
-#'   specs$hor            <- 12L
-#'
-#'# Estimate model and save results
-#'   results_lin  <- lp_lin(data_set_df, specs)
-#'
-#'# Make and save plots
+#'# Make plots
 #'   linear_plots <- plot_lin_irfs(results_lin)
 #'
 #'# Show single plots
@@ -45,7 +35,7 @@
 #'   library(gridExtra)
 #'
 #'   lin_plots_all <- sapply(linear_plots, ggplotGrob)
-#'   marrangeGrob(lin_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df))
+#'   marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
 #'
 #'  }
 plot_lin_irfs <- function(results_lin){

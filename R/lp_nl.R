@@ -15,8 +15,8 @@
 #' @param shock_type Integer. Standard deviation shock = 0, unit shock = 1.
 #' @param confint Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.
 #' @param hor Integer. Number of horizons for impulse responses.
-#' @param switching Vector. A column vector with the same length as \emph{data_set_df}. This series can either
-#'               be decomposed by the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013) or
+#' @param switching Numeric vector. A column vector with the same length as \emph{data_set_df}. This series can either
+#'               be decomposed via the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013) or
 #'               directly plugged into the following smooth transition function:
 #'               \deqn{ F_{z_t} = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)} }
 #'               Warning: \eqn{F_{z_t}} will be lagged in \link{create_nl_data} by one and then multiplied with the data.

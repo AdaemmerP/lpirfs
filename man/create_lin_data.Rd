@@ -12,7 +12,7 @@ create_lin_data(specs, data_set_df)
 \item{data_set_df}{A \link{data.frame}() with all endogenous variables.}
 }
 \value{
-List with filled matrices of lagged left (y_lin) and right hand side (x_lin) variables
+List with filled matrices of lagged left (y_lin) and right hand side (x_lin) variables.
 }
 \description{
 Function to create data for linear model.

@@ -7,13 +7,13 @@
 reduced_var(y_lin, x_lin, data_set_df, specs)
 }
 \arguments{
-\item{y_lin}{A matrix with all endogenous variables}
+\item{y_lin}{A matrix with all endogenous variables.}
 
-\item{x_lin}{A matrix with lagged endogenous variables}
+\item{x_lin}{A matrix with lagged endogenous variables.}
 
-\item{data_set_df}{A \link{data.frame}() with all endogenous variables}
+\item{data_set_df}{A \link{data.frame}() with all endogenous variables.}
 
-\item{specs}{A list with specifications from \link{lp_lin} or \link{lp_nl}}
+\item{specs}{A list with specifications from \link{lp_lin} or \link{lp_nl}.}
 }
 \value{
 Shock matrix (d)

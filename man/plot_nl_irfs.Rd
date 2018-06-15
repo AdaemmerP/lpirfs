@@ -7,7 +7,7 @@
 plot_nl_irfs(results_nl)
 }
 \arguments{
-\item{results_nl}{A list with 3D arrays estimated in \link{lp_nl}().}
+\item{results_nl}{A \link{list}() with 3D arrays estimated in \link{lp_nl}().}
 }
 \value{
 A list with (gg-)plots for nonlinear impulse responses.
@@ -17,43 +17,25 @@ Compute and display (nonlinear) impulse responses estimated with \link{lp_nl}().
 }
 \examples{
 \dontrun{
-# Load packages
-  library(dplyr)
-  library(doParallel)
-  library(parallel)
-  library(vars)
-  library(mFilter)
-  library(Rcpp)
+# Load package
   library(lpirfs)
 
 # Load data
   data_set_df <- monetary_var_data
 
-# Create list for input
-  specs <- list()
-
-# Fill list
-  specs$lags_lin       <- NaN
-  specs$lags_nl        <- NaN
-  specs$lags_criterion <- 'AIC'
-  specs$max_lags       <- 2
-  specs$trend          <- 1
-  specs$shock_type     <- 1
-
-# Specifications for switching variable
-  specs$switching      <- data_set_df$FF
-  specs$hp_filter      <- 1
-  specs$lambda         <- 129600 # Monthly   = 129600,
-                                 # Quarterly = 1600,
-                                 # Annual    = 6.25
-  specs$gamma          <- 3
-
-# Horizons and confidence intervals
-  specs$confint        <- 1.96
-  specs$hor            <- 24
-
 # Estimate model and save results
-  results_nl <- lp_nl(data_set_df, specs)
+  results_nl <- lp_nl(data_set_df, lags_lin       = 4L,
+                                   lags_nl        = 3L,
+                                   lags_criterion = NaN,
+                                   max_lags       = NaN,
+                                   trend          = 0L,
+                                   shock_type     = 1L,
+                                   confint        = 1.96,
+                                   hor            = 24L,
+                                   switching      = data_set_df$FF,
+                                   hp_filter      = 1L,
+                                   lambda         = 1600,
+                                   gamma          = 3)
 
 # Make and save all plots
   nl_plots <- plot_nl_irfs(results_nl)
@@ -70,7 +52,7 @@ Compute and display (nonlinear) impulse responses estimated with \link{lp_nl}().
   plot(s1_plots[[1]])
   plot(s2_plots[[1]])
 
-# Display plots
+# Show all plots
   marrangeGrob(s1_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
   marrangeGrob(s2_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
 

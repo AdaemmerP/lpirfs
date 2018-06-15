@@ -7,15 +7,15 @@
 create_nl_data(specs, data_set_df)
 }
 \arguments{
-\item{specs}{A \link{list}(). Inputs are outlined in \link{lp_nl}}
+\item{specs}{A \link{list}() built with input data for \link{lp_nl}.}
 
-\item{data_set_df}{A data frame with all endogenous variables}
+\item{data_set_df}{A \link{data.frame}() with all endogenous variables.}
 }
 \value{
-List with filled matrices of lagged left (y_lin) and right hand side (x_lin) variables
+List with filled matrices of lagged left (y_lin) and right hand side (x_lin) variables.
 }
 \description{
-Function to create data for non-linear model
+Function to create data for non-linear model.
 }
 \author{
 Philipp Adämmer

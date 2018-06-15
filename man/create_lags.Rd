@@ -7,15 +7,15 @@
 create_lags(data, lags)
 }
 \arguments{
-\item{data}{A data.frame()}
+\item{data}{A \link{data.frame}().}
 
-\item{lags}{Integer for the number of lags}
+\item{lags}{Integer for the number of lags.}
 }
 \value{
-A data.frame() with lagged values
+Returns a \link{data.frame}() with lagged values.
 }
 \description{
-Create a data frame with lagged exogenous variables.
+Create a \link{data.frame}() with lagged exogenous variables.
 }
 \author{
 Philipp Adämmer

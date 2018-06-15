@@ -12,10 +12,10 @@ lm_function(y_data, x_data)
 \item{x_data}{A matrix with right hand variables.}
 }
 \value{
-Vector with residuals from OLS regression.
+A numeric vector with residuals from OLS regression.
 }
 \description{
-Estimate residuals from OLS model
+Estimate residuals from OLS model.
 }
 \author{
 Philipp Adämmer

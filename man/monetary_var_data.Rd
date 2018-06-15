@@ -3,7 +3,7 @@
 \docType{data}
 \name{monetary_var_data}
 \alias{monetary_var_data}
-\title{A data frame containing data to estimate a standard monetary VAR}
+\title{Data to estimate a standard monetary VAR}
 \format{A data frame with 494 monthly observations (rows) and 6 variables (columns):
 \describe{
   \item{EM}{Log of non-agricultural payroll employment.}
@@ -23,6 +23,10 @@ Sample: 1960:01 - 2001:02.}
 monetary_var_data
 }
 \description{
-A data frame containing data to estimate a standard monetary VAR
+A \link{tibble}() containing data to estimate a standard monetary VAR.
+}
+\references{
+Jordà, Ò. (2005) "Estimation and Inference of Impulse Responses by Local Projections."
+\emph{American Economic Review}, 95 (1): 161-182.
 }
 \keyword{datasets}

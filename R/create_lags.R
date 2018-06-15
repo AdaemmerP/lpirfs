@@ -1,9 +1,9 @@
 #' @name create_lags
 #' @title Compute a data frame with lagged exogenous variables
-#' @description Create a data frame with lagged exogenous variables.
-#' @param data A data.frame()
-#' @param lags Integer for the number of lags
-#' @return A data.frame() with lagged values
+#' @description Create a \link{data.frame}() with lagged exogenous variables.
+#' @param data A \link{data.frame}().
+#' @param lags Integer for the number of lags.
+#' @return Returns a \link{data.frame}() with lagged values.
 #' @import dplyr
 #' @author Philipp Adämmer
 

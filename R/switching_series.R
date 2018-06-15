@@ -3,9 +3,9 @@
 #' @description Function to estimate transition values, which uses a smooth transition function as
 #' used in Auerbach and Gorodnichenko (2012). The time series used in the transition function
 #' can be de-trended via the Hodrick-Prescott (see Auerbach and Gorodnichenko, 2013).
-#' @param switching_data A vector
-#' @param specs A list with specifications for \link{lp_nl}()
-#' @return \item{fz}{A vector with values from smooth transition function for \eqn{F(z_{t-1})}}
+#' @param switching_data A numeric vector.
+#' @param specs A \link{list}() with inputs as in \link{lp_nl}().
+#' @return \item{fz}{A numeric vector with values from smooth transition function \eqn{F(z_{t-1})}.}
 #'
 #' @references
 #' Auerbach, A. J., and  Gorodnichenko Y. (2012). "Measuring the Output Responses to Fiscal Policy."
