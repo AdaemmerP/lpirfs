@@ -1,5 +1,5 @@
 #' @name plot_lin_irfs
-#' @title Compute and display (linear) impulse responses
+#' @title Compute and display plots of linear impulse responses
 #' @description Compute and display (linear) impulse responses estimated with \link{lp_lin}.
 #' @param results_lin A list with 3D arrays estimated in \link{lp_lin}.
 #' @return A list with (gg-)plots for linear impulse responses

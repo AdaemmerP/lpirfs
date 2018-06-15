@@ -1,7 +1,7 @@
 #include <RcppArmadillo.h>
 using namespace Rcpp;
 //' @name find_lag_c
-//' @title Determine optimal lag length
+//' @title Compute optimal lag length
 //' @description Determine optimal lag length based on 'AICc', 'AIC', or 'BIC' criterion.
 //'
 //' @param y List with left (endogenous) variables

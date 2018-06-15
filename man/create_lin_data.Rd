@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_lin_data.R
 \name{create_lin_data}
 \alias{create_lin_data}
-\title{Function to create data for linear model}
+\title{Compute data for linear model}
 \usage{
 create_lin_data(specs, data_set_df)
 }

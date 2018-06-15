@@ -3,7 +3,7 @@
 \docType{data}
 \name{monetary_var_data}
 \alias{monetary_var_data}
-\title{A data frame to estimate a standard monetary VAR}
+\title{A data frame containing data to estimate a standard monetary VAR}
 \format{A data frame with 494 monthly observations (rows) and 6 variables (clumns):
 \describe{
   \item{EM}{Log of non-agricultural payroll employment.}
@@ -23,6 +23,6 @@ Sample: 1960:01 - 2001:02.}
 monetary_var_data
 }
 \description{
-A data frame to estimate a standard monetary VAR
+A data frame containing data to estimate a standard monetary VAR
 }
 \keyword{datasets}

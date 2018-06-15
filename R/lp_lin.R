@@ -6,10 +6,10 @@
 #'                    is used for the Cholesky decomposition.
 #' @param lags_criterion NaN or character. NaN means that the number of lags
 #'         will be given at \emph{lags_lin}. The character refers to the corresponding lag length criterion ('AICc', 'AIC' or 'BIC').
-#' @param lags_lin NaN or integer. Number of lags for (linear) VAR (if \emph{lags_criterion} = NaN). NaN if lags_criterion is given.
-#' @param max_lags NaN or integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC'). NaN otherwise.
+#' @param lags_lin NaN or integer. NaN if lag length criterion is used. Integer for number of lags for linear VAR.
+#' @param max_lags NaN or integer. Maximum number of lags if \emph{lags_criterion} is character with lag length criterion. NaN otherwise.
 #' @param trend Integer. No trend =  0 , include trend = 1, include trend and quadratic trend = 2.
-#' @param shock_type Integer. Standard deviation shock = 0, Unit shock = 1.
+#' @param shock_type Integer. Standard deviation shock = 0, unit shock = 1.
 #' @param confint Double. Width of confidence bands. 68\% = 1, 90\% = 1.65, 95\% = 1.96.
 #' @param hor Integer. Number of horizons for impulse responses.
 #'
@@ -20,7 +20,7 @@
 #'                    The last dimension denotes the shock variable. The row in each matrix
 #'                    gives the respones of the \emph{ith} variable, ordered as in data_set_df. The columns denote the horizon.
 #'                    For example, if \emph{results_lin} contains the list with results, results_lin$irf_lin_mean[, , 1] returns a KXH matrix,
-#'                    where K is the number of variables and H the number of horizons. '1' is the variable which shocks, i.e. the
+#'                    where K is the number of variables and H the number of horizons. '1' is the variable shock variable, corresponding to the
 #'                    variable in the first column of \emph{data_set_df}.}
 #'
 #'\item{irf_lin_low}{A three 3D \link{array}() containing all lower confidence bands of the responses,

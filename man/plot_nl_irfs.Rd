@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_nl_irfs.R
 \name{plot_nl_irfs}
 \alias{plot_nl_irfs}
-\title{Compute and display (nonlinear) impulse responses}
+\title{Compute and display plots of nonlinear impulse responses}
 \usage{
 plot_nl_irfs(results_nl)
 }

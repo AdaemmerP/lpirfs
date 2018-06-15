@@ -1,14 +1,15 @@
 #' @name lp_nl
 #' @title Compute nonlinear impulse responses
 #' @description Compute nonlinear impulse responses with local projections by Jordà (2005). The
-#' data are separated into two states with a smooth transition function as applied in Auerbach and Gorodnichenko (2012).
+#' data are separated into two states via a smooth transition function, applied in Auerbach and Gorodnichenko (2012).
 #'
 #' @param data_set_df A \link{data.frame}() containing all endogenous variables for the VAR. The column order
 #'                     is used for the Cholesky decomposition.
 #' @param lags_criterion NaN or character. NaN means that the number of lags
 #'         will be given at \emph{lags_nl} and \emph{lags_lin}. The lag length criteria are 'AICc', 'AIC' and 'BIC'.
-#' @param lags_lin NaN or integer. Number of lags for linear VAR to identify shock. NaN if lag length criterion is given.
-#' @param lags_nl NaN or integer. Number of lags for (nonlinear) VAR (if \emph{lags_criterion} = NaN). NaN if lag length criterion is given.
+#' @param lags_lin NaN or integer. NaN if lag length criterion is used.
+#'                                Integer for number of lags for linear VAR to identify shock.
+#' @param lags_nl NaN or integer. Number of lags for nonlinear VAR (if \emph{lags_criterion} = NaN). NaN if lag length criterion is given.
 #' @param max_lags NaN or integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC'). NaN otherwise.
 #' @param trend Integer. Include no trend =  0 , include trend = 1, include trend and quadratic trend = 2.
 #' @param shock_type Integer. Standard deviation shock = 0, Unit shock = 1.
@@ -16,16 +17,16 @@
 #' @param hor Integer. Number of horizons for impulse responses.
 #' @param switching Vector. A column vector with the same length as \emph{data_set_df}. This series can either
 #'               be decomposed by the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013) or
-#'               directly plugged into the smooth transition function:
+#'               directly plugged into the following smooth transition function:
 #'               \deqn{ F_{z_t}) = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)} }
 #'               Warning: \eqn{F_{z_t}} will be lagged in \link{create_nl_data} by one and then multiplied with the data.
 #'               If the variable shall not be lagged, the vector has to be given with a lead of one.
 #'               The data for the two regimes are: \cr
 #'               Regime 1 = (1-\eqn{F(z_{t-1})})*y_{t-p}, \cr
 #'               Regime 2 = \eqn{F(z_{t-1})}*y_{t-p}.
-#'@param gamma Double. Value of \eqn{\gamma} which is used in the transition function.
+#'@param gamma Double. Positive number which is used in the transition function.
 #'@param hp_filter Integer. No HP-filter = 0. Use HP-filter = 1.
-#'@param lambda Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter if \emph{hp_filter} = 1.
+#'@param lambda Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter if HP-filter is applied.
 #'
 #'
 #'
@@ -34,9 +35,9 @@
 #'
 #'\item{irf_s1_mean}{A three 3D \link{array}() containing all impulse responses for all endogenous variables of the first state.
 #'                    The last dimension denotes the shock variable. The row in each matrix
-#'                    denotes the respones of the \emph{ith} variable ordered as in \emph{data_set_df}. The columns are the horizons.
+#'                    denotes the respones of the \emph{ith} variable, ordered as in \emph{data_set_df}. The columns are the horizons.
 #'                    For example, if the results are saved in \emph{results_nl}, results_nl$irf_s1_mean[, , 1] returns a KXH matrix,
-#'                    where K is the number of variables and H the number of horizons. '1' is the variable which shocks, i.e. the
+#'                    where K is the number of variables and H the number of horizons. '1' is the shock variable, correspondong to the
 #'                    variable in the first column of \emph{data_set_df}.}
 #'
 #'\item{irf_s1_low}{A three 3D \link{array}() containing all lower confidence bands of the impulse responses, based on
@@ -47,7 +48,7 @@
 #'
 #'\item{irf_s2_mean}{A three 3D \link{array}() containing all impulse responses for all endogenous variables of the second state.
 #'                    The last dimension denotes the shock variable. The row in each matrix
-#'                    denotes the respones of the \emph{ith} variable as ordered in data_set_df. The columns denote the horizon.
+#'                    denotes the respones of the \emph{ith} variable, ordered as in data_set_df. The columns denote the horizon.
 #'                    For example, if the results are saved in \emph{results_nl}, results_nl$irf_s2_mean[, , 1] returns a KXH matrix,
 #'                    where K is the number of variables and H the number of horizons. '1' is the first shock variable corresponding to the
 #'                    variable in the first column of \emph{data_set_df}.}
@@ -60,7 +61,7 @@
 #'
 #'\item{specs}{A list with properties of \emph{data_set_df} for the plot function.}
 #'
-#'\item{fz}{A vector containing the values of the transition function F(z_{t-1})}
+#'\item{fz}{A vector containing the values of the transition function F(z_{t-1}).}
 #'
 #' @export
 #' @references

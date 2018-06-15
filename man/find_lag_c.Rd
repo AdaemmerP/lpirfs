@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{find_lag_c}
 \alias{find_lag_c}
-\title{Determine optimal lag length}
+\title{Compute optimal lag length}
 \arguments{
 \item{y}{List with left (endogenous) variables}
 

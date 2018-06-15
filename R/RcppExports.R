@@ -2,7 +2,7 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #' @name find_lag_c
-#' @title Determine optimal lag length
+#' @title Compute optimal lag length
 #' @description Determine optimal lag length based on 'AICc', 'AIC', or 'BIC' criterion.
 #'
 #' @param y List with left (endogenous) variables

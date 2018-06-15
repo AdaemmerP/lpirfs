@@ -250,13 +250,3 @@ test_that("Check whether whether no lag length criterion is given but maximum nu
                'The maximum number of lags can only be used if a lag length criterion is given.', fixed = TRUE)
 } )
 
-# test_that("Give warning", {
-#    hp_filter <- 0
-#   expect_message(lp_nl(data_set_df, lags_lin   = lags_lin, lags_nl    = lags_nl, lags_criterion = lags_criterion,
-#                                      max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
-#                                      switching = switching, hp_filter = hp_filter,
-#                                      lambda    = lambda, gamma        = gamma, confint          = confint,
-#                                      hor       = hor),
-#                'A provided value for lambda will not be used as no HP-filter is applied.', fixed = TRUE)
-# } )
-#

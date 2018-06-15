@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_lin_irfs.R
 \name{plot_lin_irfs}
 \alias{plot_lin_irfs}
-\title{Compute and display (linear) impulse responses}
+\title{Compute and display plots of linear impulse responses}
 \usage{
 plot_lin_irfs(results_lin)
 }

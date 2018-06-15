@@ -1,5 +1,5 @@
 #' @name create_nl_data
-#' @title Function to create data for nonlinear model
+#' @title Compute data for nonlinear model
 #' @description Function to create data for non-linear model
 #' @param specs A \link{list}(). Inputs are outlined in \link{lp_nl}
 #' @param data_set_df A data frame with all endogenous variables

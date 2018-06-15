@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_lags.R
 \name{create_lags}
 \alias{create_lags}
-\title{Create a data frame with lagged exogenous variables}
+\title{Compute data frame with lagged exogenous variables}
 \usage{
 create_lags(data, lags)
 }

@@ -182,7 +182,7 @@ $(document).ready(function () {
 \]</span> with <span class="math inline">\(h = 1,..., H.\)</span></p>
 <p><span class="math display">\[ \]</span></p>
 <p>Estimate nonlinear impulse responses with package function <em>lp_nl</em>. Note that the VAR’s data set (<em>data_set_df</em>) has to be a data.frame().</p>
-<pre class="r"><code>results_nl &lt;- lp_nl(data_set_df, lags_lin         = 4L,  # Number of lags for (reduced) linear VAR 
+<pre class="r"><code>results_nl &lt;- lp_nl(data_set_df, lags_lin       = 4L,  # Number of lags for (reduced) linear VAR 
                                  lags_nl        = 4L,  # Number of lags 
                                  lags_criterion = NaN, # Lag length criterion (AICc, AIC or BIC) or NaN
                                  max_lags       = NaN, # If lags_criterion is chosen, maximum number of lags  
@@ -190,7 +190,7 @@ $(document).ready(function () {
                                  shock_type     = 0L,  # 0 = standard deviation shock, 1 = unit shock
                                  confint        = 1.67, # Width of confidence bands: 1 = 68%, 1.67 = 90%, 
                                                         # 1.96 = 95%
-                                 hor            = 24,  # Length of horizon
+                                 hor            = 24,   # Length of horizon
                       
                                  switching      = data_set_df$Infl, # Inflation rate
                                  hp_filter      = 1,    # 0 = Do not use HP-filter, 1 = use HP-filter   

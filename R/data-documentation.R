@@ -1,4 +1,4 @@
-#' A data frame to estimate the effects of interest rate rules for monetary policy
+#' A data frame containing data to estimate the effects of interest rate rules for monetary policy
 #'
 #' @format A data frame with 193 quarterly observations (rows) and 3 variables (columns):
 #' \describe{
@@ -11,7 +11,7 @@
 "interest_rules_var_data"
 
 
-#'  A data frame to estimate a standard monetary VAR
+#'  A data frame containing data to estimate a standard monetary VAR
 #'
 #'
 #' @format A data frame with 494 monthly observations (rows) and 6 variables (clumns):

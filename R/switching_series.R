@@ -1,7 +1,7 @@
 #' @name switching_series
-#' @title Function to estimate transition values
+#' @title Compute values of transition function to separate regimes
 #' @description Function to estimate transition values, which uses a smooth transition function as
-#' proposed by Auerbach & Gorodnichenko (2012). The time series used in the transition function
+#' used in Auerbach & Gorodnichenko (2012). The time series used in the transition function
 #' can be de-trended via the Hodrick-Prescott (see Auerbach and Gorodnichenko, 2013).
 #' @param switching_data A vector
 #' @param specs A list with specifications for \link{lp_nl}()
