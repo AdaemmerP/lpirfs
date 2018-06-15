@@ -129,13 +129,13 @@ $(document).ready(function () {
 <p>Load data from package to estimate a simple, new-Keynesian, closed-economy model. These data are used by <a href="https://www.aeaweb.org/articles?id=10.1257/0002828053828518">Jordà (2005)</a> in chapter IV, p. 174. See the data’s help file or the <a href="https://www.aeaweb.org/articles?id=10.1257/0002828053828518">paper</a> for a detailed description.</p>
 <pre class="r"><code>  data_set_df &lt;- interest_rules_var_data</code></pre>
 <p>Estimate linear impulse responses with the package function <em>lp_lin</em>. Note that the VAR’s endogenous variables (<em>data_set_df</em>) have to be a data.frame().</p>
-<pre class="r"><code>  results_lin  &lt;- lp_lin(data_set_df, lags_lin       = 4L, 
-                                      lags_criterion = NaN, 
-                                      max_lags       = NaN,
-                                      trend          = 0L, 
-                                      shock_type     = 1L,  
-                                      confint        = 1.96, 
-                                      hor            = 24L)</code></pre>
+<pre class="r"><code>results_lin &lt;- lp_lin(data_set_df, lags_lin       = 4L,  # Number of lags
+                                   lags_criterion = NaN, # Lag length criterion (AICc, AIC or BIC) or NaN
+                                   max_lags       = NaN, # Maximum number of lags or NaN.
+                                   trend          = 0L,  # 0 = no trend, 1 = trend, 2 = trend and quadratic trend
+                                   shock_type     = 1L,  # 0 = standard deviation shock, 1 = unit shock
+                                   confint        = 1.96, # Width of confidence bands: 1 = 68%, 1.67 = 90%, 
+                                   hor            = 24L)  # Number of horizons for impulse responses</code></pre>
 <p>Create plots for impulse responses of linear model with package function <em>plot_lin_irfs</em>.</p>
 <pre class="r"><code>  linear_plots &lt;- plot_lin_irfs(results_lin)</code></pre>
 <p>Display single impulse responses:</p>

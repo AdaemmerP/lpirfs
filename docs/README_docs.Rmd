@@ -31,13 +31,13 @@ See the data's help file or the [paper](https://www.aeaweb.org/articles?id=10.12
 Estimate linear impulse responses with the package function *lp_lin*. Note that the VAR's endogenous variables (*data_set_df*) have to be 
 a data.frame(). 
 ```{r, message = FALSE }  
-  results_lin  <- lp_lin(data_set_df, lags_lin       = 4L, 
-                                      lags_criterion = NaN, 
-                                      max_lags       = NaN,
-                                      trend          = 0L, 
-                                      shock_type     = 1L,  
-                                      confint        = 1.96, 
-                                      hor            = 24L)
+results_lin <- lp_lin(data_set_df, lags_lin       = 4L,  # Number of lags
+                                   lags_criterion = NaN, # Lag length criterion (AICc, AIC or BIC) or NaN
+                                   max_lags       = NaN, # Maximum number of lags or NaN.
+                                   trend          = 0L,  # 0 = no trend, 1 = trend, 2 = trend and quadratic trend
+                                   shock_type     = 1L,  # 0 = standard deviation shock, 1 = unit shock
+                                   confint        = 1.96, # Width of confidence bands: 1 = 68%, 1.67 = 90%, 
+                                   hor            = 24L)  # Number of horizons for impulse responses
 ```
 
 Create plots for impulse responses of linear model with package function *plot_lin_irfs*.
