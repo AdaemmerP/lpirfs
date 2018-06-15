@@ -9,7 +9,7 @@ newey_west_c(y, x, h)
 \arguments{
 \item{y}{Numeric vector}
 
-\item{x}{Numeric Matrix}
+\item{x}{Numeric matrix}
 
 \item{h}{Integer}
 }
