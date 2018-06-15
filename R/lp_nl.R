@@ -12,13 +12,13 @@
 #' @param lags_nl NaN or integer. Number of lags for nonlinear VAR (if \emph{lags_criterion} = NaN). NaN if lag length criterion is given.
 #' @param max_lags NaN or integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC'). NaN otherwise.
 #' @param trend Integer. Include no trend =  0 , include trend = 1, include trend and quadratic trend = 2.
-#' @param shock_type Integer. Standard deviation shock = 0, Unit shock = 1.
+#' @param shock_type Integer. Standard deviation shock = 0, unit shock = 1.
 #' @param confint Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.
 #' @param hor Integer. Number of horizons for impulse responses.
 #' @param switching Vector. A column vector with the same length as \emph{data_set_df}. This series can either
 #'               be decomposed by the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013) or
 #'               directly plugged into the following smooth transition function:
-#'               \deqn{ F_{z_t}) = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)} }
+#'               \deqn{ F_{z_t} = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)} }
 #'               Warning: \eqn{F_{z_t}} will be lagged in \link{create_nl_data} by one and then multiplied with the data.
 #'               If the variable shall not be lagged, the vector has to be given with a lead of one.
 #'               The data for the two regimes are: \cr
@@ -35,13 +35,13 @@
 #'
 #'\item{irf_s1_mean}{A three 3D \link{array}() containing all impulse responses for all endogenous variables of the first state.
 #'                    The last dimension denotes the shock variable. The row in each matrix
-#'                    denotes the respones of the \emph{ith} variable, ordered as in \emph{data_set_df}. The columns are the horizons.
+#'                    denotes the responses of the \emph{ith} variable, ordered as in \emph{data_set_df}. The columns are the horizons.
 #'                    For example, if the results are saved in \emph{results_nl}, results_nl$irf_s1_mean[, , 1] returns a KXH matrix,
-#'                    where K is the number of variables and H the number of horizons. '1' is the shock variable, correspondong to the
+#'                    where K is the number of variables and H the number of horizons. '1' is the shock variable, corresponding to the
 #'                    variable in the first column of \emph{data_set_df}.}
 #'
 #'\item{irf_s1_low}{A three 3D \link{array}() containing all lower confidence bands of the impulse responses, based on
-#'                    robust standard standard errors by Newey and West (1987). Properties are equal to \emph{irf_s1_mean}.}
+#'                    robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s1_mean}.}
 #'
 #'\item{irf_s1_up}{A three 3D \link{array}() containing all upper confidence bands of the impulse responses, based on
 #'                    robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s1_mean}.}

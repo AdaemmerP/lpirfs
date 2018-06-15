@@ -1,6 +1,6 @@
 #' @name create_lags
-#' @title Compute data frame with lagged exogenous variables
-#' @description Create a data frame with lagged exogenous variables
+#' @title Compute a data frame with lagged exogenous variables
+#' @description Create a data frame with lagged exogenous variables.
 #' @param data A data.frame()
 #' @param lags Integer for the number of lags
 #' @return A data.frame() with lagged values

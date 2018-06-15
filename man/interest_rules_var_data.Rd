@@ -6,9 +6,9 @@
 \title{A data frame containing data to estimate the effects of interest rate rules for monetary policy}
 \format{A data frame with 193 quarterly observations (rows) and 3 variables (columns):
 \describe{
-  \item{GDP_gap}{Percentage difference between real GDP and potential GDP (Congressional Budget Office.}
+  \item{GDP_gap}{Percentage difference between real GDP and potential GDP (Congressional Budget Office).}
   \item{Infl}{Inflation: Percentage change in the GDP, chain weighted price index at annual rate.}
-  \item{FF}{Federal funds rate: quarterly average of daily rates}
+  \item{FF}{Federal funds rate: quarterly average of daily rates.}
 }
 Sample: 1955:I - 2003:I}
 \source{

@@ -1,7 +1,7 @@
 Package: lpirfs
 Type: Package
 Title: Estimate Impulse Response Functions Based on Local Projections by Jordà (2005)
-Version: 0.1.0
+Version: 0.1.0.9000
 Author: Philipp Adämmer [aut, cre]
 Authors@R: c(
             person("Philipp", "Adämmer", 

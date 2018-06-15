@@ -4,7 +4,7 @@
 \name{monetary_var_data}
 \alias{monetary_var_data}
 \title{A data frame containing data to estimate a standard monetary VAR}
-\format{A data frame with 494 monthly observations (rows) and 6 variables (clumns):
+\format{A data frame with 494 monthly observations (rows) and 6 variables (columns):
 \describe{
   \item{EM}{Log of non-agricultural payroll employment.}
   \item{P}{Log of personal consumption expenditures deflator (1996 = 100).}
@@ -13,8 +13,8 @@
    \item{FF}{Federal funds rate.}
    \item{NBRX}{Ratio of nonborrowed reserves plus extended credit to total reserves.}
    \item{M2}{Annual growth rate of M2 stock.}
-  ...
-}
+
+  }
 Sample: 1960:01 - 2001:02.}
 \source{
 \url{https://www.aeaweb.org/articles?id=10.1257/0002828053828518}
