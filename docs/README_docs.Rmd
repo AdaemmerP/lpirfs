@@ -62,7 +62,7 @@ Display all plots (compare with Figure 5 in Jordà (2005), p. 176):
 
 # Show all plots 
   lin_plots_all <- sapply(linear_plots, ggplotGrob)
-  marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
+  marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top = NULL)
 ```
 
 ## Example: Nonlinear impulse responses
