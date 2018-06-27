@@ -1,5 +1,4 @@
 ## Release summary
-
 This is a first submission of the package to CRAN.
 
 ## Test environments
