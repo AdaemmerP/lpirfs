@@ -88,7 +88,7 @@
 #'
 #' @import foreach
 #' @examples
-#' \dontrun{
+#'\dontrun{
 #'# Load package
 #'   library(lpirfs)
 #'

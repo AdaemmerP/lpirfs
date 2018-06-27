@@ -16,7 +16,7 @@ A list with (gg-)plots for linear impulse responses.
 Compute and display linear impulse responses estimated with \link{lp_lin}.
 }
 \examples{
- \dontrun{
+\dontrun{
 # Load package
   library(lpirfs)
 

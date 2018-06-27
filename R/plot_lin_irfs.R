@@ -7,7 +7,7 @@
 #' @import ggplot2
 #' @author Philipp Adämmer
 #' @examples
-#'  \dontrun{
+#'\dontrun{
 #'# Load package
 #'   library(lpirfs)
 #'
