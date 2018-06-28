@@ -66,7 +66,7 @@ It also contains a list named \emph{specs} with properties of \emph{data_set_df}
 
 \item{irf_s2_mean}{A three 3D \link{array}() containing all impulse responses for all endogenous variables of the second state.
                    The last dimension denotes the shock variable. The row in each matrix
-                   denotes the respones of the \emph{ith} variable, ordered as in data_set_df. The columns denote the horizon.
+                   denotes the responses of the \emph{ith} variable, ordered as in data_set_df. The columns denote the horizon.
                    For example, if the results are saved in \emph{results_nl}, results_nl$irf_s2_mean[, , 1] returns a KXH matrix,
                    where K is the number of variables and H the number of horizons. '1' is the first shock variable corresponding to the
                    variable in the first column of \emph{data_set_df}.}

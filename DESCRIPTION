@@ -7,12 +7,13 @@ Authors@R: c(
                     email   = "adaemmer@hsu-hh.de", 
                     role    = c("aut", "cre"),
                     comment = c(ORCID = 0000-0003-3770-0097)))
+Author: Philipp Adämmer [aut, cre]
 Maintainer: Philipp Adämmer <adaemmer@hsu-hh.de>
 BugReports: https://github.com/adaemmerp/lpirfs/issues
 Description: Contains functions to estimate linear and nonlinear impulse 
              responses based on local projections by Jordà (2005) <doi:10.1257/0002828053828518>.
              Nonlinear impulse responses are estimated for two regimes based on 
-             a transition function used in Auerbach and Gorodnichenko (2012) <doi:10.1257/pol.4.2.1>.
+             a transition function as used in Auerbach and Gorodnichenko (2012) <doi:10.1257/pol.4.2.1>.
 License: GPL (>= 2)
 Depends: R (>= 3.1.2)
 Encoding: UTF-8

@@ -39,7 +39,7 @@ On macOS you need the Clang 6.x compiler and the GNU Fortran compiler from [macO
 Acknowledgements
 ----------------
 
-I greatly benefit from the profound *R*, *Rcpp* and *GitHub* knowledge of Philipp [Wittenberg](https://github.com/wittenberg) and Detlef [Steuer](https://github.com/dsteuer). Remaining errors are obviously mine.
+I greatly benefit from the profound *R*, *Rcpp* and *GitHub* knowledge of Philipp [Wittenberg](https://github.com/wittenberg) and Detlef (overflow) [Steuer](https://github.com/dsteuer). Remaining errors are obviously mine.
 
 Development
 -----------

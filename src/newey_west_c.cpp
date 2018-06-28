@@ -1,7 +1,7 @@
 #include <RcppArmadillo.h>
 using namespace Rcpp;
 //' @name newey_west_c
-//' @title Compute OLS paramters and robust standard errors based on Newey-West estimator
+//' @title Compute OLS parameters and robust standard errors based on Newey-West estimator
 //' @description  Compute OLS parameters and robust standard errors based on Newey and West (1987).
 //' The function is based on the Matlab code by James P. LeSage.
 //' @param y Numeric vector

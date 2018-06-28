@@ -19,7 +19,7 @@ interest_rules_var_data
 }
 \description{
 A \link{tibble}() containing data to estimate the effects of interest rate rules for monetary policy.
-             The data are used in Jordá (2005).
+             The data are used in Jordà (2005).
 }
 \references{
 Jordà, Ò. (2005) "Estimation and Inference of Impulse Responses by Local Projections."

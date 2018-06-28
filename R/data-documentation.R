@@ -1,6 +1,6 @@
 #' @title Data to estimate the effects of interest rate rules for monetary policy
 #' @description A \link{tibble}() containing data to estimate the effects of interest rate rules for monetary policy.
-#'              The data are used in Jordá (2005).
+#'              The data are used in Jordà (2005).
 #' @format A data frame with 193 quarterly observations (rows) and 3 variables (columns):
 #' \describe{
 #'   \item{GDP_gap}{Percentage difference between real GDP and potential GDP (Congressional Budget Office).}

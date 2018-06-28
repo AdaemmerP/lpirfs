@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{newey_west_c}
 \alias{newey_west_c}
-\title{Compute OLS paramters and robust standard errors based on Newey-West estimator}
+\title{Compute OLS parameters and robust standard errors based on Newey-West estimator}
 \usage{
 newey_west_c(y, x, h)
 }

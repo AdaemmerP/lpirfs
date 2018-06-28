@@ -4,8 +4,13 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+
+```{r echo=FALSE, prompt=FALSE, results='asis', comment=""}
+cat('
 [![Build Status](https://travis-ci.com/AdaemmerP/lpirfs.svg)](https://travis-ci.com/AdaemmerP/lpirfs)
 [![Coverage Status](https://codecov.io/gh/adaemmerp/lpirfs/graph/badge.svg)](https://codecov.io/github/adaemmerp/lpirfs?branch=master) 
+')
+```
  
 
 ```{r setup, include = FALSE}
@@ -54,7 +59,7 @@ Yo can then install the package via *devtools::install_github("AdaemmerP/lpirfs"
 
 
 ## Acknowledgements
-I greatly benefit from the profound *R*, *Rcpp* and *GitHub* knowledge of Philipp [Wittenberg](https://github.com/wittenberg) and Detlef [Steuer](https://github.com/dsteuer). Remaining errors are obviously mine. 
+I greatly benefit from the profound *R*, *Rcpp* and *GitHub* knowledge of Philipp [Wittenberg](https://github.com/wittenberg) and Detlef (overflow) [Steuer](https://github.com/dsteuer). Remaining errors are obviously mine. 
 
 ## Development
 I intend to extend the package with functions that

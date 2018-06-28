@@ -18,7 +18,7 @@
 #'
 #'\item{irf_lin_mean}{A three 3D \link{array}() containing all impulse responses for all endogenous variables.
 #'                    The last dimension denotes the shock variable. The row in each matrix
-#'                    gives the respones of the \emph{ith} variable, ordered as in data_set_df. The columns denote the horizon.
+#'                    gives the responses of the \emph{ith} variable, ordered as in data_set_df. The columns denote the horizon.
 #'                    For example, if \emph{results_lin} contains the list with results, results_lin$irf_lin_mean[, , 1] returns a KXH matrix,
 #'                    where K is the number of variables and H the number of horizons. '1' is the variable shock variable, corresponding to the
 #'                    variable in the first column of \emph{data_set_df}.}
@@ -39,7 +39,7 @@
 #' Vector Autoregressive Model Selection.” \emph{Journal of Time Series Analysis}, 1993, 14(3):
 #' 271–79.
 #'
-#' Jordà, O. (2005). "Estimation and Inference of Impulse Responses by Local Projections."
+#' Jordà, Ò. (2005). "Estimation and Inference of Impulse Responses by Local Projections."
 #' \emph{American Economic Review}, 95 (1): 161-182.
 #'
 #' Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
