@@ -19,6 +19,10 @@ There was 1 NOTE:
     Auerbach (15:47)
     Gorodnichenko (15:60)
     Jordà (13:54)
+  
+### Response: 
+The maintainer (Philipp Adämmer <adaemmer@hsu-hh.de>) is correct and the names 
+are also spelled correctly.    
 
 ## Win-builder check
 There was 1 NOTE:
