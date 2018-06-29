@@ -8,7 +8,7 @@ This is a first submission of the package to CRAN.
 * rhub
 
 ## R CMD check 
-  0 errors ✔ | 0 warnings ✔ | 0 notes
+  0 errors ✔ | 0 warnings ✔ | 0 notes ✔ |
 
 ## Win-builder check
 There was 1 NOTE:
@@ -29,6 +29,7 @@ are also spelled correctly.
 
 ## Rhub check
 There was 1 NOTE:
+
   0 errors ✔ | 0 warnings ✔ | 1 note ✖
 
    checking CRAN incoming feasibility
