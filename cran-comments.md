@@ -8,7 +8,17 @@ This is a first submission of the package to CRAN.
 * rhub
 
 ## R CMD check 
-  0 errors ✔ | 0 warnings ✔ | 0 notes ✔ |
+There was 1 NOTE:
+  
+  * checking CRAN incoming feasibility ... NOTE
+  Maintainer: ‘Philipp Adämmer <adaemmer@hsu-hh.de>’
+
+  New submission
+
+  Possibly mis-spelled words in DESCRIPTION:
+    Auerbach (15:47)
+    Gorodnichenko (15:60)
+    Jordà (13:54)
 
 ## Win-builder check
 There was 1 NOTE:
