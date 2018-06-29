@@ -23,7 +23,7 @@ There was 1 NOTE:
     Gorodnichenko (15:60)
     Jordà (13:54)
   
-# Response: 
+### Response: 
 The maintainer (Philipp Adämmer <adaemmer@hsu-hh.de>) is correct and the names 
 are also spelled correctly.
 
@@ -40,6 +40,6 @@ There was 1 NOTE:
      Gorodnichenko (15:60)
      Jordà (13:54)
   
-# Response: 
+### Response: 
 The maintainer (Philipp Adämmer <adaemmer@hsu-hh.de>) is correct and the names 
 are also spelled correctly.
