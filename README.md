@@ -11,7 +11,7 @@ Status](https://travis-ci.com/AdaemmerP/lpirfs.svg)](https://travis-ci.com/Adaem
 [![Coverage
 Status](https://codecov.io/gh/adaemmerp/lpirfs/graph/badge.svg)](https://codecov.io/github/adaemmerp/lpirfs?branch=master)
 
-# lpirfs
+# About
 
 An R-package which estimates linear and nonlinear impulse responses with
 local projections by [Jordà
