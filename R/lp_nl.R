@@ -88,7 +88,7 @@
 #'
 #' @import foreach
 #' @examples
-#'\dontrun{
+#'\donttest{
 #'# Load package
 #'   library(lpirfs)
 #'
@@ -125,8 +125,8 @@
 #'   plot(s2_plots[[1]])
 #'
 #'# Show all plots
-#'   marrangeGrob(s1_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
-#'   marrangeGrob(s2_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
+#'   marrangeGrob(s1_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top = NULL)
+#'   marrangeGrob(s2_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top = NULL)
 #'
 #'}
 #' @author Philipp Adämmer

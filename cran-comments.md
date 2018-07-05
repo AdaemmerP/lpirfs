@@ -1,3 +1,11 @@
+## Resubmission
+This is a resubmission. In this version I have:
+
+* Replaced \dontrun{} by \donttest{}. 
+* Added James P. LeSage as contributor ("ctb") in the DESCRIPTION file.
+* Added "ggpubr"" and "gridExtra" to "Suggests" in the DESCRIPTION file.
+
+
 ## Release summary
 This is a first submission of the package to CRAN.
 

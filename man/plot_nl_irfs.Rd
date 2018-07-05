@@ -16,7 +16,7 @@ A list with (gg-)plots for nonlinear impulse responses.
 Compute and display (nonlinear) impulse responses estimated with \link{lp_nl}().
 }
 \examples{
-\dontrun{
+\donttest{
 # Load package
   library(lpirfs)
 
@@ -53,8 +53,8 @@ Compute and display (nonlinear) impulse responses estimated with \link{lp_nl}().
   plot(s2_plots[[1]])
 
 # Show all plots
-  marrangeGrob(s1_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
-  marrangeGrob(s2_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
+  marrangeGrob(s1_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top = NULL)
+  marrangeGrob(s2_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top = NULL)
 
  }
 }

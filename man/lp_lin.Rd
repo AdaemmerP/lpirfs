@@ -50,7 +50,7 @@ It also returns a list named \emph{specs} with properties of \emph{data_set_df} 
 Compute linear impulse responses with local projections by Jordà (2005).
 }
 \examples{
-\dontrun{
+\donttest{
 # Load package
   library(lpirfs)
 
@@ -78,7 +78,7 @@ Compute linear impulse responses with local projections by Jordà (2005).
   library(gridExtra)
 
   lin_plots_all <- sapply(linear_plots, ggplotGrob)
-  marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
+  marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top = NULL)
 
  }
 }

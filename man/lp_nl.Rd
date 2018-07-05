@@ -86,7 +86,7 @@ Compute nonlinear impulse responses with local projections by Jordà (2005). The
 data are separated into two states via a smooth transition function, applied in Auerbach and Gorodnichenko (2012).
 }
 \examples{
-\dontrun{
+\donttest{
 # Load package
   library(lpirfs)
 
@@ -123,8 +123,8 @@ data are separated into two states via a smooth transition function, applied in 
   plot(s2_plots[[1]])
 
 # Show all plots
-  marrangeGrob(s1_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
-  marrangeGrob(s2_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
+  marrangeGrob(s1_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top = NULL)
+  marrangeGrob(s2_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top = NULL)
 
 }
 }

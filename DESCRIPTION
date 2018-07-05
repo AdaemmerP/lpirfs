@@ -1,12 +1,15 @@
 Package: lpirfs
 Type: Package
 Title: Local Projections Impulse Response Functions
-Version: 0.1.0
+Version: 0.1.0.9000
 Authors@R: c(
             person("Philipp", "Adämmer", 
                     email   = "adaemmer@hsu-hh.de", 
                     role    = c("aut", "cre"),
-                    comment = c(ORCID = "0000-0003-3770-0097"))) 
+                    comment = c(ORCID = "0000-0003-3770-0097")),
+            person("James P.", "LeSage", 
+                    email   = "jlesage@spatial-econometrics.com", 
+                    role    = c("ctb"))) 
 Maintainer: Philipp Adämmer <adaemmer@hsu-hh.de>
 BugReports: https://github.com/adaemmerp/lpirfs/issues
 Description: Contains functions to estimate linear and nonlinear impulse 
@@ -28,4 +31,4 @@ Imports:
     vars(>= 0.7.4)
 RoxygenNote: 6.0.1
 LinkingTo: Rcpp, RcppArmadillo
-Suggests: testthat
+Suggests: testthat, ggpubr, gridExtra

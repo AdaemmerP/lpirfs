@@ -7,7 +7,7 @@
 #' @import ggplot2
 #' @author Philipp Adämmer
 #' @examples
-#'\dontrun{
+#'\donttest{
 #'# Load package
 #'   library(lpirfs)
 #'
@@ -35,7 +35,7 @@
 #'   library(gridExtra)
 #'
 #'   lin_plots_all <- sapply(linear_plots, ggplotGrob)
-#'   marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
+#'   marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top = NULL)
 #'
 #'  }
 plot_lin_irfs <- function(results_lin){

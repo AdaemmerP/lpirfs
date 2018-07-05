@@ -16,7 +16,7 @@ A list with (gg-)plots for linear impulse responses.
 Compute and display linear impulse responses estimated with \link{lp_lin}.
 }
 \examples{
-\dontrun{
+\donttest{
 # Load package
   library(lpirfs)
 
@@ -44,7 +44,7 @@ Compute and display linear impulse responses estimated with \link{lp_lin}.
   library(gridExtra)
 
   lin_plots_all <- sapply(linear_plots, ggplotGrob)
-  marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top=NULL)
+  marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top = NULL)
 
  }
 }
