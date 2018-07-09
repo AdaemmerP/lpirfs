@@ -13,8 +13,8 @@ NumericVector find_lag_c(List y, List x, int lag_crit, int h, int k, int max_lag
 
   arma::mat xx, xx_one, yy, xpxi, emat, hhat;
   arma::vec w1, beta, resids, resds_sq;
-  int p, n, rstart_y, rend_y, rend_x;
-  double ssr, var_eps, ll;
+  int rstart_y, rend_y, rend_x;
+  double ssr, var_eps, ll, p, n;
   double pi = 3.141593;
   NumericVector crit_val(max_lags);
 

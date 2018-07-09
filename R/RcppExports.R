@@ -14,6 +14,18 @@ find_lag_c <- function(y, x, lag_crit, h, k, max_lags) {
     .Call(`_lpirfs_find_lag_c`, y, x, lag_crit, h, k, max_lags)
 }
 
+#' @name hp_filter_c
+#' @title Detrend a times series via the Hodrick-Prescott filter
+#' @description  Estimates cyclical and trend component with HP-filter by Hodrick and Prescott (1997).
+#' The function is based on the R-code in the archived package "mFilter" by  Mehmet Balcilar.
+#' @param x A something
+#' @param lambda A something
+#'  Hodrick, R.J., and Prescott, E. C. Prescott (1997) "Postwar U.S. Business Cycles: An Empirical Investigation."
+#'  \emph{Journal of Money, Credit and Banking}, 29(1), 1-16.
+hp_filter_c <- function(x, lambda) {
+    .Call(`_lpirfs_hp_filter_c`, x, lambda)
+}
+
 #' @name newey_west_c
 #' @title Compute OLS parameters and robust standard errors based on Newey-West estimator
 #' @description  Compute OLS parameters and robust standard errors based on Newey and West (1987).

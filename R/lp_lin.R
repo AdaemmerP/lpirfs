@@ -36,7 +36,7 @@
 #' Akaike, H. (1974). "A new look at the statistical model identification", \emph{IEEE Transactions on Automatic Control}, 19 (6): 716–723.
 #'
 #' Hurvich, C. M., and Tsai, C.-L. (1993) “A Corrected Akaike Information Criterion for
-#' Vector Autoregressive Model Selection.” \emph{Journal of Time Series Analysis}, 1993, 14(3):
+#' Vector Autoregressive Model Selection.” \emph{Journal of Time Series Analysis}, 14(3):
 #' 271–79.
 #'
 #' Jordà, Ò. (2005). "Estimation and Inference of Impulse Responses by Local Projections."

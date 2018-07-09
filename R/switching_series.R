@@ -27,9 +27,9 @@ switching_series <- function(switching_data, specs){
   if(specs$hp_filter == 1){
 
   # Use HP-filter to decompose switching variable.
-   filter_results  <-   mFilter::hpfilter(switching_data, freq = specs$lambda, type = 'lambda')
+   filter_results  <-   hp_filter_c(matrix(switching_data), specs$lambda)
    gamma_fz        <-   specs$gamma
-   z_0             <-   as.numeric(scale(filter_results$cycle, center = TRUE))
+   z_0             <-   as.numeric(scale(filter_results[[1]], center = TRUE))
    fz              <-   exp((-1)*gamma_fz*z_0)/(1 + exp((-1)*gamma_fz*z_0))
   # return(fz)
 

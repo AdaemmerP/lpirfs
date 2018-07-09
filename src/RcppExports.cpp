@@ -22,6 +22,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// hp_filter_c
+List hp_filter_c(NumericVector x, double lambda);
+RcppExport SEXP _lpirfs_hp_filter_c(SEXP xSEXP, SEXP lambdaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< double >::type lambda(lambdaSEXP);
+    rcpp_result_gen = Rcpp::wrap(hp_filter_c(x, lambda));
+    return rcpp_result_gen;
+END_RCPP
+}
 // newey_west_c
 List newey_west_c(NumericVector y, NumericMatrix x, int h);
 RcppExport SEXP _lpirfs_newey_west_c(SEXP ySEXP, SEXP xSEXP, SEXP hSEXP) {
@@ -38,6 +50,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_lpirfs_find_lag_c", (DL_FUNC) &_lpirfs_find_lag_c, 6},
+    {"_lpirfs_hp_filter_c", (DL_FUNC) &_lpirfs_hp_filter_c, 2},
     {"_lpirfs_newey_west_c", (DL_FUNC) &_lpirfs_newey_west_c, 3},
     {NULL, NULL, 0}
 };
