@@ -4,9 +4,9 @@ using namespace Rcpp;
 //' @title Compute OLS parameters and robust standard errors based on Newey-West estimator
 //' @description  Compute OLS parameters and robust standard errors based on Newey and West (1987).
 //' The function is based on the Matlab code by James P. LeSage.
-//' @param y Numeric vector
-//' @param x Numeric matrix
-//' @param h Integer
+//' @param y Numeric vector.
+//' @param x Numeric matrix.
+//' @param h Integer.
 //' @references
 //' Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
 //' Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–708.

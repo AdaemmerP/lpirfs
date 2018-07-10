@@ -5,9 +5,12 @@
 #' @title Compute optimal lag length
 #' @description Determine optimal lag length based on 'AICc', 'AIC', or 'BIC' criterion.
 #'
-#' @param y List with left (endogenous) variables
-#' @param x List with right (exogenous) variables
+#' @param y List with left (endogenous) variables.
+#' @param x List with right (exogenous) variables.
 #' @param lag_crit Integer: 'AICc'= 1, 'AIC' = 2, 'BIC' = 3.
+#' @param h Integer.
+#' @param k Integer.
+#' @param max_lags Integer.
 NULL
 
 find_lag_c <- function(y, x, lag_crit, h, k, max_lags) {
@@ -17,11 +20,12 @@ find_lag_c <- function(y, x, lag_crit, h, k, max_lags) {
 #' @name hp_filter_c
 #' @title Detrend a times series via the Hodrick-Prescott filter
 #' @description  Estimates cyclical and trend component with HP-filter by Hodrick and Prescott (1997).
-#' The function is based on the R-code in the archived package "mFilter" by  Mehmet Balcilar.
-#' @param x A something
-#' @param lambda A something
-#'  Hodrick, R.J., and Prescott, E. C. Prescott (1997) "Postwar U.S. Business Cycles: An Empirical Investigation."
-#'  \emph{Journal of Money, Credit and Banking}, 29(1), 1-16.
+#' The function is based on the function \emph{hpfilter} from the package \emph{mFilter} by Mehmet Balcilar.
+#' @param x Numeric vector.
+#' @param lambda Numeric value.
+#' @references
+#' Hodrick, R.J., and Prescott, E. C. Prescott (1997) "Postwar U.S. Business Cycles: An Empirical Investigation."
+#' \emph{Journal of Money, Credit and Banking}, 29(1), 1-16.
 hp_filter_c <- function(x, lambda) {
     .Call(`_lpirfs_hp_filter_c`, x, lambda)
 }
@@ -30,9 +34,9 @@ hp_filter_c <- function(x, lambda) {
 #' @title Compute OLS parameters and robust standard errors based on Newey-West estimator
 #' @description  Compute OLS parameters and robust standard errors based on Newey and West (1987).
 #' The function is based on the Matlab code by James P. LeSage.
-#' @param y Numeric vector
-#' @param x Numeric matrix
-#' @param h Integer
+#' @param y Numeric vector.
+#' @param x Numeric matrix.
+#' @param h Integer.
 #' @references
 #' Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
 #' Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–708.

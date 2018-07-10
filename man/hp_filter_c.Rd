@@ -7,13 +7,15 @@
 hp_filter_c(x, lambda)
 }
 \arguments{
-\item{x}{A something}
+\item{x}{Numeric vector.}
 
-\item{lambda}{A something
-Hodrick, R.J., and Prescott, E. C. Prescott (1997) "Postwar U.S. Business Cycles: An Empirical Investigation."
-\emph{Journal of Money, Credit and Banking}, 29(1), 1-16.}
+\item{lambda}{Numeric value.}
 }
 \description{
 Estimates cyclical and trend component with HP-filter by Hodrick and Prescott (1997).
-The function is based on the R-code in the archived package "mFilter" by  Mehmet Balcilar.
+The function is based on the function \emph{hpfilter} from the package \emph{mFilter} by Mehmet Balcilar.
+}
+\references{
+Hodrick, R.J., and Prescott, E. C. Prescott (1997) "Postwar U.S. Business Cycles: An Empirical Investigation."
+\emph{Journal of Money, Credit and Banking}, 29(1), 1-16.
 }

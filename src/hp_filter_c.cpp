@@ -3,11 +3,12 @@ using namespace Rcpp;
 //' @name hp_filter_c
 //' @title Detrend a times series via the Hodrick-Prescott filter
 //' @description  Estimates cyclical and trend component with HP-filter by Hodrick and Prescott (1997).
-//' The function is based on the R-code in the archived package "mFilter" by  Mehmet Balcilar.
-//' @param x A something
-//' @param lambda A something
-//'  Hodrick, R.J., and Prescott, E. C. Prescott (1997) "Postwar U.S. Business Cycles: An Empirical Investigation."
-//'  \emph{Journal of Money, Credit and Banking}, 29(1), 1-16.
+//' The function is based on the function \emph{hpfilter} from the package \emph{mFilter} by Mehmet Balcilar.
+//' @param x Numeric vector.
+//' @param lambda Numeric value.
+//' @references
+//' Hodrick, R.J., and Prescott, E. C. Prescott (1997) "Postwar U.S. Business Cycles: An Empirical Investigation."
+//' \emph{Journal of Money, Credit and Banking}, 29(1), 1-16.
 // [[Rcpp::export]]
 List hp_filter_c(NumericVector x, double lambda){
 

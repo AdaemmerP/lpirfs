@@ -4,11 +4,17 @@
 \alias{find_lag_c}
 \title{Compute optimal lag length}
 \arguments{
-\item{y}{List with left (endogenous) variables}
+\item{y}{List with left (endogenous) variables.}
 
-\item{x}{List with right (exogenous) variables}
+\item{x}{List with right (exogenous) variables.}
 
 \item{lag_crit}{Integer: 'AICc'= 1, 'AIC' = 2, 'BIC' = 3.}
+
+\item{h}{Integer.}
+
+\item{k}{Integer.}
+
+\item{max_lags}{Integer.}
 }
 \description{
 Determine optimal lag length based on 'AICc', 'AIC', or 'BIC' criterion.

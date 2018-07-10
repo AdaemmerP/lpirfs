@@ -1,13 +1,12 @@
 # Submission notes
 
 ## Purpose
-- Deleted *mFilter* from *Imports* in the DESCRIPTION file as the package will be archived on 2018-07-20. 
-  I wrote a C++ function based on *hpfilter* from the *mFilter* package.  The author of *mFilter* now appears in the 
+* Deleted *mFilter* from *Imports* in the DESCRIPTION file as the package will be archived on 2018-07-20. 
+  I wrote a C++ function based on the *hpfilter* function from the *mFilter* package.  The author of *mFilter* now appears in the 
   DESCRIPTION file as a contributor.
 
-- Fixed this problem:  
-  > Your C++ error was warned about in §1.6.4 of the manual: do check for similar occurrences.
-  
+* Fixed a C++ error (§1.6.4 of the manual) which occurred when attempting to build the package on Oracle Solaris:  
+ 
 ## Test environments
 * local x86_64-pc-linux-gnu (64-bit), R version 3.5.1
 * ubuntu 14.04.5 (on travis-ci),      R version 3.4.4, R-oldrel, R-devel.

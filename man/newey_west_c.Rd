@@ -7,11 +7,11 @@
 newey_west_c(y, x, h)
 }
 \arguments{
-\item{y}{Numeric vector}
+\item{y}{Numeric vector.}
 
-\item{x}{Numeric matrix}
+\item{x}{Numeric matrix.}
 
-\item{h}{Integer}
+\item{h}{Integer.}
 }
 \description{
 Compute OLS parameters and robust standard errors based on Newey and West (1987).
