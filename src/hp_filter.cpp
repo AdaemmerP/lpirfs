@@ -1,16 +1,16 @@
 #include <RcppArmadillo.h>
 using namespace Rcpp;
-//' @name hp_filter_c
-//' @title Detrend a times series via the Hodrick-Prescott filter
+//' @name hp_filter
+//' @title Decompose a times series via the Hodrick-Prescott filter
 //' @description  Estimates cyclical and trend component with HP-filter by Hodrick and Prescott (1997).
 //' The function is based on the function \emph{hpfilter} from the package \emph{mFilter} by Mehmet Balcilar.
-//' @param x Numeric vector.
+//' @param x One column numeric matrix.
 //' @param lambda Numeric value.
 //' @references
 //' Hodrick, R.J., and Prescott, E. C. Prescott (1997) "Postwar U.S. Business Cycles: An Empirical Investigation."
 //' \emph{Journal of Money, Credit and Banking}, 29(1), 1-16.
 // [[Rcpp::export]]
-List hp_filter_c(NumericVector x, double lambda){
+List hp_filter(NumericVector x, double lambda){
 
   arma::mat xx, ln, q, sigma_r, g, b_inv, b;
   arma::vec x_cycle, x_trend;

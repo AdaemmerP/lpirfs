@@ -5,6 +5,7 @@
 #' @param data_set_df A \link{data.frame}() with all endogenous variables.
 #' @return  List with filled matrices of lagged left (y_lin) and right hand side (x_lin) variables.
 #' @import dplyr
+#' @keywords internal
 #' @author Philipp Adämmer
 #'
 #'
@@ -14,7 +15,7 @@ create_nl_data <- function(specs, data_set_df){
   if (is.nan(specs$lags_criterion) == TRUE) {
 
    # Load switching variable
-    fz  <- switching_series(specs$switching, specs)
+    fz  <- get_vals_switching(specs$switching, specs)
     fz  <- fz[specs$lags_nl:(length(fz) - 1)]  # Make lagged data so that (F_{z_(t-1)})
 
    # Select data for endogenous variables
@@ -74,7 +75,7 @@ create_nl_data <- function(specs, data_set_df){
   for(i in 1:specs$max_lags){
 
    # Switching_data
-     fz  <- switching_series(specs$switching[i:(nrow(data_set_df) - 1)], specs)
+     fz  <- get_vals_switching(specs$switching[i:(nrow(data_set_df) - 1)], specs)
 
    # Create list with endogenous variables
       y_nl[[i]]      <- data_set_df[(i + 1):dim(data_set_df)[1],]  %>%

@@ -1,12 +1,13 @@
-#' @name lm_function
+#' @name get_resids_ols
 #' @title Compute residuals from OLS model
 #' @description Estimate residuals from OLS model.
 #' @param y_data A vector for the left hand variable.
 #' @param x_data A matrix with right hand variables.
 #' @return A numeric vector with residuals from OLS regression.
+#' @keywords internal
 #' @author Philipp Adämmer
 
-lm_function  <- function(y_data, x_data){
+get_resids_ols  <- function(y_data, x_data){
 
   # Build matrices
   yy           <- as.matrix(y_data)

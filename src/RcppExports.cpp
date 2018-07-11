@@ -6,9 +6,9 @@
 
 using namespace Rcpp;
 
-// find_lag_c
-NumericVector find_lag_c(List y, List x, int lag_crit, int h, int k, int max_lags);
-RcppExport SEXP _lpirfs_find_lag_c(SEXP ySEXP, SEXP xSEXP, SEXP lag_critSEXP, SEXP hSEXP, SEXP kSEXP, SEXP max_lagsSEXP) {
+// get_vals_lagcrit
+NumericVector get_vals_lagcrit(List y, List x, int lag_crit, int h, int k, int max_lags);
+RcppExport SEXP _lpirfs_get_vals_lagcrit(SEXP ySEXP, SEXP xSEXP, SEXP lag_critSEXP, SEXP hSEXP, SEXP kSEXP, SEXP max_lagsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -18,40 +18,40 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type h(hSEXP);
     Rcpp::traits::input_parameter< int >::type k(kSEXP);
     Rcpp::traits::input_parameter< int >::type max_lags(max_lagsSEXP);
-    rcpp_result_gen = Rcpp::wrap(find_lag_c(y, x, lag_crit, h, k, max_lags));
+    rcpp_result_gen = Rcpp::wrap(get_vals_lagcrit(y, x, lag_crit, h, k, max_lags));
     return rcpp_result_gen;
 END_RCPP
 }
-// hp_filter_c
-List hp_filter_c(NumericVector x, double lambda);
-RcppExport SEXP _lpirfs_hp_filter_c(SEXP xSEXP, SEXP lambdaSEXP) {
+// hp_filter
+List hp_filter(NumericVector x, double lambda);
+RcppExport SEXP _lpirfs_hp_filter(SEXP xSEXP, SEXP lambdaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
     Rcpp::traits::input_parameter< double >::type lambda(lambdaSEXP);
-    rcpp_result_gen = Rcpp::wrap(hp_filter_c(x, lambda));
+    rcpp_result_gen = Rcpp::wrap(hp_filter(x, lambda));
     return rcpp_result_gen;
 END_RCPP
 }
-// newey_west_c
-List newey_west_c(NumericVector y, NumericMatrix x, int h);
-RcppExport SEXP _lpirfs_newey_west_c(SEXP ySEXP, SEXP xSEXP, SEXP hSEXP) {
+// newey_west
+List newey_west(NumericVector y, NumericMatrix x, int h);
+RcppExport SEXP _lpirfs_newey_west(SEXP ySEXP, SEXP xSEXP, SEXP hSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
     Rcpp::traits::input_parameter< int >::type h(hSEXP);
-    rcpp_result_gen = Rcpp::wrap(newey_west_c(y, x, h));
+    rcpp_result_gen = Rcpp::wrap(newey_west(y, x, h));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_lpirfs_find_lag_c", (DL_FUNC) &_lpirfs_find_lag_c, 6},
-    {"_lpirfs_hp_filter_c", (DL_FUNC) &_lpirfs_hp_filter_c, 2},
-    {"_lpirfs_newey_west_c", (DL_FUNC) &_lpirfs_newey_west_c, 3},
+    {"_lpirfs_get_vals_lagcrit", (DL_FUNC) &_lpirfs_get_vals_lagcrit, 6},
+    {"_lpirfs_hp_filter", (DL_FUNC) &_lpirfs_hp_filter, 2},
+    {"_lpirfs_newey_west", (DL_FUNC) &_lpirfs_newey_west, 3},
     {NULL, NULL, 0}
 };
 

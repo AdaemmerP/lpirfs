@@ -20,3 +20,4 @@ Create a \link{data.frame}() with lagged exogenous variables.
 \author{
 Philipp Adämmer
 }
+\keyword{internal}

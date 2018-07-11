@@ -5,7 +5,9 @@
 #' @param data_set_df A \link{data.frame}() with all endogenous variables.
 #' @return List with filled matrices of lagged left (y_lin) and right hand side (x_lin) variables.
 #' @import dplyr
+#' @keywords internal
 #' @author Philipp Adämmer
+
 
 create_lin_data     <- function(specs, data_set_df){
 

@@ -5,7 +5,11 @@
   I wrote a C++ function based on the *hpfilter* function from the *mFilter* package.  The author of *mFilter* now appears in the 
   DESCRIPTION file as a contributor.
 
-* Fixed a C++ error (§1.6.4 of the manual) which occurred when attempting to build the package on Oracle Solaris:  
+* Fixed a C++ error (§1.6.4 of the manual) which occurred when attempting to build the package on Oracle Solaris.
+
+* Improved the *Help pages* as it now only shows those functions that are useful to the user.
+  
+* Renamed non-exported functions for clarity. Changes are outlined in NEWS.md.  
  
 ## Test environments
 * local x86_64-pc-linux-gnu (64-bit), R version 3.5.1

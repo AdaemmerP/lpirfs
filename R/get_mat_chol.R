@@ -1,4 +1,4 @@
-#' @name reduced_var
+#' @name get_mat_chol
 #' @title Compute structural shock matrix via Cholesky decomposition
 #' @description Compute structural shock matrix via Cholesky decomposition with input variables
 #' created in \link{lp_lin} or \link{lp_nl}.
@@ -7,16 +7,17 @@
 #' @param data_set_df A \link{data.frame}() with all endogenous variables.
 #' @param specs A list with specifications from \link{lp_lin} or \link{lp_nl}.
 #' @return Shock matrix (d)
+#' @keywords internal
 #' @author Philipp Adämmer
 
-reduced_var  <- function(y_lin, x_lin, data_set_df, specs){
+get_mat_chol  <- function(y_lin, x_lin, data_set_df, specs){
 
  # Check whether lag criterion is given
  if (is.nan(specs$lags_criterion) == TRUE) {
 
   # Estimates reduced VAR with pre-defined lag length
     y_data        <- lapply(seq_len(ncol(y_lin)), function(i) y_lin[,i])
-    resids_all    <- (lapply(y_data, lm_function, x_lin))
+    resids_all    <- (lapply(y_data, get_resids_ols, x_lin))
 
 ################################################################################
                                 } else {
@@ -60,7 +61,7 @@ reduced_var  <- function(y_lin, x_lin, data_set_df, specs){
     x_data      <- x_lin[[specs$lags_lin]]
 
     # Estimate OLS model and calculate residuals
-    resids_all  <- lapply(y_data, lm_function, x_data)
+    resids_all  <- lapply(y_data, get_resids_ols, x_data)
 
   }
 

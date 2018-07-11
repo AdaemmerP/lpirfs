@@ -195,7 +195,7 @@ test_that("Check whether results from lp_lin are in region of results from JordÃ
   x_lin    <- data_lin[[2]]
 
   # Construct shock matrix
-  d <- reduced_var(y_lin, x_lin, data_set_df, specs)
+  d <- get_mat_chol(y_lin, x_lin, data_set_df, specs)
 
   # Matrices to store OLS parameters
   b1            <- matrix(NaN, specs$endog, specs$endog)
@@ -233,7 +233,7 @@ test_that("Check whether results from lp_lin are in region of results from JordÃ
                             for (k in 1:specs$endog){ # Accounts for the reactions of the endogenous variables
 
                               # Estimate coefficients and newey west std.err
-                              nw_results     <- lpirfs::newey_west_c(yy[, k], xx, h)
+                              nw_results     <- lpirfs::newey_west(yy[, k], xx, h)
                               b              <- nw_results[[1]]
                               std_err        <- sqrt(diag(nw_results[[2]]))*specs$confint
 
@@ -287,7 +287,7 @@ test_that("Check whether results from lp_lin are in region of results from JordÃ
                             for (k in 1:specs$endog){ # Accounts for endogenous reactions
 
                               # Find optimal lags
-                              val_criterion <- lpirfs::find_lag_c(y_lin, x_lin, lag_crit, h, k,
+                              val_criterion <- lpirfs::get_vals_lagcrit(y_lin, x_lin, lag_crit, h, k,
                                                                   specs$max_lags)
 
                               # Set optimal lag length
@@ -301,7 +301,7 @@ test_that("Check whether results from lp_lin are in region of results from JordÃ
                               xx <- xx[1:(dim(xx)[1] - h + 1),]
 
                               # Estimate coefficients and newey west std.err
-                              nw_results   <- lpirfs::newey_west_c(yy, xx, h)
+                              nw_results   <- lpirfs::newey_west(yy, xx, h)
                               b            <- nw_results[[1]]
                               std_err      <- sqrt(diag(nw_results[[2]]))*specs$confint
 

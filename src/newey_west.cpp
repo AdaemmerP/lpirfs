@@ -1,17 +1,18 @@
 #include <RcppArmadillo.h>
 using namespace Rcpp;
-//' @name newey_west_c
+//' @name newey_west
 //' @title Compute OLS parameters and robust standard errors based on Newey-West estimator
 //' @description  Compute OLS parameters and robust standard errors based on Newey and West (1987).
 //' The function is based on the Matlab code by James P. LeSage.
 //' @param y Numeric vector.
 //' @param x Numeric matrix.
 //' @param h Integer.
+//' @keywords internal
 //' @references
 //' Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
 //' Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–708.
 // [[Rcpp::export]]
-List newey_west_c(NumericVector y, NumericMatrix x, int h){
+List newey_west(NumericVector y, NumericMatrix x, int h){
   NumericMatrix V;
   arma::mat G, M, xx, xx_one, yy, M1, M2, ga, g1, w, za, xpxi, emat, hhat;
   arma::vec w1, beta, resids;

@@ -20,3 +20,4 @@ Function to create data for non-linear model.
 \author{
 Philipp Adämmer
 }
+\keyword{internal}

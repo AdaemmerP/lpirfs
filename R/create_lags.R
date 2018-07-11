@@ -5,6 +5,7 @@
 #' @param lags Integer for the number of lags.
 #' @return Returns a \link{data.frame}() with lagged values.
 #' @import dplyr
+#' @keywords internal
 #' @author Philipp Adämmer
 
 create_lags  <- function(data, lags){
