@@ -22,7 +22,7 @@ get_vals_lagcrit <- function(y, x, lag_crit, h, k, max_lags) {
 #' @title Decompose a times series via the Hodrick-Prescott filter
 #' @description  Estimates cyclical and trend component with HP-filter by Hodrick and Prescott (1997).
 #' The function is based on the function \emph{hpfilter} from the package \emph{mFilter} by Mehmet Balcilar.
-#' @param x One column numeric matrix.
+#' @param x Column matrix with numeric values.
 #' @param lambda Numeric value.
 #' @references
 #' Hodrick, R.J., and Prescott, E. C. Prescott (1997) "Postwar U.S. Business Cycles: An Empirical Investigation."

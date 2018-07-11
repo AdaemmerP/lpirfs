@@ -7,9 +7,11 @@
 
 * Fixed a C++ error (§1.6.4 of the manual) which occurred when attempting to build the package on Oracle Solaris.
 
-* Improved the *Help pages* as it now only shows those functions that are useful to the user.
+* Improved function descriptions. 
+
+* Improved the *Help pages*. 
   
-* Renamed non-exported functions for clarity. Changes are outlined in NEWS.md.  
+* Renamed functions for clarity and consistency. Name changes are outlined in NEWS.md.  
  
 ## Test environments
 * local x86_64-pc-linux-gnu (64-bit), R version 3.5.1
@@ -18,12 +20,12 @@
 * rhub (also checked for Oracle Solaris)
 
 ## Check results
-There was 1 NOTE in all checks:
+There was 1 reoccurring NOTE:
   
 * checking CRAN incoming feasibility ... NOTE
 Maintainer: 'Philipp Adämmer <adaemmer@hsu-hh.de>'
 
-Days since last update: 4
+Days since last update: 6
 
 Possibly mis-spelled words in DESCRIPTION:
   Auerbach (21:47)

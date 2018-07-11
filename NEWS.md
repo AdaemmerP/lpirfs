@@ -1,4 +1,6 @@
 # lpirfs 0.1.1
+## Improvements
+
 * The dependency to the *mFilter* package is removed.  The HP-filter is now written in C++ which 
 vastly improves efficiency. 
 
@@ -14,10 +16,6 @@ original name | new name |
 `newey_west_c`      | `newey_west`
 `switching_series`  | `get_vals_switching`
  
-
-
-# lpirfs 0.1.9000
-* This is the development version. 
 
 # lpirfs 0.1.0
 * Preparation for CRAN release.

@@ -7,7 +7,7 @@
 hp_filter(x, lambda)
 }
 \arguments{
-\item{x}{One column numeric matrix.}
+\item{x}{Column matrix with numeric values.}
 
 \item{lambda}{Numeric value.}
 }
