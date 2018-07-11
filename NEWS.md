@@ -5,6 +5,7 @@ vastly improves efficiency.
 * A problem with a C++ function is resolved so that the package can also be installed on Oracle Solaris. 
 
 * Renamed functions:
+
 original name | new name | notes 
 :--------|:------------- |:----- 
 `lm_function`       | `get_resids_ols` | 
