@@ -6,13 +6,13 @@ vastly improves efficiency.
 
 * Renamed functions:
 
-original name | new name | notes 
-:--------|:------------- |:----- 
-`lm_function`       | `get_resids_ols` | 
-`reduced_var`       | `get_mat_chol`|
-`find_lag_c`        | `get_vals_lagcrit`|
-`newey_west_c`      | `newey_west`|
-`switching_series`  | `get_vals_switching`|
+original name | new name |
+:--------|:------------- 
+`lm_function`       | `get_resids_ols` 
+`reduced_var`       | `get_mat_chol`
+`find_lag_c`        | `get_vals_lagcrit`
+`newey_west_c`      | `newey_west`
+`switching_series`  | `get_vals_switching`
  
 
 
