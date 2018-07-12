@@ -11,6 +11,9 @@ hp_filter(x, lambda)
 
 \item{lambda}{Numeric value.}
 }
+\value{
+A list. The first element contains the cyclical component and the second element the trend component.
+}
 \description{
 Estimates cyclical and trend component with HP-filter by Hodrick and Prescott (1997).
 The function is based on the function \emph{hpfilter} from the package \emph{mFilter} by Mehmet Balcilar.

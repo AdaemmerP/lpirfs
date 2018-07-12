@@ -6,6 +6,7 @@ using namespace Rcpp;
 //' The function is based on the function \emph{hpfilter} from the package \emph{mFilter} by Mehmet Balcilar.
 //' @param x Column matrix with numeric values.
 //' @param lambda Numeric value.
+//' @return A list. The first element contains the cyclical component and the second element the trend component.
 //' @references
 //' Hodrick, R.J., and Prescott, E. C. Prescott (1997) "Postwar U.S. Business Cycles: An Empirical Investigation."
 //' \emph{Journal of Money, Credit and Banking}, 29(1), 1-16.

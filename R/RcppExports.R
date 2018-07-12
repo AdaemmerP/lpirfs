@@ -24,6 +24,7 @@ get_vals_lagcrit <- function(y, x, lag_crit, h, k, max_lags) {
 #' The function is based on the function \emph{hpfilter} from the package \emph{mFilter} by Mehmet Balcilar.
 #' @param x Column matrix with numeric values.
 #' @param lambda Numeric value.
+#' @return A list. The first element contains the cyclical component and the second element the trend component.
 #' @references
 #' Hodrick, R.J., and Prescott, E. C. Prescott (1997) "Postwar U.S. Business Cycles: An Empirical Investigation."
 #' \emph{Journal of Money, Credit and Banking}, 29(1), 1-16.
@@ -38,6 +39,8 @@ hp_filter <- function(x, lambda) {
 #' @param y Numeric vector.
 #' @param x Numeric matrix.
 #' @param h Integer.
+#' @return A list. The first element contains the estimated OLS parameters and the second element
+#' the covariance matrix of the parameters.
 #' @keywords internal
 #' @references
 #' Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and

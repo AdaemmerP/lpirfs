@@ -7,6 +7,8 @@ using namespace Rcpp;
 //' @param y Numeric vector.
 //' @param x Numeric matrix.
 //' @param h Integer.
+//' @return A list. The first element contains the estimated OLS parameters and the second element
+//' the covariance matrix of the parameters.
 //' @keywords internal
 //' @references
 //' Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
