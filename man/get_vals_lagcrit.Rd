@@ -2,7 +2,11 @@
 % Please edit documentation in R/RcppExports.R
 \name{get_vals_lagcrit}
 \alias{get_vals_lagcrit}
+\alias{get_vals_lagcrit}
 \title{Compute values for lag length criterion}
+\usage{
+get_vals_lagcrit(y, x, lag_crit, h, k, max_lags, n_obs)
+}
 \arguments{
 \item{y}{List with left (endogenous) variables.}
 
@@ -18,5 +22,10 @@
 }
 \description{
 Compute values for 'AICc', 'AIC', or 'BIC'.
+
+Schwarz, Gideon E. (1978). "Estimating the dimension of a model", \emph{Annals of Statistics}, 6 (2): 461–464.
+}
+\references{
+Akaike, H. (1974). "A new look at the statistical model identification", \emph{IEEE Transactions on Automatic Control}, 19 (6): 716–723.
 }
 \keyword{internal}

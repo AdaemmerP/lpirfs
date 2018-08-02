@@ -1,4 +1,4 @@
-context("check_hp_filter_c")
+context("check_hp_filter")
 
 # Load data
 data_set_df <- interest_rules_var_data

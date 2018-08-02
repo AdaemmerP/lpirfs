@@ -12,7 +12,7 @@ create_lags(data, lags)
 \item{lags}{Integer for the number of lags.}
 }
 \value{
-Returns a \link{data.frame}() with lagged values.
+Returns a \link{data.frame} with lagged values.
 }
 \description{
 Create a \link{data.frame}() with lagged exogenous variables.

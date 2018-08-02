@@ -7,8 +7,8 @@
 using namespace Rcpp;
 
 // get_vals_lagcrit
-NumericVector get_vals_lagcrit(List y, List x, int lag_crit, int h, int k, int max_lags);
-RcppExport SEXP _lpirfs_get_vals_lagcrit(SEXP ySEXP, SEXP xSEXP, SEXP lag_critSEXP, SEXP hSEXP, SEXP kSEXP, SEXP max_lagsSEXP) {
+NumericVector get_vals_lagcrit(List y, List x, int lag_crit, int h, int k, int max_lags, int n_obs);
+RcppExport SEXP _lpirfs_get_vals_lagcrit(SEXP ySEXP, SEXP xSEXP, SEXP lag_critSEXP, SEXP hSEXP, SEXP kSEXP, SEXP max_lagsSEXP, SEXP n_obsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -18,7 +18,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type h(hSEXP);
     Rcpp::traits::input_parameter< int >::type k(kSEXP);
     Rcpp::traits::input_parameter< int >::type max_lags(max_lagsSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_vals_lagcrit(y, x, lag_crit, h, k, max_lags));
+    Rcpp::traits::input_parameter< int >::type n_obs(n_obsSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_vals_lagcrit(y, x, lag_crit, h, k, max_lags, n_obs));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -49,7 +50,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_lpirfs_get_vals_lagcrit", (DL_FUNC) &_lpirfs_get_vals_lagcrit, 6},
+    {"_lpirfs_get_vals_lagcrit", (DL_FUNC) &_lpirfs_get_vals_lagcrit, 7},
     {"_lpirfs_hp_filter", (DL_FUNC) &_lpirfs_hp_filter, 2},
     {"_lpirfs_newey_west", (DL_FUNC) &_lpirfs_newey_west, 3},
     {NULL, NULL, 0}

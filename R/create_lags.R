@@ -3,7 +3,7 @@
 #' @description Create a \link{data.frame}() with lagged exogenous variables.
 #' @param data A \link{data.frame}().
 #' @param lags Integer for the number of lags.
-#' @return Returns a \link{data.frame}() with lagged values.
+#' @return Returns a \link{data.frame} with lagged values.
 #' @import dplyr
 #' @keywords internal
 #' @author Philipp Adämmer
@@ -28,7 +28,7 @@ create_lags  <- function(data, lags){
   }
 
   # Delete NAs
-     lag_data <- lag_data %>%
-                            stats::na.omit()
+     lag_data <- lag_data
+
      return(lag_data)
 }

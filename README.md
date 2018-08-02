@@ -20,11 +20,35 @@ local projections by [Jordà
 ## Main features
 
   - Estimates linear and nonlinear impulse responses with local
-    projections.
+    projections and .
+  - Estimates linear and nonlinear impulse responses with local
+    projections and instrument variable approach (development version).
   - Functions to plot linear and nonlinear impulse responses.
   - Functions are partly implemented in *Rcpp* and *RcppArmadillo* to
     improve efficiency.
   - High performance with parallel computation.
+
+## Updates and new features in the development version
+
+  - Fixed an error in *lp\_nl* when the number of lags is chosen by a
+    lag length criterion. The version on CRAN (0.1.1) chooses lags based
+    on linear data and not on nonlinear lagged data.
+
+  - All functions now allow to include (lagged) exogenous variables and
+    variables with exogenous data with contemporaneous impact.
+
+  - Two new functions allow to estimate linear (*lp\_lin\_iv*) and
+    nonlinear (*lp\_nl\_iv*) impulse responses with local projections
+    via an instrument variable approach as in, e.g., [Ramey and Zubairy
+    (2018)](https://www.journals.uchicago.edu/doi/10.1086/696277).
+
+  - All functions now allow to manually choose the number of cores.
+
+  - One input name in *lp\_nl* has been changed for consistency:
+
+| function | old input name |
+| :------- | :------------- |
+| `lp_nl`  | `hp_filter`    |
 
 ## Examples
 
@@ -33,7 +57,7 @@ Examples can be found
 
 ## Installation
 
-You can install the released version of **lpirfs** from
+You can install the released version (0.1.1) of **lpirfs** from
 [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
@@ -63,19 +87,29 @@ via *devtools::install\_github(“AdaemmerP/lpirfs”)*
 
 ## Acknowledgements
 
+I am thankful to Òscar
+[Jordà](https://sites.google.com/site/oscarjorda/) for encouraging
+comments and helpful suggestions. I am also indebted to Sarah
+[Zubairy](https://sites.google.com/site/sarahzubairy/) for providing
+their Matlab code before the publication of their
+[paper](https://www.journals.uchicago.edu/doi/10.1086/696277).
+
 I greatly benefit from the profound *R*, *Rcpp* and *GitHub* knowledge
 of Philipp [Wittenberg](https://github.com/wittenberg) and Detlef
-(overflow) [Steuer](https://github.com/dsteuer). Remaining errors are
-obviously mine.
+(overflow) [Steuer](https://github.com/dsteuer). Last but not least, I
+am grateful to Philipp Dybowski for his rogorous comments and without
+whom I would have never started this project.
+
+All remaining errors are obviously mine.
 
 ## Development
 
-I intend to extend the package with functions that
+I would be very grateful for feedback on the package.
+
+I intend to further extend the package with functions that
 
   - allow to manually identify the linear combinations of the reduced
     form residuals,
-  - allow to include exogenous variables,
-  - conduct IV-lp estimation,
   - conduct panel-lp estimation.
 
 ### Author

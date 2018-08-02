@@ -7,9 +7,44 @@ using namespace Rcpp;
 //' @param x Column matrix with numeric values.
 //' @param lambda Numeric value.
 //' @return A list. The first element contains the cyclical component and the second element the trend component.
+//' @examples
+//' \donttest{
+//' library(lpirfs)
+//'
+//'
+//'# Decompose the Federal Funds Rate from data set 'interest_rules_var_data'
+//' data_set     <- as.matrix(interest_rules_var_data$FF) # Input has to be a one column matrix
+//' hp_results   <- hp_filter(data_set, 1600)
+//'
+//'# Extract results and save as data.frame
+//'  hp_cyc    <- as.data.frame(hp_results[[1]])
+//'  hp_trend  <- as.data.frame(hp_results[[2]])
+//'
+//'# Make data.frames for plots
+//'    cyc_df     <- data.frame(yy = hp_cyc$V1,   xx = seq(as.Date('1955-01-01'),
+//'                             as.Date('2003-01-01') , "quarter"))
+//'      trend_df <- data.frame(yy = hp_trend$V1, xx = seq(as.Date('1955-01-01'),
+//'                             as.Date('2003-01-01') , "quarter"))
+//'
+//'# Make plots
+//'      library(ggplot2)
+//'
+//'# Plot cyclical part
+//'        ggplot(data = cyc_df) +
+//'        geom_line(aes(y = yy, x = xx))
+//'
+//'# Plot trend component
+//'          ggplot(trend_df) +
+//'          geom_line(aes(y = yy, x = xx))
+//'
+//'}
 //' @references
-//' Hodrick, R.J., and Prescott, E. C. Prescott (1997) "Postwar U.S. Business Cycles: An Empirical Investigation."
+//' Hodrick, R.J., and Prescott, E. C. Prescott (1997). "Postwar U.S. Business Cycles: An Empirical Investigation."
 //' \emph{Journal of Money, Credit and Banking}, 29(1), 1-16.
+//'
+//' Ravn, M.O., Uhlig, H. (2002). "On Adjusting the Hodrick-Prescott Filter for the Frequency of Observations."
+//' \emph{Review of Economics and Statistics}, 84(2), 371-376.
+//' @author Philipp Adämmer
 // [[Rcpp::export]]
 List hp_filter(NumericVector x, double lambda){
 

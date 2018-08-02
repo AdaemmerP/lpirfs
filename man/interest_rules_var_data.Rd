@@ -4,7 +4,7 @@
 \name{interest_rules_var_data}
 \alias{interest_rules_var_data}
 \title{Data to estimate the effects of interest rate rules for monetary policy}
-\format{A data frame with 193 quarterly observations (rows) and 3 variables (columns):
+\format{A tibble (data.frame) with 193 quarterly observations (rows) and 3 variables (columns):
 \describe{
   \item{GDP_gap}{Percentage difference between real GDP and potential GDP (Congressional Budget Office).}
   \item{Infl}{Inflation: Percentage change in the GDP, chain weighted price index at annual rate.}
@@ -18,7 +18,7 @@ Sample: 1955:I - 2003:I}
 interest_rules_var_data
 }
 \description{
-A \link{tibble}() containing data to estimate the effects of interest rate rules for monetary policy.
+A \link{tibble} containing data to estimate the effects of interest rate rules for monetary policy.
              The data are used in Jordà (2005).
 }
 \references{

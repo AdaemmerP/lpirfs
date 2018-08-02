@@ -10,18 +10,28 @@ using namespace Rcpp;
 //' @param h Integer.
 //' @param k Integer.
 //' @param max_lags Integer.
-//' @keywords internal
+//' @references
+//'
+//' Akaike, H. (1974). "A new look at the statistical model identification", \emph{IEEE Transactions on Automatic Control}, 19 (6): 716–723.
 
+//' Hurvich, C. M., Tsai, C.-L. (1989). "Regression and time series model selection
+//' in small samples", Biometrika, 76(2): 297–307,
+//'
+//' Schwarz, Gideon E. (1978). "Estimating the dimension of a model", \emph{Annals of Statistics}, 6 (2): 461–464.
+//'
+//' @keywords internal
 // [[Rcpp::export]]
-NumericVector get_vals_lagcrit(List y, List x, int lag_crit, int h, int k, int max_lags){
+NumericVector get_vals_lagcrit(List y, List x, int lag_crit, int h, int k, int max_lags,
+                                 int n_obs){
 
   arma::mat xx, xx_one, yy, xpxi, emat, hhat;
   arma::vec w1, beta, resids, resds_sq;
   int rstart_y, rend_y, rend_x;
-  double ssr, var_eps, ll, p, n;
+  double ssr, var_eps, ll, tp, n;
   double pi = 3.141593;
   NumericVector crit_val(max_lags);
 
+  n          = n_obs;
 
   for (int i = 0; i < max_lags; i++){
 
@@ -39,8 +49,7 @@ NumericVector get_vals_lagcrit(List y, List x, int lag_crit, int h, int k, int m
     xx       = xx.rows(0, rend_x);
 
 
-    p        = xx.n_cols + 1;
-    n        = rend_y + 1;
+    tp       = xx.n_cols + 1;    // Number of parameters to estimate
     xpxi     = inv(xx.t()*xx);
     beta     = xpxi*xx.t()*yy;
     resids   = yy - xx*beta;
@@ -48,20 +57,20 @@ NumericVector get_vals_lagcrit(List y, List x, int lag_crit, int h, int k, int m
     ssr      = sum(resds_sq);
     var_eps  = ssr/n;
 
-    ll       =  - n/2 * log(2*pi) - n/2 * log(var_eps) - ssr/(2 * var_eps);
-
+    // Estimate log-likelihood
+    ll       =  - n/2*log(2*pi) - n/2*log(var_eps) - ssr/(2*var_eps);
 
     if (lag_crit == 1){
 
-      crit_val[i] = (2 * p - 2 * ll) + (2*pow(p,2) + 2*p)/(n-p-1);
+      crit_val[i] = (-2*ll + 2*tp) + (2*pow(tp,2) + 2*tp)/(n-tp-1);
 
          } else if(lag_crit == 2) {
 
-      crit_val[i] = 2*p - 2*ll;
+      crit_val[i] = -2*ll + 2*tp ;
 
           } else {
 
-      crit_val[i] = -2*ll + log(n)*p;
+      crit_val[i] = -2*ll + log(n)*tp;
     }
 
   }

@@ -2,7 +2,7 @@
 #' @title Compute linear impulse responses
 #' @description Compute linear impulse responses with local projections by Jordà (2005).
 #'
-#' @param data_set_df A \link{data.frame}() containing all endogenous variables for the VAR. The column order
+#' @param endog_data A \link{data.frame}, containing the endogenous variables for the VAR. The column order
 #'                    is used for the Cholesky decomposition.
 #' @param lags_criterion NaN or character. NaN means that the number of lags
 #'         will be given at \emph{lags_lin}. The character refers to the corresponding lag length criterion ('AICc', 'AIC' or 'BIC').
@@ -12,16 +12,25 @@
 #' @param shock_type Integer. Standard deviation shock = 0, unit shock = 1.
 #' @param confint Double. Width of confidence bands. 68\% = 1, 90\% = 1.65, 95\% = 1.96.
 #' @param hor Integer. Number of horizons for impulse responses.
+#' @param exog_data A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
+#'                  A lag length for exogenous data always has to be given and.
+#' @param lags_exog Integer. Number of lags for the exogenous variables.
+#' @param contemp_data A \link{data.frame}, containing exogenous data with contemporaneous impact. This data will not be lagged.
+#'                      The row length has to be the same as \emph{endog_data}.
+#' @param num_cores Integer. The number of cores to use for the estimation. If no number is set, the function will
+#'                 at most use the maximum number of available cores less one.
+#'
+#' @seealso \url{https://adaemmerp.github.io/lpirfs/README_docs.html}
 #'
 #' @return A list with impulse responses and their robust confidence bands.
-#' It also returns a list named \emph{specs} with properties of \emph{data_set_df} for the plot function.
+#'
 #'
 #'\item{irf_lin_mean}{A three 3D \link{array}() containing all impulse responses for all endogenous variables.
 #'                    The last dimension denotes the shock variable. The row in each matrix
-#'                    gives the responses of the \emph{ith} variable, ordered as in data_set_df. The columns denote the horizon.
+#'                    gives the responses of the \emph{ith} variable, ordered as in endog_data. The columns denote the horizon.
 #'                    For example, if \emph{results_lin} contains the list with results, results_lin$irf_lin_mean[, , 1] returns a KXH matrix,
-#'                    where K is the number of variables and H the number of horizons. '1' is the variable shock variable, corresponding to the
-#'                    variable in the first column of \emph{data_set_df}.}
+#'                    where K is the number of variables and H the number of horizons. '1' is the shock variable, corresponding to the
+#'                    variable in the first column of \emph{endog_data}.}
 #'
 #'\item{irf_lin_low}{A three 3D \link{array}() containing all lower confidence bands of the responses,
 #'                    based on robust standard errors by Newey and West (1987). Properties are equal to irf_lin_mean.}
@@ -29,8 +38,11 @@
 #'\item{irf_lin_up}{A three 3D \link{array}() containing all upper confidence bands of the responses,
 #'                    based on robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_lin_mean}.}
 #'
-#'\item{specs}{A list with properties of \emph{data_set_df} for the plot function.}
+#'\item{specs}{A list with properties of \emph{endog_data} for the plot function. It also contains
+#'             the lagged endogenous (y_lin) and exogenous (x_lin) data used for the estimation.}
 #'
+#'The list also contains a list named \emph{specs} with properties of \emph{endog_data} for the plot function.
+#'This list also contains the lagged endogenous (y_lin) and exogenous (x_lin) data.
 #' @export
 #' @references
 #' Akaike, H. (1974). "A new look at the statistical model identification", \emph{IEEE Transactions on Automatic Control}, 19 (6): 716–723.
@@ -51,38 +63,102 @@
 #' @import foreach
 #' @examples
 #'\donttest{
+#'
+#'## Example without exogenous variables
+#'
 #'# Load package
 #'   library(lpirfs)
 #'
-#'# Load data
-#'   data_set_df <- interest_rules_var_data
+#'# Load (endogenous) data
+#'   endog_data <- interest_rules_var_data
 #'
 #'# Estimate linear model
-#'   results_lin <- lp_lin(data_set_df, lags_lin       = 4,
+#'   results_lin <- lp_lin(endog_data, lags_lin        = 4,
+#'                                      exog_data      = NULL,
+#'                                      lags_exog      = NULL,
 #'                                      lags_criterion = NaN,
 #'                                      max_lags       = NaN,
 #'                                      trend          = 0L,
 #'                                      shock_type     = 1L,
 #'                                      confint        = 1.96,
-#'                                      hor            = 12)
+#'                                      hor            = 12,
+#'                                      contemp_data   = NULL,
+#'                                      num_cores      = NULL)
 #'
 #'# Make plots
-#'   linear_plots <- plot_lin_irfs(results_lin)
+#'  linear_plots <- plot_lin(results_lin)
 #'
 #'# Show single plots
+#'  # * The first element of 'linear_plots' shows the response of the first
+#'  #   variable (GDP_gap) to a shock in the first variable in (GDP_gap).
+#'  # * The second element of 'linear_plots' shows the response of the first
+#'  #   variable (GDP_gap) to a shock in the second variable (inflation).
+#'  # * ...
+#'
 #'   linear_plots[[1]]
 #'   linear_plots[[2]]
 #'
-#'# Show all plots
+#'# Show all plots by using 'ggpubr' and 'gridExtra'
+#'# The package does not depend on those packages so they have to be installed
+#'
 #'   library(ggpubr)
 #'   library(gridExtra)
 #'
 #'   lin_plots_all <- sapply(linear_plots, ggplotGrob)
-#'   marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top = NULL)
+#'   marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
+#'
+#'
+#'## Example with exogenous variables ##
+#'
+#'# Load (endogenous) data
+#'  endog_data <- interest_rules_var_data
+#'
+#'# Create exogenous data and data with contemporaneous impact (for illustration purposes only!)
+#'  exog_data    <- endog_data$GDP_gap*endog_data$Infl*endog_data$FF + rnorm(dim(endog_data)[1])
+#'  contemp_data <- endog_data$GDP_gap*endog_data$Infl*endog_data$FF + rnorm(dim(endog_data)[1])
+#'
+#'# Exogenous data has to be a data.frame
+#'  exog_data    <- data.frame(xx = exog_data )
+#'  contemp_data <- data.frame(cc  =  contemp_data)
+#'
+#'# Estimate linear model
+#'   results_lin <- lp_lin(endog_data,
+#'                                lags_lin       = 4,
+#'                                lags_criterion = NaN,
+#'                                max_lags       = NaN,
+#'                                trend          = 0L,
+#'                                shock_type     = 1L,
+#'                                confint        = 1.96,
+#'                                hor            = 12,
+#'                                exog_data      = exog_data,
+#'                                contemp_data   = contemp_data,
+#'                                lags_exog      = 4,
+#'                                num_cores      = NULL)
+#'
+#'# Make plots
+#'  linear_plots <- plot_lin_irfs(results_lin)
+#'
+#'# Show all plots
+#'  library(ggpubr)
+#'  library(gridExtra)
+#'
+#'  lin_plots_all <- sapply(linear_plots, ggplotGrob)
+#'  marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
+#'
 #'
 #'  }
-lp_lin <- function(data_set_df, lags_lin = NULL, lags_criterion = NULL, max_lags = NULL,
-                                trend    = NULL, shock_type    = NULL,  confint  = NULL, hor = NULL){
+lp_lin <- function(endog_data,
+                        lags_lin       = NULL,
+                        lags_criterion = NULL,
+                        max_lags       = NULL,
+                        trend          = NULL,
+                        shock_type     = NULL,
+                        confint        = NULL,
+                        hor            = NULL,
+                        exog_data      = NULL,
+                        lags_exog      = NULL,
+                        contemp_data   = NULL,
+                        num_cores      = NULL){
 
   # Create list to store inputs
     specs <- list()
@@ -95,11 +171,28 @@ lp_lin <- function(data_set_df, lags_lin = NULL, lags_criterion = NULL, max_lags
     specs$shock_type     <- shock_type
     specs$confint        <- confint
     specs$hor            <- hor
+    specs$exog_data      <- exog_data
+    specs$lags_exog      <- lags_exog
+
+    # Add 'contempranoeus' as NULL for data construction
+    specs$contemp_data   <- contemp_data
+    # Set model type for lag construction
+    specs$model_type     <- 0
 
   # Check whether data is a data.frame()
-  if(!(is.data.frame(data_set_df))){
+  if(!(is.data.frame(endog_data))){
     stop('The data has to be a data.frame().')
   }
+
+  # Give message when no linear model is provided
+    if(is.null(exog_data)){
+      message('You estimate the model without exogenous data.')
+    }
+
+    # Give message when no contemporaneous data is provided
+    if(is.null(contemp_data)){
+      message('You estimate the model without exogenous data with contemporaneous impact')
+    }
 
   # Check whether 'trend' is given
   if(is.null(specs$trend)){
@@ -183,20 +276,36 @@ lp_lin <- function(data_set_df, lags_lin = NULL, lags_criterion = NULL, max_lags
       stop('The maximum number of lags is only used if you provide a lag length criterion.')
     }
 
+  # Check whether exogenous data is a data.frame
+    if(!is.null(specs$exog_data) & !is.data.frame(specs$exog_data)){
+      stop('Exogenous data has to be a data.frame.')
+    }
+
+  # Check whether lag length for exogenous data is given
+    if(!is.null(specs$exog_data) & is.null(specs$lags_exog)){
+      stop('Please provide a lag length for the exogenous data.')
+    }
+
 
   # Safe data frame specifications in 'specs for functions
    specs$starts         <- 1                        # Sample Start
-   specs$ends           <- dim(data_set_df)[1]      # Sample end
-   specs$columns        <- names(data_set_df)       # Name endogenous variables
-   specs$endog          <- ncol(data_set_df)        # Set the number of endogenous variables
+   specs$ends           <- dim(endog_data)[1]      # Sample end
+   specs$column_names   <- names(endog_data)       # Name endogenous variables
+   specs$endog          <- ncol(endog_data)        # Set the number of endogenous variables
 
- # Construct (lagged) data
-  data_lin <- create_lin_data(specs, data_set_df)
+ # Construct (lagged) endogenous data
+  data_lin <- create_lin_data(specs, endog_data)
   y_lin    <- data_lin[[1]]
   x_lin    <- data_lin[[2]]
 
+
+  # Save endogenous and lagged exogenous data in specs
+  specs$y_lin        <- y_lin
+  specs$x_lin        <- x_lin
+
+
  # Construct shock matrix
-  d <- get_mat_chol(y_lin, x_lin, data_set_df, specs)
+  d <- get_mat_chol(y_lin, x_lin, endog_data, specs)
 
  # Matrices to store OLS parameters
   b1            <- matrix(NaN, specs$endog, specs$endog)
@@ -213,9 +322,12 @@ lp_lin <- function(data_set_df, lags_lin = NULL, lags_criterion = NULL, max_lags
   irf_lin_low   <-  irf_lin_mean
   irf_lin_up    <-  irf_lin_mean
 
- # Make cluster
-  numb_cores     <- min(specs$endog, parallel::detectCores() - 1)
-  cl             <- parallel::makeCluster(numb_cores)
+  # Make cluster
+  if(is.null(num_cores)){
+    num_cores     <- min(specs$endog, parallel::detectCores() - 1)
+  }
+
+  cl             <- parallel::makeCluster(num_cores)
   doParallel::registerDoParallel(cl)
 
  # Decide whether lag lengths are given or have to be estimated
@@ -226,7 +338,7 @@ lp_lin <- function(data_set_df, lags_lin = NULL, lags_criterion = NULL, max_lags
                       .packages = 'lpirfs')  %dopar%{ # Accounts for the shocks
 
    for (h in 1:(specs$hor)){   # Accounts for the horizons
-I
+
     # Create data
      yy  <-   y_lin[h : dim(y_lin)[1], ]
      xx  <-   x_lin[1 : (dim(x_lin)[1] - h + 1), ]
@@ -288,8 +400,9 @@ I
       for (k in 1:specs$endog){ # Accounts for endogenous reactions
 
         # Find optimal lags
+         n_obs          <- nrow(endog_data) - h  # Number of maximum observations
          val_criterion <- lpirfs::get_vals_lagcrit(y_lin, x_lin, lag_crit, h, k,
-                                                 specs$max_lags)
+                                                 specs$max_lags, n_obs)
 
         # Set optimal lag length
          lag_choice  <- which.min(val_criterion)
@@ -345,6 +458,6 @@ I
   parallel::stopCluster(cl)
 
   list(irf_lin_mean = irf_lin_mean, irf_lin_low = irf_lin_low,
-       irf_lin_up   = irf_lin_up, spes = specs)
+       irf_lin_up   = irf_lin_up, specs = specs)
 
 }

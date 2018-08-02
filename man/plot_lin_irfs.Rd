@@ -17,37 +17,14 @@ Compute and display linear impulse responses estimated with \link{lp_lin}.
 }
 \examples{
 \donttest{
-# Load package
-  library(lpirfs)
 
-# Load data
-  data_set_df <- interest_rules_var_data
+# This function is deprecated. See \\link{plot_lin}.
 
-# Estimate linear model
-  results_lin <- lp_lin(data_set_df, lags_lin       = 4,
-                                     lags_criterion = NaN,
-                                     max_lags       = NaN,
-                                     trend          = 0L,
-                                     shock_type     = 1L,
-                                     confint        = 1.96,
-                                     hor            = 12)
 
-# Make plots
-  linear_plots <- plot_lin_irfs(results_lin)
-
-# Show single plots
-  linear_plots[[1]]
-  linear_plots[[2]]
-
-# Show all plots
-  library(ggpubr)
-  library(gridExtra)
-
-  lin_plots_all <- sapply(linear_plots, ggplotGrob)
-  marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top = NULL)
 
  }
 }
 \author{
 Philipp Adämmer
 }
+\keyword{internal}

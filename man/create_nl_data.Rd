@@ -2,20 +2,20 @@
 % Please edit documentation in R/create_nl_data.R
 \name{create_nl_data}
 \alias{create_nl_data}
-\title{Compute data for nonlinear model}
+\title{Compute data for nonlinear model with instrument variable approach}
 \usage{
-create_nl_data(specs, data_set_df)
+create_nl_data(specs, endog_data)
 }
 \arguments{
-\item{specs}{A \link{list}() built with input data for \link{lp_nl}.}
+\item{specs}{A \link{list}(). Inputs are created in \link{lp_nl_iv}.}
 
-\item{data_set_df}{A \link{data.frame}() with all endogenous variables.}
+\item{endog_data}{A \link{data.frame} with dependent variables.}
 }
 \value{
-List with filled matrices of lagged left (y_lin) and right hand side (x_lin) variables.
+List with filled matrices of lagged left (y_nl) and right hand side (x_nl) variables.
 }
 \description{
-Function to create data for non-linear model.
+Function to create data for nonlinear model with instrument variable approach.
 }
 \author{
 Philipp Adämmer

@@ -3,7 +3,7 @@
 #' @description Compute nonlinear impulse responses with local projections by Jordà (2005). The
 #' data are separated into two states via a smooth transition function, applied in Auerbach and Gorodnichenko (2012).
 #'
-#' @param data_set_df A \link{data.frame}() containing all endogenous variables for the VAR. The column order
+#' @param endog_data A \link{data.frame}() containing all endogenous variables for the VAR. The column order
 #'                     is used for the Cholesky decomposition.
 #' @param lags_criterion NaN or character. NaN means that the number of lags
 #'         will be given at \emph{lags_nl} and \emph{lags_lin}. The lag length criteria are 'AICc', 'AIC' and 'BIC'.
@@ -15,7 +15,7 @@
 #' @param shock_type Integer. Standard deviation shock = 0, unit shock = 1.
 #' @param confint Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.
 #' @param hor Integer. Number of horizons for impulse responses.
-#' @param switching Numeric vector. A column vector with the same length as \emph{data_set_df}. This series can either
+#' @param switching Numeric vector. A column vector with the same length as \emph{endog_data}. This series can either
 #'               be decomposed via the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013) or
 #'               directly plugged into the following smooth transition function:
 #'               \deqn{ F_{z_t} = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)} }
@@ -25,20 +25,30 @@
 #'               Regime 1 = (1-\eqn{F(z_{t-1})})*y_{t-p}, \cr
 #'               Regime 2 = \eqn{F(z_{t-1})}*y_{t-p}.
 #'@param gamma Double. Positive number which is used in the transition function.
-#'@param hp_filter Integer. No HP-filter = 0. Use HP-filter = 1.
+#'@param use_hp Integer. No HP-filter = 0. Use HP-filter = 1.
 #'@param lambda Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter if HP-filter is applied.
+#'@param exog_data A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as
+#'                 \emph{endog_data}. The exogenous variables will not be separated into two regimes as the endogenous variables.
+#'                 Note that including exogenous variables only works if the lag lengths will be set and do
+#'                 not have to be determined with a lag length criterion.
+#'@param lags_exog Integer. Number of lags for the exogenous variables.
+#'@param contemp_data A \link{data.frame}, containing exogenous data with contemporaneous impact. This data will not be lagged.
+#'                      The row length has to be the same as \emph{endog_data}.
+#'@param num_cores Integer. The number of cores to use for the estimation. If no number is set, the function will
+#'                 use the maximum number of available cores less one.
 #'
+#'@seealso \url{https://adaemmerp.github.io/lpirfs/README_docs.html}
 #'
 #'
 #' @return A list with impulse responses and their robust confidence bands.
-#' It also contains a list named \emph{specs} with properties of \emph{data_set_df} for the plot function.
+#' It also contains a list named \emph{specs} with properties of \emph{endog_data} for the plot function.
 #'
 #'\item{irf_s1_mean}{A three 3D \link{array}() containing all impulse responses for all endogenous variables of the first state.
 #'                    The last dimension denotes the shock variable. The row in each matrix
-#'                    denotes the responses of the \emph{ith} variable, ordered as in \emph{data_set_df}. The columns are the horizons.
+#'                    denotes the responses of the \emph{ith} variable, ordered as in \emph{endog_data}. The columns are the horizons.
 #'                    For example, if the results are saved in \emph{results_nl}, results_nl$irf_s1_mean[, , 1] returns a KXH matrix,
 #'                    where K is the number of variables and H the number of horizons. '1' is the shock variable, corresponding to the
-#'                    variable in the first column of \emph{data_set_df}.}
+#'                    variable in the first column of \emph{endog_data}.}
 #'
 #'\item{irf_s1_low}{A three 3D \link{array}() containing all lower confidence bands of the impulse responses, based on
 #'                    robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s1_mean}.}
@@ -48,10 +58,10 @@
 #'
 #'\item{irf_s2_mean}{A three 3D \link{array}() containing all impulse responses for all endogenous variables of the second state.
 #'                    The last dimension denotes the shock variable. The row in each matrix
-#'                    denotes the responses of the \emph{ith} variable, ordered as in data_set_df. The columns denote the horizon.
+#'                    denotes the responses of the \emph{ith} variable, ordered as in endog_data. The columns denote the horizon.
 #'                    For example, if the results are saved in \emph{results_nl}, results_nl$irf_s2_mean[, , 1] returns a KXH matrix,
 #'                    where K is the number of variables and H the number of horizons. '1' is the first shock variable corresponding to the
-#'                    variable in the first column of \emph{data_set_df}.}
+#'                    variable in the first column of \emph{endog_data}.}
 #'
 #'\item{irf_s2_low}{A three 3D \link{array}() containing all lower confidence bands of the responses,
 #'                    based on robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s2_mean}.}
@@ -59,7 +69,7 @@
 #'\item{irf_s2_up}{A three 3D \link{array}(), containing all upper confidence bands of the responses, based on
 #'                    robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s2_mean}.}
 #'
-#'\item{specs}{A list with properties of \emph{data_set_df} for the plot function.}
+#'\item{specs}{A list with properties of \emph{endog_data} for the plot function.}
 #'
 #'\item{fz}{A vector containing the values of the transition function F(z_{t-1}).}
 #'
@@ -87,17 +97,27 @@
 #'
 #' Schwarz, Gideon E. (1978). "Estimating the dimension of a model", \emph{Annals of Statistics}, 6 (2): 461–464.
 #'
+#' Ravn, M.O., Uhlig, H. (2002). "On Adjusting the Hodrick-Prescott Filter for the Frequency of Observations."
+#' \emph{Review of Economics and Statistics}, 84(2), 371-376.
+#'
 #' @import foreach
 #' @examples
 #'\donttest{
+#'
+#'                   ## Example without exogenous variables ##
+#'
 #'# Load package
 #'   library(lpirfs)
 #'
-#'# Load data
-#'   data_set_df <- monetary_var_data
+#'# Load (endogenous) data
+#'   endog_data <- monetary_var_data
+#'
+#'# Choose data for switching variable (here Federal Funds Rate)
+#'# Important: This does not have to be a times series used for the VAR!
+#'  switching_data <-  endog_data$FF
 #'
 #'# Estimate model and save results
-#'   results_nl <- lp_nl(data_set_df, lags_lin       = 4L,
+#'   results_nl <- lp_nl(endog_data, lags_lin        = 4L,
 #'                                    lags_nl        = 3L,
 #'                                    lags_criterion = NaN,
 #'                                    max_lags       = NaN,
@@ -105,10 +125,11 @@
 #'                                    shock_type     = 1L,
 #'                                    confint        = 1.96,
 #'                                    hor            = 24L,
-#'                                    switching      = data_set_df$FF,
-#'                                    hp_filter      = 1L,
+#'                                    switching      = switching_data,
+#'                                    use_hp      = 1L,
 #'                                    lambda         = 1600,
-#'                                    gamma          = 3)
+#'                                    gamma          = 3,
+#'                                    num_cores      = NULL)
 #'
 #'# Make and save all plots
 #'   nl_plots <- plot_nl_irfs(results_nl)
@@ -126,16 +147,81 @@
 #'   plot(s2_plots[[1]])
 #'
 #'# Show all plots
-#'   marrangeGrob(s1_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top = NULL)
-#'   marrangeGrob(s2_plots, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top = NULL)
+#'   marrangeGrob(s1_plots, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
+#'   marrangeGrob(s2_plots, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
+#'
+#'
+#'                      ## Example with exogenous variables ##
+#'
+#'# Load (endogenous) data
+#'   endog_data <- interest_rules_var_data
+#'
+#'# Choose data for switching variable (here Federal Funds Rate)
+#'# Important: This does not have to be a times series used for the VAR!
+#'  switching_data <-  endog_data$FF
+#'
+#'# Create exogenous data and data with contemporaneous impact (only for illustration purposes!)
+#'  exog_data    <- endog_data$GDP_gap*endog_data$Infl*endog_data$FF + rnorm(dim(endog_data)[1])
+#'  contemp_data <- endog_data$GDP_gap*endog_data$Infl*endog_data$FF + rnorm(dim(endog_data)[1])
+#'
+#'# Exogenous data has to be a data.frame
+#'  exog_data    <- data.frame(xx = exog_data )
+#'  contemp_data <- data.frame(cc  =  contemp_data)
+#'
+#'# Estimate model and save results
+#'  results_nl <- lp_nl(endog_data,
+#'                           lags_lin       = 4L,
+#'                           lags_nl        = 3L,
+#'                           lags_criterion = NaN,
+#'                           max_lags       = NaN,
+#'                           trend          = 0L,
+#'                           shock_type     = 1L,
+#'                           confint        = 1.96,
+#'                           hor            = 24L,
+#'                           switching      = switching_data,
+#'                           use_hp         = 1L,
+#'                           lambda         = 1600,  # Ravn and Uhlig (2002):
+#'                                                   # Anuual data    = 6.25
+#'                                                   # Quarterly data = 1600
+#'                                                   # Monthly data   = 129,600
+#'                           gamma          = 3,
+#'                           exog_data      = exog_data,
+#'                           lags_exog      = 3,
+#'                           num_cores      = NULL)
+#'
+#'# Make and save all plots
+#'  nl_plots <- plot_nl(results_nl)
+#'
+#'# Save plots based on states
+#'   s1_plots <- sapply(nl_plots$gg_s1, ggplotGrob)
+#'   s2_plots <- sapply(nl_plots$gg_s2, ggplotGrob)
+#'
+#'# Show all plots
+#'   marrangeGrob(s1_plots, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
+#'   marrangeGrob(s2_plots, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
+#'
+#'
 #'
 #'}
 #' @author Philipp Adämmer
 #'
-lp_nl <- function(data_set_df, lags_lin  = NULL, lags_nl        = NULL,  lags_criterion = NULL, max_lags = NULL,
-                               trend     = NULL, shock_type     = NULL,  confint        = NULL,
-                               hor       = NULL, switching      = NULL,
-                               hp_filter = NULL, lambda         = NULL, gamma   = NULL){
+lp_nl <- function(endog_data,
+                               lags_lin       = NULL,
+                               lags_nl        = NULL,
+                               lags_criterion = NULL,
+                               max_lags       = NULL,
+                               trend          = NULL,
+                               shock_type     = NULL,
+                               confint        = NULL,
+                               hor            = NULL,
+                               switching      = NULL,
+                               use_hp         = NULL,
+                               lambda         = NULL,
+                               gamma          = NULL,
+                               exog_data      = NULL,
+                               lags_exog      = NULL,
+                               contemp_data   = NULL,
+                               num_cores      = NULL){
 
   # Create list to store inputs
     specs <- list()
@@ -149,16 +235,22 @@ lp_nl <- function(data_set_df, lags_lin  = NULL, lags_nl        = NULL,  lags_cr
     specs$shock_type     <- shock_type
     specs$confint        <- confint
     specs$hor            <- hor
-
     specs$switching      <- switching
-    specs$hp_filter      <- hp_filter
+    specs$use_hp         <- use_hp
     specs$lambda         <- lambda
     specs$gamma          <- gamma
+    specs$exog_data      <- exog_data
+    specs$lags_exog      <- lags_exog
+
+    # Add 'contempranoeus' as NULL for data construction
+    specs$contemp_data   <- NULL
+    # Set model type for lag construction
+    specs$model_type     <- 0
 
 #--- Check inputs
 
   # Check whether data is a data.frame
-  if(!(is.data.frame(data_set_df))){
+  if(!(is.data.frame(endog_data))){
     stop('The data has to be a data.frame().')
   }
 
@@ -177,13 +269,13 @@ lp_nl <- function(data_set_df, lags_lin  = NULL, lags_nl        = NULL,  lags_cr
     stop('Please provide a switching variable.')
   }
 
-  # Check whether 'hp_filter' is given
-  if(is.null(specs$hp_filter) == TRUE){
+  # Check whether 'use_hp' is given
+  if(is.null(specs$use_hp) == TRUE){
     stop('Please specify whether to use the HP-filter for the switching variable.')
   }
 
-  # Check whether lambda is given if 'hp_filter == 1'
-  if((specs$hp_filter == 1) &
+  # Check whether lambda is given if 'use_hp == 1'
+  if((specs$use_hp == 1) &
      (is.null(specs$lambda) == TRUE)){
     stop('Please specify lambda for the HP-filter.')
   }
@@ -252,13 +344,6 @@ lp_nl <- function(data_set_df, lags_lin  = NULL, lags_nl        = NULL,  lags_cr
   } else {}
 
 
-  # Check whether lags for linear model are integers
-  if(is.numeric(specs$lags_lin) & !is.nan(specs$lags_lin)){
-    if(!(specs$lags_lin %% 1 == 0)  | specs$lags_lin < 0){
-      stop('The numbers of lags have to be a positive integer.')
-    }
-  } else {}
-
   # Check whether trend is correctly specified
   if(!(specs$trend %in% c(0,1,2))){
     stop('For trend please set 0 = no trend, 1 = trend, 2 = trend and quadratic trend.')
@@ -281,12 +366,12 @@ lp_nl <- function(data_set_df, lags_lin  = NULL, lags_nl        = NULL,  lags_cr
     stop('Gamma has to be a positive number.')
   }
 
-  # Check whether hp_filter is either 0 or 1 is positive
-  if(!(specs$hp_filter %in% c(0, 1))){
-    stop('Please set hp_filter = 0 (do not use HP-filter), or hp_filter = 1 (use HP-filter).')
+  # Check whether use_hp is either 0 or 1 is positive
+  if(!(specs$use_hp %in% c(0, 1))){
+    stop('Please set use_hp = 0 (do not use HP-filter), or use_hp = 1 (use HP-filter).')
   }
 
-  # Check whether hp_filter is either 0 or 1 is positive
+  # Check whether use_hp is either 0 or 1 is positive
    if(!is.na(specs$max_lags) & specs$max_lags < 0 ){
     stop('The maximum number of lags has to be a positive integer.')
   }
@@ -296,31 +381,44 @@ lp_nl <- function(data_set_df, lags_lin  = NULL, lags_nl        = NULL,  lags_cr
       stop('The maximum number of lags can only be used if a lag length criterion is given.')
     }
 
-  # Give message if no hp_filter is used but gamma and lambda given
-    if(specs$hp_filter == 0 & !is.null(specs$lambda)){
+  # Give message if no use_hp is used but gamma and lambda given
+    if(specs$use_hp == 0 & !is.null(specs$lambda)){
       message('A provided value for lambda will not be used as no HP-filter is applied.')
     }
 
 
   # Safe data frame specifications in 'specs for functions
   specs$starts         <- 1                        # Sample Start
-  specs$ends           <- dim(data_set_df)[1]      # Sample end
-  specs$columns        <- names(data_set_df)       # Name endogenous variables
-  specs$endog          <- ncol(data_set_df)        # Set the number of endogenous variables
+  specs$ends           <- dim(endog_data)[1]      # Sample end
+  specs$column_names   <- names(endog_data)       # Name endogenous variables
+  specs$endog          <- ncol(endog_data)        # Set the number of endogenous variables
 
   # Construct data for nonlinear model
-  data_nl <- create_nl_data(specs, data_set_df)
-  y_nl    <- data_nl[[1]]
-  x_nl    <- data_nl[[2]]
-  fz      <- data_nl[[3]]
+  data_nl     <- create_nl_data(specs, endog_data)  %>%
+                 stats::na.omit()                   %>%
+                 `rownames<-`(NULL)
+
+  y_nl        <- data_nl[[1]]
+  x_nl        <- data_nl[[2]]
+  fz          <- data_nl[[3]]
+
+  # Save endogenous and lagged exogenous of nonlinear data in specs
+  specs$y_nl  <- y_nl
+  specs$x_nl  <- x_nl
 
   # Construct data for linear model for reduced shocks
-  data_lin   <- create_lin_data(specs, data_set_df)
-  y_lin      <- data_lin[[1]]
-  x_lin      <- data_lin[[2]]
+  data_lin    <- create_lin_data(specs, endog_data)
+  y_lin       <- data_lin[[1]]
+  x_lin       <- data_lin[[2]]
+
+  # Save endogenous and lagged exogenous of linear data in specs
+  specs$y_lin <- y_lin
+  specs$x_lin <- x_lin
+
+
 
   # Construct shock matrix
-  d <- get_mat_chol(y_lin, x_lin, data_set_df, specs)
+  d                 <- get_mat_chol(y_lin, x_lin, endog_data, specs)
 
   # Matrices to store irfs for each horizon
   irf_temp_s1_mean  <-  matrix(NaN, specs$endog, specs$hor + 1)
@@ -364,9 +462,9 @@ lp_nl <- function(data_set_df, lags_lin  = NULL, lags_nl        = NULL,  lags_cr
   if(is.nan(specs$lags_criterion) == TRUE) {
 
 # Determine parameter position for regime 2
- start_nl_s2   <- 2 + specs$endog*specs$lags_nl
- end_nl_s2     <- start_nl_s2 + specs$endog - 1
- samp_nl_s2    <- start_nl_s2:end_nl_s2
+   start_nl_s2   <- 2 + specs$endog*specs$lags_nl
+   end_nl_s2     <- start_nl_s2 + specs$endog - 1
+   samp_nl_s2    <- start_nl_s2:end_nl_s2
 
  # Loops to estimate local projections
   nl_irfs <- foreach( s        = 1:specs$endog,
@@ -385,13 +483,13 @@ lp_nl <- function(data_set_df, lags_lin  = NULL, lags_nl        = NULL,  lags_cr
            std_err          <- sqrt(diag(nw_results[[2]]))*specs$confint
 
            # Extract coefficients
-           b1_s1[k, ]         <-   b[samp_nl_s1]
-           b1_low_s1[k, ]     <-   b[samp_nl_s1] - std_err[samp_nl_s1]
-           b1_up_s1[k, ]      <-   b[samp_nl_s1] + std_err[samp_nl_s1]
+           b1_s1[k, ]       <-   b[samp_nl_s1]
+           b1_low_s1[k, ]   <-   b[samp_nl_s1] - std_err[samp_nl_s1]
+           b1_up_s1[k, ]    <-   b[samp_nl_s1] + std_err[samp_nl_s1]
 
-           b1_s2[k, ]         <-   b[samp_nl_s2]
-           b1_low_s2[k, ]     <-   b[samp_nl_s2] - std_err[samp_nl_s2]
-           b1_up_s2[k, ]      <-   b[samp_nl_s2] + std_err[samp_nl_s2]
+           b1_s2[k, ]       <-   b[samp_nl_s2]
+           b1_low_s2[k, ]   <-   b[samp_nl_s2] - std_err[samp_nl_s2]
+           b1_up_s2[k, ]    <-   b[samp_nl_s2] + std_err[samp_nl_s2]
           }
 
           # Estimate local projections
@@ -449,8 +547,9 @@ lp_nl <- function(data_set_df, lags_lin  = NULL, lags_nl        = NULL,  lags_cr
             for (k in 1:specs$endog){ # Accounts for the reactions of the endogenous variables
 
              # Find optimal lag length and select matrices from lists accordingly
-              val_criterion   <- lpirfs::get_vals_lagcrit(y_lin, x_lin, lag_crit, h, k,
-                                                        specs$max_lags)
+              n_obs           <- nrow(endog_data) - h # Number of maximum observations
+              val_criterion   <- lpirfs::get_vals_lagcrit(y_nl, x_nl, lag_crit, h, k,
+                                                          specs$max_lags, n_obs)
 
               lag_choice      <- which.min(val_criterion)
 

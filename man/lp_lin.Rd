@@ -4,12 +4,13 @@
 \alias{lp_lin}
 \title{Compute linear impulse responses}
 \usage{
-lp_lin(data_set_df, lags_lin = NULL, lags_criterion = NULL,
+lp_lin(endog_data, lags_lin = NULL, lags_criterion = NULL,
   max_lags = NULL, trend = NULL, shock_type = NULL, confint = NULL,
-  hor = NULL)
+  hor = NULL, exog_data = NULL, lags_exog = NULL, contemp_data = NULL,
+  num_cores = NULL)
 }
 \arguments{
-\item{data_set_df}{A \link{data.frame}() containing all endogenous variables for the VAR. The column order
+\item{endog_data}{A \link{data.frame}, containing the endogenous variables for the VAR. The column order
 is used for the Cholesky decomposition.}
 
 \item{lags_lin}{NaN or integer. NaN if lag length criterion is used. Integer for number of lags for linear VAR.}
@@ -26,17 +27,28 @@ will be given at \emph{lags_lin}. The character refers to the corresponding lag 
 \item{confint}{Double. Width of confidence bands. 68\% = 1, 90\% = 1.65, 95\% = 1.96.}
 
 \item{hor}{Integer. Number of horizons for impulse responses.}
+
+\item{exog_data}{A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
+A lag length for exogenous data always has to be given and.}
+
+\item{lags_exog}{Integer. Number of lags for the exogenous variables.}
+
+\item{contemp_data}{A \link{data.frame}, containing exogenous data with contemporaneous impact. This data will not be lagged.
+The row length has to be the same as \emph{endog_data}.}
+
+\item{num_cores}{Integer. The number of cores to use for the estimation. If no number is set, the function will
+at most use the maximum number of available cores less one.}
 }
 \value{
 A list with impulse responses and their robust confidence bands.
-It also returns a list named \emph{specs} with properties of \emph{data_set_df} for the plot function.
+
 
 \item{irf_lin_mean}{A three 3D \link{array}() containing all impulse responses for all endogenous variables.
                    The last dimension denotes the shock variable. The row in each matrix
-                   gives the responses of the \emph{ith} variable, ordered as in data_set_df. The columns denote the horizon.
+                   gives the responses of the \emph{ith} variable, ordered as in endog_data. The columns denote the horizon.
                    For example, if \emph{results_lin} contains the list with results, results_lin$irf_lin_mean[, , 1] returns a KXH matrix,
-                   where K is the number of variables and H the number of horizons. '1' is the variable shock variable, corresponding to the
-                   variable in the first column of \emph{data_set_df}.}
+                   where K is the number of variables and H the number of horizons. '1' is the shock variable, corresponding to the
+                   variable in the first column of \emph{endog_data}.}
 
 \item{irf_lin_low}{A three 3D \link{array}() containing all lower confidence bands of the responses,
                    based on robust standard errors by Newey and West (1987). Properties are equal to irf_lin_mean.}
@@ -44,41 +56,99 @@ It also returns a list named \emph{specs} with properties of \emph{data_set_df} 
 \item{irf_lin_up}{A three 3D \link{array}() containing all upper confidence bands of the responses,
                    based on robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_lin_mean}.}
 
-\item{specs}{A list with properties of \emph{data_set_df} for the plot function.}
+\item{specs}{A list with properties of \emph{endog_data} for the plot function. It also contains
+            the lagged endogenous (y_lin) and exogenous (x_lin) data used for the estimation.}
+
+The list also contains a list named \emph{specs} with properties of \emph{endog_data} for the plot function.
+This list also contains the lagged endogenous (y_lin) and exogenous (x_lin) data.
 }
 \description{
 Compute linear impulse responses with local projections by Jordà (2005).
 }
 \examples{
 \donttest{
+
+## Example without exogenous variables
+
 # Load package
   library(lpirfs)
 
-# Load data
-  data_set_df <- interest_rules_var_data
+# Load (endogenous) data
+  endog_data <- interest_rules_var_data
 
 # Estimate linear model
-  results_lin <- lp_lin(data_set_df, lags_lin       = 4,
+  results_lin <- lp_lin(endog_data, lags_lin        = 4,
+                                     exog_data      = NULL,
+                                     lags_exog      = NULL,
                                      lags_criterion = NaN,
                                      max_lags       = NaN,
                                      trend          = 0L,
                                      shock_type     = 1L,
                                      confint        = 1.96,
-                                     hor            = 12)
+                                     hor            = 12,
+                                     contemp_data   = NULL,
+                                     num_cores      = NULL)
 
 # Make plots
-  linear_plots <- plot_lin_irfs(results_lin)
+ linear_plots <- plot_lin(results_lin)
 
 # Show single plots
+ # * The first element of 'linear_plots' shows the response of the first
+ #   variable (GDP_gap) to a shock in the first variable in (GDP_gap).
+ # * The second element of 'linear_plots' shows the response of the first
+ #   variable (GDP_gap) to a shock in the second variable (inflation).
+ # * ...
+
   linear_plots[[1]]
   linear_plots[[2]]
 
-# Show all plots
+# Show all plots by using 'ggpubr' and 'gridExtra'
+# The package does not depend on those packages so they have to be installed
+
   library(ggpubr)
   library(gridExtra)
 
   lin_plots_all <- sapply(linear_plots, ggplotGrob)
-  marrangeGrob(lin_plots_all, nrow = ncol(data_set_df), ncol = ncol(data_set_df), top = NULL)
+  marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
+
+
+## Example with exogenous variables ##
+
+# Load (endogenous) data
+ endog_data <- interest_rules_var_data
+
+# Create exogenous data and data with contemporaneous impact (for illustration purposes only!)
+ exog_data    <- endog_data$GDP_gap*endog_data$Infl*endog_data$FF + rnorm(dim(endog_data)[1])
+ contemp_data <- endog_data$GDP_gap*endog_data$Infl*endog_data$FF + rnorm(dim(endog_data)[1])
+
+# Exogenous data has to be a data.frame
+ exog_data    <- data.frame(xx = exog_data )
+ contemp_data <- data.frame(cc  =  contemp_data)
+
+# Estimate linear model
+  results_lin <- lp_lin(endog_data,
+                               lags_lin       = 4,
+                               lags_criterion = NaN,
+                               max_lags       = NaN,
+                               trend          = 0L,
+                               shock_type     = 1L,
+                               confint        = 1.96,
+                               hor            = 12,
+                               exog_data      = exog_data,
+                               contemp_data   = contemp_data,
+                               lags_exog      = 4,
+                               num_cores      = NULL)
+
+# Make plots
+ linear_plots <- plot_lin_irfs(results_lin)
+
+# Show all plots
+ library(ggpubr)
+ library(gridExtra)
+
+ lin_plots_all <- sapply(linear_plots, ggplotGrob)
+ marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
+
 
  }
 }
@@ -96,6 +166,9 @@ Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasti
 Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55: 703–708.
 
 Schwarz, Gideon E. (1978). "Estimating the dimension of a model", \emph{Annals of Statistics}, 6 (2): 461–464.
+}
+\seealso{
+\url{https://adaemmerp.github.io/lpirfs/README_docs.html}
 }
 \author{
 Philipp Adämmer

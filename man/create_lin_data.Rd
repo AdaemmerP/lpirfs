@@ -2,20 +2,20 @@
 % Please edit documentation in R/create_lin_data.R
 \name{create_lin_data}
 \alias{create_lin_data}
-\title{Compute data for linear model}
+\title{Compute data for linear model with instrument variable  approach}
 \usage{
-create_lin_data(specs, data_set_df)
+create_lin_data(specs, endog_data)
 }
 \arguments{
-\item{specs}{A \link{list}(). Inputs are outlined in \link{lp_lin}().}
+\item{specs}{A \link{list}(). Inputs are created in \link{lp_lin_iv}.}
 
-\item{data_set_df}{A \link{data.frame}() with all endogenous variables.}
+\item{endog_data}{A \link{data.frame} with dependent variables.}
 }
 \value{
 List with filled matrices of lagged left (y_lin) and right hand side (x_lin) variables.
 }
 \description{
-Function to create data for linear model.
+Function to create data for linear model with instrument variable approach.
 }
 \author{
 Philipp Adämmer

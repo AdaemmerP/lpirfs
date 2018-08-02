@@ -11,11 +11,19 @@
 #' @param h Integer.
 #' @param k Integer.
 #' @param max_lags Integer.
-#' @keywords internal
+#' @references
+#'
+#' Akaike, H. (1974). "A new look at the statistical model identification", \emph{IEEE Transactions on Automatic Control}, 19 (6): 716–723.
 NULL
 
-get_vals_lagcrit <- function(y, x, lag_crit, h, k, max_lags) {
-    .Call(`_lpirfs_get_vals_lagcrit`, y, x, lag_crit, h, k, max_lags)
+#' Hurvich, C. M., Tsai, C.-L. (1989). "Regression and time series model selection
+#' in small samples", Biometrika, 76(2): 297–307,
+#'
+#' Schwarz, Gideon E. (1978). "Estimating the dimension of a model", \emph{Annals of Statistics}, 6 (2): 461–464.
+#'
+#' @keywords internal
+get_vals_lagcrit <- function(y, x, lag_crit, h, k, max_lags, n_obs) {
+    .Call(`_lpirfs_get_vals_lagcrit`, y, x, lag_crit, h, k, max_lags, n_obs)
 }
 
 #' @name hp_filter
@@ -25,9 +33,44 @@ get_vals_lagcrit <- function(y, x, lag_crit, h, k, max_lags) {
 #' @param x Column matrix with numeric values.
 #' @param lambda Numeric value.
 #' @return A list. The first element contains the cyclical component and the second element the trend component.
+#' @examples
+#' \donttest{
+#' library(lpirfs)
+#'
+#'
+#'# Decompose the Federal Funds Rate from data set 'interest_rules_var_data'
+#' data_set     <- as.matrix(interest_rules_var_data$FF) # Input has to be a one column matrix
+#' hp_results   <- hp_filter(data_set, 1600)
+#'
+#'# Extract results and save as data.frame
+#'  hp_cyc    <- as.data.frame(hp_results[[1]])
+#'  hp_trend  <- as.data.frame(hp_results[[2]])
+#'
+#'# Make data.frames for plots
+#'    cyc_df     <- data.frame(yy = hp_cyc$V1,   xx = seq(as.Date('1955-01-01'),
+#'                             as.Date('2003-01-01') , "quarter"))
+#'      trend_df <- data.frame(yy = hp_trend$V1, xx = seq(as.Date('1955-01-01'),
+#'                             as.Date('2003-01-01') , "quarter"))
+#'
+#'# Make plots
+#'      library(ggplot2)
+#'
+#'# Plot cyclical part
+#'        ggplot(data = cyc_df) +
+#'        geom_line(aes(y = yy, x = xx))
+#'
+#'# Plot trend component
+#'          ggplot(trend_df) +
+#'          geom_line(aes(y = yy, x = xx))
+#'
+#'}
 #' @references
-#' Hodrick, R.J., and Prescott, E. C. Prescott (1997) "Postwar U.S. Business Cycles: An Empirical Investigation."
+#' Hodrick, R.J., and Prescott, E. C. Prescott (1997). "Postwar U.S. Business Cycles: An Empirical Investigation."
 #' \emph{Journal of Money, Credit and Banking}, 29(1), 1-16.
+#'
+#' Ravn, M.O., Uhlig, H. (2002). "On Adjusting the Hodrick-Prescott Filter for the Frequency of Observations."
+#' \emph{Review of Economics and Statistics}, 84(2), 371-376.
+#' @author Philipp Adämmer
 hp_filter <- function(x, lambda) {
     .Call(`_lpirfs_hp_filter`, x, lambda)
 }
