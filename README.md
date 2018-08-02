@@ -20,9 +20,10 @@ local projections by [Jordà
 ## Main features
 
   - Estimates linear and nonlinear impulse responses with local
-    projections and .
+    projections.
   - Estimates linear and nonlinear impulse responses with local
-    projections and instrument variable approach (development version).
+    projections and instrument variable approach (in the development
+    version).
   - Functions to plot linear and nonlinear impulse responses.
   - Functions are partly implemented in *Rcpp* and *RcppArmadillo* to
     improve efficiency.
@@ -34,8 +35,8 @@ local projections by [Jordà
     lag length criterion. The version on CRAN (0.1.1) chooses lags based
     on linear data and not on nonlinear lagged data.
 
-  - All functions now allow to include (lagged) exogenous variables and
-    variables with exogenous data with contemporaneous impact.
+  - All functions now allow to include (lagged) exogenous data and data
+    with with contemporaneous impact.
 
   - Two new functions allow to estimate linear (*lp\_lin\_iv*) and
     nonlinear (*lp\_nl\_iv*) impulse responses with local projections
@@ -46,9 +47,9 @@ local projections by [Jordà
 
   - One input name in *lp\_nl* has been changed for consistency:
 
-| function | old input name |
-| :------- | :------------- |
-| `lp_nl`  | `hp_filter`    |
+| function | old input name | new input name |
+| :------- | :------------- | :------------- |
+| `lp_nl`  | `hp_filter`    | `use_hp`       |
 
 ## Examples
 
@@ -97,16 +98,15 @@ their Matlab code before the publication of their
 I greatly benefit from the profound *R*, *Rcpp* and *GitHub* knowledge
 of Philipp [Wittenberg](https://github.com/wittenberg) and Detlef
 (overflow) [Steuer](https://github.com/dsteuer). Last but not least, I
-am grateful to Philipp Dybowski for his rogorous comments and without
+am grateful to Philipp Dybowski for his rigorous comments and without
 whom I would have never started this project.
 
 All remaining errors are obviously mine.
 
 ## Development
 
-I would be very grateful for feedback on the package.
-
-I intend to further extend the package with functions that
+I am grateful for helpful comments and suggestions on the package. I
+intend to further extend the package with functions that
 
   - allow to manually identify the linear combinations of the reduced
     form residuals,
