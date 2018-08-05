@@ -16,9 +16,9 @@ is used for the Cholesky decomposition.}
 \item{lags_lin}{NaN or integer. NaN if lag length criterion is used. Integer for number of lags for linear VAR.}
 
 \item{lags_criterion}{NaN or character. NaN means that the number of lags
-will be given at \emph{lags_lin}. The character refers to the corresponding lag length criterion ('AICc', 'AIC' or 'BIC').}
+will be given at \emph{lags_lin}. The character specifies the lag length criterion ('AICc', 'AIC' or 'BIC').}
 
-\item{max_lags}{NaN or integer. Maximum number of lags if \emph{lags_criterion} is character with lag length criterion. NaN otherwise.}
+\item{max_lags}{NaN or integer. Maximum number of lags if \emph{lags_criterion} if lag length criterion is given. NaN otherwise.}
 
 \item{trend}{Integer. No trend =  0 , include trend = 1, include trend and quadratic trend = 2.}
 
@@ -29,26 +29,25 @@ will be given at \emph{lags_lin}. The character refers to the corresponding lag 
 \item{hor}{Integer. Number of horizons for impulse responses.}
 
 \item{exog_data}{A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
-A lag length for exogenous data always has to be given and.}
+A lag length for exogenous data always has to be given. It can not be chosen automatically.}
 
 \item{lags_exog}{Integer. Number of lags for the exogenous variables.}
 
-\item{contemp_data}{A \link{data.frame}, containing exogenous data with contemporaneous impact. This data will not be lagged.
-The row length has to be the same as \emph{endog_data}.}
+\item{contemp_data}{A \link{data.frame}, containing exogenous data with contemporaneous impact. The row length has to be the same as \emph{endog_data}.}
 
-\item{num_cores}{Integer. The number of cores to use for the estimation. If no number is set, the function will
-at most use the maximum number of available cores less one.}
+\item{num_cores}{NULL or Integer. The number of cores to use for the estimation. If NULL, the function will
+use the maximum number of cores less one.}
 }
 \value{
-A list with impulse responses and their robust confidence bands.
+A list:
 
 
 \item{irf_lin_mean}{A three 3D \link{array}() containing all impulse responses for all endogenous variables.
                    The last dimension denotes the shock variable. The row in each matrix
-                   gives the responses of the \emph{ith} variable, ordered as in endog_data. The columns denote the horizon.
+                   gives the responses of the \emph{ith} variable, ordered as in endog_data. The columns denote the horizons.
                    For example, if \emph{results_lin} contains the list with results, results_lin$irf_lin_mean[, , 1] returns a KXH matrix,
                    where K is the number of variables and H the number of horizons. '1' is the shock variable, corresponding to the
-                   variable in the first column of \emph{endog_data}.}
+                  first variable in \emph{endog_data}.}
 
 \item{irf_lin_low}{A three 3D \link{array}() containing all lower confidence bands of the responses,
                    based on robust standard errors by Newey and West (1987). Properties are equal to irf_lin_mean.}
@@ -57,10 +56,7 @@ A list with impulse responses and their robust confidence bands.
                    based on robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_lin_mean}.}
 
 \item{specs}{A list with properties of \emph{endog_data} for the plot function. It also contains
-            the lagged endogenous (y_lin) and exogenous (x_lin) data used for the estimation.}
-
-The list also contains a list named \emph{specs} with properties of \emph{endog_data} for the plot function.
-This list also contains the lagged endogenous (y_lin) and exogenous (x_lin) data.
+            lagged data (y_lin and x_lin) used for the estimations.}
 }
 \description{
 Compute linear impulse responses with local projections by Jordà (2005).
@@ -68,7 +64,7 @@ Compute linear impulse responses with local projections by Jordà (2005).
 \examples{
 \donttest{
 
-## Example without exogenous variables
+                    ## Example without exogenous variables
 
 # Load package
   library(lpirfs)
@@ -77,24 +73,25 @@ Compute linear impulse responses with local projections by Jordà (2005).
   endog_data <- interest_rules_var_data
 
 # Estimate linear model
-  results_lin <- lp_lin(endog_data, lags_lin        = 4,
-                                     exog_data      = NULL,
-                                     lags_exog      = NULL,
-                                     lags_criterion = NaN,
-                                     max_lags       = NaN,
-                                     trend          = 0L,
-                                     shock_type     = 1L,
-                                     confint        = 1.96,
-                                     hor            = 12,
-                                     contemp_data   = NULL,
-                                     num_cores      = NULL)
+  results_lin <- lp_lin(endog_data,
+                             lags_lin       = 4,
+                             exog_data      = NULL,
+                             lags_exog      = NULL,
+                             lags_criterion = NaN,
+                             max_lags       = NaN,
+                             trend          = 0L,
+                             shock_type     = 1L,
+                             confint        = 1.96,
+                             hor            = 12,
+                             contemp_data   = NULL,
+                             num_cores      = NULL)
 
 # Make plots
  linear_plots <- plot_lin(results_lin)
 
 # Show single plots
  # * The first element of 'linear_plots' shows the response of the first
- #   variable (GDP_gap) to a shock in the first variable in (GDP_gap).
+ #   variable (GDP_gap) to a shock in the first variable (GDP_gap).
  # * The second element of 'linear_plots' shows the response of the first
  #   variable (GDP_gap) to a shock in the second variable (inflation).
  # * ...
@@ -104,15 +101,14 @@ Compute linear impulse responses with local projections by Jordà (2005).
 
 # Show all plots by using 'ggpubr' and 'gridExtra'
 # The package does not depend on those packages so they have to be installed
+ library(ggpubr)
+ library(gridExtra)
 
-  library(ggpubr)
-  library(gridExtra)
-
-  lin_plots_all <- sapply(linear_plots, ggplotGrob)
-  marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
+ lin_plots_all <- sapply(linear_plots, ggplotGrob)
+ marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
 
 
-## Example with exogenous variables ##
+                      ## Example with exogenous variables ##
 
 # Load (endogenous) data
  endog_data <- interest_rules_var_data
@@ -140,7 +136,7 @@ Compute linear impulse responses with local projections by Jordà (2005).
                                num_cores      = NULL)
 
 # Make plots
- linear_plots <- plot_lin_irfs(results_lin)
+ linear_plots <- plot_lin(results_lin)
 
 # Show all plots
  library(ggpubr)
@@ -155,9 +151,8 @@ Compute linear impulse responses with local projections by Jordà (2005).
 \references{
 Akaike, H. (1974). "A new look at the statistical model identification", \emph{IEEE Transactions on Automatic Control}, 19 (6): 716–723.
 
-Hurvich, C. M., and Tsai, C.-L. (1993) “A Corrected Akaike Information Criterion for
-Vector Autoregressive Model Selection.” \emph{Journal of Time Series Analysis}, 14(3):
-271–79.
+Hurvich, C. M., and Tsai, C.-L. (1989), "Regression and time series model selection in small samples",
+\emph{Biometrika}, 76(2): 297–307
 
 Jordà, Ò. (2005). "Estimation and Inference of Impulse Responses by Local Projections."
 \emph{American Economic Review}, 95 (1): 161-182.

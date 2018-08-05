@@ -1,7 +1,7 @@
 #include <RcppArmadillo.h>
 using namespace Rcpp;
 //' @name get_vals_lagcrit
-//' @title Compute values for lag length criterion
+//' @title Compute values for lag length criteria
 //' @description Compute values for 'AICc', 'AIC', or 'BIC'.
 //'
 //' @param y List with left (endogenous) variables.
@@ -14,7 +14,7 @@ using namespace Rcpp;
 //'
 //' Akaike, H. (1974). "A new look at the statistical model identification", \emph{IEEE Transactions on Automatic Control}, 19 (6): 716–723.
 
-//' Hurvich, C. M., Tsai, C.-L. (1989). "Regression and time series model selection
+//' Hurvich, C. M., and Tsai, C.-L. (1989). "Regression and time series model selection
 //' in small samples", Biometrika, 76(2): 297–307,
 //'
 //' Schwarz, Gideon E. (1978). "Estimating the dimension of a model", \emph{Annals of Statistics}, 6 (2): 461–464.
@@ -68,7 +68,7 @@ NumericVector get_vals_lagcrit(List y, List x, int lag_crit, int h, int k, int m
 
       crit_val[i] = -2*ll + 2*tp ;
 
-          } else {
+          } else if(lag_crit == 3){
 
       crit_val[i] = -2*ll + log(n)*tp;
     }

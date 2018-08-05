@@ -1,9 +1,10 @@
 #' @name lp_nl_iv
 #' @title Compute nonlinear impulse responses with instrument variable approach
-#' @description Compute nonlinear impulse responses with local projections by Jordà (2005) and impulse variable approach as in
-#' Ramey and Zubairy (2018). The can be separated into two states via a smooth transition function, applied in Auerbach and Gorodnichenko (2012).
+#' @description Compute nonlinear impulse responses with local projections by Jordà (2005) and instrument
+#' variables (e.g. Ramey and Zubairy, 2018). The data are separated into two states via a smooth transition
+#' function (see Auerbach and Gorodnichenko, 2012).
 #'
-#' @param endog_data A \link{data.frame} containing all endogenous variables for the VAR. The column order
+#' @param endog_data A \link{data.frame}, containing all endogenous variables for the VAR. The column order
 #'                     is used for the Cholesky decomposition.
 #' @param lags_nl NaN or integer. Number of lags for nonlinear VAR (if \emph{lags_criterion} = NaN). NaN if lag length criterion is given.
 #' @param instr One column \link{data.frame} including the instrument to shock with.
@@ -27,18 +28,16 @@
 #'               Warning: \eqn{F_{z_t}} will be lagged in \link{create_nl_data} by one and then multiplied with the data.
 #'               If the variable shall not be lagged, the vector has to be given with a lead of one.
 #'               The data for the two regimes are: \cr
-#'               Regime 1 = (1-\eqn{F(z_{t-1})})*y_{t-p}, \cr
-#'               Regime 2 = \eqn{F(z_{t-1})}*y_{t-p}.
+#'               Regime 1 = (1-\eqn{F(z_{t-1})})*y_{(t-p)}, \cr
+#'               Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.
 #'@param gamma Double. Positive number which is used in the transition function.
-#'@param use_hp Integer. No HP-filter = 0. Use HP-filter = 1.
-#'@param lambda Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter if HP-filter is applied.
-#'@param num_cores Integer. The number of cores to use for the estimation. If no number is set, the function will
-#'                 use the maximum number of available cores less one.
+#'@param use_hp Boolean. Use HP-filter? TRUE or FALSE.
+#'@param lambda Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter (if use_hp = TRUE).
+#'@param num_cores Integer. The number of cores to use for the estimation. If NULL, the function will
+#'                 use the maximum number of cores less one.
 #'@seealso \url{https://adaemmerp.github.io/lpirfs/README_docs.html}
 #'
-#'@return results_list A list with impulse responses and their robust confidence bands.
-#' It also contains a list named \emph{specs} with properties of \emph{endog_data} for the plot function and the computed
-#' lagged matrices.
+#'@return A list with:
 #'
 #'\item{irf_s1_mean}{A \link{matrix} containing the impulse responses of the first regime.
 #'                    The row in each matrix denotes the responses of the \emph{ith}
@@ -78,9 +77,8 @@
 #' Auerbach, A. J., and Gorodnichenko Y. (2013). "Fiscal Multipliers in Recession and Expansion."
 #' \emph{NBER Working Paper Series}. Nr 17447.
 #'
-#' Hurvich, C. M., and Tsai, C.-L. (1993) “A Corrected Akaike Information Criterion for
-#' Vector Autoregressive Model Selection.” \emph{Journal of Time Series Analysis}, 1993, 14(3):
-#' 271–79.
+#' Hurvich, C. M., and Tsai, C.-L. (1989), "Regression and time series model selection in small samples",
+#' \emph{Biometrika}, 76(2): 297–307
 #'
 #' Jordà, Ò. (2005) "Estimation and Inference of Impulse Responses by Local Projections."
 #' \emph{American Economic Review}, 95 (1): 161-182.
@@ -99,27 +97,23 @@
 #'\donttest{
 #'
 #'# This example replicates results from the Supplementary Appendix
-#'# by Ramey and Zubairy (2018) (RZ-18). It evaluates results from Auerbach and
-#'# Gorodnichenko (2012) (AG-12) with local projections by Jordá (2005).
-#'# The data is taken from \url{https://www.journals.uchicago.edu/doi/10.1086/696277}{JoPE}
-#'
+#'# by Ramey and Zubairy (2018) (RZ-18), who re-evaluate results from
+#'# Auerbach and Gorodnichenko (2012) (AG-12).
 #'
 #'# Load and prepare data
-#'# The sample length of RZ-2018 is 1948:III-2008:III
 #'  ag_data           <- ag_data
 #'  sample_start      <- 7
 #'  sample_end        <- dim(ag_data)[1]
 #'  endog_data        <- ag_data[sample_start:sample_end, 3:5]
 #'
-#'# The shock is created by RZ-18 and available as supplementary data
-#'# to their paper
+#'# The shock is estimated by RZ-18
 #'  shock             <- ag_data[sample_start:sample_end, 7]
 #'
-#'# AG-12 also include four lags of the 7-quarter moving average growth rate
-#'# as exogenous regressors in their model (see RZ-18)
+#'# Include four lags of the 7-quarter moving average growth rate of GDP
+#'# as exogenous variables (see RZ-18)
 #'  exog_data         <- ag_data[sample_start:sample_end, 6]
 #'
-#'# Choose the 7-quarter moving average growth rate as switching variable.
+#'# Use the 7-quarter moving average growth rate of GDP as switching variable
 #'# and adjust it to have suffiently long recession periods.
 #'  switching_variable <- ag_data$GDP_MA[sample_start:sample_end] - 0.8
 #'
@@ -148,11 +142,13 @@
 #'  plots_nl_iv <- plot_nl(results_nl_iv)
 #'
 #'# Show single impulse responses
-#'# Compare with Figure 12 from Supplementary Appendix of RZ-18.
+#'# Compare with red line of left plot (lower panel) in Figure 12 in Supplementary Appendix by RZ-18.
 #'  plot(plots_nl_iv$gg_s1[[1]])
+#'# Compare with blue line of left plot (lower panel) in Figure 12 in Supplementary Appendix by RZ-18.
 #'  plot(plots_nl_iv$gg_s2[[1]])
 #'
-#'# Prepare to show all plots
+#'# Show all impulse responses by using 'ggpubr' and 'gridExtra'
+#'# lpirfs does not depend on those packages so they have to be installed
 #'  library(ggpubr)
 #'  library(gridExtra)
 #'
@@ -298,9 +294,6 @@ lp_nl_iv <- function(endog_data,
   if(!(hor > 0) | is.nan(hor) |  !(hor %% 1 == 0)){
     stop('The number of horizons has to be an integer and > 0.')
   }
-
-
-
 
   # Create list to store inputs
   specs <- list()

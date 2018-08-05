@@ -9,7 +9,7 @@ get_var_lagcrit(endog_data, specs = NULL)
 \arguments{
 \item{endog_data}{A \link{data.frame} with endogenous variables for the VAR}
 
-\item{specs}{A \link{list} constructed in \link{lp_lin}}
+\item{specs}{A \link{list} created in \link{lp_lin}}
 }
 \value{
 A list with lag length criteria
@@ -24,9 +24,8 @@ Akaike, H. (1974). "A new look at the statistical model identification",
 Hamilton, J. D. (1994). "Time Series Analysis."
 Princeton: Princeton University Press.
 
-Hurvich, C.M., Tsai, C.-L. (1993). “A Corrected Akaike Information Criterion for
-Vector Autoregressive Model Selection.” \emph{Journal of Time Series Analysis}, 14(3),
-271-79
+Hurvich, C. M., and Tsai, C.-L. (1989), "Regression and time series model selection in small samples",
+\emph{Biometrika}, 76(2): 297–307
 
 Lütkepohl, H. (2005). "New Introduction to Multiple Time Series Analysis.",
 New York: Springer.

@@ -3,7 +3,7 @@
 \name{get_vals_lagcrit}
 \alias{get_vals_lagcrit}
 \alias{get_vals_lagcrit}
-\title{Compute values for lag length criterion}
+\title{Compute values for lag length criteria}
 \usage{
 get_vals_lagcrit(y, x, lag_crit, h, k, max_lags, n_obs)
 }

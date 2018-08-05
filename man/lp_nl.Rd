@@ -11,7 +11,7 @@ lp_nl(endog_data, lags_lin = NULL, lags_nl = NULL, lags_criterion = NULL,
   num_cores = NULL)
 }
 \arguments{
-\item{endog_data}{A \link{data.frame}() containing all endogenous variables for the VAR. The column order
+\item{endog_data}{A \link{data.frame}, containing all endogenous variables for the VAR. The column order
 is used for the Cholesky decomposition.}
 
 \item{lags_lin}{NaN or integer. NaN if lag length criterion is used.
@@ -36,34 +36,32 @@ will be given at \emph{lags_nl} and \emph{lags_lin}. The lag length criteria are
 be decomposed via the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013) or
 directly plugged into the following smooth transition function:
 \deqn{ F_{z_t} = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)} }
-Warning: \eqn{F_{z_t}} will be lagged in \link{create_nl_data} by one and then multiplied with the data.
+Warning: \eqn{F_{z_t}} will be lagged by one and then multiplied with the data.
 If the variable shall not be lagged, the vector has to be given with a lead of one.
 The data for the two regimes are: \cr
-Regime 1 = (1-\eqn{F(z_{t-1})})*y_{t-p}, \cr
-Regime 2 = \eqn{F(z_{t-1})}*y_{t-p}.}
+Regime 1 = (1-\eqn{F(z_{t-1})})*y_{(t-p)}, \cr
+Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.}
 
-\item{use_hp}{Integer. No HP-filter = 0. Use HP-filter = 1.}
+\item{use_hp}{Boolean. Use HP-filter? TRUE or FALSE.}
 
-\item{lambda}{Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter if HP-filter is applied.}
+\item{lambda}{Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter (if use_hp = TRUE).}
 
 \item{gamma}{Double. Positive number which is used in the transition function.}
 
 \item{exog_data}{A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as
 \emph{endog_data}. The exogenous variables will not be separated into two regimes as the endogenous variables.
-Note that including exogenous variables only works if the lag lengths will be set and do
-not have to be determined with a lag length criterion.}
+Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.}
 
 \item{lags_exog}{Integer. Number of lags for the exogenous variables.}
 
 \item{contemp_data}{A \link{data.frame}, containing exogenous data with contemporaneous impact. This data will not be lagged.
 The row length has to be the same as \emph{endog_data}.}
 
-\item{num_cores}{Integer. The number of cores to use for the estimation. If no number is set, the function will
-use the maximum number of available cores less one.}
+\item{num_cores}{Integer. The number of cores to use for the estimation. If NULL, the function will
+use the maximum number of cores less one.}
 }
 \value{
-A list with impulse responses and their robust confidence bands.
-It also contains a list named \emph{specs} with properties of \emph{endog_data} for the plot function.
+A list:
 
 \item{irf_s1_mean}{A three 3D \link{array}() containing all impulse responses for all endogenous variables of the first state.
                    The last dimension denotes the shock variable. The row in each matrix
@@ -91,13 +89,14 @@ It also contains a list named \emph{specs} with properties of \emph{endog_data} 
 \item{irf_s2_up}{A three 3D \link{array}(), containing all upper confidence bands of the responses, based on
                    robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s2_mean}.}
 
-\item{specs}{A list with properties of \emph{endog_data} for the plot function.}
+\item{specs}{A list with properties of \emph{endog_data} for the plot function. It also contains
+            lagged data (y_nl and x_nl) used for the estimations.}
 
 \item{fz}{A vector containing the values of the transition function F(z_{t-1}).}
 }
 \description{
 Compute nonlinear impulse responses with local projections by Jordà (2005). The
-data are separated into two states via a smooth transition function, applied in Auerbach and Gorodnichenko (2012).
+data are separated into two states via a smooth transition function (see Auerbach and Gorodnichenko, 2012).
 }
 \examples{
 \donttest{
@@ -130,9 +129,10 @@ data are separated into two states via a smooth transition function, applied in 
                                    num_cores      = NULL)
 
 # Make and save all plots
-  nl_plots <- plot_nl_irfs(results_nl)
+  nl_plots <- plot_nl(results_nl)
 
-# Show all plots
+# Show all impulse responses by using 'ggpubr' and 'gridExtra'
+# The package does not depend on those packages so they have to be installed
   library(ggpubr)
   library(gridExtra)
 
@@ -155,10 +155,10 @@ data are separated into two states via a smooth transition function, applied in 
   endog_data <- interest_rules_var_data
 
 # Choose data for switching variable (here Federal Funds Rate)
-# Important: This does not have to be a times series used for the VAR!
+# Important: This does not have to be a times series used within the VAR!
  switching_data <-  endog_data$FF
 
-# Create exogenous data and data with contemporaneous impact (only for illustration purposes!)
+# Create exogenous data and data with contemporaneous impact (only for illustration purposes)
  exog_data    <- endog_data$GDP_gap*endog_data$Infl*endog_data$FF + rnorm(dim(endog_data)[1])
  contemp_data <- endog_data$GDP_gap*endog_data$Infl*endog_data$FF + rnorm(dim(endog_data)[1])
 
@@ -181,7 +181,7 @@ data are separated into two states via a smooth transition function, applied in 
                           lambda         = 1600,  # Ravn and Uhlig (2002):
                                                   # Anuual data    = 6.25
                                                   # Quarterly data = 1600
-                                                  # Monthly data   = 129,600
+                                                  # Monthly data   = 129 600
                           gamma          = 3,
                           exog_data      = exog_data,
                           lags_exog      = 3,
@@ -211,9 +211,8 @@ Auerbach, A. J., and  Gorodnichenko Y. (2012). "Measuring the Output Responses t
 Auerbach, A. J., and Gorodnichenko Y. (2013). "Fiscal Multipliers in Recession and Expansion."
 \emph{NBER Working Paper Series}. Nr 17447.
 
-Hurvich, C. M., and Tsai, C.-L. (1993) “A Corrected Akaike Information Criterion for
-Vector Autoregressive Model Selection.” \emph{Journal of Time Series Analysis}, 1993, 14(3):
-271–79.
+Hurvich, C. M., and Tsai, C.-L. (1989), "Regression and time series model selection in small samples",
+\emph{Biometrika}, 76(2): 297–307
 
 Jordà, Ò. (2005) "Estimation and Inference of Impulse Responses by Local Projections."
 \emph{American Economic Review}, 95 (1): 161-182.

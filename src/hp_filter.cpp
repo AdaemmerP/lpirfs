@@ -2,8 +2,8 @@
 using namespace Rcpp;
 //' @name hp_filter
 //' @title Decompose a times series via the Hodrick-Prescott filter
-//' @description  Estimates cyclical and trend component with HP-filter by Hodrick and Prescott (1997).
-//' The function is based on the function \emph{hpfilter} from the package \emph{mFilter} by Mehmet Balcilar.
+//' @description  Estimate cyclical and trend component with HP-filter by Hodrick and Prescott (1997).
+//' The function is based on the function \emph{hpfilter} from the archived package \emph{mFilter}.
 //' @param x Column matrix with numeric values.
 //' @param lambda Numeric value.
 //' @return A list. The first element contains the cyclical component and the second element the trend component.
@@ -12,30 +12,30 @@ using namespace Rcpp;
 //' library(lpirfs)
 //'
 //'
-//'# Decompose the Federal Funds Rate from data set 'interest_rules_var_data'
-//' data_set     <- as.matrix(interest_rules_var_data$FF) # Input has to be a one column matrix
-//' hp_results   <- hp_filter(data_set, 1600)
+//'# Decompose the Federal Funds Rate
+//'  data_set     <- as.matrix(interest_rules_var_data$FF) # Input has to be a one column matrix
+//'  hp_results   <- hp_filter(data_set, 1600)
 //'
 //'# Extract results and save as data.frame
 //'  hp_cyc    <- as.data.frame(hp_results[[1]])
 //'  hp_trend  <- as.data.frame(hp_results[[2]])
 //'
 //'# Make data.frames for plots
-//'    cyc_df     <- data.frame(yy = hp_cyc$V1,   xx = seq(as.Date('1955-01-01'),
+//'  cyc_df     <- data.frame(yy = hp_cyc$V1,   xx = seq(as.Date('1955-01-01'),
 //'                             as.Date('2003-01-01') , "quarter"))
-//'      trend_df <- data.frame(yy = hp_trend$V1, xx = seq(as.Date('1955-01-01'),
+//'  trend_df   <- data.frame(yy = hp_trend$V1, xx = seq(as.Date('1955-01-01'),
 //'                             as.Date('2003-01-01') , "quarter"))
 //'
 //'# Make plots
-//'      library(ggplot2)
+//'  library(ggplot2)
 //'
 //'# Plot cyclical part
-//'        ggplot(data = cyc_df) +
-//'        geom_line(aes(y = yy, x = xx))
+//'  ggplot(data = cyc_df) +
+//'  geom_line(aes(y = yy, x = xx))
 //'
 //'# Plot trend component
-//'          ggplot(trend_df) +
-//'          geom_line(aes(y = yy, x = xx))
+//'  ggplot(trend_df) +
+//'  geom_line(aes(y = yy, x = xx))
 //'
 //'}
 //' @references

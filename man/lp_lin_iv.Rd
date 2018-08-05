@@ -12,16 +12,16 @@ lp_lin_iv(endog_data, instr = NULL, lags_lin = NULL, exog_data = NULL,
 \arguments{
 \item{endog_data}{A \link{data.frame}, containing the dependent variables.}
 
-\item{instr}{One column \link{data.frame} including the instrument to shock with. The row length has to be the same as \emph{endog_data}.}
+\item{instr}{One column \link{data.frame} including the values of the instrument to shock with.
+The row length has to be the same as \emph{endog_data}.}
 
-\item{lags_lin}{NaN or integer. NaN if lag length criterion is used. Integer for number of lags of \emph{endog_data} which is used in
-the OLS estimations.}
+\item{lags_lin}{NaN or integer. NaN if lag length criterion is used. Integer for number of lags for \emph{endog_data}.}
 
 \item{exog_data}{NULL or a \link{data.frame}, containing exogenous data. The row length has to be the same as \emph{endog_data}.}
 
-\item{lags_exog}{NULL or Integer. Number of lags for exogenous data.}
+\item{lags_exog}{NULL or Integer. Integer for the number of lags for the exogenous data.}
 
-\item{contemp_data}{A \link{data.frame}, containing exogenous data with contemporaneous impact. This data will not be lagged.
+\item{contemp_data}{A \link{data.frame}, containing exogenous data with contemporaneous impact.
 The row length has to be the same as \emph{endog_data}.}
 
 \item{lags_criterion}{NaN or character. NaN means that the number of lags
@@ -37,18 +37,17 @@ will be given at \emph{lags_lin}. The character refers to the corresponding lag 
 
 \item{hor}{Integer. Number of horizons for impulse responses.}
 
-\item{num_cores}{Integer. The number of cores to use for the estimation. If no number is set, the function will
-use the maximum number of available cores less one.}
+\item{num_cores}{NULL or Integer. The number of cores to use for the estimation. If NULL, the function will
+use the maximum number of cores less one.}
 }
 \value{
-A list with impulse responses and their robust confidence bands.
-It also returns a list named \emph{specs} with properties of \emph{endog_data} for the plot function.
+A list:
 
 
 
 \item{irf_lin_mean}{A \link{matrix} containing the impulse responses.
                    The row in each matrix denotes the responses of the \emph{ith}
-                   variable to the instrument shock. The columns are the horizons.}
+                   variable to the (instrument) shock. The columns are the horizons.}
 
 \item{irf_lin_low}{A \link{matrix} containing all lower confidence bands of
                    the impulse responses, based on robust standard errors by Newey and West (1987).
@@ -59,25 +58,25 @@ It also returns a list named \emph{specs} with properties of \emph{endog_data} f
                    Properties are equal to \emph{irf_lin_mean}.}
 
 \item{specs}{A list with properties of \emph{endog_data} for the plot function. It also contains
-            the lagged endogenous (y_lin) and exogenous (x_lin) data used for the estimation.}
+            lagged data (y_lin and x_lin) used for the estimations.}
 }
 \description{
-Compute linear impulse responses with local projections by Jordà (2005) and instrument variables.
+Compute linear impulse responses with local projections by Jordà (2005) and instrument
+variables (e.g. Ramey and Zubairy, 2018).
 }
 \examples{
 \donttest{
 
 # This example replicates a result from the Supplementary Appendix
-# by Ramey and Zubairy (2018) (RZ-18). The data is included in the package and
-# taken from \\url{https://www.journals.uchicago.edu/doi/10.1086/696277}{JoPE}
+# by Ramey and Zubairy (2018) (RZ-18).
 
 # Load data
- ag_data <- ag_data
+ ag_data           <- ag_data
  sample_start      <- 7
  sample_end        <- dim(ag_data)[1]
 
 # Endogenous data
- endog_data <- ag_data[sample_start:sample_end,3:5]
+ endog_data        <- ag_data[sample_start:sample_end,3:5]
 
 # Shock ('Instrument')
  shock <- ag_data[sample_start:sample_end, 3]
@@ -107,11 +106,12 @@ Compute linear impulse responses with local projections by Jordà (2005) and ins
 #   variable (Tax) to a shock in the 'instrument' (Gov).
 # * ...
 
-# This plot replicates the mid-panel (left plot) in Figure 12 on page 35 in the
-# Supplementary Appendix by RZ-18
+# This plot replicates the left plot in the mid-panel of Figure 12 in the
+# Supplementary Appendix by RZ-18.
  iv_lin_plots[[1]]
 
-# Show all impulse responses
+# Show all impulse responses by using 'ggpubr' and 'gridExtra'
+# The package does not depend on those packages so they have to be installed
  library(ggpubr)
  library(gridExtra)
 
@@ -126,9 +126,8 @@ Akaike, H. (1974). "A new look at the statistical model identification", \emph{I
 Auerbach, A. J., and  Gorodnichenko Y. (2012). "Measuring the Output Responses to Fiscal Policy."
 \emph{American Economic Journal: Economic Policy}, 4 (2): 1-27.
 
-Hurvich, C. M., and Tsai, C.-L. (1993) “A Corrected Akaike Information Criterion for
-Vector Autoregressive Model Selection.” \emph{Journal of Time Series Analysis}, 14(3):
-271–79.
+Hurvich, C. M., and  Tsai, C.-L. (1989), "Regression and time series model selection in small samples",
+\emph{Biometrika}, 76(2): 297–307
 
 Jordà, Ò. (2005). "Estimation and Inference of Impulse Responses by Local Projections."
 \emph{American Economic Review}, 95 (1): 161-182.

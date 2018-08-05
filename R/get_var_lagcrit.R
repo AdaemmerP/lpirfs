@@ -2,7 +2,7 @@
 #'@title Computes AICc, AIC and BIC for VAR models
 #'@description Computes AICc, AIC and BIC for VAR models.
 #'@param endog_data A \link{data.frame} with endogenous variables for the VAR
-#'@param specs A \link{list} constructed in \link{lp_lin}
+#'@param specs A \link{list} created in \link{lp_lin}
 #'@keywords internal
 #'@export
 #'@references
@@ -13,9 +13,8 @@
 #' Hamilton, J. D. (1994). "Time Series Analysis."
 #' Princeton: Princeton University Press.
 #'
-#' Hurvich, C.M., Tsai, C.-L. (1993). “A Corrected Akaike Information Criterion for
-#' Vector Autoregressive Model Selection.” \emph{Journal of Time Series Analysis}, 14(3),
-#' 271-79
+#' Hurvich, C. M., and Tsai, C.-L. (1989), "Regression and time series model selection in small samples",
+#' \emph{Biometrika}, 76(2): 297–307
 #'
 #' Lütkepohl, H. (2005). "New Introduction to Multiple Time Series Analysis.",
 #' New York: Springer.
@@ -58,11 +57,10 @@ get_var_lagcrit <- function (endog_data,
   } else if(specs$trend == 1){
     K_cte       <- 2
   } else if(specs$trend == 2){
-    K_cte       <- 2
+    K_cte       <- 3
   }
 
 # Construct lagged data
-#  data_lin   <- create_lin_data(specs, endog_data)
   y_lin      <- specs$y_lin
   x_lin      <- specs$x_lin
 

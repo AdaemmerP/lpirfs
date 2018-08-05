@@ -28,7 +28,7 @@ with local projections by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.
 
 - Estimates linear and nonlinear impulse responses with local projections.
 - Estimates linear and nonlinear impulse responses with local projections and
-  instrument variable approach (in the development version).
+  instrument variable (development version).
 - Functions to plot linear and nonlinear impulse responses.
 - Functions are partly implemented in *Rcpp* and *RcppArmadillo* to improve efficiency.
 - High performance with parallel computation.

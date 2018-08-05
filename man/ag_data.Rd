@@ -4,16 +4,16 @@
 \name{ag_data}
 \alias{ag_data}
 \title{Data to estimate fiscal multipliers}
-\format{A tibble (data.frame) with 241 quarterly observations (rows) and 6 variables (columns):
+\format{A tibble (data.frame) with 248 quarterly observations (rows) and 7 variables (columns):
 \describe{
   \item{Year}{Year of observation.}
   \item{Quarter}{Quarter of observation.}
   \item{Gov}{Logs of real government (federal, state, and local) purchases (consumption and investment).}
   \item{Tax}{Logs of real government receipts of direct and indirect taxes net of transfers to businesses
- and individuals}
+ and individuals.}
   \item{GDP}{Logs of real gross domestic product.}
-  \item{GDP_MA}{7-quarter moving average growth rate of GDP. For details see AG-12 or RZ-18.}
-  \item{Gov_shock_mean}{Identified government spending shock. For details see Supplementary Appendix of RZ-18.}
+  \item{GDP_MA}{7-quarter moving average growth rate of GDP.}
+  \item{Gov_shock_mean}{Identified government spending shock. For details see Supplementary Appendix of Ramey and Zubairy (2018).}
 }
 Sample: 1948:IV - 2008:IV}
 \source{
@@ -23,12 +23,10 @@ Sample: 1948:IV - 2008:IV}
 ag_data
 }
 \description{
-A \link{tibble} containing data to evaluate fiscal multipliers.
-             This data was originally used in Auerbach and Gorodnichenko (2012) (AG-12).
-             Sarah and Zubairy (2018) (RZ-18) use this data to reevaluate the results with local projections
-             by Jordà (2005). Empirical results are shown in the Supplementary Appendix by RZ-18 and the
-             data can be found on the journal's website of the publication:
-             \url{https://www.journals.uchicago.edu/doi/10.1086/696277}{JoPE}.
+A \link{tibble} containing data to estimate fiscal multipliers.
+             This data was originally used by Auerbach and Gorodnichenko (2012).
+             Sarah and Zubairy (2018) use this data to re-evaluate the results with local projections
+             by Jordà (2005).
 }
 \references{
 Auerbach, A. J., and  Gorodnichenko Y. (2012). "Measuring the Output Responses to Fiscal Policy."

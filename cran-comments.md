@@ -2,8 +2,7 @@
 
 ## Purpose
 * Deleted *mFilter* from *Imports* in the DESCRIPTION file as the package will be archived on 2018-07-20. 
-  I wrote a C++ function based on the *hpfilter* function from the *mFilter* package.  The author of *mFilter* now appears in the 
-  DESCRIPTION file as a contributor.
+  I wrote a C++ function based on the *hpfilter* function from the *mFilter* package.  The author of *mFilter* now appears in the DESCRIPTION file as a contributor.
 
 * Fixed a C++ error (§1.6.4 of the manual) which occurred when attempting to build the package on Oracle Solaris.
 
