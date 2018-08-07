@@ -24,7 +24,7 @@ create_nl_data <- function(specs, endog_data){
     y_nl    <- endog_data
 
     # Make exogenous lagged data
-    x_nl    <- create_lags(endog_data, specs$lags_nl)
+    x_nl    <- create_lags(endog_data, specs$lags_endog_nl)
 
 
     # Save names of exogenous variables

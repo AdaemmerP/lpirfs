@@ -6,10 +6,10 @@
 #' @param endog_data A \link{data.frame}, containing all endogenous variables for the VAR. The column order
 #'                     is used for the Cholesky decomposition.
 #' @param lags_criterion NaN or character. NaN means that the number of lags
-#'         will be given at \emph{lags_nl} and \emph{lags_lin}. The lag length criteria are 'AICc', 'AIC' and 'BIC'.
-#' @param lags_lin NaN or integer. NaN if lag length criterion is used.
+#'         will be given at \emph{lags_endog_nl} and \emph{lags_endog_lin}. The lag length criteria are 'AICc', 'AIC' and 'BIC'.
+#' @param lags_endog_lin NaN or integer. NaN if lag length criterion is used.
 #'                                Integer for number of lags for linear VAR to identify shock.
-#' @param lags_nl NaN or integer. Number of lags for nonlinear VAR (if \emph{lags_criterion} = NaN). NaN if lag length criterion is given.
+#' @param lags_endog_nl NaN or integer. Number of lags for nonlinear VAR (if \emph{lags_criterion} = NaN). NaN if lag length criterion is given.
 #' @param max_lags NaN or integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC'). NaN otherwise.
 #' @param trend Integer. Include no trend =  0 , include trend = 1, include trend and quadratic trend = 2.
 #' @param shock_type Integer. Standard deviation shock = 0, unit shock = 1.
@@ -115,19 +115,20 @@
 #'  switching_data <-  endog_data$FF
 #'
 #'# Estimate model and save results
-#'   results_nl <- lp_nl(endog_data, lags_lin        = 4L,
-#'                                    lags_nl        = 3L,
-#'                                    lags_criterion = NaN,
-#'                                    max_lags       = NaN,
-#'                                    trend          = 0L,
-#'                                    shock_type     = 1L,
-#'                                    confint        = 1.96,
-#'                                    hor            = 24L,
-#'                                    switching      = switching_data,
-#'                                    use_hp      = 1L,
-#'                                    lambda         = 1600,
-#'                                    gamma          = 3,
-#'                                    num_cores      = NULL)
+#'   results_nl <- lp_nl(endog_data,
+#'                                 lags_endog_lin  = 4L,
+#'                                 lags_endog_nl   = 3L,
+#'                                 lags_criterion  = NaN,
+#'                                 max_lags        = NaN,
+#'                                 trend           = 0L,
+#'                                 shock_type      = 1L,
+#'                                 confint         = 1.96,
+#'                                 hor             = 24L,
+#'                                 switching       = switching_data,
+#'                                 use_hp          = 1L,
+#'                                 lambda          = 1600,
+#'                                 gamma           = 3,
+#'                                 num_cores       = NULL)
 #'
 #'# Make and save all plots
 #'   nl_plots <- plot_nl(results_nl)
@@ -169,24 +170,24 @@
 #'
 #'# Estimate model and save results
 #'  results_nl <- lp_nl(endog_data,
-#'                           lags_lin       = 4L,
-#'                           lags_nl        = 3L,
-#'                           lags_criterion = NaN,
-#'                           max_lags       = NaN,
-#'                           trend          = 0L,
-#'                           shock_type     = 1L,
-#'                           confint        = 1.96,
-#'                           hor            = 24L,
-#'                           switching      = switching_data,
-#'                           use_hp         = 1L,
-#'                           lambda         = 1600,  # Ravn and Uhlig (2002):
+#'                           lags_endog_lin  = 4L,
+#'                           lags_endog_nl   = 3L,
+#'                           lags_criterion  = NaN,
+#'                           max_lags        = NaN,
+#'                           trend           = 0L,
+#'                           shock_type      = 1L,
+#'                           confint         = 1.96,
+#'                           hor             = 24L,
+#'                           switching       = switching_data,
+#'                           use_hp          = 1L,
+#'                           lambda          = 1600,  # Ravn and Uhlig (2002):
 #'                                                   # Anuual data    = 6.25
 #'                                                   # Quarterly data = 1600
 #'                                                   # Monthly data   = 129 600
-#'                           gamma          = 3,
-#'                           exog_data      = exog_data,
-#'                           lags_exog      = 3,
-#'                           num_cores      = NULL)
+#'                           gamma           = 3,
+#'                           exog_data       = exog_data,
+#'                           lags_exog       = 3,
+#'                           num_cores       = NULL)
 #'
 #'# Make and save all plots
 #'  nl_plots <- plot_nl(results_nl)
@@ -205,8 +206,8 @@
 #' @author Philipp Adämmer
 #'
 lp_nl <- function(endog_data,
-                               lags_lin       = NULL,
-                               lags_nl        = NULL,
+                               lags_endog_lin       = NULL,
+                               lags_endog_nl        = NULL,
                                lags_criterion = NULL,
                                max_lags       = NULL,
                                trend          = NULL,
@@ -226,8 +227,8 @@ lp_nl <- function(endog_data,
     specs <- list()
 
   # Specify inputs
-    specs$lags_lin       <- lags_lin
-    specs$lags_nl        <- lags_nl
+    specs$lags_endog_lin       <- lags_endog_lin
+    specs$lags_endog_nl        <- lags_endog_nl
     specs$lags_criterion <- lags_criterion
     specs$max_lags       <- max_lags
     specs$trend          <- trend
@@ -304,14 +305,14 @@ lp_nl <- function(endog_data,
 
   # Check whether lags criterion and fixed number of lags for nonlinear model is given
   if((is.character(specs$lags_criterion) == TRUE) &
-     (!is.na(specs$lags_nl) == TRUE)){
+     (!is.na(specs$lags_endog_nl) == TRUE)){
     stop('You can not provide a lag criterion (AICc, AIC or BIC) and a fixed number of lags.')
   }
 
 
   # Check whether lags criterion and fixed number of lags for linear model is given
   if((is.character(specs$lags_criterion) == TRUE) &
-     (!is.na(specs$lags_lin) == TRUE)){
+     (!is.na(specs$lags_endog_lin) == TRUE)){
     stop('You can not provide a lag criterion (AICc, AIC or BIC) and a fixed number of lags.')
   }
 
@@ -324,8 +325,8 @@ lp_nl <- function(endog_data,
 
 
   # Check whether lin_lags is given if nl_lags is given
-  if((is.numeric(specs$lags_nl) == TRUE) &
-     (is.null(specs$lags_lin) == TRUE)){
+  if((is.numeric(specs$lags_endog_nl) == TRUE) &
+     (is.null(specs$lags_endog_lin) == TRUE)){
     stop('Please provide a lag length for the linear model to identify the shock.')
   }
 
@@ -336,8 +337,8 @@ lp_nl <- function(endog_data,
   }
 
   # Check whether lags for linear model are integers
-  if(is.numeric(specs$lags_nl) & !is.nan(specs$lags_nl)){
-    if(!(specs$lags_nl %% 1 == 0) | specs$lags_nl < 0){
+  if(is.numeric(specs$lags_endog_nl) & !is.nan(specs$lags_endog_nl)){
+    if(!(specs$lags_endog_nl %% 1 == 0) | specs$lags_endog_nl < 0){
       stop('The number of lags have to be a positive integer.')
     }
   } else {}
@@ -461,7 +462,7 @@ lp_nl <- function(endog_data,
   if(is.nan(specs$lags_criterion) == TRUE) {
 
 # Determine parameter position for regime 2
-   start_nl_s2   <- 2 + specs$endog*specs$lags_nl
+   start_nl_s2   <- 2 + specs$endog*specs$lags_endog_nl
    end_nl_s2     <- start_nl_s2 + specs$endog - 1
    samp_nl_s2    <- start_nl_s2:end_nl_s2
 

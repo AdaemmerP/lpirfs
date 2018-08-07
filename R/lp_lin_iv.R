@@ -5,13 +5,13 @@
 #' @param endog_data A \link{data.frame}, containing the dependent variables.
 #' @param instr One column \link{data.frame} including the values of the instrument to shock with.
 #' The row length has to be the same as \emph{endog_data}.
-#' @param lags_lin NaN or integer. NaN if lag length criterion is used. Integer for number of lags for \emph{endog_data}.
+#' @param lags_endog_lin NaN or integer. NaN if lag length criterion is used. Integer for number of lags for \emph{endog_data}.
 #' @param exog_data NULL or a \link{data.frame}, containing exogenous data. The row length has to be the same as \emph{endog_data}.
 #' @param lags_exog NULL or Integer. Integer for the number of lags for the exogenous data.
 #' @param contemp_data A \link{data.frame}, containing exogenous data with contemporaneous impact.
 #'                      The row length has to be the same as \emph{endog_data}.
 #' @param lags_criterion NaN or character. NaN means that the number of lags
-#'         will be given at \emph{lags_lin}. The character refers to the corresponding lag length criterion ('AICc', 'AIC' or 'BIC').
+#'         will be given at \emph{lags_endog_lin}. The character refers to the corresponding lag length criterion ('AICc', 'AIC' or 'BIC').
 #' @param max_lags NaN or integer. Maximum number of lags if \emph{lags_criterion} is character with lag length criterion. NaN otherwise.
 #' @param trend Integer. No trend =  0 , include trend = 1, include trend and quadratic trend = 2.
 #' @param shock_type Integer. Standard deviation shock = 0, unit shock = 1.
@@ -86,7 +86,7 @@
 #'
 #'# Estimate linear model
 #'  results_lin_iv <- lp_lin_iv(endog_data,
-#'                                lags_lin       = 4,
+#'                                lags_endog_lin = 4,
 #'                                instr          = shock,
 #'                                exog_data      = NULL,
 #'                                lags_exog      = NULL,
@@ -126,7 +126,7 @@
 
 lp_lin_iv <- function(endog_data,
                    instr          = NULL,
-                   lags_lin       = NULL,
+                   lags_endog_lin       = NULL,
                    exog_data      = NULL,
                    lags_exog      = NULL,
                    contemp_data   = NULL,
@@ -145,8 +145,8 @@ lp_lin_iv <- function(endog_data,
   }
 
   # Check whether data is a data.frame
-  if(is.nan(lags_lin) & !is.character(lags_criterion)){
-    stop('"lags_lin" can only be NaN if a lag length criterion is given.')
+  if(is.nan(lags_endog_lin) & !is.character(lags_criterion)){
+    stop('"lags_endog_lin" can only be NaN if a lag length criterion is given.')
   }
 
   # Check whether instrument for shock is given
@@ -215,9 +215,9 @@ lp_lin_iv <- function(endog_data,
 
   # Check whether lags criterion and maximum number of lags are given
   if((is.character(lags_criterion)) &
-     (!is.na(lags_lin))){
+     (!is.na(lags_endog_lin))){
     stop('You can not provide a lag criterion (AICc, AIC or BIC) and a fixed number of lags.
-         Please set lags_lin to NaN if you want to use a lag length criterion.')
+         Please set lags_endog_lin to NaN if you want to use a lag length criterion.')
   }
 
   # Check whether values for horizons are correct
@@ -247,7 +247,7 @@ lp_lin_iv <- function(endog_data,
 
   # Specify inputs
   specs$instr              <- instr
-  specs$lags_lin           <- lags_lin
+  specs$lags_endog_lin           <- lags_endog_lin
   specs$exog_data          <- exog_data
   specs$lags_exog          <- lags_exog
   specs$contemp_data       <- contemp_data
