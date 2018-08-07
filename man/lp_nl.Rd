@@ -4,11 +4,11 @@
 \alias{lp_nl}
 \title{Compute nonlinear impulse responses}
 \usage{
-lp_nl(endog_data, lags_lin = NULL, lags_nl = NULL, lags_criterion = NULL,
-  max_lags = NULL, trend = NULL, shock_type = NULL, confint = NULL,
-  hor = NULL, switching = NULL, use_hp = NULL, lambda = NULL,
-  gamma = NULL, exog_data = NULL, lags_exog = NULL, contemp_data = NULL,
-  num_cores = NULL)
+lp_nl(endog_data, lags_lin = NULL, lags_nl = NULL,
+  lags_criterion = NULL, max_lags = NULL, trend = NULL,
+  shock_type = NULL, confint = NULL, hor = NULL, switching = NULL,
+  use_hp = NULL, lambda = NULL, gamma = NULL, exog_data = NULL,
+  lags_exog = NULL, contemp_data = NULL, num_cores = NULL)
 }
 \arguments{
 \item{endog_data}{A \link{data.frame}, containing all endogenous variables for the VAR. The column order

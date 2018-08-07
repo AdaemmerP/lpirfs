@@ -2,7 +2,7 @@
 % Please edit documentation in R/lp_nl_iv.R
 \name{lp_nl_iv}
 \alias{lp_nl_iv}
-\title{Compute nonlinear impulse responses with instrument variable approach}
+\title{Compute nonlinear impulse responses with with identified shock (instrument variable approach)}
 \usage{
 lp_nl_iv(endog_data, lags_nl = NULL, instr = NULL, exog_data = NULL,
   lags_exog = NULL, contemp_data = NULL, lags_criterion = NULL,
@@ -60,8 +60,8 @@ Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.}
 use the maximum number of cores less one.}
 }
 \description{
-Compute nonlinear impulse responses with local projections by Jordà (2005) and instrument
-variables (e.g. Ramey and Zubairy, 2018). The data are separated into two states via a smooth transition
+Compute nonlinear impulse responses with local projections by Jordà (2005) and identified shock, i.e.
+instrument variable approach (see e.g. Ramey and Zubairy, 2018). The data are separated into two states via a smooth transition
 function (see Auerbach and Gorodnichenko, 2012).
 }
 \examples{

@@ -6,7 +6,7 @@
 #'                    is used for the Cholesky decomposition.
 #' @param lags_criterion NaN or character. NaN means that the number of lags
 #'         will be given at \emph{lags_lin}. The character specifies the lag length criterion ('AICc', 'AIC' or 'BIC').
-#' @param lags_lin NaN or integer. NaN if lag length criterion is used. Integer for number of lags for linear VAR.
+#' @param lags_lin NaN or integer. NaN if lag length criterion is used. Integer for number of lags for \emph{endog_data}.
 #' @param max_lags NaN or integer. Maximum number of lags if \emph{lags_criterion} if lag length criterion is given. NaN otherwise.
 #' @param trend Integer. No trend =  0 , include trend = 1, include trend and quadratic trend = 2.
 #' @param shock_type Integer. Standard deviation shock = 0, unit shock = 1.

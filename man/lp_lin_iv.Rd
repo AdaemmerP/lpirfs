@@ -2,12 +2,12 @@
 % Please edit documentation in R/lp_lin_iv.R
 \name{lp_lin_iv}
 \alias{lp_lin_iv}
-\title{Compute linear impulse responses with instrument variable approach}
+\title{Compute linear impulse responses with identified shock (instrument variable approach)}
 \usage{
-lp_lin_iv(endog_data, instr = NULL, lags_lin = NULL, exog_data = NULL,
-  lags_exog = NULL, contemp_data = NULL, lags_criterion = NaN,
-  max_lags = NaN, trend = NULL, shock_type = NULL, confint = NULL,
-  hor = NULL, num_cores = NULL)
+lp_lin_iv(endog_data, instr = NULL, lags_lin = NULL,
+  exog_data = NULL, lags_exog = NULL, contemp_data = NULL,
+  lags_criterion = NaN, max_lags = NaN, trend = NULL,
+  shock_type = NULL, confint = NULL, hor = NULL, num_cores = NULL)
 }
 \arguments{
 \item{endog_data}{A \link{data.frame}, containing the dependent variables.}
@@ -61,8 +61,8 @@ A list:
             lagged data (y_lin and x_lin) used for the estimations.}
 }
 \description{
-Compute linear impulse responses with local projections by Jordà (2005) and instrument
-variables (e.g. Ramey and Zubairy, 2018).
+Compute linear impulse responses with local projections by Jordà (2005) and identified shock, i.e.
+instrument variable approach (see e.g. Ramey and Zubairy, 2018).
 }
 \examples{
 \donttest{
@@ -83,18 +83,18 @@ variables (e.g. Ramey and Zubairy, 2018).
 
 # Estimate linear model
  results_lin_iv <- lp_lin_iv(endog_data,
-                         instr          = shock,
-                         lags_lin       = 4,
-                         exog_data      = NULL,
-                         lags_exog      = NULL,
-                         contemp_data   = NULL,
-                         lags_criterion = NaN,
-                         max_lags       = NaN,
-                         trend          = 0,
-                         shock_type     = 1,
-                         confint        = 1.96,
-                         hor            = 20,
-                         num_cores      = NULL)
+                               lags_lin       = 4,
+                               instr          = shock,
+                               exog_data      = NULL,
+                               lags_exog      = NULL,
+                               contemp_data   = NULL,
+                               lags_criterion = NaN,
+                               max_lags       = NaN,
+                               trend          = 0,
+                               shock_type     = 1,
+                               confint        = 1.96,
+                               hor            = 20,
+                               num_cores      = NULL)
 
 
 # Make and save plots

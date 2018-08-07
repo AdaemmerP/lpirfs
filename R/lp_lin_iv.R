@@ -1,7 +1,7 @@
 #' @name lp_lin_iv
-#' @title Compute linear impulse responses with instrument variable approach
-#' @description Compute linear impulse responses with local projections by Jordà (2005) and instrument
-#' variables (e.g. Ramey and Zubairy, 2018).
+#' @title Compute linear impulse responses with identified shock (instrument variable approach)
+#' @description Compute linear impulse responses with local projections by Jordà (2005) and identified shock, i.e.
+#' instrument variable approach (see e.g. Ramey and Zubairy, 2018).
 #' @param endog_data A \link{data.frame}, containing the dependent variables.
 #' @param instr One column \link{data.frame} including the values of the instrument to shock with.
 #' The row length has to be the same as \emph{endog_data}.
@@ -86,18 +86,18 @@
 #'
 #'# Estimate linear model
 #'  results_lin_iv <- lp_lin_iv(endog_data,
-#'                          instr          = shock,
-#'                          lags_lin       = 4,
-#'                          exog_data      = NULL,
-#'                          lags_exog      = NULL,
-#'                          contemp_data   = NULL,
-#'                          lags_criterion = NaN,
-#'                          max_lags       = NaN,
-#'                          trend          = 0,
-#'                          shock_type     = 1,
-#'                          confint        = 1.96,
-#'                          hor            = 20,
-#'                          num_cores      = NULL)
+#'                                lags_lin       = 4,
+#'                                instr          = shock,
+#'                                exog_data      = NULL,
+#'                                lags_exog      = NULL,
+#'                                contemp_data   = NULL,
+#'                                lags_criterion = NaN,
+#'                                max_lags       = NaN,
+#'                                trend          = 0,
+#'                                shock_type     = 1,
+#'                                confint        = 1.96,
+#'                                hor            = 20,
+#'                                num_cores      = NULL)
 #'
 #'
 #'# Make and save plots

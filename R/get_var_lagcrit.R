@@ -4,7 +4,6 @@
 #'@param endog_data A \link{data.frame} with endogenous variables for the VAR
 #'@param specs A \link{list} created in \link{lp_lin}
 #'@keywords internal
-#'@export
 #'@references
 #'
 #' Akaike, H. (1974). "A new look at the statistical model identification",
