@@ -4,7 +4,7 @@
 \alias{lp_lin_iv}
 \title{Compute linear impulse responses with identified shock (instrument variable approach)}
 \usage{
-lp_lin_iv(endog_data, instr = NULL, lags_lin = NULL,
+lp_lin_iv(endog_data, instr = NULL, lags_endog_lin = NULL,
   exog_data = NULL, lags_exog = NULL, contemp_data = NULL,
   lags_criterion = NaN, max_lags = NaN, trend = NULL,
   shock_type = NULL, confint = NULL, hor = NULL, num_cores = NULL)
@@ -15,7 +15,7 @@ lp_lin_iv(endog_data, instr = NULL, lags_lin = NULL,
 \item{instr}{One column \link{data.frame} including the values of the instrument to shock with.
 The row length has to be the same as \emph{endog_data}.}
 
-\item{lags_lin}{NaN or integer. NaN if lag length criterion is used. Integer for number of lags for \emph{endog_data}.}
+\item{lags_endog_lin}{NaN or integer. NaN if lag length criterion is used. Integer for number of lags for \emph{endog_data}.}
 
 \item{exog_data}{NULL or a \link{data.frame}, containing exogenous data. The row length has to be the same as \emph{endog_data}.}
 
@@ -25,7 +25,7 @@ The row length has to be the same as \emph{endog_data}.}
 The row length has to be the same as \emph{endog_data}.}
 
 \item{lags_criterion}{NaN or character. NaN means that the number of lags
-will be given at \emph{lags_lin}. The character refers to the corresponding lag length criterion ('AICc', 'AIC' or 'BIC').}
+will be given at \emph{lags_endog_lin}. The character refers to the corresponding lag length criterion ('AICc', 'AIC' or 'BIC').}
 
 \item{max_lags}{NaN or integer. Maximum number of lags if \emph{lags_criterion} is character with lag length criterion. NaN otherwise.}
 
@@ -83,7 +83,7 @@ instrument variable approach (see e.g. Ramey and Zubairy, 2018).
 
 # Estimate linear model
  results_lin_iv <- lp_lin_iv(endog_data,
-                               lags_lin       = 4,
+                               lags_endog_lin = 4,
                                instr          = shock,
                                exog_data      = NULL,
                                lags_exog      = NULL,

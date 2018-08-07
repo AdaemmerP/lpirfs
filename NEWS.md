@@ -2,7 +2,7 @@
 ## Improvements
 
 * Fixed an error in *lp_nl()* when lags are chosen by a lag length criterion. 
-  The previous version (0.2.1) chooses lags based on linear instead of 
+  The previous version (0.1.1) chooses lags based on linear instead of 
   nonlinear data.
 
 * The dependency on the *vars* package is gone. I wrote my own function to estimate
@@ -17,11 +17,13 @@
 * Two new functions named *lp_lin_iv()* and *lp_nl_iv()* allow to estimate 
   impulse responses via instrument variables.
 
-* One input name in *lp_nl* has been changed for consistency:
+* Some input names in *lp_lin* and *lp_nl* have been changed for consistency:
 
 function | old input name | new input name
 :--------|:-------------  |:------------- 
 `lp_lin` | `lags_lin`     | `lags_endog_lin`
+`lp_nl`  | `lags_lin`     | `lags_endog_lin`
+`lp_nl`  | `lags_nl`      | `lags_endog_nl`
 `lp_nl`  | `hp_filter`    | `use_hp`
 
 

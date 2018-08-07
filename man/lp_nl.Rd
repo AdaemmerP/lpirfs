@@ -4,7 +4,7 @@
 \alias{lp_nl}
 \title{Compute nonlinear impulse responses}
 \usage{
-lp_nl(endog_data, lags_lin = NULL, lags_nl = NULL,
+lp_nl(endog_data, lags_endog_lin = NULL, lags_endog_nl = NULL,
   lags_criterion = NULL, max_lags = NULL, trend = NULL,
   shock_type = NULL, confint = NULL, hor = NULL, switching = NULL,
   use_hp = NULL, lambda = NULL, gamma = NULL, exog_data = NULL,
@@ -14,13 +14,13 @@ lp_nl(endog_data, lags_lin = NULL, lags_nl = NULL,
 \item{endog_data}{A \link{data.frame}, containing all endogenous variables for the VAR. The column order
 is used for the Cholesky decomposition.}
 
-\item{lags_lin}{NaN or integer. NaN if lag length criterion is used.
+\item{lags_endog_lin}{NaN or integer. NaN if lag length criterion is used.
 Integer for number of lags for linear VAR to identify shock.}
 
-\item{lags_nl}{NaN or integer. Number of lags for nonlinear VAR (if \emph{lags_criterion} = NaN). NaN if lag length criterion is given.}
+\item{lags_endog_nl}{NaN or integer. Number of lags for nonlinear VAR (if \emph{lags_criterion} = NaN). NaN if lag length criterion is given.}
 
 \item{lags_criterion}{NaN or character. NaN means that the number of lags
-will be given at \emph{lags_nl} and \emph{lags_lin}. The lag length criteria are 'AICc', 'AIC' and 'BIC'.}
+will be given at \emph{lags_endog_nl} and \emph{lags_endog_lin}. The lag length criteria are 'AICc', 'AIC' and 'BIC'.}
 
 \item{max_lags}{NaN or integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC'). NaN otherwise.}
 
@@ -114,19 +114,20 @@ data are separated into two states via a smooth transition function (see Auerbac
  switching_data <-  endog_data$FF
 
 # Estimate model and save results
-  results_nl <- lp_nl(endog_data, lags_lin        = 4L,
-                                   lags_nl        = 3L,
-                                   lags_criterion = NaN,
-                                   max_lags       = NaN,
-                                   trend          = 0L,
-                                   shock_type     = 1L,
-                                   confint        = 1.96,
-                                   hor            = 24L,
-                                   switching      = switching_data,
-                                   use_hp      = 1L,
-                                   lambda         = 1600,
-                                   gamma          = 3,
-                                   num_cores      = NULL)
+  results_nl <- lp_nl(endog_data,
+                                lags_endog_lin  = 4L,
+                                lags_endog_nl   = 3L,
+                                lags_criterion  = NaN,
+                                max_lags        = NaN,
+                                trend           = 0L,
+                                shock_type      = 1L,
+                                confint         = 1.96,
+                                hor             = 24L,
+                                switching       = switching_data,
+                                use_hp          = 1L,
+                                lambda          = 1600,
+                                gamma           = 3,
+                                num_cores       = NULL)
 
 # Make and save all plots
   nl_plots <- plot_nl(results_nl)
@@ -168,24 +169,24 @@ data are separated into two states via a smooth transition function (see Auerbac
 
 # Estimate model and save results
  results_nl <- lp_nl(endog_data,
-                          lags_lin       = 4L,
-                          lags_nl        = 3L,
-                          lags_criterion = NaN,
-                          max_lags       = NaN,
-                          trend          = 0L,
-                          shock_type     = 1L,
-                          confint        = 1.96,
-                          hor            = 24L,
-                          switching      = switching_data,
-                          use_hp         = 1L,
-                          lambda         = 1600,  # Ravn and Uhlig (2002):
+                          lags_endog_lin  = 4L,
+                          lags_endog_nl   = 3L,
+                          lags_criterion  = NaN,
+                          max_lags        = NaN,
+                          trend           = 0L,
+                          shock_type      = 1L,
+                          confint         = 1.96,
+                          hor             = 24L,
+                          switching       = switching_data,
+                          use_hp          = 1L,
+                          lambda          = 1600,  # Ravn and Uhlig (2002):
                                                   # Anuual data    = 6.25
                                                   # Quarterly data = 1600
                                                   # Monthly data   = 129 600
-                          gamma          = 3,
-                          exog_data      = exog_data,
-                          lags_exog      = 3,
-                          num_cores      = NULL)
+                          gamma           = 3,
+                          exog_data       = exog_data,
+                          lags_exog       = 3,
+                          num_cores       = NULL)
 
 # Make and save all plots
  nl_plots <- plot_nl(results_nl)

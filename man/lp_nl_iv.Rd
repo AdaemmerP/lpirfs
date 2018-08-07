@@ -4,17 +4,17 @@
 \alias{lp_nl_iv}
 \title{Compute nonlinear impulse responses with with identified shock (instrument variable approach)}
 \usage{
-lp_nl_iv(endog_data, lags_nl = NULL, instr = NULL, exog_data = NULL,
-  lags_exog = NULL, contemp_data = NULL, lags_criterion = NULL,
-  max_lags = NULL, trend = NULL, shock_type = NULL, confint = NULL,
-  hor = NULL, switching = NULL, use_hp = NULL, lambda = NULL,
-  gamma = NULL, num_cores = NULL)
+lp_nl_iv(endog_data, lags_endog_nl = NULL, instr = NULL,
+  exog_data = NULL, lags_exog = NULL, contemp_data = NULL,
+  lags_criterion = NULL, max_lags = NULL, trend = NULL,
+  shock_type = NULL, confint = NULL, hor = NULL, switching = NULL,
+  use_hp = NULL, lambda = NULL, gamma = NULL, num_cores = NULL)
 }
 \arguments{
 \item{endog_data}{A \link{data.frame}, containing all endogenous variables for the VAR. The column order
 is used for the Cholesky decomposition.}
 
-\item{lags_nl}{NaN or integer. Number of lags for nonlinear VAR (if \emph{lags_criterion} = NaN). NaN if lag length criterion is given.}
+\item{lags_endog_nl}{NaN or integer. Number of lags for nonlinear VAR (if \emph{lags_criterion} = NaN). NaN if lag length criterion is given.}
 
 \item{instr}{One column \link{data.frame} including the instrument to shock with.
 The row length has to be the same as \emph{endog_data}.}
@@ -28,7 +28,7 @@ The exogenous variables will not be separated into two regimes as the endogenous
 The row length has to be the same as \emph{endog_data}.}
 
 \item{lags_criterion}{NaN or character. NaN means that the number of lags
-will be given at \emph{lags_nl} and \emph{lags_lin}. The lag length criteria are 'AICc', 'AIC' and 'BIC'.}
+will be given at \emph{lags_endog_nl} and \emph{lags_lin}. The lag length criteria are 'AICc', 'AIC' and 'BIC'.}
 
 \item{max_lags}{NaN or integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC'). NaN otherwise.}
 
@@ -90,12 +90,12 @@ function (see Auerbach and Gorodnichenko, 2012).
 
 # Estimate local projections
  results_nl_iv <- lp_nl_iv(endog_data,
-                           lags_nl           = 3,
+                           lags_endog_nl     = 3,
                            instr             = shock,
                            exog_data         = exog_data,
                            lags_exog         = 4,
                            contemp_data      = NULL,
-                           lags_criterion     = NaN,
+                           lags_criterion    = NaN,
                            max_lags          = NaN,
                            trend             = 0,
                            shock_type        = 1,

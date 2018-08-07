@@ -7,7 +7,7 @@ context("check_input_lp_lin")
 #   specs <- list()
 #
 # Specify inputs
-  lags_lin       <- NaN
+  lags_endog_lin       <- NaN
   lags_criterion <- 'AIC'
   max_lags       <- 2L
   trend          <- 0L
@@ -19,7 +19,7 @@ context("check_input_lp_lin")
 
 test_that("Check whether data is a data.frame", {
     data_set_df   <- as.matrix(data_set_df)
-    expect_error(lp_lin(data_set_df, lags_lin   = lags_lin, lags_criterion = lags_criterion,
+    expect_error(lp_lin(data_set_df, lags_endog_lin   = lags_endog_lin, lags_criterion = lags_criterion,
                                      max_lags   = max_lags, trend          = trend,
                                      shock_type = shock_type, confint      = confint, hor = hor),
                  'The data has to be a data.frame().', fixed = TRUE)
@@ -27,7 +27,7 @@ test_that("Check whether data is a data.frame", {
 
 test_that("Check whether trend is given", {
     trend   <- NULL
-    expect_error(lp_lin(data_set_df, lags_lin    = lags_lin, lags_criterion = lags_criterion,
+    expect_error(lp_lin(data_set_df, lags_endog_lin    = lags_endog_lin, lags_criterion = lags_criterion,
                                       max_lags   = max_lags, trend          = trend,
                                       shock_type = shock_type, confint      = confint, hor = hor),
                  'Please specify whether and which type of trend to include.', fixed = TRUE)
@@ -36,7 +36,7 @@ test_that("Check whether trend is given", {
 
 test_that("Check whether shock_type is given", {
     shock_type   <- NULL
-    expect_error(lp_lin(data_set_df, lags_lin    = lags_lin, lags_criterion = lags_criterion,
+    expect_error(lp_lin(data_set_df, lags_endog_lin    = lags_endog_lin, lags_criterion = lags_criterion,
                                       max_lags   = max_lags, trend          = trend,
                                       shock_type = shock_type, confint      = confint,
                                       hor        = hor),
@@ -46,7 +46,7 @@ test_that("Check whether shock_type is given", {
 
 test_that("Check whether 'confint' is given", {
   confint        <- NULL
-  expect_error(lp_lin(data_set_df, lags_lin    = lags_lin, lags_criterion = lags_criterion,
+  expect_error(lp_lin(data_set_df, lags_endog_lin    = lags_endog_lin, lags_criterion = lags_criterion,
                                     max_lags   = max_lags, trend          = trend,
                                     shock_type = shock_type, confint      = confint,
                                     hor        = hor),
@@ -56,7 +56,7 @@ test_that("Check whether 'confint' is given", {
 
 test_that("Check whether number of horizons is given", {
   hor          <- NULL
-  expect_error(lp_lin(data_set_df, lags_lin    = lags_lin, lags_criterion = lags_criterion,
+  expect_error(lp_lin(data_set_df, lags_endog_lin    = lags_endog_lin, lags_criterion = lags_criterion,
                                     max_lags   = max_lags, trend          = trend,
                                     shock_type = shock_type, confint      = confint,
                                     hor        = hor),
@@ -66,7 +66,7 @@ test_that("Check whether number of horizons is given", {
 
 test_that("Check whether wrong lag length is given", {
   lags_criterion <- 'AICCd'
-  expect_error(lp_lin(data_set_df, lags_lin    = lags_lin, lags_criterion = lags_criterion,
+  expect_error(lp_lin(data_set_df, lags_endog_lin    = lags_endog_lin, lags_criterion = lags_criterion,
                                     max_lags   = max_lags, trend          = trend,
                                     shock_type = shock_type, confint      = confint,
                                     hor        = hor),
@@ -74,8 +74,8 @@ test_that("Check whether wrong lag length is given", {
 } )
 
 test_that("Check whether lag criterion AND fixed number of lags are given", {
-  lags_lin <- 1
-  expect_error(lp_lin(data_set_df, lags_lin    = lags_lin, lags_criterion = lags_criterion,
+  lags_endog_lin <- 1
+  expect_error(lp_lin(data_set_df, lags_endog_lin    = lags_endog_lin, lags_criterion = lags_criterion,
                                     max_lags   = max_lags, trend          = trend,
                                     shock_type = shock_type, confint      = confint,
                                     hor        = hor),
@@ -84,7 +84,7 @@ test_that("Check whether lag criterion AND fixed number of lags are given", {
 
 test_that("Check whether lag criterion AND maximum number of lags are given", {
   max_lags <- NaN
-  expect_error(lp_lin(data_set_df, lags_lin    = lags_lin, lags_criterion = lags_criterion,
+  expect_error(lp_lin(data_set_df, lags_endog_lin    = lags_endog_lin, lags_criterion = lags_criterion,
                                     max_lags   = max_lags, trend          = trend,
                                     shock_type = shock_type, confint      = confint,
                                     hor        = hor),
@@ -93,7 +93,7 @@ test_that("Check whether lag criterion AND maximum number of lags are given", {
 
 test_that("Check whether values for horizons are correct", {
   hor <- -1
-  expect_error(lp_lin(data_set_df, lags_lin    = lags_lin, lags_criterion = lags_criterion,
+  expect_error(lp_lin(data_set_df, lags_endog_lin    = lags_endog_lin, lags_criterion = lags_criterion,
                                     max_lags   = max_lags, trend          = trend,
                                     shock_type = shock_type, confint      = confint,
                                     hor        = hor),
@@ -101,9 +101,9 @@ test_that("Check whether values for horizons are correct", {
 } )
 
 test_that("Check whether lags are integers", {
-  lags_lin <- 1.5
+  lags_endog_lin <- 1.5
   lags_criterion <- NaN
-  expect_error(lp_lin(data_set_df, lags_lin    = lags_lin, lags_criterion = lags_criterion,
+  expect_error(lp_lin(data_set_df, lags_endog_lin    = lags_endog_lin, lags_criterion = lags_criterion,
                                     max_lags   = max_lags, trend          = trend,
                                     shock_type = shock_type, confint      = confint,
                                     hor        = hor),
@@ -112,7 +112,7 @@ test_that("Check whether lags are integers", {
 
 test_that("Check whether trend is correctly specified", {
   trend <- 12
-  expect_error(lp_lin(data_set_df, lags_lin    = lags_lin, lags_criterion = lags_criterion,
+  expect_error(lp_lin(data_set_df, lags_endog_lin    = lags_endog_lin, lags_criterion = lags_criterion,
                                     max_lags   = max_lags, trend          = trend,
                                     shock_type = shock_type, confint      = confint,
                                     hor        = hor),
@@ -121,7 +121,7 @@ test_that("Check whether trend is correctly specified", {
 
 test_that("Check shock type is correctly specified", {
   shock_type <- 12
-  expect_error(lp_lin(data_set_df, lags_lin    = lags_lin, lags_criterion = lags_criterion,
+  expect_error(lp_lin(data_set_df, lags_endog_lin    = lags_endog_lin, lags_criterion = lags_criterion,
                                     max_lags   = max_lags, trend          = trend,
                                     shock_type = shock_type, confint      = confint,
                                     hor        = hor),
@@ -130,7 +130,7 @@ test_that("Check shock type is correctly specified", {
 
 test_that("Check whether width of confidence bands is correctly specified", {
   confint <- -1
-  expect_error(lp_lin(data_set_df, lags_lin    = lags_lin, lags_criterion = lags_criterion,
+  expect_error(lp_lin(data_set_df, lags_endog_lin    = lags_endog_lin, lags_criterion = lags_criterion,
                                     max_lags   = max_lags, trend          = trend,
                                     shock_type = shock_type, confint      = confint,
                                     hor        = hor),
@@ -138,10 +138,10 @@ test_that("Check whether width of confidence bands is correctly specified", {
 } )
 
 test_that("Check whether maximum lag length is given when no criterion is given", {
-  lags_lin       <- 3
+  lags_endog_lin       <- 3
   lags_criterion <- NaN
   max_lags       <- 3
-  expect_error(lp_lin(data_set_df, lags_lin    = lags_lin, lags_criterion = lags_criterion,
+  expect_error(lp_lin(data_set_df, lags_endog_lin    = lags_endog_lin, lags_criterion = lags_criterion,
                       max_lags   = max_lags, trend          = trend,
                       shock_type = shock_type, confint      = confint,
                       hor        = hor),
@@ -150,9 +150,9 @@ test_that("Check whether maximum lag length is given when no criterion is given"
 
 
 test_that("Check whether no lag length criterion and number of lags are given", {
-  lags_lin       <- NaN
+  lags_endog_lin       <- NaN
   lags_criterion <- NaN
-  expect_error(lp_lin(data_set_df, lags_lin    = lags_lin, lags_criterion = lags_criterion,
+  expect_error(lp_lin(data_set_df, lags_endog_lin    = lags_endog_lin, lags_criterion = lags_criterion,
                       max_lags   = max_lags, trend          = trend,
                       shock_type = shock_type, confint      = confint,
                       hor        = hor),
@@ -168,7 +168,7 @@ test_that("Check whether exogenous data is a data.frame", {
   exog_data       <- rnorm(dim(data_set_df)[1])
 
   expect_error(lp_lin(data_set_df,
-                      lags_lin       = lags_lin,
+                      lags_endog_lin       = lags_endog_lin,
                       lags_criterion = lags_criterion,
                       max_lags       = max_lags,
                       trend          = trend,
@@ -186,7 +186,7 @@ test_that("Check whether exogenous data is a data.frame", {
   exog_data       <- rnorm(dim(data_set_df)[1])
 
   expect_error(lp_lin(data_set_df,
-                      lags_lin       = lags_lin,
+                      lags_endog_lin       = lags_endog_lin,
                       lags_criterion = lags_criterion,
                       max_lags       = max_lags,
                       trend          = trend,
@@ -205,7 +205,7 @@ test_that("Check whether lag length criterion is given for exogenous data.", {
   exog_data       <- data_set_df[, 1]
 
   expect_error(lp_lin(endog_data,
-                      lags_lin       = lags_lin,
+                      lags_endog_lin       = lags_endog_lin,
                       lags_criterion = lags_criterion,
                       max_lags       = max_lags,
                       trend          = trend,
@@ -223,7 +223,7 @@ test_that("Check whether results from lp_lin are in region of results from JordÃ
   # Load data set
   data_set_df <- interest_rules_var_data
   results_lin    <- lp_lin(data_set_df,
-                              lags_lin       = 4L,
+                              lags_endog_lin       = 4L,
                               lags_criterion = NaN,
                               max_lags       = NaN,
                               trend          = 0L,

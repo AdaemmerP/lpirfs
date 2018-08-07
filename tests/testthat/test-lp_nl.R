@@ -7,8 +7,8 @@ context("check_input_lp_nl")
 #  specs <- list()
 
 # Fill list
-  lags_lin       <- NaN
-  lags_nl        <- NaN
+  lags_endog_lin       <- NaN
+  lags_endog_nl        <- NaN
   lags_criterion <- 'AIC'
   max_lags       <- 2
   trend          <- 1
@@ -30,8 +30,8 @@ context("check_input_lp_nl")
 test_that("Check whether data is a data.frame", {
   data_set_df   <- as.matrix(data_set_df)
     expect_error(lp_nl(data_set_df,
-                                    lags_lin   = lags_lin,
-                                    lags_nl    = lags_nl,
+                                    lags_endog_lin   = lags_endog_lin,
+                                    lags_endog_nl    = lags_endog_nl,
                                     lags_criterion = lags_criterion,
                                     max_lags   = max_lags,
                                     trend      = trend,
@@ -48,7 +48,7 @@ test_that("Check whether data is a data.frame", {
 
 test_that("Check whether trend is given", {
   trend   <- NULL
-  expect_error(lp_nl(data_set_df, lags_lin  = lags_lin, lags_nl    = lags_nl, lags_criterion = lags_criterion,
+  expect_error(lp_nl(data_set_df, lags_endog_lin  = lags_endog_lin, lags_endog_nl    = lags_endog_nl, lags_criterion = lags_criterion,
                                   max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
                                   switching = switching, use_hp = use_hp,
                                   lambda    = lambda,    gamma     = gamma,      confint     = confint, hor = hor),
@@ -58,7 +58,7 @@ test_that("Check whether trend is given", {
 
 test_that("Check whether shock_type is given", {
   shock_type   <- NULL
-  expect_error(lp_nl(data_set_df, lags_lin   = lags_lin, lags_nl    = lags_nl, lags_criterion = lags_criterion,
+  expect_error(lp_nl(data_set_df, lags_endog_lin   = lags_endog_lin, lags_endog_nl    = lags_endog_nl, lags_criterion = lags_criterion,
                                    max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
                                    switching = switching, use_hp = use_hp,
                                    lambda    = lambda, gamma        = gamma, confint          = confint, hor = hor),
@@ -68,7 +68,7 @@ test_that("Check whether shock_type is given", {
 
 test_that("Check whether a switching variable is given", {
   switching    <- NULL
-  expect_error(lp_nl(data_set_df, lags_lin   = lags_lin, lags_nl    = lags_nl, lags_criterion = lags_criterion,
+  expect_error(lp_nl(data_set_df, lags_endog_lin   = lags_endog_lin, lags_endog_nl    = lags_endog_nl, lags_criterion = lags_criterion,
                                    max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
                                    switching = switching, use_hp = use_hp,
                                    lambda    = lambda, gamma        = gamma, confint          = confint, hor = hor),
@@ -78,7 +78,7 @@ test_that("Check whether a switching variable is given", {
 
 test_that("Check whether 'use_hp' is given", {
   use_hp    <- NULL
-  expect_error(lp_nl(data_set_df, lags_lin  = lags_lin, lags_nl    = lags_nl, lags_criterion = lags_criterion,
+  expect_error(lp_nl(data_set_df, lags_endog_lin  = lags_endog_lin, lags_endog_nl    = lags_endog_nl, lags_criterion = lags_criterion,
                                   max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
                                   switching = switching, use_hp = use_hp,
                                   lambda    = lambda, gamma        = gamma, confint          = confint, hor = hor),
@@ -89,7 +89,7 @@ test_that("Check whether 'use_hp' is given", {
 test_that("Check whether lambda is given if use_hp == 1", {
   use_hp    <- 1
   lambda       <- NULL
-  expect_error(lp_nl(data_set_df, lags_lin   = lags_lin, lags_nl    = lags_nl, lags_criterion = lags_criterion,
+  expect_error(lp_nl(data_set_df, lags_endog_lin   = lags_endog_lin, lags_endog_nl    = lags_endog_nl, lags_criterion = lags_criterion,
                                    max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
                                    switching = switching, use_hp = use_hp,
                                    lambda    = lambda, gamma        = gamma, confint          = confint, hor = hor),
@@ -99,7 +99,7 @@ test_that("Check whether lambda is given if use_hp == 1", {
 
 test_that("Check whether 'gamma' is given", {
    gamma        <- NULL
-  expect_error(lp_nl(data_set_df, lags_lin   = lags_lin, lags_nl    = lags_nl, lags_criterion = lags_criterion,
+  expect_error(lp_nl(data_set_df, lags_endog_lin   = lags_endog_lin, lags_endog_nl    = lags_endog_nl, lags_criterion = lags_criterion,
                                    max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
                                    switching = switching, use_hp = use_hp,
                                    lambda    = lambda, gamma        = gamma, confint          = confint, hor = hor),
@@ -108,8 +108,8 @@ test_that("Check whether 'gamma' is given", {
 
 test_that("Check whether 'confint' is given", {
   confint        <- NULL
-  expect_error(lp_nl(data_set_df, lags_lin   = lags_lin,
-                                  lags_nl    = lags_nl,
+  expect_error(lp_nl(data_set_df, lags_endog_lin   = lags_endog_lin,
+                                  lags_endog_nl    = lags_endog_nl,
                                   lags_criterion = lags_criterion,
                                   max_lags    = max_lags,
                                   trend       = trend,
@@ -126,7 +126,7 @@ test_that("Check whether 'confint' is given", {
 
 test_that("Check whether number of horizons is given", {
   hor          <- NULL
-  expect_error(lp_nl(data_set_df, lags_lin   = lags_lin, lags_nl    = lags_nl, lags_criterion = lags_criterion,
+  expect_error(lp_nl(data_set_df, lags_endog_lin   = lags_endog_lin, lags_endog_nl    = lags_endog_nl, lags_criterion = lags_criterion,
                                    max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
                                    switching = switching, use_hp = use_hp,
                                    lambda    = lambda, gamma        = gamma, confint          = confint, hor = hor),
@@ -136,7 +136,7 @@ test_that("Check whether number of horizons is given", {
 
 test_that("Check whether wrong lag length is given", {
   lags_criterion <- 'AICCd'
-  expect_error(lp_nl(data_set_df, lags_lin   = lags_lin, lags_nl    = lags_nl, lags_criterion = lags_criterion,
+  expect_error(lp_nl(data_set_df, lags_endog_lin   = lags_endog_lin, lags_endog_nl    = lags_endog_nl, lags_criterion = lags_criterion,
                                    max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
                                    switching = switching, use_hp = use_hp,
                                    lambda    = lambda, gamma        = gamma, confint          = confint, hor = hor),
@@ -145,8 +145,8 @@ test_that("Check whether wrong lag length is given", {
 
 
 test_that("Check whether lag criterion AND fixed number of lags for non-linear are given", {
-  lags_nl <- 1
-  expect_error(lp_nl(data_set_df, lags_lin   = lags_lin, lags_nl    = lags_nl, lags_criterion = lags_criterion,
+  lags_endog_nl <- 1
+  expect_error(lp_nl(data_set_df, lags_endog_lin   = lags_endog_lin, lags_endog_nl    = lags_endog_nl, lags_criterion = lags_criterion,
                                    max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
                                    switching = switching, use_hp = use_hp,
                                    lambda    = lambda, gamma        = gamma, confint          = confint, hor = hor),
@@ -155,8 +155,8 @@ test_that("Check whether lag criterion AND fixed number of lags for non-linear a
 
 
 test_that("Check whether lag criterion AND fixed number of lags for linear are given", {
-  lags_lin <- 1
-  expect_error(lp_nl(data_set_df, lags_lin   = lags_lin, lags_nl    = lags_nl, lags_criterion = lags_criterion,
+  lags_endog_lin <- 1
+  expect_error(lp_nl(data_set_df, lags_endog_lin   = lags_endog_lin, lags_endog_nl    = lags_endog_nl, lags_criterion = lags_criterion,
                                    max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
                                    switching = switching, use_hp = use_hp,
                                    lambda    = lambda, gamma        = gamma, confint          = confint, hor = hor),
@@ -167,7 +167,7 @@ test_that("Check whether lag criterion AND fixed number of lags for linear are g
 
 test_that("Check whether lag criterion AND maximum number of lags are given", {
   max_lags <- NaN
-  expect_error(lp_nl(data_set_df, lags_lin   = lags_lin, lags_nl    = lags_nl, lags_criterion = lags_criterion,
+  expect_error(lp_nl(data_set_df, lags_endog_lin   = lags_endog_lin, lags_endog_nl    = lags_endog_nl, lags_criterion = lags_criterion,
                                    max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
                                    switching = switching, use_hp = use_hp,
                                    lambda    = lambda, gamma        = gamma, confint          = confint, hor = hor),
@@ -177,7 +177,7 @@ test_that("Check whether lag criterion AND maximum number of lags are given", {
 
 test_that("Check whether values for horizons are correct", {
   hor <- -1
-  expect_error(lp_nl(data_set_df, lags_lin   = lags_lin, lags_nl    = lags_nl, lags_criterion = lags_criterion,
+  expect_error(lp_nl(data_set_df, lags_endog_lin   = lags_endog_lin, lags_endog_nl    = lags_endog_nl, lags_criterion = lags_criterion,
                                    max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
                                    switching = switching, use_hp = use_hp,
                                    lambda    = lambda, gamma        = gamma, confint          = confint, hor = hor),
@@ -186,10 +186,10 @@ test_that("Check whether values for horizons are correct", {
 
 
 test_that("Check whether lags are integers", {
-  lags_lin         <- 1.4
-  lags_nl          <- -2
+  lags_endog_lin         <- 1.4
+  lags_endog_nl          <- -2
   lags_criterion   <- NaN
-  expect_error(lp_nl(data_set_df, lags_lin   = lags_lin, lags_nl    = lags_nl, lags_criterion = lags_criterion,
+  expect_error(lp_nl(data_set_df, lags_endog_lin   = lags_endog_lin, lags_endog_nl    = lags_endog_nl, lags_criterion = lags_criterion,
                                    max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
                                    switching = switching, use_hp = use_hp,
                                    lambda    = lambda, gamma        = gamma, confint          = confint, hor = hor),
@@ -199,7 +199,7 @@ test_that("Check whether lags are integers", {
 
 test_that("Check whether trend is correctly specified", {
   trend <- 12
-  expect_error(lp_nl(data_set_df, lags_lin   = lags_lin, lags_nl    = lags_nl, lags_criterion = lags_criterion,
+  expect_error(lp_nl(data_set_df, lags_endog_lin   = lags_endog_lin, lags_endog_nl    = lags_endog_nl, lags_criterion = lags_criterion,
                                    max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
                                    switching = switching, use_hp = use_hp,
                                    lambda    = lambda, gamma        = gamma, confint          = confint, hor = hor),
@@ -209,7 +209,7 @@ test_that("Check whether trend is correctly specified", {
 
 test_that("Check shock type is correctly specified", {
   shock_type <- 12
-  expect_error(lp_nl(data_set_df, lags_lin   = lags_lin, lags_nl    = lags_nl, lags_criterion = lags_criterion,
+  expect_error(lp_nl(data_set_df, lags_endog_lin   = lags_endog_lin, lags_endog_nl    = lags_endog_nl, lags_criterion = lags_criterion,
                                    max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
                                    switching = switching, use_hp = use_hp,
                                    lambda    = lambda, gamma        = gamma, confint          = confint, hor = hor),
@@ -218,7 +218,7 @@ test_that("Check shock type is correctly specified", {
 
 test_that("Check whether width of confidence bands is correctly specified", {
   confint <- -1
-  expect_error(lp_nl(data_set_df, lags_lin   = lags_lin, lags_nl    = lags_nl, lags_criterion = lags_criterion,
+  expect_error(lp_nl(data_set_df, lags_endog_lin   = lags_endog_lin, lags_endog_nl    = lags_endog_nl, lags_criterion = lags_criterion,
                                    max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
                                    switching = switching, use_hp = use_hp,
                                    lambda    = lambda, gamma        = gamma, confint          = confint, hor = hor),
@@ -228,7 +228,7 @@ test_that("Check whether width of confidence bands is correctly specified", {
 
 test_that("Check whether gamma is positive", {
   gamma <- -1
-  expect_error(lp_nl(data_set_df, lags_lin   = lags_lin, lags_nl    = lags_nl, lags_criterion = lags_criterion,
+  expect_error(lp_nl(data_set_df, lags_endog_lin   = lags_endog_lin, lags_endog_nl    = lags_endog_nl, lags_criterion = lags_criterion,
                                    max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
                                    switching = switching, use_hp = use_hp,
                                    lambda    = lambda, gamma        = gamma, confint          = confint, hor = hor),
@@ -238,7 +238,7 @@ test_that("Check whether gamma is positive", {
 
 test_that("Check whether use_hp is 0 or 1", {
   use_hp <- - 2
-  expect_error(lp_nl(data_set_df, lags_lin   = lags_lin, lags_nl    = lags_nl, lags_criterion = lags_criterion,
+  expect_error(lp_nl(data_set_df, lags_endog_lin   = lags_endog_lin, lags_endog_nl    = lags_endog_nl, lags_criterion = lags_criterion,
                                    max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
                                    switching = switching, use_hp = use_hp,
                                    lambda    = lambda, gamma        = gamma, confint          = confint, hor = hor),
@@ -247,7 +247,7 @@ test_that("Check whether use_hp is 0 or 1", {
 
 test_that("Check whether maximum number of lags is positive", {
   max_lags <- - 2
-  expect_error(lp_nl(data_set_df, lags_lin   = lags_lin, lags_nl    = lags_nl, lags_criterion = lags_criterion,
+  expect_error(lp_nl(data_set_df, lags_endog_lin   = lags_endog_lin, lags_endog_nl    = lags_endog_nl, lags_criterion = lags_criterion,
                                    max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
                                    switching = switching, use_hp = use_hp,
                                    lambda    = lambda, gamma        = gamma, confint          = confint, hor = hor),
@@ -256,11 +256,11 @@ test_that("Check whether maximum number of lags is positive", {
 
 
 test_that("Check whether whether no lag length criterion is given but maximum number of lags.", {
-  lags_lin       <- 3
-  lags_nl        <- 2
+  lags_endog_lin       <- 3
+  lags_endog_nl        <- 2
   lags_criterion <- NaN
   max_lags       <- 3
-  expect_error(lp_nl(data_set_df, lags_lin   = lags_lin, lags_nl    = lags_nl, lags_criterion = lags_criterion,
+  expect_error(lp_nl(data_set_df, lags_endog_lin   = lags_endog_lin, lags_endog_nl    = lags_endog_nl, lags_criterion = lags_criterion,
                                    max_lags  = max_lags, trend      = trend, shock_type       = shock_type,
                                    switching = switching, use_hp = use_hp,
                                    lambda    = lambda, gamma        = gamma, confint          = confint, hor = hor),

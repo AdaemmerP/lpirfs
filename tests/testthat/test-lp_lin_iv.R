@@ -17,7 +17,7 @@ context("check_input_lp_lin_iv")
     endog_data   <- as.matrix(endog_data)
     expect_error(lp_lin_iv(endog_data,
                             instr          = instrument,
-                            lags_lin       = 4,
+                            lags_endog_lin       = 4,
                             exog_data      = NULL,
                             lags_exog      = NULL,
                             contemp_data   = NULL,
@@ -35,7 +35,7 @@ context("check_input_lp_lin_iv")
   test_that("Check whether instrument is given", {
     expect_error(lp_lin_iv(endog_data,
                            instr          = NULL,
-                           lags_lin       = 4,
+                           lags_endog_lin       = 4,
                            exog_data      = NULL,
                            lags_exog      = NULL,
                            contemp_data   = NULL,
@@ -49,10 +49,10 @@ context("check_input_lp_lin_iv")
                  'You have to provide an instrument to shock with.', fixed = TRUE)
   })
 
-  test_that("Check whether lags_lin is falsely NaN", {
+  test_that("Check whether lags_endog_lin is falsely NaN", {
     expect_error(lp_lin_iv(endog_data,
                            instr          = instrument,
-                           lags_lin       = NaN,
+                           lags_endog_lin       = NaN,
                            exog_data      = NULL,
                            lags_exog      = NULL,
                            contemp_data   = NULL,
@@ -63,7 +63,7 @@ context("check_input_lp_lin_iv")
                            confint        = 1.96,
                            hor            = 20,
                            num_cores      = 1),
-                 '"lags_lin" can only be NaN if a lag length criterion is given.', fixed = TRUE)
+                 '"lags_endog_lin" can only be NaN if a lag length criterion is given.', fixed = TRUE)
   })
 
 
@@ -73,7 +73,7 @@ context("check_input_lp_lin_iv")
 
     expect_message(lp_lin_iv(endog_data,
                            instr          = instrument,
-                           lags_lin       = 4,
+                           lags_endog_lin       = 4,
                            exog_data      = NULL,
                            lags_exog      = NULL,
                            contemp_data   = NULL,
@@ -90,7 +90,7 @@ context("check_input_lp_lin_iv")
   test_that("Check whether message is given when no contemporaneous data is provided", {
     expect_message(lp_lin_iv(endog_data,
                            instr          = instrument,
-                           lags_lin       = 4,
+                           lags_endog_lin       = 4,
                            exog_data      = NULL,
                            lags_exog      = NULL,
                            contemp_data   = NULL,
@@ -108,7 +108,7 @@ context("check_input_lp_lin_iv")
   test_that("Check whether lag length criterion is correctly specified", {
     expect_error(lp_lin_iv(endog_data,
                              instr          = instrument,
-                             lags_lin       = 4,
+                             lags_endog_lin       = 4,
                              exog_data      = NULL,
                              lags_exog      = NULL,
                              contemp_data   = NULL,
@@ -127,7 +127,7 @@ context("check_input_lp_lin_iv")
   test_that("Check whether trend is given", {
     expect_error(lp_lin_iv(endog_data,
                            instr          = instrument,
-                           lags_lin       = 4,
+                           lags_endog_lin       = 4,
                            exog_data      = NULL,
                            lags_exog      = NULL,
                            contemp_data   = NULL,
@@ -145,7 +145,7 @@ context("check_input_lp_lin_iv")
   test_that("Check whether shock type is given", {
     expect_error(lp_lin_iv(endog_data,
                            instr          = instrument,
-                           lags_lin       = 4,
+                           lags_endog_lin       = 4,
                            exog_data      = NULL,
                            lags_exog      = NULL,
                            contemp_data   = NULL,
@@ -162,7 +162,7 @@ context("check_input_lp_lin_iv")
   test_that("Check whether number of horizons is given", {
     expect_error(lp_lin_iv(endog_data,
                            instr          = instrument,
-                           lags_lin       = 4,
+                           lags_endog_lin       = 4,
                            exog_data      = NULL,
                            lags_exog      = NULL,
                            contemp_data   = NULL,
@@ -180,7 +180,7 @@ context("check_input_lp_lin_iv")
   test_that("Check whether lag lengt criterion is correctly given", {
     expect_error(lp_lin_iv(endog_data,
                            instr          = instrument,
-                           lags_lin       = 4,
+                           lags_endog_lin       = 4,
                            exog_data      = NULL,
                            lags_exog      = NULL,
                            contemp_data   = NULL,
@@ -198,7 +198,7 @@ context("check_input_lp_lin_iv")
   test_that("Check whether number of horizons is correctly given", {
     expect_error(lp_lin_iv(endog_data,
                            instr          = instrument,
-                           lags_lin       = 4,
+                           lags_endog_lin       = 4,
                            exog_data      = NULL,
                            lags_exog      = NULL,
                            contemp_data   = NULL,
@@ -215,7 +215,7 @@ context("check_input_lp_lin_iv")
   test_that("Check whether trend is correctly specified", {
     expect_error(lp_lin_iv(endog_data,
                            instr          = instrument,
-                           lags_lin       = 4,
+                           lags_endog_lin       = 4,
                            exog_data      = NULL,
                            lags_exog      = NULL,
                            contemp_data   = NULL,
@@ -232,7 +232,7 @@ context("check_input_lp_lin_iv")
   test_that("Check whether shock type is correctly specified", {
     expect_error(lp_lin_iv(endog_data,
                            instr          = instrument,
-                           lags_lin       = 4,
+                           lags_endog_lin       = 4,
                            exog_data      = NULL,
                            lags_exog      = NULL,
                            contemp_data   = NULL,
@@ -249,7 +249,7 @@ context("check_input_lp_lin_iv")
   test_that("Check whether the width of the confidence bands is correctly specified", {
     expect_error(lp_lin_iv(endog_data,
                            instr          = instrument,
-                           lags_lin       = 4,
+                           lags_endog_lin       = 4,
                            exog_data      = NULL,
                            lags_exog      = NULL,
                            contemp_data   = NULL,
@@ -266,7 +266,7 @@ context("check_input_lp_lin_iv")
   test_that("Check whether exogenous data is a data.frame", {
     expect_error(lp_lin_iv(endog_data,
                            instr          = instrument,
-                           lags_lin       = 4,
+                           lags_endog_lin       = 4,
                            exog_data      = as.matrix(rnorm(100)),
                            lags_exog      = NULL,
                            contemp_data   = NULL,
@@ -284,7 +284,7 @@ context("check_input_lp_lin_iv")
   test_that("Check whether instrument is a data.frame", {
     expect_error(lp_lin_iv(endog_data,
                            instr          = instrument,
-                           lags_lin       = 4,
+                           lags_endog_lin       = 4,
                            exog_data      = as.matrix(rnorm(100)),
                            lags_exog      = NULL,
                            contemp_data   = NULL,
@@ -302,7 +302,7 @@ context("check_input_lp_lin_iv")
   test_that("Check whether lag length for exogenous data is given", {
     expect_error(lp_lin_iv(endog_data,
                            instr          = instrument,
-                           lags_lin       = 4,
+                           lags_endog_lin       = 4,
                            exog_data      = as.data.frame(rnorm(dim(endog_data)[1])),
                            lags_exog      = NULL,
                            contemp_data   = NULL,
@@ -319,7 +319,7 @@ context("check_input_lp_lin_iv")
   test_that("Check whether lag length and lag length criterion is given", {
     expect_error(lp_lin_iv(endog_data,
                            instr          = instrument,
-                           lags_lin       = 4,
+                           lags_endog_lin       = 4,
                            exog_data      = NULL,
                            lags_exog      = NULL,
                            contemp_data   = NULL,
@@ -331,7 +331,7 @@ context("check_input_lp_lin_iv")
                            hor            = 12,
                            num_cores      = 1),
          'You can not provide a lag criterion (AICc, AIC or BIC) and a fixed number of lags.
-         Please set lags_lin to NaN if you want to use a lag length criterion.', fixed = TRUE)
+         Please set lags_endog_lin to NaN if you want to use a lag length criterion.', fixed = TRUE)
   })
 
 
@@ -367,7 +367,7 @@ context("check_input_lp_lin_iv")
     # Estimate linear model
     results_lin_iv <- lp_lin_iv(endog_data,
                                 instr          = instrument,
-                                lags_lin       = 4,
+                                lags_endog_lin       = 4,
                                 exog_data      = NULL,
                                 lags_exog      = NULL,
                                 contemp_data   = NULL,

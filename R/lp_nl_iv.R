@@ -6,7 +6,7 @@
 #'
 #' @param endog_data A \link{data.frame}, containing all endogenous variables for the VAR. The column order
 #'                     is used for the Cholesky decomposition.
-#' @param lags_nl NaN or integer. Number of lags for nonlinear VAR (if \emph{lags_criterion} = NaN). NaN if lag length criterion is given.
+#' @param lags_endog_nl NaN or integer. Number of lags for nonlinear VAR (if \emph{lags_criterion} = NaN). NaN if lag length criterion is given.
 #' @param instr One column \link{data.frame} including the instrument to shock with.
 #'              The row length has to be the same as \emph{endog_data}.
 #' @param exog_data Null or a \link{data.frame}, containing exogenous data. The row length has to be the same as \emph{endog_data}.
@@ -15,7 +15,7 @@
 #' @param contemp_data A \link{data.frame}, containing exogenous data with contemporaneous impact. This data will not be lagged.
 #'                      The row length has to be the same as \emph{endog_data}.
 #' @param lags_criterion NaN or character. NaN means that the number of lags
-#'         will be given at \emph{lags_nl} and \emph{lags_lin}. The lag length criteria are 'AICc', 'AIC' and 'BIC'.
+#'         will be given at \emph{lags_endog_nl} and \emph{lags_lin}. The lag length criteria are 'AICc', 'AIC' and 'BIC'.
 #' @param max_lags NaN or integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC'). NaN otherwise.
 #' @param trend Integer. Include no trend =  0 , include trend = 1, include trend and quadratic trend = 2.
 #' @param shock_type Integer. Standard deviation shock = 0, unit shock = 1.
@@ -119,12 +119,12 @@
 #'
 #'# Estimate local projections
 #'  results_nl_iv <- lp_nl_iv(endog_data,
-#'                            lags_nl           = 3,
+#'                            lags_endog_nl     = 3,
 #'                            instr             = shock,
 #'                            exog_data         = exog_data,
 #'                            lags_exog         = 4,
 #'                            contemp_data      = NULL,
-#'                            lags_criterion     = NaN,
+#'                            lags_criterion    = NaN,
 #'                            max_lags          = NaN,
 #'                            trend             = 0,
 #'                            shock_type        = 1,
@@ -165,7 +165,7 @@
 #'@author Philipp Adämmer
 #'
 lp_nl_iv <- function(endog_data,
-                            lags_nl           = NULL,
+                            lags_endog_nl           = NULL,
                             instr             = NULL,
                             exog_data         = NULL,
                             lags_exog         = NULL,
@@ -280,7 +280,7 @@ lp_nl_iv <- function(endog_data,
 
   # Check whether lags criterion and fixed number of lags for nonlinear model is given
   if((is.character(lags_criterion) == TRUE) &
-     (!is.na(lags_nl) == TRUE)){
+     (!is.na(lags_endog_nl) == TRUE)){
     stop('You can not provide a lag criterion (AICc, AIC or BIC) and a fixed number of lags.')
   }
 
@@ -299,7 +299,7 @@ lp_nl_iv <- function(endog_data,
   specs <- list()
 
   # Specify inputs
-  specs$lags_nl               <- lags_nl
+  specs$lags_endog_nl               <- lags_endog_nl
 
   if(is.data.frame(instr)){
      specs$instr   <- instr  }  else {

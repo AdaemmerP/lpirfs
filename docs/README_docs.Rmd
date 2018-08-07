@@ -33,7 +33,7 @@ Estimate linear impulse responses with the package function *lp_lin*. Note that 
 a data.frame. 
 ```{r, message = FALSE }  
 results_lin <- lp_lin(endog_data, 
-                           lags_lin       = 4L,   # Number of lags for endogenous data
+                           lags_endog_lin       = 4L,   # Number of lags for endogenous data
                            lags_criterion = NaN,  # Lag length criterion (AICc, AIC or BIC) or NaN
                            max_lags       = NaN,  # Maximum number of lags or NaN
                            exog_data      = NULL, # Exogenous data
@@ -126,8 +126,8 @@ Estimate nonlinear impulse responses with package function *lp_nl*. Note that th
 to be a data.frame.
 ```{r, message = FALSE }  
 results_nl <- lp_nl(endog_data, 
-                        lags_lin       = 4L,   # Number of lags for (reduced) linear VAR to obtain shock matrix. 
-                        lags_nl        = 4L,   # Number of lags for nonlinear model. 
+                        lags_endog_lin       = 4L,   # Number of lags for (reduced) linear VAR to obtain shock matrix. 
+                        lags_endog_nl        = 4L,   # Number of lags for nonlinear model. 
                         lags_criterion = NaN,  # Lag length criterion (AICc, AIC or BIC) or NaN.
                         max_lags       = NaN,  # If lags_criterion is chosen, maximum number of lags. 
                         exog_data      = NULL, # Exogenous data
@@ -159,7 +159,7 @@ Plot output gap.
 ```{r, fig.height = 4, fig.width = 6, fig.align = "center", message = FALSE } 
 # Make date sequence and store data in a data.frame for ggplot.
   dates   <- seq(as.Date("1955/12/1"), as.Date("2003/1/1"), by = "quarter")
-  data_df <- data.frame(x = dates, fz = fz, switch_var = specs$switching[(specs$lags_nl+1):length(endog_data$FF)])
+  data_df <- data.frame(x = dates, fz = fz, switch_var = specs$switching[(specs$lags_endog_nl+1):length(endog_data$FF)])
 
 # Plot  
   ggplot(data = data_df) +
@@ -239,7 +239,7 @@ Estimate model with constant and 4 lags.
 ```{r, message = FALSE }
  results_lin_iv <- lp_lin_iv(endog_data,
                          instr          = shock,
-                         lags_lin       = 4,
+                         lags_endog_lin       = 4,
                          exog_data      = NULL,
                          lags_exog      = NULL,
                          contemp_data   = NULL,
@@ -325,7 +325,7 @@ They adjust it to have suffiently long recession periods.
 Estimate nonlinear model 
 ```{r, message = FALSE }
  results_nl_iv <- lp_nl_iv(endog_data,
-                           lags_nl           = 3,
+                           lags_endog_nl           = 3,
                            instr             = shock,
                            exog_data         = exog_data,
                            lags_exog         = 4,

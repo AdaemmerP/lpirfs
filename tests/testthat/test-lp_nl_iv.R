@@ -21,7 +21,7 @@ context("check_input_lp_nl_iv")
     endog_data    <- as.matrix(endog_data)
 
     expect_error(lp_nl_iv(endog_data,
-                              lags_nl           = 3,
+                              lags_endog_nl           = 3,
                               instr             = instrument,
                               exog_data         = NULL,
                               lags_exog         = NULL,
@@ -43,7 +43,7 @@ context("check_input_lp_nl_iv")
 
   test_that("Check whether trend is given", {
     expect_error(lp_nl_iv(endog_data,
-                          lags_nl           = 3,
+                          lags_endog_nl           = 3,
                           instr             = instrument,
                           exog_data         = NULL,
                           lags_exog         = NULL,
@@ -64,7 +64,7 @@ context("check_input_lp_nl_iv")
 
   test_that("Check whether shock type is given", {
     expect_error(lp_nl_iv(endog_data,
-                          lags_nl           = 3,
+                          lags_endog_nl           = 3,
                           instr             = instrument,
                           exog_data         = NULL,
                           lags_exog         = NULL,
@@ -86,7 +86,7 @@ context("check_input_lp_nl_iv")
 
   test_that("Check whether switching variable is given", {
     expect_error(lp_nl_iv(endog_data,
-                          lags_nl           = 3,
+                          lags_endog_nl           = 3,
                           instr             = instrument,
                           exog_data         = NULL,
                           lags_exog         = NULL,
@@ -108,7 +108,7 @@ context("check_input_lp_nl_iv")
 
   test_that("Check whether use_hp is set", {
     expect_error(lp_nl_iv(endog_data,
-                          lags_nl           = 3,
+                          lags_endog_nl           = 3,
                           instr             = instrument,
                           exog_data         = NULL,
                           lags_exog         = NULL,
@@ -130,7 +130,7 @@ context("check_input_lp_nl_iv")
 
   test_that("Check whetherlambda is given", {
     expect_error(lp_nl_iv(endog_data,
-                          lags_nl           = 3,
+                          lags_endog_nl           = 3,
                           instr             = instrument,
                           exog_data         = NULL,
                           lags_exog         = NULL,
@@ -152,7 +152,7 @@ context("check_input_lp_nl_iv")
 
   test_that("Check whether gamma is given", {
     expect_error(lp_nl_iv(endog_data,
-                          lags_nl           = 3,
+                          lags_endog_nl           = 3,
                           instr             = instrument,
                           exog_data         = NULL,
                           lags_exog         = NULL,
@@ -174,7 +174,7 @@ context("check_input_lp_nl_iv")
 
   test_that("Check whether width for confidence bands is given", {
     expect_error(lp_nl_iv(endog_data,
-                          lags_nl           = 3,
+                          lags_endog_nl           = 3,
                           instr             = instrument,
                           exog_data         = NULL,
                           lags_exog         = NULL,
@@ -195,7 +195,7 @@ context("check_input_lp_nl_iv")
 
   test_that("Check whether number of horizons is given", {
     expect_error(lp_nl_iv(endog_data,
-                          lags_nl           = 3,
+                          lags_endog_nl           = 3,
                           instr             = instrument,
                           exog_data         = NULL,
                           lags_exog         = NULL,
@@ -216,7 +216,7 @@ context("check_input_lp_nl_iv")
 
   test_that("Check whether lag  length criterion is correctly spelled", {
     expect_error(lp_nl_iv(endog_data,
-                          lags_nl           = NaN,
+                          lags_endog_nl           = NaN,
                           instr             = instrument,
                           exog_data         = NULL,
                           lags_exog         = NULL,
@@ -238,7 +238,7 @@ context("check_input_lp_nl_iv")
 
   test_that("Check whether lags criterion and fixed number of lags for nonlinear model is given", {
     expect_error(lp_nl_iv(endog_data,
-                          lags_nl           = 3,
+                          lags_endog_nl           = 3,
                           instr             = instrument,
                           exog_data         = NULL,
                           lags_exog         = NULL,
@@ -260,7 +260,7 @@ context("check_input_lp_nl_iv")
 
   test_that("Check whether maximum number of lags is given", {
     expect_error(lp_nl_iv(endog_data,
-                          lags_nl           = NaN,
+                          lags_endog_nl           = NaN,
                           instr             = instrument,
                           exog_data         = NULL,
                           lags_exog         = NULL,
@@ -281,7 +281,7 @@ context("check_input_lp_nl_iv")
 
   test_that("Check whether number of horizons is positive", {
     expect_error(lp_nl_iv(endog_data,
-                          lags_nl           = NaN,
+                          lags_endog_nl           = NaN,
                           instr             = instrument,
                           exog_data         = NULL,
                           lags_exog         = NULL,
@@ -303,7 +303,7 @@ context("check_input_lp_nl_iv")
 
   test_that("Check whether trend is correctly specified", {
     expect_error(lp_nl_iv(endog_data,
-                          lags_nl           = NaN,
+                          lags_endog_nl           = NaN,
                           instr             = instrument,
                           exog_data         = NULL,
                           lags_exog         = NULL,
@@ -326,7 +326,7 @@ context("check_input_lp_nl_iv")
 
   test_that("Check whether shock type is correctly specified", {
     expect_error(lp_nl_iv(endog_data,
-                          lags_nl           = NaN,
+                          lags_endog_nl           = NaN,
                           instr             = instrument,
                           exog_data         = NULL,
                           lags_exog         = NULL,
@@ -347,7 +347,7 @@ context("check_input_lp_nl_iv")
 
   test_that("Check whether width of confidence bands is correctly specified", {
     expect_error(lp_nl_iv(endog_data,
-                          lags_nl           = NaN,
+                          lags_endog_nl           = NaN,
                           instr             = instrument,
                           exog_data         = NULL,
                           lags_exog         = NULL,
@@ -369,7 +369,7 @@ context("check_input_lp_nl_iv")
 
   test_that("Check whether gamma is negative number", {
     expect_error(lp_nl_iv(endog_data,
-                          lags_nl           = NaN,
+                          lags_endog_nl           = NaN,
                           instr             = instrument,
                           exog_data         = NULL,
                           lags_exog         = NULL,
@@ -425,7 +425,7 @@ context("check_input_lp_nl_iv")
 test_that("Compare results with RZ-2018", {
   # Estimate local projections
   results_nl_iv <- lp_nl_iv(endog_data,
-                            lags_nl           = 3,
+                            lags_endog_nl           = 3,
                             instr             = instrument,
                             exog_data         = exog_data,
                             lags_exog         = 4,
