@@ -20,7 +20,8 @@
 * One input name in *lp_nl* has been changed for consistency:
 
 function | old input name | new input name
-:--------|:------------- 
+:--------|:-------------  |:------------- 
+`lp_lin`  | `lags_lin`      | `lags_endog_lin`
 `lp_nl`  | `hp_filter`      | `use_hp`
 
 

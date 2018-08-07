@@ -4,7 +4,7 @@
 \alias{lp_lin}
 \title{Compute linear impulse responses}
 \usage{
-lp_lin(endog_data, lags_lin = NULL, lags_criterion = NULL,
+lp_lin(endog_data, lags_endog_lin = NULL, lags_criterion = NULL,
   max_lags = NULL, trend = NULL, shock_type = NULL, confint = NULL,
   hor = NULL, exog_data = NULL, lags_exog = NULL,
   contemp_data = NULL, num_cores = NULL)
@@ -13,10 +13,10 @@ lp_lin(endog_data, lags_lin = NULL, lags_criterion = NULL,
 \item{endog_data}{A \link{data.frame}, containing the endogenous variables for the VAR. The column order
 is used for the Cholesky decomposition.}
 
-\item{lags_lin}{NaN or integer. NaN if lag length criterion is used. Integer for number of lags for \emph{endog_data}.}
+\item{lags_endog_lin}{NaN or integer. NaN if lag length criterion is used. Integer for number of lags for \emph{endog_data}.}
 
 \item{lags_criterion}{NaN or character. NaN means that the number of lags
-will be given at \emph{lags_lin}. The character specifies the lag length criterion ('AICc', 'AIC' or 'BIC').}
+will be given at \emph{lags_endog_lin}. The character specifies the lag length criterion ('AICc', 'AIC' or 'BIC').}
 
 \item{max_lags}{NaN or integer. Maximum number of lags if \emph{lags_criterion} if lag length criterion is given. NaN otherwise.}
 
@@ -74,7 +74,7 @@ Compute linear impulse responses with local projections by Jordà (2005).
 
 # Estimate linear model
   results_lin <- lp_lin(endog_data,
-                             lags_lin       = 4,
+                             lags_endog_lin       = 4,
                              exog_data      = NULL,
                              lags_exog      = NULL,
                              lags_criterion = NaN,
@@ -123,7 +123,7 @@ Compute linear impulse responses with local projections by Jordà (2005).
 
 # Estimate linear model
   results_lin <- lp_lin(endog_data,
-                               lags_lin       = 4,
+                               lags_endog_lin       = 4,
                                lags_criterion = NaN,
                                max_lags       = NaN,
                                trend          = 0L,

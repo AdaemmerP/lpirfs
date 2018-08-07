@@ -5,8 +5,8 @@
 #' @param endog_data A \link{data.frame}, containing the endogenous variables for the VAR. The column order
 #'                    is used for the Cholesky decomposition.
 #' @param lags_criterion NaN or character. NaN means that the number of lags
-#'         will be given at \emph{lags_lin}. The character specifies the lag length criterion ('AICc', 'AIC' or 'BIC').
-#' @param lags_lin NaN or integer. NaN if lag length criterion is used. Integer for number of lags for \emph{endog_data}.
+#'         will be given at \emph{lags_endog_lin}. The character specifies the lag length criterion ('AICc', 'AIC' or 'BIC').
+#' @param lags_endog_lin NaN or integer. NaN if lag length criterion is used. Integer for number of lags for \emph{endog_data}.
 #' @param max_lags NaN or integer. Maximum number of lags if \emph{lags_criterion} if lag length criterion is given. NaN otherwise.
 #' @param trend Integer. No trend =  0 , include trend = 1, include trend and quadratic trend = 2.
 #' @param shock_type Integer. Standard deviation shock = 0, unit shock = 1.
@@ -70,7 +70,7 @@
 #'
 #'# Estimate linear model
 #'   results_lin <- lp_lin(endog_data,
-#'                              lags_lin       = 4,
+#'                              lags_endog_lin = 4,
 #'                              exog_data      = NULL,
 #'                              lags_exog      = NULL,
 #'                              lags_criterion = NaN,
@@ -119,7 +119,7 @@
 #'
 #'# Estimate linear model
 #'   results_lin <- lp_lin(endog_data,
-#'                                lags_lin       = 4,
+#'                                lags_endog_lin       = 4,
 #'                                lags_criterion = NaN,
 #'                                max_lags       = NaN,
 #'                                trend          = 0L,
@@ -144,7 +144,7 @@
 #'
 #'  }
 lp_lin <- function(endog_data,
-                        lags_lin       = NULL,
+                        lags_endog_lin       = NULL,
                         lags_criterion = NULL,
                         max_lags       = NULL,
                         trend          = NULL,
@@ -160,7 +160,7 @@ lp_lin <- function(endog_data,
     specs <- list()
 
   # Specify inputs
-    specs$lags_lin       <- lags_lin
+    specs$lags_endog_lin       <- lags_endog_lin
     specs$lags_criterion <- lags_criterion
     specs$max_lags       <- max_lags
     specs$trend          <- trend
@@ -220,14 +220,14 @@ lp_lin <- function(endog_data,
 
   # Check whether lags criterion and maximum number of lags are given
   if((is.character(specs$lags_criterion)) &
-      (!is.na(specs$lags_lin))){
+      (!is.na(specs$lags_endog_lin))){
      stop('You can not provide a lag criterion (AICc, AIC or BIC) and a fixed number of lags.')
     }
 
 
   # Check whether no lag length criterion and number of lags are given
   if((is.na(specs$lags_criterion)) &
-      (is.na(specs$lags_lin))){
+      (is.na(specs$lags_endog_lin))){
     stop('You have to at least provide a lag criterion (AICc, AIC or BIC) or a fixed number of lags.')
   }
 
@@ -245,8 +245,8 @@ lp_lin <- function(endog_data,
   }
 
   # Check whether lags for linear model are integers
-  if(is.numeric(specs$lags_lin) & !is.nan(specs$lags_lin)){
-    if(!(specs$lags_lin %% 1 == 0)  | specs$lags_lin < 0){
+  if(is.numeric(specs$lags_endog_lin) & !is.nan(specs$lags_endog_lin)){
+    if(!(specs$lags_endog_lin %% 1 == 0)  | specs$lags_endog_lin < 0){
       stop('The numbers of lags have to be a positive integer.')
     }
   } else {}

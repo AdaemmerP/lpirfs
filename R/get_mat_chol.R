@@ -30,22 +30,22 @@ get_mat_chol  <- function(y_lin, x_lin, data_set_df, specs){
 
   if (specs$lags_criterion == 'AICc'){
 
-      specs$lags_lin  <- lag_criterion$order_vals[1]
+      specs$lags_endog_lin  <- lag_criterion$order_vals[1]
 
 
               } else if (specs$lags_criterion == 'AIC'){
 
 
-      specs$lags_lin  <- lag_criterion$order_vals[2]
+      specs$lags_endog_lin  <- lag_criterion$order_vals[2]
 
                        } else {
 
-      specs$lags_lin  <- lag_criterion$order_vals[3]  }
+      specs$lags_endog_lin  <- lag_criterion$order_vals[3]  }
 
 
     # Build data based on 'optimal lag length
-    y_data      <- as.list(dplyr::as_tibble(y_lin[[specs$lags_lin]]))
-    x_data      <- x_lin[[specs$lags_lin]]
+    y_data      <- as.list(dplyr::as_tibble(y_lin[[specs$lags_endog_lin]]))
+    x_data      <- x_lin[[specs$lags_endog_lin]]
 
     # Estimate OLS model and calculate residuals
     resids_all  <- lapply(y_data, get_resids_ols, x_data)

@@ -18,7 +18,7 @@ create_lin_data     <- function(specs, endog_data){
     y_lin <- endog_data
 
     # Make exogenous lagged data
-    x_lin <- create_lags(endog_data, specs$lags_lin)
+    x_lin <- create_lags(endog_data, specs$lags_endog_lin)
 
     # Check whether model type is 'iv'.
     # 0 = Normal model, 1 = IV model
