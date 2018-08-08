@@ -454,8 +454,11 @@ lp_nl <- function(endog_data,
 
 
   # Make cluster
-  numb_cores     <- min(specs$endog, parallel::detectCores() - 1)
-  cl             <- parallel::makeCluster(numb_cores)
+  if(is.null(num_cores)){
+    num_cores     <- min(specs$endog, parallel::detectCores() - 1)
+  }
+
+  cl            <- parallel::makeCluster(num_cores)
   doParallel::registerDoParallel(cl)
 
  # Determine whether manual lag lengths are given or have to be determined
