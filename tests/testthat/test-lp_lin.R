@@ -243,7 +243,7 @@ test_that("Check whether results from lp_lin are in region of results from Jord�
   jorda_results_low_2  <- 0.8   # Approximation from figure 5 in Jordà (2005) plot, p.176
   jorda_results_up_2   <- 1     # Approximation from figure 5 in Jordà (2005) plot, p.176
 
-  testthat::expect_equal(results_mean_2, jorda_results_mean_2, tolerance =5e-2)
+  expect_equal(results_mean_2, jorda_results_mean_2, tolerance =5e-2)
 } )
 
 

@@ -17,7 +17,7 @@ context("check_input_lp_lin_iv")
     endog_data   <- as.matrix(endog_data)
     expect_error(lp_lin_iv(endog_data,
                             instr          = instrument,
-                            lags_endog_lin       = 4,
+                            lags_endog_lin = 4,
                             exog_data      = NULL,
                             lags_exog      = NULL,
                             contemp_data   = NULL,
