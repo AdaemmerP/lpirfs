@@ -327,7 +327,7 @@ $(document).ready(function () {
 <pre class="r"><code>  endog_data &lt;- interest_rules_var_data</code></pre>
 <p>Estimate linear impulse responses with the package function <em>lp_lin</em>. Note that the endogenous and exogenous data have to be a data.frame.</p>
 <pre class="r"><code>results_lin &lt;- lp_lin(endog_data, 
-                           lags_endog_lin       = 4L,   # Number of lags for endogenous data
+                           lags_endog_lin = 4L,   # Number of lags for endogenous data
                            lags_criterion = NaN,  # Lag length criterion (AICc, AIC or BIC) or NaN
                            max_lags       = NaN,  # Maximum number of lags or NaN
                            exog_data      = NULL, # Exogenous data
@@ -388,8 +388,8 @@ $(document).ready(function () {
 <p><span class="math display">\[ \]</span></p>
 <p>Estimate nonlinear impulse responses with package function <em>lp_nl</em>. Note that the endogenous and exogenous data have to be a data.frame.</p>
 <pre class="r"><code>results_nl &lt;- lp_nl(endog_data, 
-                        lags_endog_lin       = 4L,   # Number of lags for (reduced) linear VAR to obtain shock matrix. 
-                        lags_endog_nl        = 4L,   # Number of lags for nonlinear model. 
+                        lags_endog_lin = 4L,   # Number of lags for (reduced) linear VAR to obtain shock matrix. 
+                        lags_endog_nl  = 4L,   # Number of lags for nonlinear model. 
                         lags_criterion = NaN,  # Lag length criterion (AICc, AIC or BIC) or NaN.
                         max_lags       = NaN,  # If lags_criterion is chosen, maximum number of lags. 
                         exog_data      = NULL, # Exogenous data
@@ -475,7 +475,7 @@ $(document).ready(function () {
 <p>Estimate model with constant and 4 lags.</p>
 <pre class="r"><code> results_lin_iv &lt;- lp_lin_iv(endog_data,
                          instr          = shock,
-                         lags_endog_lin       = 4,
+                         lags_endog_lin = 4,
                          exog_data      = NULL,
                          lags_exog      = NULL,
                          contemp_data   = NULL,
@@ -529,7 +529,7 @@ results_lin_iv  &lt;- list(irf_lin_mean  = multiplier_mean,
 <pre class="r"><code>  switching_variable &lt;- as.data.frame(ag_data$GDP_MA[sample_start:sample_end]) - 0.8</code></pre>
 <p>Estimate nonlinear model</p>
 <pre class="r"><code> results_nl_iv &lt;- lp_nl_iv(endog_data,
-                           lags_endog_nl           = 3,
+                           lags_endog_nl     = 3,
                            instr             = shock,
                            exog_data         = exog_data,
                            lags_exog         = 4,
