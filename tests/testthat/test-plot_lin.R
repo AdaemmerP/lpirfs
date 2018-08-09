@@ -20,6 +20,8 @@ test_that("Check whether list length is consistent number of endogenous variable
   results_lin <- lp_lin(endog_data,
                            lags_endog_lin = lags_endog_lin,
                            lags_criterion = lags_criterion,
+                           exog_data      = NULL,
+                           lags_exog      = NULL,
                            max_lags       = max_lags,
                            trend          = trend,
                            shock_type     = shock_type,
@@ -37,7 +39,7 @@ test_that("Check whether list length is consistent number of endogenous variable
 
 
 # Load package data
-  ag_data <- ag_data
+  ag_data           <- ag_data
   sample_start      <- 7
   sample_end        <- dim(ag_data)[1]
 
