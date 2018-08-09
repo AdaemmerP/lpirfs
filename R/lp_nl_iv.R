@@ -135,7 +135,8 @@
 #'                                                     # Anuual data    = 6.25
 #'                                                     # Quarterly data = 1600
 #'                                                     # Monthly data   = 129,600
-#'                            gamma             = 3)
+#'                            gamma             = 3,
+#'                            num_cores         = NULL)
 #'
 #'# Make and save plots
 #'  plots_nl_iv <- plot_nl(results_nl_iv)
@@ -454,7 +455,7 @@ lp_nl_iv <- function(endog_data,
                          for (h in 1:specs$hor){      # Accounts for the horizons
                            for (k in 1:specs$endog){ # Accounts for the reactions of the endogenous variables
 
-                             # Find optimal lag length and select matrices from lists accordingly
+                             # Find optimal lag length
                              n_obs           <- nrow(y_nl[[1]]) - h + 1 # Number of observations for model with lag one
                              val_criterion   <- lpirfs::get_vals_lagcrit(y_nl, x_nl, lag_crit, h, k,
                                                                          specs$max_lags, n_obs)

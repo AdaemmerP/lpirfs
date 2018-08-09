@@ -553,7 +553,7 @@ lp_nl <- function(endog_data,
          for (h in 1:specs$hor){      # Accounts for the horizons
             for (k in 1:specs$endog){ # Accounts for the reactions of the endogenous variables
 
-             # Find optimal lag length and select matrices from lists accordingly
+             # Find optimal lag length
               n_obs           <- nrow(y_nl[[1]]) - h + 1 # Number of observations for model with lag one
               val_criterion   <- lpirfs::get_vals_lagcrit(y_nl, x_nl, lag_crit, h, k,
                                                           specs$max_lags, n_obs)

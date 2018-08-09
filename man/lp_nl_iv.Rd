@@ -107,7 +107,8 @@ function (see Auerbach and Gorodnichenko, 2012).
                                                     # Anuual data    = 6.25
                                                     # Quarterly data = 1600
                                                     # Monthly data   = 129,600
-                           gamma             = 3)
+                           gamma             = 3,
+                           num_cores         = NULL)
 
 # Make and save plots
  plots_nl_iv <- plot_nl(results_nl_iv)
