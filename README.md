@@ -22,7 +22,7 @@ local projections by [Jordà
   - Estimates linear and nonlinear impulse responses with local
     projections.
   - Estimates linear and nonlinear impulse responses with local
-    projections and instrument variable (development version).
+    projections and instrument variables (development version).
   - Functions to plot linear and nonlinear impulse responses.
   - Functions are partly implemented in *Rcpp* and *RcppArmadillo* to
     improve efficiency.
@@ -95,7 +95,7 @@ I am thankful to Òscar
 [Jordà](https://sites.google.com/site/oscarjorda/) for encouraging
 comments and helpful suggestions. I am also indebted to Sarah
 [Zubairy](https://sites.google.com/site/sarahzubairy/) for providing the
-Matlab code before the publication of this
+Matlab code before the publication of their
 [paper](https://www.journals.uchicago.edu/doi/10.1086/696277).
 
 I greatly benefit from the profound *R*, *Rcpp* and *GitHub* knowledge
@@ -108,8 +108,7 @@ All remaining errors are obviously mine.
 
 ## Development
 
-I am grateful for helpful comments and suggestions on the package. I
-intend to further extend it with functions that
+I intend to further extend the package with functions that
 
   - allow to manually identify the linear combinations of the reduced
     form residuals,
