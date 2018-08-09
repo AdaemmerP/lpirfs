@@ -23,9 +23,7 @@ get_mat_chol  <- function(y_lin, x_lin, endog_data, specs){
                                 } else {
 ################################################################################
 
- # Estimate lag criteria with VARselect from vars package
-
-
+ # Estimate lag criteria
   lag_criterion <- get_var_lagcrit(endog_data, specs = specs)
 
   if (specs$lags_criterion == 'AICc'){
