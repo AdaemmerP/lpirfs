@@ -4,14 +4,14 @@
 \alias{get_mat_chol}
 \title{Compute structural shock matrix via Cholesky decomposition}
 \usage{
-get_mat_chol(y_lin, x_lin, data_set_df, specs)
+get_mat_chol(y_lin, x_lin, endog_data, specs)
 }
 \arguments{
 \item{y_lin}{A matrix with all endogenous variables.}
 
 \item{x_lin}{A matrix with lagged endogenous variables.}
 
-\item{data_set_df}{A \link{data.frame}() with all endogenous variables.}
+\item{endog_data}{A \link{data.frame} with all endogenous variables.}
 
 \item{specs}{A list with specifications from \link{lp_lin} or \link{lp_nl}.}
 }

@@ -127,6 +127,9 @@ data are separated into two states via a smooth transition function (see Auerbac
                                 use_hp          = 1L,
                                 lambda          = 1600,
                                 gamma           = 3,
+                                exog_data       = NULL,
+                                lags_exog       = NULL,
+                                contemp_data    = NULL,
                                 num_cores       = NULL)
 
 # Make and save all plots
@@ -186,6 +189,7 @@ data are separated into two states via a smooth transition function (see Auerbac
                           gamma           = 3,
                           exog_data       = exog_data,
                           lags_exog       = 3,
+                          contemp_data    = NULL,
                           num_cores       = NULL)
 
 # Make and save all plots

@@ -38,7 +38,6 @@
 #'@seealso \url{https://adaemmerp.github.io/lpirfs/README_docs.html}
 #'
 #'@return A list with:
-#'
 #'\item{irf_s1_mean}{A \link{matrix} containing the impulse responses of the first regime.
 #'                    The row in each matrix denotes the responses of the \emph{ith}
 #'                    variable to the instrument shock. The columns are the horizons.}
@@ -456,7 +455,7 @@ lp_nl_iv <- function(endog_data,
                            for (k in 1:specs$endog){ # Accounts for the reactions of the endogenous variables
 
                              # Find optimal lag length and select matrices from lists accordingly
-                             n_obs           <- nrow(endog_data) - h # Number of maximum observations
+                             n_obs           <- nrow(y_nl[[1]]) - h + 1 # Number of observations for model with lag one
                              val_criterion   <- lpirfs::get_vals_lagcrit(y_nl, x_nl, lag_crit, h, k,
                                                                          specs$max_lags, n_obs)
 

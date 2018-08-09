@@ -123,7 +123,7 @@ Compute linear impulse responses with local projections by Jordà (2005).
 
 # Estimate linear model
   results_lin <- lp_lin(endog_data,
-                               lags_endog_lin       = 4,
+                               lags_endog_lin = 4,
                                lags_criterion = NaN,
                                max_lags       = NaN,
                                trend          = 0L,

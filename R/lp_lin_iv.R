@@ -373,7 +373,7 @@ if(is.nan(specs$lags_criterion) == TRUE){
                           for (k in 1:specs$endog){ # Accounts for endogenous reactions
 
                             # Find optimal lags
-                            n_obs         <- nrow(endog_data) - h  # Number of maximum observations
+                            n_obs           <- nrow(y_lin[[1]]) - h + 1 # Number of observations for model with lag one
                             val_criterion <- lpirfs::get_vals_lagcrit(y_lin, x_lin, lag_crit, h, k,
                                                                       specs$max_lags, n_obs)
 

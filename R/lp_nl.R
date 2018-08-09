@@ -128,6 +128,9 @@
 #'                                 use_hp          = 1L,
 #'                                 lambda          = 1600,
 #'                                 gamma           = 3,
+#'                                 exog_data       = NULL,
+#'                                 lags_exog       = NULL,
+#'                                 contemp_data    = NULL,
 #'                                 num_cores       = NULL)
 #'
 #'# Make and save all plots
@@ -187,6 +190,7 @@
 #'                           gamma           = 3,
 #'                           exog_data       = exog_data,
 #'                           lags_exog       = 3,
+#'                           contemp_data    = NULL,
 #'                           num_cores       = NULL)
 #'
 #'# Make and save all plots
@@ -206,8 +210,8 @@
 #' @author Philipp Adämmer
 #'
 lp_nl <- function(endog_data,
-                               lags_endog_lin       = NULL,
-                               lags_endog_nl        = NULL,
+                               lags_endog_lin = NULL,
+                               lags_endog_nl  = NULL,
                                lags_criterion = NULL,
                                max_lags       = NULL,
                                trend          = NULL,
@@ -227,8 +231,8 @@ lp_nl <- function(endog_data,
     specs <- list()
 
   # Specify inputs
-    specs$lags_endog_lin       <- lags_endog_lin
-    specs$lags_endog_nl        <- lags_endog_nl
+    specs$lags_endog_lin <- lags_endog_lin
+    specs$lags_endog_nl  <- lags_endog_nl
     specs$lags_criterion <- lags_criterion
     specs$max_lags       <- max_lags
     specs$trend          <- trend
@@ -550,7 +554,7 @@ lp_nl <- function(endog_data,
             for (k in 1:specs$endog){ # Accounts for the reactions of the endogenous variables
 
              # Find optimal lag length and select matrices from lists accordingly
-              n_obs           <- nrow(endog_data) - h # Number of maximum observations
+              n_obs           <- nrow(y_nl[[1]]) - h + 1 # Number of observations for model with lag one
               val_criterion   <- lpirfs::get_vals_lagcrit(y_nl, x_nl, lag_crit, h, k,
                                                           specs$max_lags, n_obs)
 

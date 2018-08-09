@@ -93,12 +93,11 @@ for (ii in 1:max_lags) {
   ll <- -(n/2)*log(sigma_det) - (n/2)*log(2*pi)*K - n/2*K
 
 
-# Count number of parameters to  estimate
+# Count number of parameters to estimate
   tp  <- m*K^2                 + # endogenous parameters
-         (m*K*(m*K + 1)/2)     + # number of var and cov for endogenous variables
          num_exog*lags_exog*K  + # number of exogenous parameters
          num_contemp*K         + # number of contemporeaneous parameters
-         K_cte                   # constant, trend and trend^2
+         K_cte*K                 # constant, trend and trend^2
 
 # Estimate AIC
   lagcrit_vals[ii, 2] <- -2*(ll) + 2*tp

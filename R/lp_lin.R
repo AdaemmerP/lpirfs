@@ -119,7 +119,7 @@
 #'
 #'# Estimate linear model
 #'   results_lin <- lp_lin(endog_data,
-#'                                lags_endog_lin       = 4,
+#'                                lags_endog_lin = 4,
 #'                                lags_criterion = NaN,
 #'                                max_lags       = NaN,
 #'                                trend          = 0L,
@@ -144,7 +144,7 @@
 #'
 #'  }
 lp_lin <- function(endog_data,
-                        lags_endog_lin       = NULL,
+                        lags_endog_lin = NULL,
                         lags_criterion = NULL,
                         max_lags       = NULL,
                         trend          = NULL,
@@ -160,7 +160,7 @@ lp_lin <- function(endog_data,
     specs <- list()
 
   # Specify inputs
-    specs$lags_endog_lin       <- lags_endog_lin
+    specs$lags_endog_lin <- lags_endog_lin
     specs$lags_criterion <- lags_criterion
     specs$max_lags       <- max_lags
     specs$trend          <- trend
@@ -396,7 +396,7 @@ lp_lin <- function(endog_data,
       for (k in 1:specs$endog){ # Accounts for endogenous reactions
 
         # Find optimal lags
-         n_obs         <- nrow(endog_data) - h  # Number of maximum observations
+         n_obs         <- nrow(y_lin[[1]]) - h + 1 # Number of observations for model with lag one
          val_criterion <- lpirfs::get_vals_lagcrit(y_lin, x_lin, lag_crit, h, k,
                                                    specs$max_lags, n_obs)
 
