@@ -24,12 +24,12 @@ Load library:
 
 Load data from package to estimate a simple, new-Keynesian, closed-economy 
 model. These data are used by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) in chapter IV, p. 174. 
-See the data's help file in the package or the [paper](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) for a detailed description. 
+See the data's help file in the package or the [paper](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) for a detailed description on the data. 
 ```{r, message = FALSE }
   endog_data <- interest_rules_var_data
 ```
 
-Estimate linear impulse responses with the package function *lp_lin*. Note that the endogenous and exogenous data have to be 
+Estimate linear impulse responses with function *lp_lin*. Note that the endogenous and exogenous data have to be 
 a data.frame. 
 ```{r, message = FALSE }  
 results_lin <- lp_lin(endog_data, 
@@ -48,7 +48,7 @@ results_lin <- lp_lin(endog_data,
                                                   # automatically    
 ```
 
-Create plots for impulse responses of linear model with package function *plot_lin*.
+Create plots for impulse responses of linear model with function *plot_lin*.
 ```{r, message = FALSE }
   linear_plots <- plot_lin(results_lin)
 ```
@@ -65,6 +65,7 @@ Display single impulse responses:
 Display all plots (compare with Figure 5 in Jordà (2005), p. 176):
 ```{r, fig.height = 6, fig.width = 8, fig.align = "center", message = FALSE }  
 # Load libraries to plot all impulse responses
+# The package does not depend on those packages so they have to be installed
   library(ggpubr)
   library(gridExtra)
 
@@ -77,7 +78,7 @@ Display all plots (compare with Figure 5 in Jordà (2005), p. 176):
 
 Load data set from package to estimate a nonlinear, new-Keynesian, closed-economy 
 model. These data are used by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) in chapter IV, p.176. 
-See the data's help file or the [paper](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) for a detailed description. 
+See the data's help file or the [paper](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) for a detailed description on the data. 
 ```{r, message = FALSE }
   endog_data <- interest_rules_var_data
 ```
@@ -179,11 +180,11 @@ Plot transition function.
     xlab("Date") +
     scale_x_date(date_breaks = "5 year",  date_labels = "%Y")
 ```
-Note that values close to one correspond to low inflation rates (regime 2) and values close
+Note that values close to one correspond to periods of low inflation rates (regime 2) and values close
 zero correspond to periods of high inflation rates (regime 1).
 
 
-Create and save all plots with package function *plot_nl_irfs*
+Create and save all plots with function *plot_nl*
 ```{r, message = FALSE }
     nl_plots <- plot_nl(results_nl)
 ```
@@ -194,6 +195,7 @@ Show single impulse responses for each regime:
 - The second plot shows the response of the first variable (GDP_gap) to a shock in the second variable (Inflation) in regime 2. 
 ```{r, fig.height = 2.5, fig.width = 3, fig.align = "center", message = FALSE }
 # Load packages
+# The package does not depend on those packages so they have to be installed
   library(ggpubr)
   library(gridExtra)
 
@@ -228,7 +230,7 @@ Load data which is included in the package and taken from [RZ-18](https://www.jo
  sample_start      <- 8
  sample_end        <- dim(ag_data)[1]
  
-# Endogenous data
+# Endogenous variables
  endog_data        <- ag_data[sample_start:sample_end,3:5]
  
 # Shock variable ('Instrument') 
@@ -305,19 +307,19 @@ Load data
 The shock variable ('instrument') is created by RZ-18 and available as supplementary data
 to their paper. The government spending shock is included in the package.
 ```{r, message = FALSE }
-  shock            <- as.data.frame(ag_data$Gov_shock_mean[sample_start:sample_end])
+ shock            <- as.data.frame(ag_data$Gov_shock_mean[sample_start:sample_end])
 ```
 
 AG-12 include four lags of the 7-quarter moving average growth rate
 as exogenous regressors in their model (see RZ-18).
 ```{r, message = FALSE }
-  exog_data        <- as.data.frame(ag_data$GDP_MA[sample_start:sample_end])
+ exog_data        <- as.data.frame(ag_data$GDP_MA[sample_start:sample_end])
 ```
 
 AG-12 use the 7-quarter moving average growth rate as switching variable.
 They adjust it to have suffiently long recession periods.
 ```{r, message = FALSE }
-  switching_variable <- as.data.frame(ag_data$GDP_MA[sample_start:sample_end]) - 0.8
+ switching_variable <- as.data.frame(ag_data$GDP_MA[sample_start:sample_end]) - 0.8
 ```
 
 
@@ -337,7 +339,7 @@ Estimate nonlinear model
                            confint           = 1.96,
                            hor               = 20,
                            switching         = switching_variable,
-                           use_hp            = 0,
+                           use_hp            = FALSE,
                            lambda            = NaN,
                            gamma             = 3)
 
