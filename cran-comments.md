@@ -5,8 +5,7 @@
   The previous version (0.1.1) chooses lags based on linear instead of 
   nonlinear data.
 
-* The dependency on the *vars* package is gone as I wrote my own function to estimate
-  'AICc', 'AIC' and 'BIC'. 
+* Removed the dependency on the *vars* package. 
 
 * *lp_lin()* and *lp_nl()* now allow to include exogenous variables and exogenous variables
   with contemporaneous impact. 
@@ -31,7 +30,7 @@ function | old input name | new input name
 * local x86_64-pc-linux-gnu (64-bit), R version 3.5.1
 * ubuntu 14.04.5 (on travis-ci),      R version 3.4.4, R-oldrel, R-devel.
 * win-builder 
-* rhub (also checked for Oracle Solaris)
+* rhub (for Oracle Solaris)
 
 ## Check results
 There was 1 reoccurring NOTE:

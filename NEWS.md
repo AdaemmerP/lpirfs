@@ -5,7 +5,7 @@
   The previous version (0.1.1) chooses lags based on linear instead of 
   nonlinear data.
 
-* The dependency on the *vars* package is gone as I wrote my own function to estimate
+* The dependency on the *vars* package is obsolete as I wrote my own function to estimate
   'AICc', 'AIC' and 'BIC'. 
 
 * *lp_lin()* and *lp_nl()* now allow to include exogenous variables and exogenous variables
