@@ -236,7 +236,7 @@ lp_lin_iv <- function(endog_data,
 
   # Specify inputs
   specs$instr              <- instr
-  specs$lags_endog_lin           <- lags_endog_lin
+  specs$lags_endog_lin     <- lags_endog_lin
   specs$exog_data          <- exog_data
   specs$lags_exog          <- lags_exog
   specs$contemp_data       <- contemp_data
@@ -307,6 +307,10 @@ if(is.nan(specs$lags_criterion) == TRUE){
                           # Create data
                           yy  <-   y_lin[h : dim(y_lin)[1], ]
                           xx  <-   x_lin[1 : (dim(x_lin)[1] - h + 1), ]
+
+                          if(!is.matrix(xx)){
+                          xx  <- as.matrix(xx)
+                          }
 
                           for (k in 1:specs$endog){ # Accounts for the reactions of the endogenous variables
 
@@ -411,3 +415,4 @@ parallel::stopCluster(cl)
 list(irf_lin_mean = irf_lin_mean, irf_lin_low = irf_lin_low,
      irf_lin_up   = irf_lin_up, specs = specs)
 }
+

@@ -17,8 +17,12 @@ create_lin_data     <- function(specs, endog_data){
     # Data for endogenous variables
     y_lin <- endog_data
 
-    # Make exogenous lagged data
-    x_lin <- create_lags(endog_data, specs$lags_endog_lin)
+    # Make exogenous lagged data and check, whether lag length is zero
+    if(specs$lags_endog_lin == 0){
+      x_lin <- data.frame(x = rep(0, nrow(endog_data)))
+              } else {
+      x_lin <- create_lags(endog_data, specs$lags_endog_lin)
+      }
 
     # Check whether model type is 'iv'.
     # 0 = Normal model, 1 = IV model
@@ -28,7 +32,7 @@ create_lin_data     <- function(specs, endog_data){
     colnames(instrum) <- 'instrum'
     instrum_names     <- colnames(instrum)
     x_lin             <- cbind(instrum, x_lin)
-             } else {}
+             }
 
     # Include no trend, trend or quadratic trend
     if (specs$trend == 0){
@@ -74,6 +78,8 @@ create_lin_data     <- function(specs, endog_data){
       yx_all    <- cbind(y_lin, x_lin) %>%
                    stats::na.omit()
 
+      yx_all    <- yx_all[, !(colSums(yx_all) == 0)]
+
 
       y_lin     <- yx_all[, 1:ncol(endog_data)]  %>%
                    as.matrix()
@@ -98,8 +104,7 @@ create_lin_data     <- function(specs, endog_data){
     # Make lag data based on max lag lengths
     for(i in 1:specs$max_lags){
 
-      x_lin   <-  (create_lags(endog_data, i))# %>%
-                  #as.data.frame()
+      x_lin   <-  (create_lags(endog_data, i))
 
 
       if(specs$model_type == 1){
@@ -112,21 +117,18 @@ create_lin_data     <- function(specs, endog_data){
      # Include no trend, trend or quadratic trend
         if (specs$trend == 0){
 
-        x_lin          <-   x_lin    #%>%
-                            #as.matrix()
+        x_lin          <-   x_lin
 
                 } else if  (specs$trend == 1){
 
         x_lin          <-   x_lin                                %>%
-                            dplyr::mutate(trend = row_number())  #%>%
-                            #as.matrix()
+                            dplyr::mutate(trend = row_number())
 
-                  } else {
+                 } else {
 
         x_lin          <-   x_lin                                %>%
                             dplyr::mutate(trend = row_number())  %>%
-                            dplyr::mutate(sq_trend = trend^2)    #%>%
-                            #as.matrix()
+                            dplyr::mutate(sq_trend = trend^2)
         }
 
 
