@@ -17,7 +17,7 @@ get_vals_switching(switching_data, specs)
 \description{
 Computes transition values by using a smooth transition function as
 used in Auerbach and Gorodnichenko (2012). The time series used in the transition function
-can be de-trended via the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013).
+can be detrended via the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013).
 }
 \references{
 Auerbach, A. J., and  Gorodnichenko Y. (2012). "Measuring the Output Responses to Fiscal Policy."

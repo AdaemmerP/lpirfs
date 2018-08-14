@@ -7,7 +7,7 @@
 lp_lin_iv(endog_data, instr = NULL, lags_endog_lin = NULL,
   exog_data = NULL, lags_exog = NULL, contemp_data = NULL,
   lags_criterion = NaN, max_lags = NaN, trend = NULL,
-  shock_type = NULL, confint = NULL, hor = NULL, num_cores = NULL)
+  confint = NULL, hor = NULL, num_cores = NULL)
 }
 \arguments{
 \item{endog_data}{A \link{data.frame}, containing the dependent variables.}
@@ -15,9 +15,10 @@ lp_lin_iv(endog_data, instr = NULL, lags_endog_lin = NULL,
 \item{instr}{One column \link{data.frame} including the values of the instrument to shock with.
 The row length has to be the same as \emph{endog_data}.}
 
-\item{lags_endog_lin}{NaN or integer. NaN if lag length criterion is used. Integer for number of lags for \emph{endog_data}.}
+\item{lags_endog_lin}{NaN or integer. NaN if lags are chosen by lag length criterion. Integer for number of lags for \emph{endog_data}.}
 
-\item{exog_data}{NULL or a \link{data.frame}, containing exogenous data. The row length has to be the same as \emph{endog_data}.}
+\item{exog_data}{A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
+Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.}
 
 \item{lags_exog}{NULL or Integer. Integer for the number of lags for the exogenous data.}
 
@@ -31,22 +32,20 @@ will be given at \emph{lags_endog_lin}. The character refers to the correspondin
 
 \item{trend}{Integer. No trend =  0 , include trend = 1, include trend and quadratic trend = 2.}
 
-\item{shock_type}{Integer. Standard deviation shock = 0, unit shock = 1.}
-
 \item{confint}{Double. Width of confidence bands. 68\% = 1, 90\% = 1.65, 95\% = 1.96.}
 
 \item{hor}{Integer. Number of horizons for impulse responses.}
 
 \item{num_cores}{NULL or Integer. The number of cores to use for the estimation. If NULL, the function will
-use the maximum number of cores less one.}
+use the maximum number of cores minus one.}
 }
 \value{
-A list:
+A list containing:
 
 
 
 \item{irf_lin_mean}{A \link{matrix} containing the impulse responses.
-                   The row in each matrix denotes the responses of the \emph{ith}
+                   The row in each matrix denotes the response of the \emph{ith}
                    variable to the (instrument) shock. The columns are the horizons.}
 
 \item{irf_lin_low}{A \link{matrix} containing all lower confidence bands of
@@ -58,7 +57,7 @@ A list:
                    Properties are equal to \emph{irf_lin_mean}.}
 
 \item{specs}{A list with properties of \emph{endog_data} for the plot function. It also contains
-            lagged data (y_lin and x_lin) used for the estimations.}
+            lagged data (y_lin and x_lin) used for the estimations of the irfs.}
 }
 \description{
 Compute linear impulse responses with local projections by Jordà (2005) and identified shock, i.e.
@@ -91,7 +90,6 @@ instrument variable approach (see e.g. Ramey and Zubairy, 2018).
                                lags_criterion = NaN,
                                max_lags       = NaN,
                                trend          = 0,
-                               shock_type     = 1,
                                confint        = 1.96,
                                hor            = 20,
                                num_cores      = NULL)
@@ -101,9 +99,9 @@ instrument variable approach (see e.g. Ramey and Zubairy, 2018).
  iv_lin_plots    <- plot_lin(results_lin_iv)
 
 # * The first element of 'iv_lin_plots' shows the response of the first
-#   variable (Gov) to a shock in the chosen 'instrument' (Gov).
+#   variable (Gov) to the chosen (instrument-)shock (here Gov).
 # * The second element of 'iv_lin_plots' shows the response of the second
-#   variable (Tax) to a shock in the 'instrument' (Gov).
+#   variable (Tax) to the chosen (instrument-)shock (Gov).
 # * ...
 
 # This plot replicates the left plot in the mid-panel of Figure 12 in the
@@ -132,10 +130,10 @@ Hurvich, C. M., and  Tsai, C.-L. (1989), "Regression and time series model selec
 Jordà, Ò. (2005). "Estimation and Inference of Impulse Responses by Local Projections."
 \emph{American Economic Review}, 95 (1): 161-182.
 
-Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
+Newey, W.K., and West, K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
 Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55: 703–708.
 
-Ramey, V.A., Zubairy, S. (2018). "Government Spending Multipliers in Good Times
+Ramey, V.A.,and Zubairy, S. (2018). "Government Spending Multipliers in Good Times
 and in Bad: Evidence from US Historical Data." \emph{Journal of Political Economy},
 126(2): 850 - 901.
 

@@ -17,7 +17,8 @@ Compute and display (nonlinear) impulse responses estimated with \link{lp_nl}.
 }
 \examples{
 \donttest{
-# Load package
+
+# This function is deprecated. See plot_nl() instead.
 
 
  }

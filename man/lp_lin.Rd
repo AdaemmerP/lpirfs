@@ -18,7 +18,7 @@ is used for the Cholesky decomposition.}
 \item{lags_criterion}{NaN or character. NaN means that the number of lags
 will be given at \emph{lags_endog_lin}. The character specifies the lag length criterion ('AICc', 'AIC' or 'BIC').}
 
-\item{max_lags}{NaN or integer. Maximum number of lags if \emph{lags_criterion} if lag length criterion is given. NaN otherwise.}
+\item{max_lags}{NaN or integer. Maximum number of lags if \emph{lags_criterion} is given. NaN otherwise.}
 
 \item{trend}{Integer. No trend =  0 , include trend = 1, include trend and quadratic trend = 2.}
 
@@ -29,34 +29,34 @@ will be given at \emph{lags_endog_lin}. The character specifies the lag length c
 \item{hor}{Integer. Number of horizons for impulse responses.}
 
 \item{exog_data}{A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
-A lag length for exogenous data always has to be given. It can not be chosen automatically.}
+Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.}
 
 \item{lags_exog}{Integer. Number of lags for the exogenous variables.}
 
 \item{contemp_data}{A \link{data.frame}, containing exogenous data with contemporaneous impact. The row length has to be the same as \emph{endog_data}.}
 
 \item{num_cores}{NULL or Integer. The number of cores to use for the estimation. If NULL, the function will
-use the maximum number of cores less one.}
+use the maximum number of cores minus one.}
 }
 \value{
-A list:
+A list containing:
 
 
-\item{irf_lin_mean}{A three 3D \link{array}() containing all impulse responses for all endogenous variables.
+\item{irf_lin_mean}{A three 3D \link{array} containing all impulse responses for all endogenous variables.
                    The last dimension denotes the shock variable. The row in each matrix
                    gives the responses of the \emph{ith} variable, ordered as in endog_data. The columns denote the horizons.
                    For example, if \emph{results_lin} contains the list with results, results_lin$irf_lin_mean[, , 1] returns a KXH matrix,
                    where K is the number of variables and H the number of horizons. '1' is the shock variable, corresponding to the
                   first variable in \emph{endog_data}.}
 
-\item{irf_lin_low}{A three 3D \link{array}() containing all lower confidence bands of the responses,
+\item{irf_lin_low}{A three 3D \link{array} containing all lower confidence bands of the responses,
                    based on robust standard errors by Newey and West (1987). Properties are equal to irf_lin_mean.}
 
-\item{irf_lin_up}{A three 3D \link{array}() containing all upper confidence bands of the responses,
+\item{irf_lin_up}{A three 3D \link{array} containing all upper confidence bands of the responses,
                    based on robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_lin_mean}.}
 
 \item{specs}{A list with properties of \emph{endog_data} for the plot function. It also contains
-            lagged data (y_lin and x_lin) used for the estimations.}
+            lagged data (y_lin and x_lin) used for the irf estimations.}
 }
 \description{
 Compute linear impulse responses with local projections by Jordà (2005).
@@ -113,7 +113,7 @@ Compute linear impulse responses with local projections by Jordà (2005).
 # Load (endogenous) data
  endog_data <- interest_rules_var_data
 
-# Create exogenous data and data with contemporaneous impact (for illustration purposes only!)
+# Create exogenous data and data with contemporaneous impact (for illustration purposes only)
  exog_data    <- endog_data$GDP_gap*endog_data$Infl*endog_data$FF + rnorm(dim(endog_data)[1])
  contemp_data <- endog_data$GDP_gap*endog_data$Infl*endog_data$FF + rnorm(dim(endog_data)[1])
 
@@ -157,7 +157,7 @@ Hurvich, C. M., and Tsai, C.-L. (1989), "Regression and time series model select
 Jordà, Ò. (2005). "Estimation and Inference of Impulse Responses by Local Projections."
 \emph{American Economic Review}, 95 (1): 161-182.
 
-Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
+Newey, W.K., and West, K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
 Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55: 703–708.
 
 Schwarz, Gideon E. (1978). "Estimating the dimension of a model", \emph{Annals of Statistics}, 6 (2): 461–464.
