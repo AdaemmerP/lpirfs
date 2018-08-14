@@ -24,8 +24,12 @@ create_nl_data <- function(specs, endog_data){
     y_nl    <- endog_data
 
     # Make exogenous lagged data
-    x_nl    <- create_lags(endog_data, specs$lags_endog_nl)
-
+   # x_nl    <- create_lags(endog_data, specs$lags_endog_nl)
+    if(specs$lags_endog_nl == 0){
+      x_nl <- data.frame(x = rep(0, nrow(endog_data)))
+                 } else {
+      x_nl <- create_lags(endog_data, specs$lags_endog_nl)
+    }
 
     # Save names of exogenous variables
     linear_names <- names(x_nl)
@@ -108,17 +112,18 @@ create_nl_data <- function(specs, endog_data){
 
 
     # Combine endogenous and exogenous data
-    yx_all    <-  cbind(y_nl, fz, x_nl) %>%
-                                      stats::na.omit()
+    yx_all    <- cbind(y_nl, fz, x_nl) %>%
+                 stats::na.omit()
 
+    yx_all    <- yx_all[, !(colSums(yx_all) == 0)]
 
-    y_nl      <-  yx_all[, 1:ncol(endog_data)]  %>%
-                                                as.matrix()
+    y_nl      <- yx_all[, 1:ncol(endog_data)]  %>%
+                 as.matrix()
 
     fz        <- yx_all[, (1 + ncol(endog_data))]
 
-    x_nl      <-  yx_all[, (2 + ncol(endog_data)): dim(yx_all)[2]]   %>%
-                                                 as.matrix()
+    x_nl      <- yx_all[, (2 + ncol(endog_data)): dim(yx_all)[2]]   %>%
+                 as.matrix()
 
 
 

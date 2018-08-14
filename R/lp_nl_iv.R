@@ -131,7 +131,7 @@
 #'                            switching         = switching_variable,
 #'                            use_hp            = 0,
 #'                            lambda            = NaN, # Ravn and Uhlig (2002):
-#'                                                     # Anuual data    = 6.25
+#'                                                     # Annual data    = 6.25
 #'                                                     # Quarterly data = 1600
 #'                                                     # Monthly data   = 129,600
 #'                            gamma             = 3,
