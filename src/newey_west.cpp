@@ -11,7 +11,7 @@ using namespace Rcpp;
 //' the covariance matrix of the parameters.
 //' @keywords internal
 //' @references
-//' Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
+//' Newey, W.K., and West, K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
 //' Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–708.
 // [[Rcpp::export]]
 List newey_west(NumericVector y, NumericMatrix x, int h){

@@ -39,7 +39,7 @@ using namespace Rcpp;
 //'
 //'}
 //' @references
-//' Hodrick, R.J., and Prescott, E. C. Prescott (1997). "Postwar U.S. Business Cycles: An Empirical Investigation."
+//' Hodrick, R.J., and Prescott, E. C. (1997). "Postwar U.S. Business Cycles: An Empirical Investigation."
 //' \emph{Journal of Money, Credit and Banking}, 29(1), 1-16.
 //'
 //' Ravn, M.O., Uhlig, H. (2002). "On Adjusting the Hodrick-Prescott Filter for the Frequency of Observations."
