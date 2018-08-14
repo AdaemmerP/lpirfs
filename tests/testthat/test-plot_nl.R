@@ -62,7 +62,6 @@ test_that("Check whether list length is consistent number of endogenous variable
                                          lags_criterion    = NaN,
                                          max_lags          = NaN,
                                          trend             = 0,
-                                         shock_type        = 1,
                                          confint           = 1.96,
                                          hor               = 20,
                                          switching         = switching_variable,

@@ -29,7 +29,6 @@ context("check_input_lp_nl_iv")
                               lags_criterion    = NaN,
                               max_lags          = NaN,
                               trend             = 0,
-                              shock_type        = 1,
                               confint           = 1.96,
                               hor               = 20,
                               switching         = switching_variable,
@@ -51,7 +50,6 @@ context("check_input_lp_nl_iv")
                           lags_criterion    = NaN,
                           max_lags          = NaN,
                           trend             = NULL,
-                          shock_type        = 1,
                           confint           = 1.96,
                           hor               = 20,
                           switching         = switching_variable,
@@ -62,26 +60,6 @@ context("check_input_lp_nl_iv")
                  'Please specify whether and which type of trend to include.', fixed = TRUE)
   })
 
-  test_that("Check whether shock type is given", {
-    expect_error(lp_nl_iv(endog_data,
-                          lags_endog_nl           = 3,
-                          instr             = instrument,
-                          exog_data         = NULL,
-                          lags_exog         = NULL,
-                          contemp_data      = NULL,
-                          lags_criterion    = NaN,
-                          max_lags          = NaN,
-                          trend             = 0,
-                          shock_type        = NULL,
-                          confint           = 1.96,
-                          hor               = 20,
-                          switching         = switching_variable,
-                          use_hp            = 0,
-                          lambda            = NaN,
-                          gamma             = 3,
-                          num_cores         = 1),
-                 'Please specify which type of shock to use.', fixed = TRUE)
-  })
 
 
   test_that("Check whether switching variable is given", {
@@ -94,7 +72,6 @@ context("check_input_lp_nl_iv")
                           lags_criterion    = NaN,
                           max_lags          = NaN,
                           trend             = 0,
-                          shock_type        = 0,
                           confint           = 1.96,
                           hor               = 20,
                           switching         = NULL,
@@ -116,7 +93,6 @@ context("check_input_lp_nl_iv")
                           lags_criterion    = NaN,
                           max_lags          = NaN,
                           trend             = 0,
-                          shock_type        = 0,
                           confint           = 1.96,
                           hor               = 20,
                           switching         = switching_variable,
@@ -138,7 +114,6 @@ context("check_input_lp_nl_iv")
                           lags_criterion    = NaN,
                           max_lags          = NaN,
                           trend             = 0,
-                          shock_type        = 0,
                           confint           = 1.96,
                           hor               = 20,
                           switching         = switching_variable,
@@ -160,7 +135,6 @@ context("check_input_lp_nl_iv")
                           lags_criterion    = NaN,
                           max_lags          = NaN,
                           trend             = 0,
-                          shock_type        = 0,
                           confint           = 1.96,
                           hor               = 20,
                           switching         = switching_variable,
@@ -182,7 +156,6 @@ context("check_input_lp_nl_iv")
                           lags_criterion    = NaN,
                           max_lags          = NaN,
                           trend             = 0,
-                          shock_type        = 0,
                           confint           = NULL,
                           hor               = 20,
                           switching         = switching_variable,
@@ -203,7 +176,6 @@ context("check_input_lp_nl_iv")
                           lags_criterion    = NaN,
                           max_lags          = NaN,
                           trend             = 0,
-                          shock_type        = 0,
                           confint           = 2,
                           hor               = NULL,
                           switching         = switching_variable,
@@ -224,7 +196,6 @@ context("check_input_lp_nl_iv")
                           lags_criterion    = 'AIP',
                           max_lags          = 4,
                           trend             = 0,
-                          shock_type        = 0,
                           confint           = 2,
                           hor               = 20,
                           switching         = switching_variable,
@@ -246,7 +217,6 @@ context("check_input_lp_nl_iv")
                           lags_criterion    = 'AIC',
                           max_lags          = NULL,
                           trend             = 0,
-                          shock_type        = 0,
                           confint           = 2,
                           hor               = 20,
                           switching         = switching_variable,
@@ -268,7 +238,6 @@ context("check_input_lp_nl_iv")
                           lags_criterion    = 'AIC',
                           max_lags          = NaN,
                           trend             = 0,
-                          shock_type        = 0,
                           confint           = 2,
                           hor               = 20,
                           switching         = switching_variable,
@@ -289,7 +258,6 @@ context("check_input_lp_nl_iv")
                           lags_criterion    = 'AIC',
                           max_lags          = 4,
                           trend             = 0,
-                          shock_type        = 0,
                           confint           = 2,
                           hor               = -1,
                           switching         = switching_variable,
@@ -311,7 +279,6 @@ context("check_input_lp_nl_iv")
                           lags_criterion    = 'AIC',
                           max_lags          = 4,
                           trend             = -1,
-                          shock_type        = 0,
                           confint           = 2,
                           hor               = 12,
                           switching         = switching_variable,
@@ -324,27 +291,6 @@ context("check_input_lp_nl_iv")
 
 
 
-  test_that("Check whether shock type is correctly specified", {
-    expect_error(lp_nl_iv(endog_data,
-                          lags_endog_nl           = NaN,
-                          instr             = instrument,
-                          exog_data         = NULL,
-                          lags_exog         = NULL,
-                          contemp_data      = NULL,
-                          lags_criterion    = 'AIC',
-                          max_lags          = 4,
-                          trend             = 1,
-                          shock_type        = 5,
-                          confint           = 2,
-                          hor               = 12,
-                          switching         = switching_variable,
-                          use_hp            = TRUE,
-                          lambda            = 1600,
-                          gamma             = 3,
-                          num_cores         = 1),
-                 'The shock_type has to be 0 = standard deviation shock or 1 = unit shock.', fixed = TRUE)
-  })
-
   test_that("Check whether width of confidence bands is correctly specified", {
     expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = NaN,
@@ -355,7 +301,6 @@ context("check_input_lp_nl_iv")
                           lags_criterion    = 'AIC',
                           max_lags          = 4,
                           trend             = 1,
-                          shock_type        = 1,
                           confint           = -2,
                           hor               = 12,
                           switching         = switching_variable,
@@ -377,7 +322,6 @@ context("check_input_lp_nl_iv")
                           lags_criterion    = 'AIC',
                           max_lags          = 4,
                           trend             = 1,
-                          shock_type        = 1,
                           confint           = 2,
                           hor               = 12,
                           switching         = switching_variable,
@@ -425,7 +369,7 @@ context("check_input_lp_nl_iv")
 test_that("Compare results with RZ-2018", {
   # Estimate local projections
   results_nl_iv <- lp_nl_iv(endog_data,
-                            lags_endog_nl           = 3,
+                            lags_endog_nl     = 3,
                             instr             = instrument,
                             exog_data         = exog_data,
                             lags_exog         = 4,
@@ -433,7 +377,6 @@ test_that("Compare results with RZ-2018", {
                             lags_criterion    = NaN,
                             max_lags          = NaN,
                             trend             = 0,
-                            shock_type        = 1,
                             confint           = 1.96,
                             hor               = 20,
                             switching         = switching_variable,
