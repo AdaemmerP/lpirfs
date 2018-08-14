@@ -9,7 +9,7 @@
 #' @examples
 #'\donttest{
 #'
-#'# This function is deprecated. See \link{plot_lin}.
+#'# This function is deprecated. See plot_lin() instead.
 #'
 #'
 #'

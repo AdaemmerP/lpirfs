@@ -7,38 +7,38 @@
 #' @param lags_criterion NaN or character. NaN means that the number of lags
 #'         will be given at \emph{lags_endog_lin}. The character specifies the lag length criterion ('AICc', 'AIC' or 'BIC').
 #' @param lags_endog_lin NaN or integer. NaN if lag length criterion is used. Integer for number of lags for \emph{endog_data}.
-#' @param max_lags NaN or integer. Maximum number of lags if \emph{lags_criterion} if lag length criterion is given. NaN otherwise.
+#' @param max_lags NaN or integer. Maximum number of lags if \emph{lags_criterion} is given. NaN otherwise.
 #' @param trend Integer. No trend =  0 , include trend = 1, include trend and quadratic trend = 2.
 #' @param shock_type Integer. Standard deviation shock = 0, unit shock = 1.
 #' @param confint Double. Width of confidence bands. 68\% = 1, 90\% = 1.65, 95\% = 1.96.
 #' @param hor Integer. Number of horizons for impulse responses.
 #' @param exog_data A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
-#'                  A lag length for exogenous data always has to be given. It can not be chosen automatically.
+#'                 Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.
 #' @param lags_exog Integer. Number of lags for the exogenous variables.
 #' @param contemp_data A \link{data.frame}, containing exogenous data with contemporaneous impact. The row length has to be the same as \emph{endog_data}.
 #' @param num_cores NULL or Integer. The number of cores to use for the estimation. If NULL, the function will
-#'                 use the maximum number of cores less one.
+#'                 use the maximum number of cores minus one.
 #'
 #' @seealso \url{https://adaemmerp.github.io/lpirfs/README_docs.html}
 #'
-#' @return A list:
+#' @return A list containing:
 #'
 #'
-#'\item{irf_lin_mean}{A three 3D \link{array}() containing all impulse responses for all endogenous variables.
+#'\item{irf_lin_mean}{A three 3D \link{array} containing all impulse responses for all endogenous variables.
 #'                    The last dimension denotes the shock variable. The row in each matrix
 #'                    gives the responses of the \emph{ith} variable, ordered as in endog_data. The columns denote the horizons.
 #'                    For example, if \emph{results_lin} contains the list with results, results_lin$irf_lin_mean[, , 1] returns a KXH matrix,
 #'                    where K is the number of variables and H the number of horizons. '1' is the shock variable, corresponding to the
 #'                   first variable in \emph{endog_data}.}
 #'
-#'\item{irf_lin_low}{A three 3D \link{array}() containing all lower confidence bands of the responses,
+#'\item{irf_lin_low}{A three 3D \link{array} containing all lower confidence bands of the responses,
 #'                    based on robust standard errors by Newey and West (1987). Properties are equal to irf_lin_mean.}
 #'
-#'\item{irf_lin_up}{A three 3D \link{array}() containing all upper confidence bands of the responses,
+#'\item{irf_lin_up}{A three 3D \link{array} containing all upper confidence bands of the responses,
 #'                    based on robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_lin_mean}.}
 #'
 #'\item{specs}{A list with properties of \emph{endog_data} for the plot function. It also contains
-#'             lagged data (y_lin and x_lin) used for the estimations.}
+#'             lagged data (y_lin and x_lin) used for the irf estimations.}
 #'
 #' @export
 #' @references
@@ -50,7 +50,7 @@
 #' Jordà, Ò. (2005). "Estimation and Inference of Impulse Responses by Local Projections."
 #' \emph{American Economic Review}, 95 (1): 161-182.
 #'
-#' Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
+#' Newey, W.K., and West, K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
 #' Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55: 703–708.
 #'
 #' Schwarz, Gideon E. (1978). "Estimating the dimension of a model", \emph{Annals of Statistics}, 6 (2): 461–464.
@@ -109,7 +109,7 @@
 #'# Load (endogenous) data
 #'  endog_data <- interest_rules_var_data
 #'
-#'# Create exogenous data and data with contemporaneous impact (for illustration purposes only!)
+#'# Create exogenous data and data with contemporaneous impact (for illustration purposes only)
 #'  exog_data    <- endog_data$GDP_gap*endog_data$Infl*endog_data$FF + rnorm(dim(endog_data)[1])
 #'  contemp_data <- endog_data$GDP_gap*endog_data$Infl*endog_data$FF + rnorm(dim(endog_data)[1])
 #'
@@ -187,7 +187,7 @@ lp_lin <- function(endog_data,
 
     # Give message when no contemporaneous data is provided
     if(is.null(contemp_data)){
-      message('You estimate the model without exogenous data with contemporaneous impact')
+      message('You estimate the model without exogenous data with contemporaneous impact.')
     }
 
   # Check whether 'trend' is given
@@ -404,11 +404,11 @@ lp_lin <- function(endog_data,
          lag_choice    <- which.min(val_criterion)
 
         # Extract matrices based on optimal lag length
-         yy <- y_lin[[lag_choice]][, k]
-         yy <- yy[h: length(yy)]
+         yy            <- y_lin[[lag_choice]][, k]
+         yy            <- yy[h: length(yy)]
 
-         xx <- x_lin[[lag_choice]]
-         xx <- xx[1:(dim(xx)[1] - h + 1),]
+         xx            <- x_lin[[lag_choice]]
+         xx            <- xx[1:(dim(xx)[1] - h + 1),]
 
         # Estimate coefficients and newey west std.err
          nw_results   <- lpirfs::newey_west(yy, xx, h)

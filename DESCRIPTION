@@ -1,7 +1,7 @@
 Package: lpirfs
 Type: Package
 Title: Local Projections Impulse Response Functions
-Version: 0.1.1.9000
+Version: 0.2.1
 Authors@R: c(
             person("Philipp", "Adämmer", 
                     email   = "adaemmer@hsu-hh.de", 

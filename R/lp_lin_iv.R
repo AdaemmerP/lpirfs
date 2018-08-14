@@ -5,8 +5,9 @@
 #' @param endog_data A \link{data.frame}, containing the dependent variables.
 #' @param instr One column \link{data.frame} including the values of the instrument to shock with.
 #' The row length has to be the same as \emph{endog_data}.
-#' @param lags_endog_lin NaN or integer. NaN if lag length criterion is used. Integer for number of lags for \emph{endog_data}.
-#' @param exog_data NULL or a \link{data.frame}, containing exogenous data. The row length has to be the same as \emph{endog_data}.
+#' @param lags_endog_lin NaN or integer. NaN if lags are chosen by lag length criterion. Integer for number of lags for \emph{endog_data}.
+#' @param exog_data A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
+#'                  Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.
 #' @param lags_exog NULL or Integer. Integer for the number of lags for the exogenous data.
 #' @param contemp_data A \link{data.frame}, containing exogenous data with contemporaneous impact.
 #'                      The row length has to be the same as \emph{endog_data}.
@@ -14,20 +15,19 @@
 #'         will be given at \emph{lags_endog_lin}. The character refers to the corresponding lag length criterion ('AICc', 'AIC' or 'BIC').
 #' @param max_lags NaN or integer. Maximum number of lags if \emph{lags_criterion} is character with lag length criterion. NaN otherwise.
 #' @param trend Integer. No trend =  0 , include trend = 1, include trend and quadratic trend = 2.
-#' @param shock_type Integer. Standard deviation shock = 0, unit shock = 1.
 #' @param confint Double. Width of confidence bands. 68\% = 1, 90\% = 1.65, 95\% = 1.96.
 #' @param hor Integer. Number of horizons for impulse responses.
 #' @param num_cores NULL or Integer. The number of cores to use for the estimation. If NULL, the function will
-#'                  use the maximum number of cores less one.
+#'                  use the maximum number of cores minus one.
 #'
 #' @seealso \url{https://adaemmerp.github.io/lpirfs/README_docs.html}
 #'
-#' @return A list:
+#' @return A list containing:
 #'
 #'
 #'
 #'\item{irf_lin_mean}{A \link{matrix} containing the impulse responses.
-#'                    The row in each matrix denotes the responses of the \emph{ith}
+#'                    The row in each matrix denotes the response of the \emph{ith}
 #'                    variable to the (instrument) shock. The columns are the horizons.}
 #'
 #'\item{irf_lin_low}{A \link{matrix} containing all lower confidence bands of
@@ -39,7 +39,7 @@
 #'                    Properties are equal to \emph{irf_lin_mean}.}
 #'
 #'\item{specs}{A list with properties of \emph{endog_data} for the plot function. It also contains
-#'             lagged data (y_lin and x_lin) used for the estimations.}
+#'             lagged data (y_lin and x_lin) used for the estimations of the irfs.}
 #'
 #'
 #'
@@ -56,10 +56,10 @@
 #' Jordà, Ò. (2005). "Estimation and Inference of Impulse Responses by Local Projections."
 #' \emph{American Economic Review}, 95 (1): 161-182.
 #'
-#' Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
+#' Newey, W.K., and West, K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
 #' Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55: 703–708.
 #'
-#' Ramey, V.A., Zubairy, S. (2018). "Government Spending Multipliers in Good Times
+#' Ramey, V.A.,and Zubairy, S. (2018). "Government Spending Multipliers in Good Times
 #' and in Bad: Evidence from US Historical Data." \emph{Journal of Political Economy},
 #' 126(2): 850 - 901.
 #'
@@ -94,7 +94,6 @@
 #'                                lags_criterion = NaN,
 #'                                max_lags       = NaN,
 #'                                trend          = 0,
-#'                                shock_type     = 1,
 #'                                confint        = 1.96,
 #'                                hor            = 20,
 #'                                num_cores      = NULL)
@@ -104,9 +103,9 @@
 #'  iv_lin_plots    <- plot_lin(results_lin_iv)
 #'
 #'# * The first element of 'iv_lin_plots' shows the response of the first
-#'#   variable (Gov) to a shock in the chosen 'instrument' (Gov).
+#'#   variable (Gov) to the chosen (instrument-)shock (here Gov).
 #'# * The second element of 'iv_lin_plots' shows the response of the second
-#'#   variable (Tax) to a shock in the 'instrument' (Gov).
+#'#   variable (Tax) to the chosen (instrument-)shock (Gov).
 #'# * ...
 #'
 #'# This plot replicates the left plot in the mid-panel of Figure 12 in the
@@ -133,7 +132,6 @@ lp_lin_iv <- function(endog_data,
                    lags_criterion = NaN,
                    max_lags       = NaN,
                    trend          = NULL,
-                   shock_type     = NULL,
                    confint        = NULL,
                    hor            = NULL,
                    num_cores      = NULL){
@@ -177,7 +175,7 @@ lp_lin_iv <- function(endog_data,
 
   # Give message when no contemporaneous data is provided
   if(is.null(contemp_data)){
-    message('You estimate the model without exogenous data with contemporaneous impact')
+    message('You estimate the model without exogenous data with contemporaneous impact.')
   }
 
   # Give message when no contemporaneous data is provided
@@ -189,11 +187,6 @@ lp_lin_iv <- function(endog_data,
   # Give error when no trend is given
   if(is.null(trend)){
     stop('Please specify whether and which type of trend to include.')
-  }
-
-  # Give error when no shock_type is given
-  if(is.null(shock_type)){
-    stop('Please specify which type of shock to use.')
   }
 
 
@@ -230,10 +223,6 @@ lp_lin_iv <- function(endog_data,
     stop('For trend please enter 0 = no trend, 1 = trend, 2 = trend and quadratic trend.')
   }
 
-  # Check whether shock type is correctly specified
-  if(!(shock_type %in% c(0,1))){
-    stop('The shock_type has to be 0 = standard deviation shock or 1 = unit shock.')
-  }
 
   # Check whether width of confidence bands is >=0
   if(!(confint >=0)){
@@ -254,7 +243,6 @@ lp_lin_iv <- function(endog_data,
   specs$lags_criterion     <- lags_criterion
   specs$max_lags           <- max_lags
   specs$trend              <- trend
-  specs$shock_type         <- shock_type
   specs$confint            <- confint
   specs$hor                <- hor
   specs$model_type         <- 1
@@ -301,7 +289,7 @@ lp_lin_iv <- function(endog_data,
 
 # Make cluster
   if(is.null(num_cores)){
-    num_cores     <- min(specs$endog, parallel::detectCores() - 1)
+    num_cores    <- min(specs$endog, parallel::detectCores() - 1)
   }
 
   cl             <- parallel::makeCluster(num_cores)
@@ -373,7 +361,7 @@ if(is.nan(specs$lags_criterion) == TRUE){
                           for (k in 1:specs$endog){ # Accounts for endogenous reactions
 
                             # Find optimal lags
-                            n_obs           <- nrow(y_lin[[1]]) - h + 1 # Number of observations for model with lag one
+                            n_obs         <- nrow(y_lin[[1]]) - h + 1 # Number of observations for model with lag one
                             val_criterion <- lpirfs::get_vals_lagcrit(y_lin, x_lin, lag_crit, h, k,
                                                                       specs$max_lags, n_obs)
 

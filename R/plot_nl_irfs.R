@@ -9,7 +9,8 @@
 #' @author Philipp Adämmer
 #' @examples
 #'\donttest{
-#'# Load package
+#'
+#'# This function is deprecated. See plot_nl() instead.
 #'
 #'
 #'  }

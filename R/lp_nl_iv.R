@@ -2,15 +2,15 @@
 #' @title Compute nonlinear impulse responses with with identified shock (instrument variable approach)
 #' @description Compute nonlinear impulse responses with local projections by Jordà (2005) and identified shock, i.e.
 #' instrument variable approach (see e.g. Ramey and Zubairy, 2018). The data are separated into two states via a smooth transition
-#' function (see Auerbach and Gorodnichenko, 2012).
+#' function as in Auerbach and Gorodnichenko (2012).
 #'
 #' @param endog_data A \link{data.frame}, containing all endogenous variables for the VAR. The column order
 #'                     is used for the Cholesky decomposition.
-#' @param lags_endog_nl NaN or integer. Number of lags for nonlinear VAR (if \emph{lags_criterion} = NaN). NaN if lag length criterion is given.
-#' @param instr One column \link{data.frame} including the instrument to shock with.
+#' @param lags_endog_nl NaN or integer. Number of lags for nonlinear VAR. NaN if lag length criterion is given.
+#' @param instr One column \link{data.frame}, including the instrument to shock with.
 #'              The row length has to be the same as \emph{endog_data}.
-#' @param exog_data Null or a \link{data.frame}, containing exogenous data. The row length has to be the same as \emph{endog_data}.
-#'                  The exogenous variables will not be separated into two regimes as the endogenous variables.
+#' @param exog_data A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
+#'                  Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.
 #' @param lags_exog Null or an integer, indicating the number of lags for exogenous data.
 #' @param contemp_data A \link{data.frame}, containing exogenous data with contemporaneous impact. This data will not be lagged.
 #'                      The row length has to be the same as \emph{endog_data}.
@@ -18,13 +18,12 @@
 #'         will be given at \emph{lags_endog_nl} and \emph{lags_lin}. The lag length criteria are 'AICc', 'AIC' and 'BIC'.
 #' @param max_lags NaN or integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC'). NaN otherwise.
 #' @param trend Integer. Include no trend =  0 , include trend = 1, include trend and quadratic trend = 2.
-#' @param shock_type Integer. Standard deviation shock = 0, unit shock = 1.
 #' @param confint Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.
 #' @param hor Integer. Number of horizons for impulse responses.
 #' @param switching Numeric vector. A column vector with the same length as \emph{endog_data}. This series can either
 #'               be decomposed via the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013) or
 #'               directly plugged into the following smooth transition function:
-#'               \deqn{ F_{z_t} = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)} }
+#'               \deqn{ F_{z_t} = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)}. }
 #'               Warning: \eqn{F_{z_t}} will be lagged in \link{create_nl_data} by one and then multiplied with the data.
 #'               If the variable shall not be lagged, the vector has to be given with a lead of one.
 #'               The data for the two regimes are: \cr
@@ -34,10 +33,11 @@
 #'@param use_hp Boolean. Use HP-filter? TRUE or FALSE.
 #'@param lambda Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter (if use_hp = TRUE).
 #'@param num_cores Integer. The number of cores to use for the estimation. If NULL, the function will
-#'                 use the maximum number of cores less one.
+#'                 use the maximum number of cores minus one.
+#'
 #'@seealso \url{https://adaemmerp.github.io/lpirfs/README_docs.html}
 #'
-#'@return A list with:
+#'@return A list containing:
 #'\item{irf_s1_mean}{A \link{matrix} containing the impulse responses of the first regime.
 #'                    The row in each matrix denotes the responses of the \emph{ith}
 #'                    variable to the instrument shock. The columns are the horizons.}
@@ -60,7 +60,8 @@
 #'\item{irf_s2_up}{A three \link{matrix}, containing all upper confidence bands of the responses, based on
 #'                    robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s2_mean}.}
 #'
-#'\item{specs}{A list with properties of \emph{endog_data} for the plot function.}
+#'\item{specs}{A list with properties of \emph{endog_data} for the plot function. It also contains
+#'             lagged data (y_nl and x_nl) used for the estimations of the irfs.}
 #'
 #'\item{fz}{A vector containing the values of the transition function F(z_{t-1}).}
 #'
@@ -82,10 +83,10 @@
 #' Jordà, Ò. (2005) "Estimation and Inference of Impulse Responses by Local Projections."
 #' \emph{American Economic Review}, 95 (1): 161-182.
 #'
-#' Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
+#' Newey, W.K., and West, K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
 #' Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–708.
 #'
-#' Ramey, V.A., Zubairy, S. (2018). "Government Spending Multipliers in Good Times
+#' Ramey, V.A., and Zubairy, S. (2018). "Government Spending Multipliers in Good Times
 #' and in Bad: Evidence from US Historical Data." \emph{Journal of Political Economy},
 #' 126(2): 850 - 901.
 #'
@@ -96,8 +97,7 @@
 #'\donttest{
 #'
 #'# This example replicates results from the Supplementary Appendix
-#'# by Ramey and Zubairy (2018) (RZ-18), who re-evaluate results from
-#'# Auerbach and Gorodnichenko (2012) (AG-12).
+#'# by Ramey and Zubairy (2018) (RZ-18).
 #'
 #'# Load and prepare data
 #'  ag_data           <- ag_data
@@ -126,7 +126,6 @@
 #'                            lags_criterion    = NaN,
 #'                            max_lags          = NaN,
 #'                            trend             = 0,
-#'                            shock_type        = 1,
 #'                            confint           = 1.96,
 #'                            hor               = 20,
 #'                            switching         = switching_variable,
@@ -142,9 +141,9 @@
 #'  plots_nl_iv <- plot_nl(results_nl_iv)
 #'
 #'# Show single impulse responses
-#'# Compare with red line of left plot (lower panel) in Figure 12 in Supplementary Appendix by RZ-18.
+#'# Compare with red line of left plot (lower panel) in Figure 12 in Supplementary Appendix of RZ-18.
 #'  plot(plots_nl_iv$gg_s1[[1]])
-#'# Compare with blue line of left plot (lower panel) in Figure 12 in Supplementary Appendix by RZ-18.
+#'# Compare with blue line of left plot (lower panel) in Figure 12 in Supplementary Appendix of RZ-18.
 #'  plot(plots_nl_iv$gg_s2[[1]])
 #'
 #'# Show all impulse responses by using 'ggpubr' and 'gridExtra'
@@ -173,7 +172,6 @@ lp_nl_iv <- function(endog_data,
                             lags_criterion    = NULL,
                             max_lags          = NULL,
                             trend             = NULL,
-                            shock_type        = NULL,
                             confint           = NULL,
                             hor               = NULL,
                             switching         = NULL,
@@ -220,18 +218,7 @@ lp_nl_iv <- function(endog_data,
   }
 
 
-  # Check whether 'shock_type' is given
-  if(is.null(shock_type) == TRUE){
-    stop('Please specify which type of shock to use.')
-  }
-
-  # Check whether shock type is correctly specified
-  if(!(shock_type %in% c(0,1))){
-    stop('The shock_type has to be 0 = standard deviation shock or 1 = unit shock.')
-  }
-
-
-  # Check whether switching variable is given
+   # Check whether switching variable is given
   if(is.null(switching) == TRUE){
     stop('Please provide a switching variable.')
   }
@@ -321,7 +308,6 @@ lp_nl_iv <- function(endog_data,
     specs$lags_criterion <- lags_criterion
     specs$max_lags       <- max_lags
     specs$trend          <- trend
-    specs$shock_type     <- shock_type
     specs$confint        <- confint
     specs$hor            <- hor
     specs$switching      <- switching
