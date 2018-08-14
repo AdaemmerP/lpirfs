@@ -1,7 +1,7 @@
 #' @title Data to estimate fiscal multipliers
 #' @description A \link{tibble} containing data to estimate fiscal multipliers.
 #'              This data was originally used by Auerbach and Gorodnichenko (2012).
-#'              Sarah and Zubairy (2018) use this data to re-evaluate the results with local projections
+#'              Sarah and Zubairy (2018) use this data to re-evaluate their results with local projections
 #'              by Jordà (2005).
 #' @format A tibble (data.frame) with 248 quarterly observations (rows) and 7 variables (columns):
 #' \describe{

@@ -2,7 +2,7 @@
 #' @title Compute values of transition function to separate regimes
 #' @description Computes transition values by using a smooth transition function as
 #' used in Auerbach and Gorodnichenko (2012). The time series used in the transition function
-#' can be de-trended via the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013).
+#' can be detrended via the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013).
 #' @param switching_data A numeric vector.
 #' @param specs A \link{list}() with inputs as in \link{lp_nl}().
 #' @return \item{fz}{A numeric vector with values from smooth transition function \eqn{F(z_{t-1})}.}

@@ -65,7 +65,7 @@ get_vals_lagcrit <- function(y, x, lag_crit, h, k, max_lags, n_obs) {
 #'
 #'}
 #' @references
-#' Hodrick, R.J., and Prescott, E. C. Prescott (1997). "Postwar U.S. Business Cycles: An Empirical Investigation."
+#' Hodrick, R.J., and Prescott, E. C. (1997). "Postwar U.S. Business Cycles: An Empirical Investigation."
 #' \emph{Journal of Money, Credit and Banking}, 29(1), 1-16.
 #'
 #' Ravn, M.O., Uhlig, H. (2002). "On Adjusting the Hodrick-Prescott Filter for the Frequency of Observations."
@@ -86,7 +86,7 @@ hp_filter <- function(x, lambda) {
 #' the covariance matrix of the parameters.
 #' @keywords internal
 #' @references
-#' Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
+#' Newey, W.K., and West, K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
 #' Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–708.
 newey_west <- function(y, x, h) {
     .Call(`_lpirfs_newey_west`, y, x, h)
