@@ -248,7 +248,6 @@ Estimate model with constant and 4 lags.
                          lags_criterion = NaN,
                          max_lags       = NaN,
                          trend          = 0,
-                         shock_type     = 1,
                          confint        = 1.96,
                          hor            = 20,
                          num_cores      = NULL)
@@ -335,7 +334,6 @@ Estimate nonlinear model
                            lags_criterion    = NaN,
                            max_lags          = NaN,
                            trend             = 0,
-                           shock_type        = 1,
                            confint           = 1.96,
                            hor               = 20,
                            switching         = switching_variable,
