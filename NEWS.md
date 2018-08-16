@@ -14,7 +14,7 @@
   replaced by `plot_lin()` and `plot_nl()`.
 
 * Two new functions named `lp_lin_iv()` and `lp_nl_iv()` allow to estimate 
-  impulse responses via instrument variables.
+  linear and nonlinear impulse responses with identified shocks (instrument variables).
 
 * Input names in `lp_lin()` and `lp_nl()` have been changed for consistency:
 
