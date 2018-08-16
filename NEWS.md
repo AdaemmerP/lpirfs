@@ -1,11 +1,10 @@
 # lpirfs 0.1.2
 
 * Fixed an error in `lp_nl()` when lags are chosen by a lag length criterion. 
-  The previous version (0.1.1) chooses lags based on linear instead of 
+  The previous version chooses lags based on linear instead of 
   nonlinear data.
 
-* The dependency on the *vars* package is obsolete as I wrote my own function to estimate
-  'AICc', 'AIC' and 'BIC'. 
+* Removed the dependency on the *vars* package. 
 
 * `lp_lin()` and `lp_nl()` now allow to include exogenous variables and exogenous variables
   with contemporaneous impact. 
