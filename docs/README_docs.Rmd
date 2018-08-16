@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 ## This page gives examples and replicates empirical results to show how to use the R-package *lpirfs*.
 
-### Example: Linear impulse responses
+### Example: Linear impulse responses with local projections
 Load library:
 ```{r, message = FALSE }
   library(lpirfs)
@@ -74,7 +74,7 @@ Display all plots (compare with Figure 5 in Jordà (2005), p. 176):
   marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
 ```
 
-### Example: Nonlinear impulse responses
+### Example: Nonlinear impulse responses with local projections
 
 Load data set from package to estimate a nonlinear, new-Keynesian, closed-economy 
 model. These data are used by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) in chapter IV, p.176. 
@@ -217,7 +217,7 @@ Show all impulse responses of regime 2 (low inflation rates):
   marrangeGrob(s2_plots, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
 ```
 
-### Example: Linear impulse responses with instrument variable approach
+### Example: Linear impulse responses with instrument variable and local projections
 
 This example replicates results from the Supplementary Appendix
 by [Ramey and Zubairy (2018)](https://www.journals.uchicago.edu/doi/10.1086/696277) (RZ-18). 
@@ -293,7 +293,7 @@ iv_lin_plots[[3]]
 ```
 
 
-## Example: Nonlinear impulse responses with instrument variable approach
+## Example: Nonlinear impulse responses with instrument variable and local projections
 
 Load data
 ```{r, message = FALSE }
@@ -398,6 +398,9 @@ During Bad and Good Economic Times Equally?" *Journal of Macroeconomics*, 50(1):
 
 * Jordà, Ò. (2005) "Estimation and Inference of Impulse Responses by Local Projections." *American Economic Review*, 95 (1): 161-182.
 [doi:10.1257/0002828053828518](https://www.aeaweb.org/articles?id=10.1257/0002828053828518)
+
+* Jordà, Ò, Schularick, M., Taylor, A.M. (2015), "Betting the house", *Journal of International Economics*,
+ 96, S2-S18.
 
 * Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and Autocorrelation Consistent Covariance Matrix.” *Econometrica*, 55: 703–708. [doi:10.2307/1913610](https://www.jstor.org/stable/1913610?seq=1#page_scan_tab_contents)
 
