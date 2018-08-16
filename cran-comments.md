@@ -10,7 +10,7 @@
 * `lp_lin()` and `lp_nl()` now allow to include exogenous variables and exogenous variables
   with contemporaneous impact. 
 
-* The functions `plot_lin_irfs()` and `plot_nl_irfs()` are deprecated and have been 
+* `plot_lin_irfs()` and `plot_nl_irfs()` are deprecated and have been 
   replaced by `plot_lin()` and `plot_nl()`.
 
 * Two new functions named `lp_lin_iv()` and `lp_nl_iv()` allow to estimate 
@@ -33,7 +33,7 @@ function | old input name | new input name
 * rhub (for Oracle Solaris)
 
 ## Check results
-0 errors | 0 warnings  | 0 notes
+0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
 ## Downstream dependencies
 No errors, warnings, or notes were caused in other packages. I used devtools::revdep_check() to confirm. 
