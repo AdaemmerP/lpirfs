@@ -1,8 +1,8 @@
 context("check_input_get_var_lagcrit")
 
-# Adapted VARselect function aus 'vars' package
+# Adapted VARselect function from 'vars' package
 varSELECT     <- function (endog_data, lag.max = 2, type = c("const", "trend", "both",
-                                                         "none"), season = NULL, exogen = NULL){
+                                                             "none"), season = NULL, exogen = NULL){
 
   y           <- as.matrix(endog_data)
   colnames(y) <- make.names(colnames(y))
@@ -57,7 +57,7 @@ varSELECT     <- function (endog_data, lag.max = 2, type = c("const", "trend", "
  endog_data     <- interest_rules_var_data
 
 # Get results
- resultsVS <- varSELECT(endog_data, lag.max = 12, type= 'const')
+ resultsVS <- varSELECT(endog_data, lag.max = 24, type= 'const')
  resultsVS$selection
 
 
@@ -72,7 +72,7 @@ results_lin <- lp_lin(endog_data,
                       lags_criterion = 'AIC',
                       exog_data      = NULL,
                       lags_exog      = NULL,
-                      max_lags       = 12,
+                      max_lags       = 24,
                       trend          = 0L,
                       shock_type     = 1L,
                       confint        = 1.96,

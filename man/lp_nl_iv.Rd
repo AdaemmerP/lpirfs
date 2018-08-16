@@ -57,9 +57,39 @@ Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.}
 \item{num_cores}{Integer. The number of cores to use for the estimation. If NULL, the function will
 use the maximum number of cores minus one.}
 }
+\value{
+A list containing:
+
+\item{irf_s1_mean}{A \link{matrix} containing the impulse responses of the first regime.
+                   The row in each matrix denotes the responses of the \emph{ith}
+                   variable to the instrument shock. The columns are the horizons.}
+
+\item{irf_s1_low}{A \link{matrix} containing all lower confidence bands of
+                   the impulse responses, based on robust standard errors by Newey and West (1987).
+                   Properties are equal to \emph{irf_s1_mean}.}
+
+\item{irf_s1_up}{A \link{matrix} containing all upper confidence bands of the
+                   impulse responses, based on robust standard errors by Newey and West (1987).
+                   Properties are equal to \emph{irf_s1_mean}.}
+
+\item{irf_s2_mean}{A \link{matrix} containing all impulse responses for the second regime.
+                   The row in each matrix denotes the responses of the \emph{ith} variableto the shock.
+                   The columns denote the horizon.}
+
+\item{irf_s2_low}{A three \link{matrix} containing all lower confidence bands of the responses,
+                   based on robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s2_mean}.}
+
+\item{irf_s2_up}{A three \link{matrix}, containing all upper confidence bands of the responses, based on
+                   robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s2_mean}.}
+
+\item{specs}{A list with properties of \emph{endog_data} for the plot function. It also contains
+            lagged data (y_nl and x_nl) used for the estimations of the irfs.}
+
+\item{fz}{A vector containing the values of the transition function F(z_{t-1}).}
+}
 \description{
-Compute nonlinear impulse responses with local projections by Jordà (2005) and identified shock, i.e.
-instrument variable approach (see e.g. Ramey and Zubairy, 2018). The data are separated into two states via a smooth transition
+Compute nonlinear impulse responses with local projections and identified shock, i.e.
+instrument variable approach (see e.g. Jordà et al., 2015; and Ramey and Zubairy, 2018). The data are separated into two states via a smooth transition
 function as in Auerbach and Gorodnichenko (2012).
 }
 \examples{
@@ -145,6 +175,9 @@ Hurvich, C. M., and Tsai, C.-L. (1989), "Regression and time series model select
 
 Jordà, Ò. (2005) "Estimation and Inference of Impulse Responses by Local Projections."
 \emph{American Economic Review}, 95 (1): 161-182.
+
+Jordà, Ò, Schularick, M., Taylor, A.M. (2015), "Betting the house", \emph{Journal of International Economics},
+96, S2-S18.
 
 Newey, W.K., and West, K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
 Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–708.

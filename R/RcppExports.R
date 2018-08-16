@@ -28,7 +28,7 @@ get_vals_lagcrit <- function(y, x, lag_crit, h, k, max_lags, n_obs) {
 
 #' @name hp_filter
 #' @title Decompose a times series via the Hodrick-Prescott filter
-#' @description  Estimate cyclical and trend component with HP-filter by Hodrick and Prescott (1997).
+#' @description  Estimate cyclical and trend component with filter by Hodrick and Prescott (1997).
 #' The function is based on the function \emph{hpfilter} from the archived package \emph{mFilter}.
 #' @param x Column matrix with numeric values.
 #' @param lambda Numeric value.

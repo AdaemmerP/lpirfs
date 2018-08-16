@@ -1,5 +1,5 @@
 #'@name  get_var_lagcrit
-#'@title Computes AICc, AIC and BIC for VAR models
+#'@title Computes AICc, AIC and BIC for VAR
 #'@description Computes AICc, AIC and BIC for VAR models.
 #'@param endog_data A \link{data.frame} with endogenous variables for the VAR
 #'@param specs A \link{list} created in \link{lp_lin}
@@ -32,7 +32,7 @@ get_var_lagcrit <- function (endog_data,
   K          <- ncol(endog_data)
 
 
-# Count contempornaneous variables
+# Count contemporaneous variables
   if(!is.null(specs$exog_data)){
     num_contemp <- ncol(specs$exog)
   } else {

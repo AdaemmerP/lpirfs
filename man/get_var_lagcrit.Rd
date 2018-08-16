@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_var_lagcrit.R
 \name{get_var_lagcrit}
 \alias{get_var_lagcrit}
-\title{Computes AICc, AIC and BIC for VAR models}
+\title{Computes AICc, AIC and BIC for VAR}
 \usage{
 get_var_lagcrit(endog_data, specs = NULL)
 }
