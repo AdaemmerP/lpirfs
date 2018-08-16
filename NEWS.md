@@ -1,4 +1,4 @@
-# lpirfs 0.2.1
+# lpirfs 0.1.2
 ## Improvements
 
 * Fixed an error in `lp_nl()` when lags are chosen by a lag length criterion. 
