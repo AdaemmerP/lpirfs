@@ -1,15 +1,15 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# lpirfs [![CRAN Version](https://www.r-pkg.org/badges/version/lpirfs)](https://CRAN.R-project.org/package=lpirfs)
+<!-- # lpirfs [![CRAN Version](https://www.r-pkg.org/badges/version/lpirfs)](https://CRAN.R-project.org/package=lpirfs) -->
 
-[![Downloads](https://cranlogs.r-pkg.org/badges/lpirfs)](https://CRAN.R-project.org/package=lpirfs)
-[![Total
-Downloads](https://cranlogs.r-pkg.org/badges/grand-total/lpirfs?color=orange)](https://CRAN.R-project.org/package=lpirfs)
-[![Build
-Status](https://travis-ci.com/AdaemmerP/lpirfs.svg)](https://travis-ci.com/AdaemmerP/lpirfs)  
-[![Coverage
-Status](https://codecov.io/gh/adaemmerp/lpirfs/graph/badge.svg)](https://codecov.io/github/adaemmerp/lpirfs?branch=master)
+<!-- [![Downloads](https://cranlogs.r-pkg.org/badges/lpirfs)](https://CRAN.R-project.org/package=lpirfs) -->
+
+<!--[![Total Downloads](https://cranlogs.r-pkg.org/badges/grand-total/lpirfs?color=orange)](https://CRAN.R-project.org/package=lpirfs) -->
+
+<!--[![Build Status](https://travis-ci.com/AdaemmerP/lpirfs.svg)](https://travis-ci.com/AdaemmerP/lpirfs)  -->
+
+<!--[![Coverage Status](https://codecov.io/gh/adaemmerp/lpirfs/graph/badge.svg)](https://codecov.io/github/adaemmerp/lpirfs?branch=master) -->
 
 # About
 
@@ -47,12 +47,12 @@ local projections by [Jordà
   - Some input names in *lp\_lin* and *lp\_nl* have been changed for
     consistency:
 
-| function | old input name | new input name   |
-| :------- | :------------- | :--------------- |
-| `lp_lin` | `lags_lin`     | `lags_endog_lin` |
-| `lp_nl`  | `lags_lin`     | `lags_endog_lin` |
-| `lp_nl`  | `lags_nl`      | `lags_endog_nl`  |
-| `lp_nl`  | `hp_filter`    | `use_hp`         |
+| function   | old input name | new input name   |
+| :--------- | :------------- | :--------------- |
+| `lp_lin()` | `lags_lin`     | `lags_endog_lin` |
+| `lp_nl()`  | `lags_lin`     | `lags_endog_lin` |
+| `lp_nl()`  | `lags_nl`      | `lags_endog_nl`  |
+| `lp_nl()`  | `hp_filter`    | `use_hp`         |
 
 ## Examples
 
