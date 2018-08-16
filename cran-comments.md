@@ -1,7 +1,7 @@
 # Submission notes
 
 ## Purpose
-* Fixed a bug, new functions to estimate impulse responses and some changes for function inputs (noted in NEWS).  
+* Fixed a bug, new functions to estimate impulse responses and some changes for function inputs (all noted in NEWS).  
 
  
 ## Test environments
