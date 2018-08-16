@@ -74,15 +74,15 @@
 #'# by Ramey and Zubairy (2018) (RZ-18).
 #'
 #'# Load data
-#'  ag_data           <- ag_data
-#'  sample_start      <- 7
-#'  sample_end        <- dim(ag_data)[1]
+#'  ag_data       <- ag_data
+#'  sample_start  <- 7
+#'  sample_end    <- dim(ag_data)[1]
 #'
 #'# Endogenous data
-#'  endog_data        <- ag_data[sample_start:sample_end,3:5]
+#'  endog_data    <- ag_data[sample_start:sample_end,3:5]
 #'
 #'# Shock ('Instrument')
-#'  shock <- ag_data[sample_start:sample_end, 3]
+#'  shock         <- ag_data[sample_start:sample_end, 3]
 #'
 #'# Estimate linear model
 #'  results_lin_iv <- lp_lin_iv(endog_data,
@@ -117,8 +117,8 @@
 #'  library(ggpubr)
 #'  library(gridExtra)
 #'
-#' lin_plots_all <- sapply(iv_lin_plots, ggplotGrob)
-#' marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = 1, top = NULL)
+#'  lin_plots_all <- sapply(iv_lin_plots, ggplotGrob)
+#'  marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = 1, top = NULL)
 #'
 #' }
 

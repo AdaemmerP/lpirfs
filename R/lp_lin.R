@@ -60,7 +60,7 @@
 #' @examples
 #'\donttest{
 #'
-#'                     ## Example without exogenous variables
+#'           ## Example without exogenous variables
 #'
 #'# Load package
 #'   library(lpirfs)
@@ -75,8 +75,8 @@
 #'                              lags_exog      = NULL,
 #'                              lags_criterion = NaN,
 #'                              max_lags       = NaN,
-#'                              trend          = 0L,
-#'                              shock_type     = 1L,
+#'                              trend          = 0,
+#'                              shock_type     = 1,
 #'                              confint        = 1.96,
 #'                              hor            = 12,
 #'                              contemp_data   = NULL,
@@ -100,6 +100,7 @@
 #'  library(ggpubr)
 #'  library(gridExtra)
 #'
+#'# Compare with Figure 5 in Jordà (2005)
 #'  lin_plots_all <- sapply(linear_plots, ggplotGrob)
 #'  marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
 #'
@@ -115,20 +116,20 @@
 #'
 #'# Exogenous data has to be a data.frame
 #'  exog_data    <- data.frame(xx = exog_data )
-#'  contemp_data <- data.frame(cc  =  contemp_data)
+#'  contemp_data <- data.frame(cc =  contemp_data)
 #'
 #'# Estimate linear model
 #'   results_lin <- lp_lin(endog_data,
 #'                                lags_endog_lin = 4,
 #'                                lags_criterion = NaN,
 #'                                max_lags       = NaN,
-#'                                trend          = 0L,
-#'                                shock_type     = 1L,
+#'                                trend          = 0,
+#'                                shock_type     = 1,
 #'                                confint        = 1.96,
 #'                                hor            = 12,
 #'                                exog_data      = exog_data,
-#'                                contemp_data   = contemp_data,
 #'                                lags_exog      = 4,
+#'                                contemp_data   = contemp_data,
 #'                                num_cores      = NULL)
 #'
 #'# Make plots
