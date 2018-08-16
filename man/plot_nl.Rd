@@ -7,13 +7,13 @@
 plot_nl(results_nl)
 }
 \arguments{
-\item{results_nl}{A \link{list} created in \link{lp_nl} or \link{lp_nl_iv}.}
+\item{results_nl}{A \link{list} created in \link{lp_nl}() or \link{lp_nl_iv}().}
 }
 \value{
 A list with (gg-)plots for nonlinear impulse responses.
 }
 \description{
-Compute and display (nonlinear) impulse responses, estimated with \link{lp_nl} and \link{lp_nl_iv}.
+Compute and display (nonlinear) impulse responses, estimated with \link{lp_nl}() and \link{lp_nl_iv}().
 }
 \examples{
 \donttest{

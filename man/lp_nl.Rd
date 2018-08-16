@@ -109,21 +109,21 @@ data are separated into two states via a smooth transition function as in Auerba
   endog_data <- interest_rules_var_data
 
 # Choose data for switching variable (here Federal Funds Rate)
-# Important: This does not have to be a times series used for the VAR!
+# Important: The switching variable does not have to be used within the VAR!
  switching_data <-  endog_data$Infl
 
 # Estimate model and save results
   results_nl    <- lp_nl(endog_data,
-                                lags_endog_lin  = 4L,
-                                lags_endog_nl   = 3L,
+                                lags_endog_lin  = 4,
+                                lags_endog_nl   = 3,
                                 lags_criterion  = NaN,
                                 max_lags        = NaN,
-                                trend           = 0L,
-                                shock_type      = 1L,
+                                trend           = 0,
+                                shock_type      = 1,
                                 confint         = 1.96,
-                                hor             = 24L,
+                                hor             = 24,
                                 switching       = switching_data,
-                                use_hp          = 1L,
+                                use_hp          = TRUE,
                                 lambda          = 1600,
                                 gamma           = 3,
                                 exog_data       = NULL,
@@ -158,7 +158,7 @@ data are separated into two states via a smooth transition function as in Auerba
   endog_data <- interest_rules_var_data
 
 # Choose data for switching variable (here Federal Funds Rate)
-# Important: This does not have to be a times series used within the VAR!
+# Important: The switching variable does not have to be used within the VAR!
  switching_data <-  endog_data$FF
 
 # Create exogenous data and data with contemporaneous impact (for illustration purposes only)
@@ -166,22 +166,22 @@ data are separated into two states via a smooth transition function as in Auerba
  contemp_data <- endog_data$GDP_gap*endog_data$Infl*endog_data$FF + rnorm(dim(endog_data)[1])
 
 # Exogenous data has to be a data.frame
- exog_data    <- data.frame(xx = exog_data )
- contemp_data <- data.frame(cc  =  contemp_data)
+ exog_data    <- data.frame(xx  = exog_data)
+ contemp_data <- data.frame(cc  = contemp_data)
 
 # Estimate model and save results
  results_nl <- lp_nl(endog_data,
-                          lags_endog_lin  = 4L,
-                          lags_endog_nl   = 3L,
+                          lags_endog_lin  = 4,
+                          lags_endog_nl   = 3,
                           lags_criterion  = NaN,
                           max_lags        = NaN,
-                          trend           = 0L,
-                          shock_type      = 1L,
+                          trend           = 0,
+                          shock_type      = 1,
                           confint         = 1.96,
-                          hor             = 24L,
+                          hor             = 24,
                           switching       = switching_data,
-                          use_hp          = 1L,
-                          lambda          = 1600,  # Ravn and Uhlig (2002):
+                          use_hp          = TRUE,
+                          lambda          = 1600, # Ravn and Uhlig (2002):
                                                   # Anuual data    = 6.25
                                                   # Quarterly data = 1600
                                                   # Monthly data   = 129 600
@@ -192,7 +192,7 @@ data are separated into two states via a smooth transition function as in Auerba
                           num_cores       = NULL)
 
 # Make and save all plots
- nl_plots <- plot_nl(results_nl)
+  nl_plots <- plot_nl(results_nl)
 
 # Save plots based on states
   s1_plots <- sapply(nl_plots$gg_s1, ggplotGrob)
