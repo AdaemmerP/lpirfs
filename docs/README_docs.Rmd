@@ -33,17 +33,17 @@ Estimate linear impulse responses with function *lp_lin*. Note that the endogeno
 a data.frame. 
 ```{r, message = FALSE }  
 results_lin <- lp_lin(endog_data, 
-                           lags_endog_lin = 4L,   # Number of lags for endogenous data
+                           lags_endog_lin = 4,   # Number of lags for endogenous data
                            lags_criterion = NaN,  # Lag length criterion (AICc, AIC or BIC) or NaN
                            max_lags       = NaN,  # Maximum number of lags or NaN
                            exog_data      = NULL, # Exogenous data
                            lags_exog      = NULL, # Lags for exogenous data
                            contemp_data   = NULL, # Exogenous data with contemporaneous impact
-                           trend          = 0L,   # 0 = no trend, 1 = trend, 2 = trend & trend^2    
-                           shock_type     = 1L,   # 0 = standard deviation shock, 1 = unit shock
+                           trend          = 0,   # 0 = no trend, 1 = trend, 2 = trend & trend^2    
+                           shock_type     = 1,   # 0 = standard deviation shock, 1 = unit shock
                            confint        = 1.96, # Width of confidence bands: 
                                                   # 1 = 68%, 1.67 = 90%, 1.96 = 95%
-                           hor            = 24L,  # Number of horizons for impulse responses
+                           hor            = 24,  # Number of horizons for impulse responses
                            num_cores      = NULL) # Number of cores to use. When NULL, the number of cores is chosen 
                                                   # automatically    
 ```
@@ -127,15 +127,15 @@ Estimate nonlinear impulse responses with package function *lp_nl*. Note that th
 to be a data.frame.
 ```{r, message = FALSE }  
 results_nl <- lp_nl(endog_data, 
-                        lags_endog_lin = 4L,   # Number of lags for (reduced) linear VAR to obtain shock matrix. 
-                        lags_endog_nl  = 4L,   # Number of lags for nonlinear model. 
+                        lags_endog_lin = 4,   # Number of lags for (reduced) linear VAR to obtain shock matrix. 
+                        lags_endog_nl  = 4,   # Number of lags for nonlinear model. 
                         lags_criterion = NaN,  # Lag length criterion (AICc, AIC or BIC) or NaN.
                         max_lags       = NaN,  # If lags_criterion is chosen, maximum number of lags. 
                         exog_data      = NULL, # Exogenous data
                         lags_exog      = NULL, # Lags for exogenous data
                         contemp_data   = NULL, # Exogenous data with contemporaneous impact
-                        trend          = 1L,   # 0 = no trend, 1 = trend, 2 = trend & trend^2.
-                        shock_type     = 0L,   # 0 = standard deviation shock, 1 = unit shock.
+                        trend          = 1,   # 0 = no trend, 1 = trend, 2 = trend & trend^2.
+                        shock_type     = 0,   # 0 = standard deviation shock, 1 = unit shock.
                         confint        = 1.67, # Width of confidence bands: 
                                                # 1 = 68%, 1.67 = 90%, 1.96 = 95%.
                         hor            = 24,   # Length of horizon.
