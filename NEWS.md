@@ -1,11 +1,10 @@
 # lpirfs 0.1.2
-## Improvements
 
 * Fixed an error in `lp_nl()` when lags are chosen by a lag length criterion. 
   The previous version (0.1.1) chooses lags based on linear instead of 
   nonlinear data.
 
-* The dependency on the `vars` package is obsolete as I wrote my own function to estimate
+* The dependency on the *vars* package is obsolete as I wrote my own function to estimate
   'AICc', 'AIC' and 'BIC'. 
 
 * `lp_lin()` and `lp_nl()` now allow to include exogenous variables and exogenous variables
@@ -29,7 +28,6 @@ function | old input name | new input name
 
 
 # lpirfs 0.1.1
-## Improvements
 
 * The dependency to the *mFilter* package is removed.  The HP-filter is now written in C++ which 
 vastly improves efficiency. 
