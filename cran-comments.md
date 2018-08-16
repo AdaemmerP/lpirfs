@@ -1,22 +1,22 @@
 # Submission notes
 
 ## Purpose
-* Fixed an error in *lp_nl()* when lags are chosen by a lag length criterion. 
+* Fixed an error in `lp_nl()` when lags are chosen by a lag length criterion. 
   The previous version (0.1.1) chooses lags based on linear instead of 
   nonlinear data.
 
 * Removed the dependency on the *vars* package. 
 
-* *lp_lin()* and *lp_nl()* now allow to include exogenous variables and exogenous variables
+* `lp_lin()` and `lp_nl()` now allow to include exogenous variables and exogenous variables
   with contemporaneous impact. 
 
-* The functions *plot_lin_irfs()* and *plot_nl_irfs()* are deprecated and have been 
-  replaced by *plot_lin()* and *plot_nl()*.
+* The functions `plot_lin_irfs()` and `plot_nl_irfs()` are deprecated and have been 
+  replaced by `plot_lin()` and `plot_nl()`.
 
-* Two new functions named *lp_lin_iv()* and *lp_nl_iv()* allow to estimate 
+* Two new functions named `lp_lin_iv()` and `lp_nl_iv()` allow to estimate 
   impulse responses via instrument variables.
 
-* Input names in *lp_lin* and *lp_nl* have been changed for consistency:
+* Input names in `lp_lin()` and `lp_nl()` have been changed for consistency:
 
 function | old input name | new input name
 :--------|:-------------  |:------------- 
@@ -33,19 +33,7 @@ function | old input name | new input name
 * rhub (for Oracle Solaris)
 
 ## Check results
-There was 1 reoccurring NOTE:
-  
-* checking CRAN incoming feasibility ... NOTE
-Maintainer: 'Philipp Adämmer <adaemmer@hsu-hh.de>'
-
-Possibly mis-spelled words in DESCRIPTION:
-  Auerbach (21:47)
-  Gorodnichenko (21:60)
-  Jordà (19:54)
-  
-### Response: 
-The maintainer (Philipp Adämmer <adaemmer@hsu-hh.de>) is correct and the names 
-are also spelled correctly.    
+0 errors | 0 warnings  | 0 notes
 
 ## Downstream dependencies
 No errors, warnings, or notes were caused in other packages. I used devtools::revdep_check() to confirm. 
