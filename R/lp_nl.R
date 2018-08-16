@@ -27,7 +27,7 @@
 #'@param gamma Double. Positive number which is used in the transition function.
 #'@param use_hp Boolean. Use HP-filter? TRUE or FALSE.
 #'@param lambda Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter (if use_hp = TRUE).
-#' @param exog_data A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
+#'@param exog_data A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
 #'                  Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.
 #'@param lags_exog Integer. Number of lags for the exogenous variables.
 #'@param contemp_data A \link{data.frame}, containing exogenous data with contemporaneous impact. This data will not be lagged.

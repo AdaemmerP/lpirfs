@@ -1,7 +1,7 @@
 #' @name lp_nl_iv
 #' @title Compute nonlinear impulse responses with with identified shock (instrument variable approach)
-#' @description Compute nonlinear impulse responses with local projections by Jordà (2005) and identified shock, i.e.
-#' instrument variable approach (see e.g. Ramey and Zubairy, 2018). The data are separated into two states via a smooth transition
+#' @description Compute nonlinear impulse responses with local projections and identified shock, i.e.
+#' instrument variable approach (see e.g. Jordà et al., 2015; and Ramey and Zubairy, 2018). The data are separated into two states via a smooth transition
 #' function as in Auerbach and Gorodnichenko (2012).
 #'
 #' @param endog_data A \link{data.frame}, containing all endogenous variables for the VAR. The column order
@@ -37,7 +37,10 @@
 #'
 #'@seealso \url{https://adaemmerp.github.io/lpirfs/README_docs.html}
 #'
+#'
+#'
 #'@return A list containing:
+#'
 #'\item{irf_s1_mean}{A \link{matrix} containing the impulse responses of the first regime.
 #'                    The row in each matrix denotes the responses of the \emph{ith}
 #'                    variable to the instrument shock. The columns are the horizons.}
@@ -52,7 +55,7 @@
 #'
 #'\item{irf_s2_mean}{A \link{matrix} containing all impulse responses for the second regime.
 #'                    The row in each matrix denotes the responses of the \emph{ith} variableto the shock.
-#'                    The columns denote the horizon.
+#'                    The columns denote the horizon.}
 #'
 #'\item{irf_s2_low}{A three \link{matrix} containing all lower confidence bands of the responses,
 #'                    based on robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s2_mean}.}
@@ -65,9 +68,9 @@
 #'
 #'\item{fz}{A vector containing the values of the transition function F(z_{t-1}).}
 #'
-#' @export
+#'@export
 #'
-#' @references
+#'@references
 #'
 #' Akaike, H. (1974). "A new look at the statistical model identification", \emph{IEEE Transactions on Automatic Control}, 19 (6): 716–723.
 #'
@@ -82,6 +85,9 @@
 #'
 #' Jordà, Ò. (2005) "Estimation and Inference of Impulse Responses by Local Projections."
 #' \emph{American Economic Review}, 95 (1): 161-182.
+#'
+#' Jordà, Ò, Schularick, M., Taylor, A.M. (2015), "Betting the house", \emph{Journal of International Economics},
+#' 96, S2-S18.
 #'
 #' Newey, W.K., and West, K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
 #' Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–708.

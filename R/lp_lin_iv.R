@@ -1,7 +1,7 @@
 #' @name lp_lin_iv
 #' @title Compute linear impulse responses with identified shock (instrument variable approach)
-#' @description Compute linear impulse responses with local projections by Jordà (2005) and identified shock, i.e.
-#' instrument variable approach (see e.g. Ramey and Zubairy, 2018).
+#' @description Compute linear impulse responses with local projections and identified shock, i.e.
+#' instrument variable approach (see e.g. Jordà et al., 2015; and Ramey and Zubairy, 2018).
 #' @param endog_data A \link{data.frame}, containing the dependent variables.
 #' @param instr One column \link{data.frame} including the values of the instrument to shock with.
 #' The row length has to be the same as \emph{endog_data}.
@@ -56,10 +56,13 @@
 #' Jordà, Ò. (2005). "Estimation and Inference of Impulse Responses by Local Projections."
 #' \emph{American Economic Review}, 95 (1): 161-182.
 #'
+#' Jordà, Ò, Schularick, M., Taylor, A.M. (2015), "Betting the house", \emph{Journal of International Economics},
+#' 96, S2-S18.
+#'
 #' Newey, W.K., and West, K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
 #' Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55: 703–708.
 #'
-#' Ramey, V.A.,and Zubairy, S. (2018). "Government Spending Multipliers in Good Times
+#' Ramey, V.A., and Zubairy, S. (2018). "Government Spending Multipliers in Good Times
 #' and in Bad: Evidence from US Historical Data." \emph{Journal of Political Economy},
 #' 126(2): 850 - 901.
 #'
