@@ -20,10 +20,10 @@
 
 function | old input name | new input name
 :--------|:-------------  |:------------- 
-`lp_lin` | `lags_lin`     | `lags_endog_lin`
-`lp_nl`  | `lags_lin`     | `lags_endog_lin`
-`lp_nl`  | `lags_nl`      | `lags_endog_nl`
-`lp_nl`  | `hp_filter`    | `use_hp`
+`lp_lin()` | `lags_lin`     | `lags_endog_lin`
+`lp_nl()`  | `lags_lin`     | `lags_endog_lin`
+`lp_nl()`  | `lags_nl`      | `lags_endog_nl`
+`lp_nl()`  | `hp_filter`    | `use_hp`
 
  
 ## Test environments
@@ -36,4 +36,4 @@ function | old input name | new input name
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
 ## Downstream dependencies
-No errors, warnings, or notes were caused in other packages. I used devtools::revdep_check() to confirm. 
+No errors, warnings, or notes were caused in other packages. I used devtools::`revdep_check()` to confirm. 

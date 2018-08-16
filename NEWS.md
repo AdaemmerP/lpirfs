@@ -29,7 +29,7 @@ function | old input name | new input name
 
 # lpirfs 0.1.1
 
-* The dependency on the *mFilter* package is removed. `hp_filter()` is now written in C++ to improve efficiency. 
+* The dependency on the *mFilter* package is removed. `hp_filter()` is written in C++ to improve efficiency. 
 
 * A problem with a C++ function is resolved so that the package can also be installed on Oracle Solaris. 
 
