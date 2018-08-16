@@ -1,23 +1,23 @@
 # lpirfs 0.2.1
 ## Improvements
 
-* Fixed an error in *lp_nl()* when lags are chosen by a lag length criterion. 
+* Fixed an error in `lp_nl()` when lags are chosen by a lag length criterion. 
   The previous version (0.1.1) chooses lags based on linear instead of 
   nonlinear data.
 
-* The dependency on the *vars* package is obsolete as I wrote my own function to estimate
+* The dependency on the `vars` package is obsolete as I wrote my own function to estimate
   'AICc', 'AIC' and 'BIC'. 
 
-* *lp_lin()* and *lp_nl()* now allow to include exogenous variables and exogenous variables
+* `lp_lin()` and `lp_nl()` now allow to include exogenous variables and exogenous variables
   with contemporaneous impact. 
 
-* The functions *plot_lin_irfs()* and *plot_nl_irfs()* are deprecated and have been 
-  replaced by *plot_lin()* and *plot_nl()*.
+* The functions `plot_lin_irfs()` and `plot_nl_irfs()` are deprecated and have been 
+  replaced by `plot_lin()` and `plot_nl()`.
 
-* Two new functions named *lp_lin_iv()* and *lp_nl_iv()* allow to estimate 
+* Two new functions named `lp_lin_iv()` and `lp_nl_iv()` allow to estimate 
   impulse responses via instrument variables.
 
-* Input names in *lp_lin* and *lp_nl* have been changed for consistency:
+* Input names in `lp_lin` and `lp_nl` have been changed for consistency:
 
 function | old input name | new input name
 :--------|:-------------  |:------------- 
