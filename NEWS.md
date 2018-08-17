@@ -1,7 +1,7 @@
 # lpirfs 0.1.2
 
 * Fixed an error in `lp_nl()` when lags are chosen by a lag length criterion. 
-  The previous version chooses lags based on linear instead of 
+  Version 0.1.1 chooses lags based on linear instead of 
   nonlinear data.
 
 * Removed the dependency on the *vars* package. 
