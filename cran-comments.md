@@ -2,10 +2,11 @@
 
 ## Purpose
 * Fixed a bug.
-* New functions to estimate impulse responses with instrument variables.
-* Some changes for function inputs.  
+* Removed the dependency on the *vars* package.
+* New functions to estimate impulse responses via instrument variable approach.
+* Some input names have been changed for consistency.  
 
-Details cand be found in NEWS
+Details cand be found in NEWS.
  
 ## Test environments
 * local x86_64-pc-linux-gnu (64-bit), R version 3.5.1

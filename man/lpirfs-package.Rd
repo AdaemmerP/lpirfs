@@ -7,8 +7,8 @@
 \description{
 Contains functions to estimate linear and nonlinear impulse
 responses based on local projections by Jordà (2005) <doi:10.1257/0002828053828518>.
-To estimate nonlinear impulse responses, the data are separated into two regimes by a
-a transition function, applied in Auerbach and Gorodnichenko (2012) <doi:10.1257/pol.4.2.1>.
+Nonlinear impulse responses are estimated for two regimes via a transition function as
+applied in Auerbach and Gorodnichenko (2012) <doi:10.1257/pol.4.2.1>.
 }
 \author{
 Philipp Adämmer
