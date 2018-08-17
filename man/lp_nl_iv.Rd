@@ -73,7 +73,7 @@ A list containing:
                    Properties are equal to \emph{irf_s1_mean}.}
 
 \item{irf_s2_mean}{A \link{matrix} containing all impulse responses for the second regime.
-                   The row in each matrix denotes the responses of the \emph{ith} variableto the shock.
+                   The row in each matrix denotes the responses of the \emph{ith} variable to the shock.
                    The columns denote the horizon.}
 
 \item{irf_s2_low}{A three \link{matrix} containing all lower confidence bands of the responses,
