@@ -21,8 +21,6 @@ local projections by [Jordà
 
   - Estimates linear and nonlinear impulse responses with local
     projections.
-  - Estimates linear and nonlinear impulse responses with local
-    projections and identified shock (instrument variable approach).
   - Functions to plot linear and nonlinear impulse responses.
   - Functions are partly implemented in *Rcpp* and *RcppArmadillo* to
     improve efficiency.
