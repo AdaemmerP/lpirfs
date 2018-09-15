@@ -1,13 +1,11 @@
 # Submission notes
 
 ## Purpose
-* Fixed a bug.
-* Removed the dependency on the *vars* package.
-* New functions to estimate impulse responses via instrument variable approach.
-* Some input names have been changed for consistency.  
+* Deleted the deprecated plot functions *plot_lin_irfs* and *plot_nl_irfs*.
+* The lag length of the endogenous variable in *lp_lin_iv* and *lp_nl_iv* can now be set to 0,
+  which excludes the endogenous variable as an explanatory one.
+* Improved documentation.
 
-Details cand be found in NEWS.
- 
 ## Test environments
 * local x86_64-pc-linux-gnu (64-bit), R version 3.5.1
 * ubuntu 14.04.5 (on travis-ci),      R version 3.4.4, R-oldrel, R-devel.
