@@ -80,8 +80,7 @@ All remaining errors are obviously mine.
 
 ## Development
 
-I intend to further extend the package with functions that enable to
-conduct panel-lp estimation.
+I am currently working on a function to conduct panel-lp estimation.
 
 ### Author
 
