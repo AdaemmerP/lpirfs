@@ -24,9 +24,8 @@ create_nl_data <- function(specs, endog_data){
     y_nl    <- endog_data
 
     # Make exogenous lagged data
-   # x_nl    <- create_lags(endog_data, specs$lags_endog_nl)
     if(specs$lags_endog_nl == 0){
-      x_nl <- data.frame(x = rep(0, nrow(endog_data)))
+      x_nl <- data.frame(x = rep(Inf, nrow(endog_data)))
                  } else {
       x_nl <- create_lags(endog_data, specs$lags_endog_nl)
     }
@@ -73,22 +72,19 @@ create_nl_data <- function(specs, endog_data){
     if(specs$trend == 0){
 
       # Only constant
-      x_nl             <-   x_nl %>%
-                            as.matrix()
+      x_nl             <-   x_nl
 
                     } else if (specs$trend == 1){
 
       # Constant and trend
       x_nl            <-   x_nl %>%
-                            dplyr::mutate(trend = row_number()) %>%
-                                                              as.matrix()
+                            dplyr::mutate(trend = row_number())
 
                       }  else {
 
       x_nl             <-   x_nl %>%
                              dplyr::mutate(trend = row_number())     %>%
-                             dplyr::mutate(sq_trend = trend^2)       %>%
-                                                              as.matrix()
+                             dplyr::mutate(sq_trend = trend^2)
                       }
 
     # Construct (lagged) exogenous data and merge it with lagged endogenous data
@@ -115,7 +111,7 @@ create_nl_data <- function(specs, endog_data){
     yx_all    <- cbind(y_nl, fz, x_nl) %>%
                  stats::na.omit()
 
-    yx_all    <- yx_all[, !(colSums(yx_all) == 0)]
+    yx_all    <- yx_all[, !(colSums(yx_all) == Inf)]
 
     y_nl      <- yx_all[, 1:ncol(endog_data)]  %>%
                  as.matrix()
@@ -194,23 +190,20 @@ create_nl_data <- function(specs, endog_data){
   # Add trend if set
      if(specs$trend == 0){
 
-       x_nl             <-   x_nl               %>%
-                            as.matrix()
+       x_nl             <-   x_nl
 
 
                     } else if (specs$trend == 1){
 
        x_nl            <-   x_nl                                    %>%
-                             dplyr::mutate(trend = row_number())     %>%
-                             as.matrix()
+                             dplyr::mutate(trend = row_number())
 
 
                        }  else {
 
-       x_nl            <-   x_nl                                %>%
+       x_nl            <-   x_nl                                       %>%
                               dplyr::mutate(trend = row_number())      %>%
-                              dplyr::mutate(sq_trend = trend^2)        %>%
-                              as.matrix()
+                              dplyr::mutate(sq_trend = trend^2)
     }
 
 

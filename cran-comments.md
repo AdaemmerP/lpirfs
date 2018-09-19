@@ -1,10 +1,11 @@
 # Submission notes
 
 ## Purpose
-* Deleted the deprecated plot functions *plot_lin_irfs* and *plot_nl_irfs*.
 * The lag length of the endogenous variable in *lp_lin_iv* and *lp_nl_iv* can now be set to 0,
   which excludes the endogenous variable as an explanatory one.
+* Deleted the deprecated plot functions *plot_lin_irfs* and *plot_nl_irfs*.
 * Improved documentation.
+
 
 ## Test environments
 * local x86_64-pc-linux-gnu (64-bit), R version 3.5.1

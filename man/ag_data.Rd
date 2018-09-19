@@ -4,7 +4,7 @@
 \name{ag_data}
 \alias{ag_data}
 \title{Data to estimate fiscal multipliers}
-\format{A tibble (data.frame) with 248 quarterly observations (rows) and 7 variables (columns):
+\format{A \link{tibble} with 248 quarterly observations (rows) and 7 variables (columns):
 \describe{
   \item{Year}{Year of observation.}
   \item{Quarter}{Quarter of observation.}
@@ -23,10 +23,9 @@ Sample: 1948:IV - 2008:IV}
 ag_data
 }
 \description{
-A \link{tibble} containing data to estimate fiscal multipliers.
+A tibble, containing data to estimate fiscal multipliers.
              This data was originally used by Auerbach and Gorodnichenko (2012).
-             Sarah and Zubairy (2018) use this data to re-evaluate their results with local projections
-             by Jordà (2005).
+             Sarah and Zubairy (2018) use this data to re-evaluate their results with local projections.
 }
 \references{
 Auerbach, A. J., and  Gorodnichenko Y. (2012). "Measuring the Output Responses to Fiscal Policy."

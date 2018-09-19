@@ -11,8 +11,8 @@ lp_nl(endog_data, lags_endog_lin = NULL, lags_endog_nl = NULL,
   lags_exog = NULL, contemp_data = NULL, num_cores = NULL)
 }
 \arguments{
-\item{endog_data}{A \link{data.frame}, containing all endogenous variables for the VAR. The column order
-is used for the Cholesky decomposition.}
+\item{endog_data}{A \link{data.frame}, containing all endogenous variables for the VAR. The Cholesky decomposition is based on the
+column order.}
 
 \item{lags_endog_lin}{NaN or integer. NaN if lag length criterion is used.
 Integer for number of lags for linear VAR to identify shock.}
@@ -135,7 +135,7 @@ data are separated into two states via a smooth transition function as in Auerba
   nl_plots <- plot_nl(results_nl)
 
 # Show all impulse responses by using 'ggpubr' and 'gridExtra'
-# The package does not depend on those packages so they have to be installed
+# lpirfs does not depend on those packages so they have to be installed
   library(ggpubr)
   library(gridExtra)
 

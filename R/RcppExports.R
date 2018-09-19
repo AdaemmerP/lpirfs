@@ -29,8 +29,8 @@ get_vals_lagcrit <- function(y, x, lag_crit, h, k, max_lags, n_obs) {
 #' @name hp_filter
 #' @title Decompose a times series via the Hodrick-Prescott filter
 #' @description  Estimate cyclical and trend component with filter by Hodrick and Prescott (1997).
-#' The function is based on the function \emph{hpfilter} from the archived package \emph{mFilter}.
-#' @param x Column matrix with numeric values.
+#' The function is based on the function \emph{hpfilter} from the archived \emph{mFilter}-package.
+#' @param x One column matrix with numeric values.
 #' @param lambda Numeric value.
 #' @return A list. The first element contains the cyclical component and the second element the trend component.
 #' @examples
@@ -39,7 +39,7 @@ get_vals_lagcrit <- function(y, x, lag_crit, h, k, max_lags, n_obs) {
 #'
 #'
 #'# Decompose the Federal Funds Rate
-#'  data_set     <- as.matrix(interest_rules_var_data$FF) # Input has to be a one column matrix
+#'  data_set     <- as.matrix(interest_rules_var_data$FF)
 #'  hp_results   <- hp_filter(data_set, 1600)
 #'
 #'# Extract results and save as data.frame

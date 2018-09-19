@@ -2,7 +2,7 @@
 #' @title Compute linear impulse responses with identified shock (instrument variable approach)
 #' @description Compute linear impulse responses with local projections and identified shock, i.e.
 #' instrument variable approach (see e.g. Jordà et al., 2015; and Ramey and Zubairy, 2018).
-#' @param endog_data A \link{data.frame}, containing the dependent variables.
+#' @param endog_data A \link{data.frame}, containing the values of the dependent variables.
 #' @param instr One column \link{data.frame} including the values of the instrument to shock with.
 #' The row length has to be the same as \emph{endog_data}.
 #' @param lags_endog_lin NaN or integer. NaN if lags are chosen by lag length criterion. Integer for number of lags for \emph{endog_data}.
@@ -15,7 +15,7 @@
 #'         will be given at \emph{lags_endog_lin}. The character refers to the corresponding lag length criterion ('AICc', 'AIC' or 'BIC').
 #' @param max_lags NaN or integer. Maximum number of lags if \emph{lags_criterion} is character with lag length criterion. NaN otherwise.
 #' @param trend Integer. No trend =  0 , include trend = 1, include trend and quadratic trend = 2.
-#' @param confint Double. Width of confidence bands. 68\% = 1, 90\% = 1.65, 95\% = 1.96.
+#' @param confint Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.
 #' @param hor Integer. Number of horizons for impulse responses.
 #' @param num_cores NULL or Integer. The number of cores to use for the estimation. If NULL, the function will
 #'                  use the maximum number of cores minus one.
@@ -26,20 +26,20 @@
 #'
 #'
 #'
-#'\item{irf_lin_mean}{A \link{matrix} containing the impulse responses.
+#'\item{irf_lin_mean}{A \link{matrix}, containing the impulse responses.
 #'                    The row in each matrix denotes the response of the \emph{ith}
 #'                    variable to the (instrument) shock. The columns are the horizons.}
 #'
-#'\item{irf_lin_low}{A \link{matrix} containing all lower confidence bands of
+#'\item{irf_lin_low}{A \link{matrix}, containing all lower confidence bands of
 #'                    the impulse responses, based on robust standard errors by Newey and West (1987).
 #'                    Properties are equal to \emph{irf_lin_mean}.}
 #'
-#'\item{irf_lin_up}{A \link{matrix} containing all upper confidence bands of
+#'\item{irf_lin_up}{A \link{matrix}, containing all upper confidence bands of
 #'                    the impulse responses, based on robust standard errors by Newey and West (1987).
 #'                    Properties are equal to \emph{irf_lin_mean}.}
 #'
 #'\item{specs}{A list with properties of \emph{endog_data} for the plot function. It also contains
-#'             lagged data (y_lin and x_lin) used for the estimations of the irfs.}
+#'             lagged data (y_lin and x_lin) used for the estimations of the impulse responses}
 #'
 #'
 #'

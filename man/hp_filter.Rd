@@ -7,7 +7,7 @@
 hp_filter(x, lambda)
 }
 \arguments{
-\item{x}{Column matrix with numeric values.}
+\item{x}{One column matrix with numeric values.}
 
 \item{lambda}{Numeric value.}
 }
@@ -16,7 +16,7 @@ A list. The first element contains the cyclical component and the second element
 }
 \description{
 Estimate cyclical and trend component with filter by Hodrick and Prescott (1997).
-The function is based on the function \emph{hpfilter} from the archived package \emph{mFilter}.
+The function is based on the function \emph{hpfilter} from the archived \emph{mFilter}-package.
 }
 \examples{
 \donttest{
@@ -24,7 +24,7 @@ library(lpirfs)
 
 
 # Decompose the Federal Funds Rate
- data_set     <- as.matrix(interest_rules_var_data$FF) # Input has to be a one column matrix
+ data_set     <- as.matrix(interest_rules_var_data$FF)
  hp_results   <- hp_filter(data_set, 1600)
 
 # Extract results and save as data.frame

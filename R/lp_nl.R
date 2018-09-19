@@ -3,8 +3,8 @@
 #' @description Compute nonlinear impulse responses with local projections by Jordà (2005). The
 #' data are separated into two states via a smooth transition function as in Auerbach and Gorodnichenko (2012).
 #'
-#' @param endog_data A \link{data.frame}, containing all endogenous variables for the VAR. The column order
-#'                     is used for the Cholesky decomposition.
+#' @param endog_data A \link{data.frame}, containing all endogenous variables for the VAR. The Cholesky decomposition is based on the
+#'                   column order.
 #' @param lags_criterion NaN or character. NaN means that the number of lags
 #'         will be given at \emph{lags_endog_nl} and \emph{lags_endog_lin}. The lag length criteria are 'AICc', 'AIC' and 'BIC'.
 #' @param lags_endog_lin NaN or integer. NaN if lag length criterion is used.
@@ -136,7 +136,7 @@
 #'   nl_plots <- plot_nl(results_nl)
 #'
 #'# Show all impulse responses by using 'ggpubr' and 'gridExtra'
-#'# The package does not depend on those packages so they have to be installed
+#'# lpirfs does not depend on those packages so they have to be installed
 #'   library(ggpubr)
 #'   library(gridExtra)
 #'

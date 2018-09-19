@@ -4,7 +4,7 @@
 \name{monetary_var_data}
 \alias{monetary_var_data}
 \title{Data to estimate a standard monetary VAR}
-\format{A tibble (data.frame) with 494 monthly observations (rows) and 6 variables (columns):
+\format{A \link{tibble} with 494 monthly observations (rows) and 6 variables (columns):
 \describe{
   \item{EM}{Log of non-agricultural payroll employment.}
   \item{P}{Log of personal consumption expenditures deflator (1996 = 100).}
@@ -23,7 +23,7 @@ Sample: 1960:01 - 2001:02.}
 monetary_var_data
 }
 \description{
-A \link{tibble} containing data to estimate a standard monetary VAR.
+A tibble, containing data to estimate a standard monetary VAR.
 }
 \references{
 Jordà, Ò. (2005) "Estimation and Inference of Impulse Responses by Local Projections."

@@ -10,7 +10,7 @@ lp_lin_iv(endog_data, instr = NULL, lags_endog_lin = NULL,
   confint = NULL, hor = NULL, num_cores = NULL)
 }
 \arguments{
-\item{endog_data}{A \link{data.frame}, containing the dependent variables.}
+\item{endog_data}{A \link{data.frame}, containing the values of the dependent variables.}
 
 \item{instr}{One column \link{data.frame} including the values of the instrument to shock with.
 The row length has to be the same as \emph{endog_data}.}
@@ -32,7 +32,7 @@ will be given at \emph{lags_endog_lin}. The character refers to the correspondin
 
 \item{trend}{Integer. No trend =  0 , include trend = 1, include trend and quadratic trend = 2.}
 
-\item{confint}{Double. Width of confidence bands. 68\% = 1, 90\% = 1.65, 95\% = 1.96.}
+\item{confint}{Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.}
 
 \item{hor}{Integer. Number of horizons for impulse responses.}
 
@@ -44,20 +44,20 @@ A list containing:
 
 
 
-\item{irf_lin_mean}{A \link{matrix} containing the impulse responses.
+\item{irf_lin_mean}{A \link{matrix}, containing the impulse responses.
                    The row in each matrix denotes the response of the \emph{ith}
                    variable to the (instrument) shock. The columns are the horizons.}
 
-\item{irf_lin_low}{A \link{matrix} containing all lower confidence bands of
+\item{irf_lin_low}{A \link{matrix}, containing all lower confidence bands of
                    the impulse responses, based on robust standard errors by Newey and West (1987).
                    Properties are equal to \emph{irf_lin_mean}.}
 
-\item{irf_lin_up}{A \link{matrix} containing all upper confidence bands of
+\item{irf_lin_up}{A \link{matrix}, containing all upper confidence bands of
                    the impulse responses, based on robust standard errors by Newey and West (1987).
                    Properties are equal to \emph{irf_lin_mean}.}
 
 \item{specs}{A list with properties of \emph{endog_data} for the plot function. It also contains
-            lagged data (y_lin and x_lin) used for the estimations of the irfs.}
+            lagged data (y_lin and x_lin) used for the estimations of the impulse responses}
 }
 \description{
 Compute linear impulse responses with local projections and identified shock, i.e.

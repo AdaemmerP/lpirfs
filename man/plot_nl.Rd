@@ -7,7 +7,7 @@
 plot_nl(results_nl)
 }
 \arguments{
-\item{results_nl}{A \link{list} created in \link{lp_nl}() or \link{lp_nl_iv}().}
+\item{results_nl}{A \link{list} created with \link{lp_nl}() or \link{lp_nl_iv}().}
 }
 \value{
 A list with (gg-)plots for nonlinear impulse responses.

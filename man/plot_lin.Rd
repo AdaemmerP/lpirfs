@@ -7,7 +7,7 @@
 plot_lin(results_lin)
 }
 \arguments{
-\item{results_lin}{A \link{list} created in \link{lp_lin}() or \link{lp_lin_iv}().}
+\item{results_lin}{A \link{list} created with \link{lp_lin}() or \link{lp_lin_iv}().}
 }
 \value{
 A list with (gg-)plots for linear impulse responses.

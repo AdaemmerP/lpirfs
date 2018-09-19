@@ -1,7 +1,7 @@
 #' @name plot_lin
 #' @title Compute and display plots of linear impulse responses
 #' @description Compute and display linear impulse responses, estimated with \link{lp_lin}() and \link{lp_lin_iv}().
-#' @param results_lin A \link{list} created in \link{lp_lin}() or \link{lp_lin_iv}().
+#' @param results_lin A \link{list} created with \link{lp_lin}() or \link{lp_lin_iv}().
 #' @return A list with (gg-)plots for linear impulse responses.
 #' @export
 #' @import ggplot2

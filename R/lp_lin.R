@@ -2,15 +2,15 @@
 #' @title Compute linear impulse responses
 #' @description Compute linear impulse responses with local projections by Jordà (2005).
 #'
-#' @param endog_data A \link{data.frame}, containing the endogenous variables for the VAR. The column order
-#'                    is used for the Cholesky decomposition.
+#' @param endog_data A \link{data.frame}, containing the endogenous variables for the VAR. The Cholesky decomposition is based on the
+#'          column order.
 #' @param lags_criterion NaN or character. NaN means that the number of lags
-#'         will be given at \emph{lags_endog_lin}. The character specifies the lag length criterion ('AICc', 'AIC' or 'BIC').
+#'         has to be given at \emph{lags_endog_lin}. The character specifies the lag length criterion ('AICc', 'AIC' or 'BIC').
 #' @param lags_endog_lin NaN or integer. NaN if lag length criterion is used. Integer for number of lags for \emph{endog_data}.
 #' @param max_lags NaN or integer. Maximum number of lags if \emph{lags_criterion} is given. NaN otherwise.
 #' @param trend Integer. No trend =  0 , include trend = 1, include trend and quadratic trend = 2.
 #' @param shock_type Integer. Standard deviation shock = 0, unit shock = 1.
-#' @param confint Double. Width of confidence bands. 68\% = 1, 90\% = 1.65, 95\% = 1.96.
+#' @param confint Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.
 #' @param hor Integer. Number of horizons for impulse responses.
 #' @param exog_data A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
 #'                 Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.
@@ -24,7 +24,7 @@
 #' @return A list containing:
 #'
 #'
-#'\item{irf_lin_mean}{A three 3D \link{array} containing all impulse responses for all endogenous variables.
+#'\item{irf_lin_mean}{A three 3D \link{array}, containing all impulse responses for all endogenous variables.
 #'                    The last dimension denotes the shock variable. The row in each matrix
 #'                    gives the responses of the \emph{ith} variable, ordered as in endog_data. The columns denote the horizons.
 #'                    For example, if \emph{results_lin} contains the list with results, results_lin$irf_lin_mean[, , 1] returns a KXH matrix,
@@ -96,7 +96,7 @@
 #'   linear_plots[[2]]
 #'
 #'# Show all plots by using 'ggpubr' and 'gridExtra'
-#'# The package does not depend on those packages so they have to be installed
+#'# lpirfs does not depend on those packages so they have to be installed
 #'  library(ggpubr)
 #'  library(gridExtra)
 #'

@@ -1,8 +1,8 @@
-# lpirfs 0.1.2.9000
+# lpirfs 0.1.3
 
-* Deleted the deprecated plot functions *plot_lin_irfs* and *plot_nl_irfs*.
 * The lag length of the endogenous variable in *lp_lin_iv* and *lp_nl_iv* can now be set to 0,
   which excludes the endogenous variable as an explanatory one.
+* Deleted the deprecated plot functions *plot_lin_irfs* and *plot_nl_irfs*.
 * Improved documentation.
 
 # lpirfs 0.1.2
@@ -51,4 +51,4 @@ original name | new name |
  
 
 # lpirfs 0.1.0
-* Preparation for CRAN release.
+* First CRAN release.

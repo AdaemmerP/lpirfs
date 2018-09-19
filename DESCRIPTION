@@ -10,15 +10,13 @@ Authors@R: c(
             person("James P.", "LeSage", 
                     email   = "jlesage@spatial-econometrics.com", 
                     role    = c("ctb")),
-            person("Mehmet.", "Balcilar", 
+            person("Mehmet", "Balcilar", 
                     email   = "mbalcilar@yahoo.com", 
                     role    = c("ctb"))) 
 Maintainer: Philipp Adämmer <adaemmer@hsu-hh.de>
 BugReports: https://github.com/adaemmerp/lpirfs/issues
-Description: Contains functions to estimate linear and nonlinear impulse 
+Description: Provides functions to estimate and plot linear as well as nonlinear impulse 
              responses based on local projections by Jordà (2005) <doi:10.1257/0002828053828518>.
-             Nonlinear impulse responses are estimated for two regimes based on 
-             a transition function as used in Auerbach and Gorodnichenko (2012) <doi:10.1257/pol.4.2.1>.
 License: GPL (>= 2)
 Depends: R (>= 3.1.2)
 Encoding: UTF-8

@@ -2,7 +2,7 @@
 % Please edit documentation in R/lp_nl_iv.R
 \name{lp_nl_iv}
 \alias{lp_nl_iv}
-\title{Compute nonlinear impulse responses with with identified shock (instrument variable approach)}
+\title{Compute nonlinear impulse responses with identified shock (instrument variable approach)}
 \usage{
 lp_nl_iv(endog_data, lags_endog_nl = NULL, instr = NULL,
   exog_data = NULL, lags_exog = NULL, contemp_data = NULL,
@@ -42,7 +42,7 @@ will be given at \emph{lags_endog_nl} and \emph{lags_lin}. The lag length criter
 be decomposed via the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013) or
 directly plugged into the following smooth transition function:
 \deqn{ F_{z_t} = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)}. }
-Warning: \eqn{F_{z_t}} will be lagged in \link{create_nl_data} by one and then multiplied with the data.
+Warning: \eqn{F_{z_t}} will be lagged by one and then multiplied with the data.
 If the variable shall not be lagged, the vector has to be given with a lead of one.
 The data for the two regimes are: \cr
 Regime 1 = (1-\eqn{F(z_{t-1})})*y_{(t-p)}, \cr
@@ -60,32 +60,32 @@ use the maximum number of cores minus one.}
 \value{
 A list containing:
 
-\item{irf_s1_mean}{A \link{matrix} containing the impulse responses of the first regime.
+\item{irf_s1_mean}{A \link{matrix}, containing the impulse responses of the first regime.
                    The row in each matrix denotes the responses of the \emph{ith}
                    variable to the instrument shock. The columns are the horizons.}
 
-\item{irf_s1_low}{A \link{matrix} containing all lower confidence bands of
+\item{irf_s1_low}{A \link{matrix}, containing all lower confidence bands of
                    the impulse responses, based on robust standard errors by Newey and West (1987).
                    Properties are equal to \emph{irf_s1_mean}.}
 
-\item{irf_s1_up}{A \link{matrix} containing all upper confidence bands of the
+\item{irf_s1_up}{A \link{matrix}, containing all upper confidence bands of the
                    impulse responses, based on robust standard errors by Newey and West (1987).
                    Properties are equal to \emph{irf_s1_mean}.}
 
-\item{irf_s2_mean}{A \link{matrix} containing all impulse responses for the second regime.
+\item{irf_s2_mean}{A \link{matrix}, containing all impulse responses for the second regime.
                    The row in each matrix denotes the responses of the \emph{ith} variable to the shock.
                    The columns denote the horizon.}
 
-\item{irf_s2_low}{A three \link{matrix} containing all lower confidence bands of the responses,
+\item{irf_s2_low}{A \link{matrix}, containing all lower confidence bands of the responses,
                    based on robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s2_mean}.}
 
-\item{irf_s2_up}{A three \link{matrix}, containing all upper confidence bands of the responses, based on
+\item{irf_s2_up}{A \link{matrix}, containing all upper confidence bands of the responses, based on
                    robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s2_mean}.}
 
 \item{specs}{A list with properties of \emph{endog_data} for the plot function. It also contains
-            lagged data (y_nl and x_nl) used for the estimations of the irfs.}
+            lagged data (y_nl and x_nl) used for the estimations of the impulse responses}
 
-\item{fz}{A vector containing the values of the transition function F(z_{t-1}).}
+\item{fz}{A vector, containing the values of the transition function F(z_{t-1}).}
 }
 \description{
 Compute nonlinear impulse responses with local projections and identified shock, i.e.

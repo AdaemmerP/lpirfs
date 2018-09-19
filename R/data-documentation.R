@@ -1,9 +1,9 @@
 #' @title Data to estimate fiscal multipliers
-#' @description A \link{tibble} containing data to estimate fiscal multipliers.
+#' @description A tibble, containing data to estimate fiscal multipliers.
 #'              This data was originally used by Auerbach and Gorodnichenko (2012).
-#'              Sarah and Zubairy (2018) use this data to re-evaluate their results with local projections
-#'              by Jordà (2005).
-#' @format A tibble (data.frame) with 248 quarterly observations (rows) and 7 variables (columns):
+#'              Sarah and Zubairy (2018) use this data to re-evaluate their results with local projections.
+#'
+#' @format A \link{tibble} with 248 quarterly observations (rows) and 7 variables (columns):
 #' \describe{
 #'   \item{Year}{Year of observation.}
 #'   \item{Quarter}{Quarter of observation.}
@@ -32,12 +32,10 @@
 
 
 
-
-
 #' @title Data to estimate the effects of interest rate rules for monetary policy
-#' @description A \link{tibble} containing data to estimate the effects of interest rate rules for monetary policy.
-#'              The data are used in Jordà (2005).
-#' @format A tibble (data.frame) with 193 quarterly observations (rows) and 3 variables (columns):
+#' @description A tibble, containing data to estimate the effects of interest rate rules for monetary policy.
+#'              The data are used by Jordà (2005).
+#' @format A \link{tibble} with 193 quarterly observations (rows) and 3 variables (columns):
 #' \describe{
 #'   \item{GDP_gap}{Percentage difference between real GDP and potential GDP (Congressional Budget Office).}
 #'   \item{Infl}{Inflation: Percentage change in the GDP, chain weighted price index at annual rate.}
@@ -55,9 +53,9 @@
 
 #' @title Data to estimate a standard monetary VAR
 #'
-#' @description A \link{tibble} containing data to estimate a standard monetary VAR.
+#' @description A tibble, containing data to estimate a standard monetary VAR.
 #'
-#' @format A tibble (data.frame) with 494 monthly observations (rows) and 6 variables (columns):
+#' @format A \link{tibble} with 494 monthly observations (rows) and 6 variables (columns):
 #' \describe{
 #'   \item{EM}{Log of non-agricultural payroll employment.}
 #'   \item{P}{Log of personal consumption expenditures deflator (1996 = 100).}
