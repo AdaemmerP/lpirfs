@@ -6,6 +6,8 @@
 #' @param shock One column \link{data.frame} including the values of the variable to shock with.
 #' The row length has to be the same as \emph{endog_data}.
 #' @param instr Deprecated input name. Use 'shock' instead. See 'shock' for details.
+#' @param twosls Use two stage least squares? TRUE or FALSE.
+#' @param instrum The instrument to use for two stage least square estimation. The instrument will be used for 'shock'.
 #' @param lags_endog_lin NaN or integer. NaN if lags are chosen by lag length criterion. Integer for number of lags for \emph{endog_data}.
 #' @param exog_data A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
 #'                  Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.
@@ -164,6 +166,8 @@
 lp_lin_iv <- function(endog_data,
                    shock          = NULL,
                    instr          = NULL,
+                   two2sls        = FALSE,
+                   instrum        = NULL,
                    lags_endog_lin = NULL,
                    exog_data      = NULL,
                    lags_exog      = NULL,
