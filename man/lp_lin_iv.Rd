@@ -4,16 +4,18 @@
 \alias{lp_lin_iv}
 \title{Compute linear impulse responses with identified shock (instrument variable approach)}
 \usage{
-lp_lin_iv(endog_data, instr = NULL, lags_endog_lin = NULL,
-  exog_data = NULL, lags_exog = NULL, contemp_data = NULL,
-  lags_criterion = NaN, max_lags = NaN, trend = NULL,
-  confint = NULL, hor = NULL, num_cores = NULL)
+lp_lin_iv(endog_data, shock = NULL, instr = NULL,
+  lags_endog_lin = NULL, exog_data = NULL, lags_exog = NULL,
+  contemp_data = NULL, lags_criterion = NaN, max_lags = NaN,
+  trend = NULL, confint = NULL, hor = NULL, num_cores = NULL)
 }
 \arguments{
 \item{endog_data}{A \link{data.frame}, containing the values of the dependent variables.}
 
-\item{instr}{One column \link{data.frame} including the values of the instrument to shock with.
+\item{shock}{One column \link{data.frame} including the values of the variable to shock with.
 The row length has to be the same as \emph{endog_data}.}
+
+\item{instr}{Deprecated input name. Use 'shock' instead. See 'shock' for details.}
 
 \item{lags_endog_lin}{NaN or integer. NaN if lags are chosen by lag length criterion. Integer for number of lags for \emph{endog_data}.}
 
@@ -83,7 +85,7 @@ instrument variable approach (see e.g. Jordà et al., 2015; and Ramey and Zubair
 # Estimate linear model
  results_lin_iv <- lp_lin_iv(endog_data,
                                lags_endog_lin = 4,
-                               instr          = shock,
+                               shock          = shock,
                                exog_data      = NULL,
                                lags_exog      = NULL,
                                contemp_data   = NULL,
@@ -112,6 +114,40 @@ instrument variable approach (see e.g. Jordà et al., 2015; and Ramey and Zubair
 # The package does not depend on those packages so they have to be installed
  library(ggpubr)
  library(gridExtra)
+
+ lin_plots_all <- sapply(iv_lin_plots, ggplotGrob)
+ marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = 1, top = NULL)
+
+
+# You can also add lags of the instrument. However, in this example you'd have to
+# exclude government spending as an endogenous variable as it is used as the instrument here.
+
+# Endogenous data
+ endog_data    <- ag_data[sample_start:sample_end, 4:5] # Exclude government spending
+
+# Shock ('Instrument')
+ shock         <- ag_data[sample_start:sample_end, 3]
+
+# Use the shock as exogenous data
+ exog_data     <- shock
+
+# Estimate linear model with lagged instrument
+ results_lin_iv <- lp_lin_iv(endog_data,
+                               lags_endog_lin = 4,
+                               shock          = shock,
+                               exog_data      = exog_data,
+                               lags_exog      = 2,
+                               contemp_data   = NULL,
+                               lags_criterion = NaN,
+                               max_lags       = NaN,
+                               trend          = 0,
+                               confint        = 1.96,
+                               hor            = 20,
+                               num_cores      = NULL)
+
+
+# Make and save plots
+ iv_lin_plots    <- plot_lin(results_lin_iv)
 
  lin_plots_all <- sapply(iv_lin_plots, ggplotGrob)
  marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = 1, top = NULL)

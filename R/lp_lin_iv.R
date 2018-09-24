@@ -3,8 +3,9 @@
 #' @description Compute linear impulse responses with local projections and identified shock, i.e.
 #' instrument variable approach (see e.g. Jordà et al., 2015; and Ramey and Zubairy, 2018).
 #' @param endog_data A \link{data.frame}, containing the values of the dependent variables.
-#' @param instr One column \link{data.frame} including the values of the instrument to shock with.
+#' @param shock One column \link{data.frame} including the values of the variable to shock with.
 #' The row length has to be the same as \emph{endog_data}.
+#' @param instr Deprecated input name. Use 'shock' instead. See 'shock' for details.
 #' @param lags_endog_lin NaN or integer. NaN if lags are chosen by lag length criterion. Integer for number of lags for \emph{endog_data}.
 #' @param exog_data A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
 #'                  Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.
@@ -90,7 +91,7 @@
 #'# Estimate linear model
 #'  results_lin_iv <- lp_lin_iv(endog_data,
 #'                                lags_endog_lin = 4,
-#'                                instr          = shock,
+#'                                shock          = shock,
 #'                                exog_data      = NULL,
 #'                                lags_exog      = NULL,
 #'                                contemp_data   = NULL,
@@ -123,12 +124,47 @@
 #'  lin_plots_all <- sapply(iv_lin_plots, ggplotGrob)
 #'  marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = 1, top = NULL)
 #'
+#'
+#'# You can also add lags of the instrument. However, in this example you'd have to
+#'# exclude government spending as an endogenous variable as it is used as the instrument here.
+#'
+#'# Endogenous data
+#'  endog_data    <- ag_data[sample_start:sample_end, 4:5] # Exclude government spending
+#'
+#'# Shock ('Instrument')
+#'  shock         <- ag_data[sample_start:sample_end, 3]
+#'
+#'# Use the shock as exogenous data
+#'  exog_data     <- shock
+#'
+#'# Estimate linear model with lagged instrument
+#'  results_lin_iv <- lp_lin_iv(endog_data,
+#'                                lags_endog_lin = 4,
+#'                                shock          = shock,
+#'                                exog_data      = exog_data,
+#'                                lags_exog      = 2,
+#'                                contemp_data   = NULL,
+#'                                lags_criterion = NaN,
+#'                                max_lags       = NaN,
+#'                                trend          = 0,
+#'                                confint        = 1.96,
+#'                                hor            = 20,
+#'                                num_cores      = NULL)
+#'
+#'
+#'# Make and save plots
+#'  iv_lin_plots    <- plot_lin(results_lin_iv)
+#'
+#'  lin_plots_all <- sapply(iv_lin_plots, ggplotGrob)
+#'  marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = 1, top = NULL)
+#'
 #' }
 
 
 lp_lin_iv <- function(endog_data,
+                   shock          = NULL,
                    instr          = NULL,
-                   lags_endog_lin       = NULL,
+                   lags_endog_lin = NULL,
                    exog_data      = NULL,
                    lags_exog      = NULL,
                    contemp_data   = NULL,
@@ -139,6 +175,11 @@ lp_lin_iv <- function(endog_data,
                    hor            = NULL,
                    num_cores      = NULL){
 
+  # Give warning if 'instr' is used as input name
+  if(!is.null(instr)){
+    shock = instr
+    warning("'instr' is a deprecated input name. Use 'shock' instead.")
+  }
 
   # Check whether data is a data.frame
   if(!(is.data.frame(endog_data))){
@@ -151,12 +192,12 @@ lp_lin_iv <- function(endog_data,
   }
 
   # Check whether instrument for shock is given
-  if(is.null(instr)){
+  if(is.null(shock)){
     stop('You have to provide an instrument to shock with.')
   }
 
   # Check whether instrument for shock is given
-  if(!is.data.frame(instr)){
+  if(!is.data.frame(shock)){
     stop('The instrument has to be given as a data.frame().')
   }
 
@@ -238,7 +279,7 @@ lp_lin_iv <- function(endog_data,
   specs <- list()
 
   # Specify inputs
-  specs$instr              <- instr
+  specs$shock              <- shock
   specs$lags_endog_lin     <- lags_endog_lin
   specs$exog_data          <- exog_data
   specs$lags_exog          <- lags_exog

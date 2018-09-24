@@ -7,8 +7,9 @@
 #' @param endog_data A \link{data.frame}, containing all endogenous variables for the VAR. The column order
 #'                     is used for the Cholesky decomposition.
 #' @param lags_endog_nl NaN or integer. Number of lags for nonlinear VAR. NaN if lag length criterion is given.
-#' @param instr One column \link{data.frame}, including the instrument to shock with.
+#' @param shock One column \link{data.frame}, including the instrument to shock with.
 #'              The row length has to be the same as \emph{endog_data}.
+#' @param instr Deprecated input name. Use 'shock' instead.
 #' @param exog_data A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
 #'                  Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.
 #' @param lags_exog Null or an integer, indicating the number of lags for exogenous data.
@@ -125,7 +126,7 @@
 #'# Estimate local projections
 #'  results_nl_iv <- lp_nl_iv(endog_data,
 #'                            lags_endog_nl     = 3,
-#'                            instr             = shock,
+#'                            shock             = shock,
 #'                            exog_data         = exog_data,
 #'                            lags_exog         = 4,
 #'                            contemp_data      = NULL,
@@ -170,7 +171,8 @@
 #'@author Philipp Adämmer
 #'
 lp_nl_iv <- function(endog_data,
-                            lags_endog_nl           = NULL,
+                            lags_endog_nl     = NULL,
+                            shock             = NULL,
                             instr             = NULL,
                             exog_data         = NULL,
                             lags_exog         = NULL,
@@ -185,6 +187,12 @@ lp_nl_iv <- function(endog_data,
                             lambda            = NULL,
                             gamma             = NULL,
                             num_cores         = NULL){
+
+  # Give warning if 'instr' is used as input name
+  if(!is.null(instr)){
+    shock = instr
+    warning("'instr' is a deprecated input name. Use 'shock' instead.")
+  }
 
   # Check whether data is a data.frame
   if(!(is.data.frame(endog_data))){
@@ -294,9 +302,9 @@ lp_nl_iv <- function(endog_data,
   # Specify inputs
   specs$lags_endog_nl               <- lags_endog_nl
 
-  if(is.data.frame(instr)){
-     specs$instr   <- instr  }  else {
-     specs$instr   <- as.data.frame(instr)
+  if(is.data.frame(shock)){
+     specs$shock   <- shock  }  else {
+     specs$shock   <- as.data.frame(shock)
   }
 
   if(is.null(exog_data) | is.data.frame(exog_data)){

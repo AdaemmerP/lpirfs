@@ -55,7 +55,7 @@ test_that("Check whether list length is consistent number of endogenous variable
 
     results_nl_iv <- lp_nl_iv(endog_data,
                                          lags_endog_nl     = 3,
-                                         instr             = shock,
+                                         shock             = shock,
                                          exog_data         = exog_data,
                                          lags_exog         = 4,
                                          contemp_data      = NULL,

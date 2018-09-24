@@ -50,7 +50,7 @@ create_nl_data <- function(specs, endog_data){
     # Prepare instrument variable and add to exogenous data
     if(specs$model_type == 1){
     # Prepare instrument variable
-    instrum           <- specs$instr
+    instrum           <- specs$shock
     colnames(instrum) <- 'instrum'
     instrum_names     <- colnames(instrum)
 
@@ -149,7 +149,7 @@ create_nl_data <- function(specs, endog_data){
       # 0 = Normal model, 1 = IV model
       # Prepare instrument variable and add to exogenous data
       if(specs$model_type == 1){
-      instrum           <- specs$instr
+      instrum           <- specs$shock
       colnames(instrum) <- 'instrum'
       instrum_names     <- colnames(instrum)
       }

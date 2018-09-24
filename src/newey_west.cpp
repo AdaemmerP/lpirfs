@@ -21,20 +21,22 @@ List newey_west(NumericVector y, NumericMatrix x, int h){
   int nrow_hhat, a, nobs, num_exog, nlag;
   List ret(2);
 
+
+  // OLS
   xx       = as<arma::mat>(x);
-  // Insert ones for constant
-  xx_one   = arma::ones<arma::mat>(xx.n_rows, 1);
+  xx_one   = arma::ones<arma::mat>(xx.n_rows, 1); // Insert ones for constant
   xx.insert_cols(0, xx_one);
 
   yy       = as<arma::vec>(y);
   num_exog = xx.n_cols;
   nobs     = xx.n_rows;
 
-  nlag     = h; // The lag increases with the horizons
   xpxi     = inv(xx.t()*xx);
   beta     = xpxi*xx.t()*yy;
   resids   = yy - xx*beta;
 
+  // Start Newey-West
+  nlag     = h; // The lag increases with the horizons
   emat     = arma::zeros<arma::mat>(nobs, num_exog);
   emat.cols(0, num_exog-1).each_col()   = resids;
   emat     = emat.t();

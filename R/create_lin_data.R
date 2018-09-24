@@ -28,7 +28,7 @@ create_lin_data     <- function(specs, endog_data){
     # 0 = Normal model, 1 = IV model
     # Prepare instrument variable and add to exogenous data
     if(specs$model_type == 1){
-    instrum           <- specs$instr
+    instrum           <- specs$shock
     colnames(instrum) <- 'instrum'
     instrum_names     <- colnames(instrum)
     x_lin             <- cbind(instrum, x_lin)
@@ -107,7 +107,7 @@ create_lin_data     <- function(specs, endog_data){
 
       if(specs$model_type == 1){
      # Prepare instrument variable
-        instrum            <- specs$instr
+        instrum            <- specs$shock
      # Add instrument to 'exogenous' data
         x_lin              <- cbind(instrum, x_lin)
        }

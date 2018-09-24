@@ -4,11 +4,11 @@
 \alias{lp_nl_iv}
 \title{Compute nonlinear impulse responses with identified shock (instrument variable approach)}
 \usage{
-lp_nl_iv(endog_data, lags_endog_nl = NULL, instr = NULL,
-  exog_data = NULL, lags_exog = NULL, contemp_data = NULL,
-  lags_criterion = NULL, max_lags = NULL, trend = NULL,
-  confint = NULL, hor = NULL, switching = NULL, use_hp = NULL,
-  lambda = NULL, gamma = NULL, num_cores = NULL)
+lp_nl_iv(endog_data, lags_endog_nl = NULL, shock = NULL,
+  instr = NULL, exog_data = NULL, lags_exog = NULL,
+  contemp_data = NULL, lags_criterion = NULL, max_lags = NULL,
+  trend = NULL, confint = NULL, hor = NULL, switching = NULL,
+  use_hp = NULL, lambda = NULL, gamma = NULL, num_cores = NULL)
 }
 \arguments{
 \item{endog_data}{A \link{data.frame}, containing all endogenous variables for the VAR. The column order
@@ -16,8 +16,10 @@ is used for the Cholesky decomposition.}
 
 \item{lags_endog_nl}{NaN or integer. Number of lags for nonlinear VAR. NaN if lag length criterion is given.}
 
-\item{instr}{One column \link{data.frame}, including the instrument to shock with.
+\item{shock}{One column \link{data.frame}, including the instrument to shock with.
 The row length has to be the same as \emph{endog_data}.}
+
+\item{instr}{Deprecated input name. Use 'shock' instead.}
 
 \item{exog_data}{A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
 Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.}
@@ -118,7 +120,7 @@ function as in Auerbach and Gorodnichenko (2012).
 # Estimate local projections
  results_nl_iv <- lp_nl_iv(endog_data,
                            lags_endog_nl     = 3,
-                           instr             = shock,
+                           shock             = shock,
                            exog_data         = exog_data,
                            lags_exog         = 4,
                            contemp_data      = NULL,

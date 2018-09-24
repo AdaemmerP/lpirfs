@@ -240,7 +240,7 @@ Load data which is included in the package and taken from [RZ-18](https://www.jo
 Estimate model with constant and 4 lags.
 ```{r, message = FALSE }
  results_lin_iv <- lp_lin_iv(endog_data,
-                         instr          = shock,
+                         shock          = shock,
                          lags_endog_lin = 4,
                          exog_data      = NULL,
                          lags_exog      = NULL,
@@ -327,7 +327,7 @@ Estimate nonlinear model
 ```{r, message = FALSE }
  results_nl_iv <- lp_nl_iv(endog_data,
                            lags_endog_nl     = 3,
-                           instr             = shock,
+                           shock             = shock,
                            exog_data         = exog_data,
                            lags_exog         = 4,
                            contemp_data      = NULL,

@@ -476,7 +476,7 @@ $(document).ready(function () {
  shock             &lt;- endog_data[, 1]</code></pre>
 <p>Estimate model with constant and 4 lags.</p>
 <pre class="r"><code> results_lin_iv &lt;- lp_lin_iv(endog_data,
-                         instr          = shock,
+                         shock          = shock,
                          lags_endog_lin = 4,
                          exog_data      = NULL,
                          lags_exog      = NULL,
@@ -531,7 +531,7 @@ results_lin_iv  &lt;- list(irf_lin_mean  = multiplier_mean,
 <p>Estimate nonlinear model</p>
 <pre class="r"><code> results_nl_iv &lt;- lp_nl_iv(endog_data,
                            lags_endog_nl     = 3,
-                           instr             = shock,
+                           shock             = shock,
                            exog_data         = exog_data,
                            lags_exog         = 4,
                            contemp_data      = NULL,

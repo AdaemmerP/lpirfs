@@ -1,9 +1,16 @@
 # lpirfs 0.1.3
 
-* The lag length of the endogenous variable in *lp_lin_iv* and *lp_nl_iv* can now be set to 0,
-  which excludes the endogenous variable as an explanatory one.
+* Included the option to set the lag length of the endogenous variable in *lp_lin_iv* and *lp_nl_iv* to 0.
+  This excludes the endogenous variable as an explanatory one.
 * Deleted the deprecated plot functions *plot_lin_irfs* and *plot_nl_irfs*.
 * Improved documentation.
+* Input names in `lp_lin_iv()` and `lp_nl_iv()` have been changed for consistency:
+
+function | old input name | new input name
+:--------|:-------------  |:------------- 
+`lp_lin_iv()` | `instr`     | `shock`
+`lp_nl_iv()`  | `instr`     | `shock`
+
 
 # lpirfs 0.1.2
 
