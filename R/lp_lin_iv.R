@@ -3,11 +3,12 @@
 #' @description Compute linear impulse responses with local projections and identified shock, i.e.
 #' instrument variable approach (see e.g. Jordà et al., 2015; and Ramey and Zubairy, 2018).
 #' @param endog_data A \link{data.frame}, containing the values of the dependent variables.
-#' @param shock One column \link{data.frame} including the values of the variable to shock with.
-#' This should coincide with the first column of 'endog_data'. The row length has to be the same as \emph{endog_data}.
+#' @param shock One column \link{data.frame} including the the variable to shock with.
+#' The row length has to be the same as \emph{endog_data}.
 #' @param instr Deprecated input name. Use 'shock' instead. See 'shock' for details.
 #' @param twosls Use two stage least squares? TRUE or FALSE.
-#' @param instrum A \link{data.frame}, containing the instrument(s) to use for 2SLS. The instrument(s) will be used for 'shock'.
+#' @param instrum A \link{data.frame}, containing the instrument(s) to use for 2SLS. The variable in 'shock' will be regressed on
+#' 'instrum'.
 #' @param lags_endog_lin NaN or integer. NaN if lags are chosen by lag length criterion. Integer for number of lags for \emph{endog_data}.
 #' @param exog_data A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
 #'                  Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.
