@@ -4,7 +4,7 @@
 #' instrument variable approach (see e.g. Jordà et al., 2015; and Ramey and Zubairy, 2018).
 #' @param endog_data A \link{data.frame}, containing the values of the dependent variables.
 #' @param shock One column \link{data.frame} including the values of the variable to shock with.
-#' The row length has to be the same as \emph{endog_data}.
+#' This should coincide with the first column of 'endog_data'. The row length has to be the same as \emph{endog_data}.
 #' @param instr Deprecated input name. Use 'shock' instead. See 'shock' for details.
 #' @param twosls Use two stage least squares? TRUE or FALSE.
 #' @param instrum A \link{data.frame}, containing the instrument(s) to use for 2SLS. The instrument(s) will be used for 'shock'.
@@ -87,7 +87,7 @@
 #'# Endogenous data
 #'  endog_data    <- ag_data[sample_start:sample_end,3:5]
 #'
-#'# Shock ('Instrument')
+#'# Variable to shock with
 #'  shock         <- ag_data[sample_start:sample_end, 3]
 #'
 #'# Estimate linear model
@@ -160,13 +160,54 @@
 #'  lin_plots_all <- sapply(iv_lin_plots, ggplotGrob)
 #'  marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = 1, top = NULL)
 #'
+#'##############################################################################
+#'################################# Use 2SLS ###################################
+#'##############################################################################
 #'
-#'# Generate instrument
-#'  instrum       <- 0.8*ag_data[sample_start:sample_end, 3] + rnorm(length(shock$Gov)) %>%
-#'                 as_tibble()
+#'# Load dplyr
+#'  library(dplyr)
+#'
+#'# Load data
+#'  ag_data       <- ag_data
+#'  sample_start  <- 7
+#'  sample_end    <- dim(ag_data)[1]
+#'
+#'# Endogenous data
+#'  endog_data    <- ag_data[sample_start:sample_end,3:5]
+#'
+#'# Variable to shock with
+#'  shock         <- ag_data[sample_start:sample_end, 3]
+#'
+#'# Generate instrument that is correlated with government spending ('shock')
+#'  instrum       <- 0.9*ag_data[sample_start:sample_end, 3] +
+#'                   rnorm(length(shock$Gov), 0, 0.02) %>%
+#'                   as_tibble()
+#'
+#'# Estimate linear model
+#'  results_lin_iv <- lp_lin_iv(endog_data,
+#'                             lags_endog_lin = 4,
+#'                             shock          = shock,
+#'                             instrum        = instrum,
+#'                             twosls         = TRUE,
+#'                             exog_data      = NULL,
+#'                             lags_exog      = NULL,
+#'                             contemp_data   = NULL,
+#'                             lags_criterion = NaN,
+#'                             max_lags       = NaN,
+#'                             trend          = 0,
+#'                             confint        = 1.96,
+#'                             hor            = 20,
+#'                             num_cores      = NULL)
+#'
+#'# Make and save plots
+#' iv_lin_plots    <- plot_lin(results_lin_iv)
+#'
+#'
+#'# Show irf, estimated via 2sls
+#'  iv_lin_plots[[1]]
 #' }
-
-
+#'
+#'
 lp_lin_iv <- function(endog_data,
                    shock          = NULL,
                    instr          = NULL,
