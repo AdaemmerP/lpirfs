@@ -13,14 +13,16 @@ lp_lin_iv(endog_data, shock = NULL, instr = NULL, twosls = FALSE,
 \arguments{
 \item{endog_data}{A \link{data.frame}, containing the values of the dependent variables.}
 
-\item{shock}{One column \link{data.frame} including the values of the variable to shock with.
-The row length has to be the same as \emph{endog_data}.}
+\item{shock}{One column \link{data.frame} including the the variable to shock with. When *twosls = T*,
+this variable will be regressed on the instrument variable defined in *instrum*.
+The row length of has to be the same as \emph{endog_data}.}
 
 \item{instr}{Deprecated input name. Use 'shock' instead. See 'shock' for details.}
 
 \item{twosls}{Use two stage least squares? TRUE or FALSE.}
 
-\item{instrum}{A \link{data.frame}, containing the instrument(s) to use for 2SLS. The instrument(s) will be used for 'shock'.}
+\item{instrum}{A \link{data.frame}, containing the instrument(s) to use for 2SLS. The variable in 'shock' will be regressed on
+'instrum'.}
 
 \item{lags_endog_lin}{NaN or integer. NaN if lags are chosen by lag length criterion. Integer for number of lags for \emph{endog_data}.}
 
@@ -200,7 +202,7 @@ instrument variable approach (see e.g. Jordà et al., 2015; and Ramey and Zubair
 iv_lin_plots    <- plot_lin(results_lin_iv)
 
 
-# Show irf, estimated via 2sls
+# Show irf
  iv_lin_plots[[1]]
 }
 

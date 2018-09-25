@@ -3,8 +3,9 @@
 #' @description Compute linear impulse responses with local projections and identified shock, i.e.
 #' instrument variable approach (see e.g. Jordà et al., 2015; and Ramey and Zubairy, 2018).
 #' @param endog_data A \link{data.frame}, containing the values of the dependent variables.
-#' @param shock One column \link{data.frame} including the the variable to shock with.
-#' The row length has to be the same as \emph{endog_data}.
+#' @param shock One column \link{data.frame} including the the variable to shock with. When *twosls = T*,
+#' this variable will be regressed on the instrument variable defined in *instrum*.
+#' The row length of has to be the same as \emph{endog_data}.
 #' @param instr Deprecated input name. Use 'shock' instead. See 'shock' for details.
 #' @param twosls Use two stage least squares? TRUE or FALSE.
 #' @param instrum A \link{data.frame}, containing the instrument(s) to use for 2SLS. The variable in 'shock' will be regressed on
@@ -204,7 +205,7 @@
 #' iv_lin_plots    <- plot_lin(results_lin_iv)
 #'
 #'
-#'# Show irf, estimated via 2sls
+#'# Show irf
 #'  iv_lin_plots[[1]]
 #' }
 #'
