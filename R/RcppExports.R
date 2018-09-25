@@ -75,25 +75,6 @@ hp_filter <- function(x, lambda) {
     .Call(`_lpirfs_hp_filter`, x, lambda)
 }
 
-#' @name newey_west_iv
-#' @title Compute 2SLS parameters and robust standard errors based on Newey-West
-#' @description  Compute 2SLS parameters and robust standard errors based on Newey and West (1987).
-#' The function is based on the Matlab code by James P. LeSage.
-#' @param y Numeric vector.
-#' @param x Numeric matrix.
-#' @param z Numeric matrix
-#' @param h Integer.
-#' @return A list. The first element contains the "estimated 2SLS parameters and the second element
-#' the covariance matrix of these parameters.
-#' @keywords internal
-#' @references
-#' Newey, W.K., and West, K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
-#' Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–708.
-#' Wooldridge, J.M. (2002), Econometric Analysis of Cross Section and Panel Data, The MIT Press.
-newey_west_iv <- function(y, x, h) {
-    .Call(`_lpirfs_newey_west_iv`, y, x, h)
-}
-
 #' @name newey_west
 #' @title Compute OLS parameters and robust standard errors based on Newey-West estimator
 #' @description  Compute OLS parameters and robust standard errors based on Newey and West (1987).
