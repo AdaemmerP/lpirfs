@@ -4,10 +4,11 @@
 \alias{lp_lin_iv}
 \title{Compute linear impulse responses with identified shock (instrument variable approach)}
 \usage{
-lp_lin_iv(endog_data, shock = NULL, instr = NULL,
-  lags_endog_lin = NULL, exog_data = NULL, lags_exog = NULL,
-  contemp_data = NULL, lags_criterion = NaN, max_lags = NaN,
-  trend = NULL, confint = NULL, hor = NULL, num_cores = NULL)
+lp_lin_iv(endog_data, shock = NULL, instr = NULL, twosls = FALSE,
+  instrum = NULL, lags_endog_lin = NULL, exog_data = NULL,
+  lags_exog = NULL, contemp_data = NULL, lags_criterion = NaN,
+  max_lags = NaN, trend = NULL, confint = NULL, hor = NULL,
+  num_cores = NULL)
 }
 \arguments{
 \item{endog_data}{A \link{data.frame}, containing the values of the dependent variables.}
@@ -16,6 +17,10 @@ lp_lin_iv(endog_data, shock = NULL, instr = NULL,
 The row length has to be the same as \emph{endog_data}.}
 
 \item{instr}{Deprecated input name. Use 'shock' instead. See 'shock' for details.}
+
+\item{twosls}{Use two stage least squares? TRUE or FALSE.}
+
+\item{instrum}{The instrument to use for two stage least square estimation. The instrument will be used for 'shock'.}
 
 \item{lags_endog_lin}{NaN or integer. NaN if lags are chosen by lag length criterion. Integer for number of lags for \emph{endog_data}.}
 

@@ -166,7 +166,7 @@
 lp_lin_iv <- function(endog_data,
                    shock          = NULL,
                    instr          = NULL,
-                   two2sls        = FALSE,
+                   twosls         = FALSE,
                    instrum        = NULL,
                    lags_endog_lin = NULL,
                    exog_data      = NULL,
@@ -284,6 +284,8 @@ lp_lin_iv <- function(endog_data,
 
   # Specify inputs
   specs$shock              <- shock
+  specs$twosls             <- twosls
+  specs$instrum            <- instrum
   specs$lags_endog_lin     <- lags_endog_lin
   specs$exog_data          <- exog_data
   specs$lags_exog          <- lags_exog

@@ -28,10 +28,10 @@ create_lin_data     <- function(specs, endog_data){
     # 0 = Normal model, 1 = IV model
     # Prepare instrument variable and add to exogenous data
     if(specs$model_type == 1){
-    instrum           <- specs$shock
-    colnames(instrum) <- 'instrum'
-    instrum_names     <- colnames(instrum)
-    x_lin             <- cbind(instrum, x_lin)
+    shock           <- specs$shock
+    colnames(shock) <- 'shock'
+    instrum_names     <- colnames(shock)
+    x_lin             <- cbind(shock, x_lin)
              }
 
     # Include no trend, trend or quadratic trend
@@ -87,6 +87,8 @@ create_lin_data     <- function(specs, endog_data){
 
 
 
+
+
 ################################################################################
                                      } else {
 ################################################################################
@@ -107,9 +109,9 @@ create_lin_data     <- function(specs, endog_data){
 
       if(specs$model_type == 1){
      # Prepare instrument variable
-        instrum            <- specs$shock
+        shock            <- specs$shock
      # Add instrument to 'exogenous' data
-        x_lin              <- cbind(instrum, x_lin)
+        x_lin              <- cbind(shock, x_lin)
        }
 
      # Include no trend, trend or quadratic trend
