@@ -73,7 +73,7 @@ create_lin_data     <- function(specs, endog_data){
     }
 
     # Combine endogenous and exogenous data
-      yx_all    <- cbind(y_lin, x_lin) %>%
+      yx_all    <- cbind(y_lin, x_lin)   %>%
                    stats::na.omit()
 
       yx_all    <- yx_all[,  !(colSums(yx_all) == Inf)]
@@ -87,6 +87,19 @@ create_lin_data     <- function(specs, endog_data){
 
 
 
+    # Check whether z matrix has to be build for 2sls
+      if(specs$twosls == TRUE){
+
+    # Compare lag length between endog_lin and lags_exog
+      z_lag     <- max(specs$lags_endog_lin, specs$lags_exog)
+      z         <- x_lin[, -1]
+      z         <- cbind(specs$instrum[(z_lag + 1):dim(specs$instrum)[1], ], z)
+
+              } else {
+
+
+
+        }
 
 
 ################################################################################
@@ -172,7 +185,13 @@ create_lin_data     <- function(specs, endog_data){
 
 }
 
-# Return list with exogenous and endogenous data
-        return(list(y_lin, x_lin))
+
+# Set instrument variable to NULL if no 2sls is used
+    if(specs$twosls == FALSE){
+       z <- NULL
+      }
+
+# Return list with exogenous, endogenous data, and iv data
+        return(list(y_lin, x_lin, z))
 
 }

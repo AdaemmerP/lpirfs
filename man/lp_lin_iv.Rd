@@ -20,7 +20,7 @@ The row length has to be the same as \emph{endog_data}.}
 
 \item{twosls}{Use two stage least squares? TRUE or FALSE.}
 
-\item{instrum}{The instrument to use for two stage least square estimation. The instrument will be used for 'shock'.}
+\item{instrum}{A \link{data.frame}, containing the instrument(s) to use for 2SLS. The instrument(s) will be used for 'shock'.}
 
 \item{lags_endog_lin}{NaN or integer. NaN if lags are chosen by lag length criterion. Integer for number of lags for \emph{endog_data}.}
 
@@ -130,7 +130,7 @@ instrument variable approach (see e.g. Jordà et al., 2015; and Ramey and Zubair
 # Endogenous data
  endog_data    <- ag_data[sample_start:sample_end, 4:5] # Exclude government spending
 
-# Shock ('Instrument')
+# The variable to shock with
  shock         <- ag_data[sample_start:sample_end, 3]
 
 # Use the shock as exogenous data
@@ -157,6 +157,10 @@ instrument variable approach (see e.g. Jordà et al., 2015; and Ramey and Zubair
  lin_plots_all <- sapply(iv_lin_plots, ggplotGrob)
  marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = 1, top = NULL)
 
+
+# Generate instrument
+ instrum       <- 0.8*ag_data[sample_start:sample_end, 3] + rnorm(length(shock$Gov)) \%>\%
+                as_tibble()
 }
 }
 \references{

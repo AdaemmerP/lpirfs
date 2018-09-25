@@ -7,7 +7,7 @@
 #' The row length has to be the same as \emph{endog_data}.
 #' @param instr Deprecated input name. Use 'shock' instead. See 'shock' for details.
 #' @param twosls Use two stage least squares? TRUE or FALSE.
-#' @param instrum The instrument to use for two stage least square estimation. The instrument will be used for 'shock'.
+#' @param instrum A \link{data.frame}, containing the instrument(s) to use for 2SLS. The instrument(s) will be used for 'shock'.
 #' @param lags_endog_lin NaN or integer. NaN if lags are chosen by lag length criterion. Integer for number of lags for \emph{endog_data}.
 #' @param exog_data A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
 #'                  Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.
@@ -133,7 +133,7 @@
 #'# Endogenous data
 #'  endog_data    <- ag_data[sample_start:sample_end, 4:5] # Exclude government spending
 #'
-#'# Shock ('Instrument')
+#'# The variable to shock with
 #'  shock         <- ag_data[sample_start:sample_end, 3]
 #'
 #'# Use the shock as exogenous data
@@ -160,6 +160,10 @@
 #'  lin_plots_all <- sapply(iv_lin_plots, ggplotGrob)
 #'  marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = 1, top = NULL)
 #'
+#'
+#'# Generate instrument
+#'  instrum       <- 0.8*ag_data[sample_start:sample_end, 3] + rnorm(length(shock$Gov)) %>%
+#'                 as_tibble()
 #' }
 
 
@@ -313,10 +317,12 @@ lp_lin_iv <- function(endog_data,
 
   y_lin    <- data_lin[[1]]
   x_lin    <- data_lin[[2]]
+  z        <- data_lin[[3]]
 
 # Save endogenous and lagged exogenous data in specs
   specs$y_lin        <- y_lin
   specs$x_lin        <- x_lin
+  specs$z            <- z
 
 
 
@@ -364,11 +370,27 @@ if(is.nan(specs$lags_criterion) == TRUE){
 
                           for (k in 1:specs$endog){ # Accounts for the reactions of the endogenous variables
 
-                            # Estimate coefficients and newey west std.err
-                            if(specs$endog == 1 ){
-                              nw_results   <- lpirfs::newey_west(yy, xx, h)
-                                         } else {
-                              nw_results   <- lpirfs::newey_west(yy[, k], xx, h)
+                            # Check whether use OLS or 2sls
+                            if(specs$twosls == FALSE){
+
+                              # Estimate OLS betas and newey west std.err
+                                if(specs$endog == 1 ){
+                                  nw_results   <- lpirfs::newey_west(yy, xx, h)
+                                             } else {
+                                  nw_results   <- lpirfs::newey_west(yy[, k], xx, h)
+                                }
+                                      }   else   {
+
+                               # Extract instrument matrix z
+                               z <- specs$z[1 : (dim(x_lin)[1] - h + 1), ]
+
+                                # Estimate 2SLS betas and newey west std.err
+                                if(specs$endog == 1 ){
+                                  nw_results   <- lpirfs::newey_west_tsls(yy, xx, z, h)
+                                } else {
+                                  nw_results   <- lpirfs::newey_west_tsls(yy[, k], xx, z, h)
+                                }
+
                             }
 
                             b              <- nw_results[[1]]

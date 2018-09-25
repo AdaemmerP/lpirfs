@@ -250,6 +250,9 @@ lp_nl <- function(endog_data,
     # Set model type for lag construction
     specs$model_type     <- 0
 
+    # Set 2SLS option to FALSE
+    specs$twosls <- FALSE
+
 #--- Check inputs
 
   # Check whether data is a data.frame
