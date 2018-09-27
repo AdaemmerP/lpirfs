@@ -2,7 +2,7 @@
 % Please edit documentation in R/lp_nl_iv.R
 \name{lp_nl_iv}
 \alias{lp_nl_iv}
-\title{Compute nonlinear impulse responses with identified shock (instrument variable approach)}
+\title{Compute nonlinear impulse responses with identified shock}
 \usage{
 lp_nl_iv(endog_data, lags_endog_nl = NULL, shock = NULL,
   instr = NULL, exog_data = NULL, lags_exog = NULL,
@@ -90,8 +90,8 @@ A list containing:
 \item{fz}{A vector, containing the values of the transition function F(z_{t-1}).}
 }
 \description{
-Compute nonlinear impulse responses with local projections and identified shock, i.e.
-instrument variable approach (see e.g. Jordà et al., 2015; and Ramey and Zubairy, 2018). The data are separated into two states via a smooth transition
+Compute nonlinear impulse responses with local projections and identified shock
+(see e.g. Jordà et al., 2015; and Ramey and Zubairy, 2018). The data are separated into two states via a smooth transition
 function as in Auerbach and Gorodnichenko (2012).
 }
 \examples{

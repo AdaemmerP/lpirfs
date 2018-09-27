@@ -2,7 +2,7 @@
 % Please edit documentation in R/lp_lin_iv.R
 \name{lp_lin_iv}
 \alias{lp_lin_iv}
-\title{Compute linear impulse responses with identified shock (instrument variable approach)}
+\title{Compute linear impulse responses with identified shock or via 2SLS.}
 \usage{
 lp_lin_iv(endog_data, shock = NULL, instr = NULL, twosls = FALSE,
   instrum = NULL, lags_endog_lin = NULL, exog_data = NULL,
@@ -11,11 +11,11 @@ lp_lin_iv(endog_data, shock = NULL, instr = NULL, twosls = FALSE,
   num_cores = NULL)
 }
 \arguments{
-\item{endog_data}{A \link{data.frame}, containing the values of the dependent variables.}
+\item{endog_data}{A \link{data.frame}, containing the values of the dependent variable(s).}
 
-\item{shock}{One column \link{data.frame} including the the variable to shock with. When *twosls = T*,
-this variable will be regressed on the instrument variable defined in *instrum*.
-The row length of has to be the same as \emph{endog_data}.}
+\item{shock}{A one column \link{data.frame} including the variable to shock with. When *twosls = TRUE*,
+this variable will be approximated/regressed on the instrument variable(s) given in *instrum*.
+The row length has to be the same as \emph{endog_data}.}
 
 \item{instr}{Deprecated input name. Use 'shock' instead. See 'shock' for details.}
 
@@ -35,7 +35,8 @@ Lag lengths for exogenous variables have to be given and will no be determined v
 The row length has to be the same as \emph{endog_data}.}
 
 \item{lags_criterion}{NaN or character. NaN means that the number of lags
-will be given at \emph{lags_endog_lin}. The character refers to the corresponding lag length criterion ('AICc', 'AIC' or 'BIC').}
+will be given at \emph{lags_endog_lin}. The character refers to the corresponding lag length criterion ('AICc', 'AIC' or 'BIC').
+Note that when *twosls = TRUE*, the optimal lag lengths are based on normal OLS regressions, without using the instruments.}
 
 \item{max_lags}{NaN or integer. Maximum number of lags if \emph{lags_criterion} is character with lag length criterion. NaN otherwise.}
 
@@ -69,8 +70,8 @@ A list containing:
             lagged data (y_lin and x_lin) used for the estimations of the impulse responses}
 }
 \description{
-Compute linear impulse responses with local projections and identified shock, i.e.
-instrument variable approach (see e.g. Jordà et al., 2015; and Ramey and Zubairy, 2018).
+Compute linear impulse responses with identified shock or via 2SLS
+(see e.g. Jordà et al., 2015; and Ramey and Zubairy, 2018).
 }
 \examples{
 \donttest{
@@ -165,6 +166,9 @@ instrument variable approach (see e.g. Jordà et al., 2015; and Ramey and Zubair
 
 # Load dplyr
  library(dplyr)
+
+# Fix random number generator
+ set.seed(007)
 
 # Load data
  ag_data       <- ag_data

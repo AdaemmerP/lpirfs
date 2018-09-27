@@ -1,7 +1,7 @@
 #' @name lp_nl_iv
-#' @title Compute nonlinear impulse responses with identified shock (instrument variable approach)
-#' @description Compute nonlinear impulse responses with local projections and identified shock, i.e.
-#' instrument variable approach (see e.g. Jordà et al., 2015; and Ramey and Zubairy, 2018). The data are separated into two states via a smooth transition
+#' @title Compute nonlinear impulse responses with identified shock
+#' @description Compute nonlinear impulse responses with local projections and identified shock
+#' (see e.g. Jordà et al., 2015; and Ramey and Zubairy, 2018). The data are separated into two states via a smooth transition
 #' function as in Auerbach and Gorodnichenko (2012).
 #'
 #' @param endog_data A \link{data.frame}, containing all endogenous variables for the VAR. The column order

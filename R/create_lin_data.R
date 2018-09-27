@@ -86,28 +86,28 @@ create_lin_data     <- function(specs, endog_data){
 
 
 
-    # Check whether z matrix has to be build for 2sls
+    # Check whether z_lin matrix has to be build for 2sls
       if(specs$twosls == TRUE){
 
     # Compare lag length between endog_lin and lags_exog
-      z_lag     <- max(specs$lags_endog_lin, specs$lags_exog)
-      z         <- x_lin[, -1]
-      z         <- cbind(specs$instrum[(z_lag + 1):dim(specs$instrum)[1], ], z)
+      z_lag         <- max(specs$lags_endog_lin, specs$lags_exog)
+      z_lin         <- x_lin[, -1]
+      z_lin         <- cbind(specs$instrum[(z_lag + 1):dim(specs$instrum)[1], ], z_lin)
 
-              } else {
-
-
-
-        }
+    # Set instrument variable to NULL if twosls = FALSE
+                } else {
+      z_lin <- NULL
+    }
 
 
 ################################################################################
-                                     } else {
+                               } else {
 ################################################################################
 
     # Create list to store lagged data
     y_lin_store     <- rep(list(NaN), specs$max_lags)
     x_lin_store     <- rep(list(NaN), specs$max_lags)
+    z_lin_store     <- rep(list(NaN), specs$max_lags)
 
     y_lin           <- endog_data
 
@@ -164,7 +164,7 @@ create_lin_data     <- function(specs, endog_data){
 
 
 
-        # Merge all and extract exogenous and endogenous data
+    # Merge all and extract exogenous and endogenous data
         yx_all               <-  cbind(y_lin, x_lin)  %>%
                                  stats::na.omit()
 
@@ -174,6 +174,17 @@ create_lin_data     <- function(specs, endog_data){
         x_lin_store[[i]]     <-  yx_all[, (ncol(endog_data) + 1):dim(yx_all)[2]] %>%
                                  as.matrix()
 
+        # Check whether z_lin matrix has to be build for 2sls
+        if(specs$twosls == TRUE){
+
+          # Compare lag length between endog_lin and lags_exog
+          z_lag                <- max(i, specs$lags_exog)
+          z_lin                <- x_lin_store[[i]][, -1]
+          z_lin                <- cbind(specs$instrum[(z_lag + 1):dim(specs$instrum)[1], ], z_lin)
+          z_lin_store[[i]]     <- z_lin
+
+                    }     else    {}
+
 
 
     }
@@ -182,15 +193,20 @@ create_lin_data     <- function(specs, endog_data){
         y_lin <- y_lin_store
         x_lin <- x_lin_store
 
+        # Set instrument variable to NULL if twosls = FALSE
+        if(specs$twosls == FALSE){
+
+        z_lin <- NULL
+
+           } else {
+
+        z_lin <- z_lin_store
+
+        }
+
 }
 
-
-# Set instrument variable to NULL if no 2sls is used
-    if(specs$twosls == FALSE){
-       z <- NULL
-      }
-
 # Return list with exogenous, endogenous data, and iv data
-        return(list(y_lin, x_lin, z))
+        return(list(y_lin, x_lin, z_lin))
 
 }

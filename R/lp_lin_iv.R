@@ -1,11 +1,11 @@
 #' @name lp_lin_iv
-#' @title Compute linear impulse responses with identified shock (instrument variable approach)
-#' @description Compute linear impulse responses with local projections and identified shock, i.e.
-#' instrument variable approach (see e.g. Jordà et al., 2015; and Ramey and Zubairy, 2018).
-#' @param endog_data A \link{data.frame}, containing the values of the dependent variables.
-#' @param shock One column \link{data.frame} including the the variable to shock with. When *twosls = T*,
-#' this variable will be regressed on the instrument variable defined in *instrum*.
-#' The row length of has to be the same as \emph{endog_data}.
+#' @title Compute linear impulse responses with identified shock or via 2SLS.
+#' @description Compute linear impulse responses with identified shock or via 2SLS
+#' (see e.g. Jordà et al., 2015; and Ramey and Zubairy, 2018).
+#' @param endog_data A \link{data.frame}, containing the values of the dependent variable(s).
+#' @param shock A one column \link{data.frame} including the variable to shock with. When *twosls = TRUE*,
+#' this variable will be approximated/regressed on the instrument variable(s) given in *instrum*.
+#' The row length has to be the same as \emph{endog_data}.
 #' @param instr Deprecated input name. Use 'shock' instead. See 'shock' for details.
 #' @param twosls Use two stage least squares? TRUE or FALSE.
 #' @param instrum A \link{data.frame}, containing the instrument(s) to use for 2SLS. The variable in 'shock' will be regressed on
@@ -18,6 +18,7 @@
 #'                      The row length has to be the same as \emph{endog_data}.
 #' @param lags_criterion NaN or character. NaN means that the number of lags
 #'         will be given at \emph{lags_endog_lin}. The character refers to the corresponding lag length criterion ('AICc', 'AIC' or 'BIC').
+#'         Note that when *twosls = TRUE*, the optimal lag lengths are based on normal OLS regressions, without using the instruments.
 #' @param max_lags NaN or integer. Maximum number of lags if \emph{lags_criterion} is character with lag length criterion. NaN otherwise.
 #' @param trend Integer. No trend =  0 , include trend = 1, include trend and quadratic trend = 2.
 #' @param confint Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.
@@ -169,6 +170,9 @@
 #'# Load dplyr
 #'  library(dplyr)
 #'
+#'# Fix random number generator
+#'  set.seed(007)
+#'
 #'# Load data
 #'  ag_data       <- ag_data
 #'  sample_start  <- 7
@@ -262,18 +266,7 @@ lp_lin_iv <- function(endog_data,
     stop('Please provide a lag length for the exogenous data.')
   }
 
-
-  # Give message when no linear model is provided
-  if(is.null(exog_data)){
-    message('You estimate the model without exogenous data.')
-  }
-
-  # Give message when no contemporaneous data is provided
-  if(is.null(contemp_data)){
-    message('You estimate the model without exogenous data with contemporaneous impact.')
-  }
-
-  # Give message when no contemporaneous data is provided
+  # Check whether 'lags_criterion' is correctly specified
   if(is.null(lags_criterion)){
     stop('"lags_criterion" has to be NaN or a character, specifying the lag length criterion.')
   }
@@ -325,6 +318,28 @@ lp_lin_iv <- function(endog_data,
   }
 
 
+  # Give message when no exogenous data is provided
+  if(is.null(exog_data)){
+    message('You estimate the model without exogenous data.')
+  }
+
+  # Give message when no contemporaneous data is provided
+  if(is.null(contemp_data)){
+    message('You estimate the model without exogenous data with contemporaneous impact.')
+  }
+
+  # Give error when twosls = T but instrum = NULL
+  if(isTRUE(twosls) & is.null(instrum)){
+    message('Please specify at least one instrument to use for 2SLS.')
+  }
+
+
+  # Give message when regression is done via 2SLS
+  if(isTRUE(twosls)){
+    message('Coefficients and confidence bands are estimated via 2SLS.')
+  }
+
+
 
   # Create list to store inputs
   specs <- list()
@@ -360,12 +375,12 @@ lp_lin_iv <- function(endog_data,
 
   y_lin    <- data_lin[[1]]
   x_lin    <- data_lin[[2]]
-  z        <- data_lin[[3]]
+  z_lin    <- data_lin[[3]]
 
 # Save endogenous and lagged exogenous data in specs
   specs$y_lin        <- y_lin
   specs$x_lin        <- x_lin
-  specs$z            <- z
+  specs$z_lin        <- z_lin
 
 
 
@@ -424,14 +439,14 @@ if(is.nan(specs$lags_criterion) == TRUE){
                                 }
                                       }   else   {
 
-                               # Extract instrument matrix z
-                               z <- specs$z[1 : (dim(x_lin)[1] - h + 1), ]
+                               # Extract instrument matrix z_lin
+                                zz <- specs$z_lin[1 : (dim(z_lin)[1] - h + 1), ]
 
                                 # Estimate 2SLS betas and newey west std.err
                                 if(specs$endog == 1 ){
-                                  nw_results   <- lpirfs::newey_west_tsls(yy, xx, z, h)
-                                } else {
-                                  nw_results   <- lpirfs::newey_west_tsls(yy[, k], xx, z, h)
+                                  nw_results   <- lpirfs::newey_west_tsls(yy, xx, zz, h)
+                                        }   else   {
+                                  nw_results   <- lpirfs::newey_west_tsls(yy[, k], xx, zz, h)
                                 }
 
                             }
@@ -494,8 +509,24 @@ if(is.nan(specs$lags_criterion) == TRUE){
                             xx <- x_lin[[lag_choice]]
                             xx <- xx[1:(dim(xx)[1] - h + 1),]
 
-                            # Estimate coefficients and newey west std.err
-                            nw_results     <- lpirfs::newey_west(yy, xx, h)
+                            # Check whether use OLS or 2sls
+                            if(specs$twosls == FALSE){
+
+                                # Estimate coefficients and newey west std.err
+                                nw_results     <- lpirfs::newey_west(yy, xx, h)
+                            #    b              <- nw_results[[1]]
+                            #    std_err        <- sqrt(diag(nw_results[[2]]))*specs$confint
+
+                                        } else {
+
+                                # Extract instrument matrix z_lin
+                                zz         <- z_lin[[lag_choice]]
+                                zz         <- zz[1:(dim(zz)[1] - h + 1),]
+
+                                # Estimate 2SLS betas and newey west std.err
+                                nw_results <- lpirfs::newey_west_tsls(yy, xx, zz, h)
+                            }
+
                             b              <- nw_results[[1]]
                             std_err        <- sqrt(diag(nw_results[[2]]))*specs$confint
 
