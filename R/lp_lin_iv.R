@@ -1,5 +1,5 @@
 #' @name lp_lin_iv
-#' @title Compute linear impulse responses with identified shock or via 2SLS.
+#' @title Compute linear impulse responses with identified shock or via 2SLS
 #' @description Compute linear impulse responses with identified shock or via 2SLS
 #' (see e.g. Jordà et al., 2015; and Ramey and Zubairy, 2018).
 #' @param endog_data A \link{data.frame}, containing the values of the dependent variable(s).

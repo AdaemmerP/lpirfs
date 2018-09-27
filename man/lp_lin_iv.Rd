@@ -2,7 +2,7 @@
 % Please edit documentation in R/lp_lin_iv.R
 \name{lp_lin_iv}
 \alias{lp_lin_iv}
-\title{Compute linear impulse responses with identified shock or via 2SLS.}
+\title{Compute linear impulse responses with identified shock or via 2SLS}
 \usage{
 lp_lin_iv(endog_data, shock = NULL, instr = NULL, twosls = FALSE,
   instrum = NULL, lags_endog_lin = NULL, exog_data = NULL,
