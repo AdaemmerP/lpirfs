@@ -50,6 +50,8 @@ List newey_west_tsls(NumericVector y, NumericMatrix x, NumericMatrix z, int h){
 
 
   // Start Newey-West
+  // Use original data for newey west estimator
+  xpxi     = inv(xx.t()*xx);
   nlag     = h; // The lag increases with the horizons
   emat     = arma::zeros<arma::mat>(nobs, num_exog);
   emat.cols(0, num_exog-1).each_col()   = resids;
