@@ -8,8 +8,8 @@
 #' The row length has to be the same as \emph{endog_data}.
 #' @param instr Deprecated input name. Use 'shock' instead. See 'shock' for details.
 #' @param twosls Use two stage least squares? TRUE or FALSE.
-#' @param instrum A \link{data.frame}, containing the instrument(s) to use for 2SLS. The variable in 'shock' will be regressed on
-#' 'instrum'.
+#' @param instrum A \link{data.frame}, containing the instrument(s) to use for 2SLS. This instrument will be used for the
+#'  variable in 'shock'.
 #' @param lags_endog_lin NaN or integer. NaN if lags are chosen by lag length criterion. Integer for number of lags for \emph{endog_data}.
 #' @param exog_data A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
 #'                  Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.
@@ -18,7 +18,7 @@
 #'                      The row length has to be the same as \emph{endog_data}.
 #' @param lags_criterion NaN or character. NaN means that the number of lags
 #'         will be given at \emph{lags_endog_lin}. The character refers to the corresponding lag length criterion ('AICc', 'AIC' or 'BIC').
-#'         Note that when *twosls = TRUE*, the optimal lag lengths are based on normal OLS regressions, without using the instruments.
+#'         Note that when 'twosls = TRUE', the optimal lag lengths are based on normal OLS regressions, without using the instruments.
 #' @param max_lags NaN or integer. Maximum number of lags if \emph{lags_criterion} is character with lag length criterion. NaN otherwise.
 #' @param trend Integer. No trend =  0 , include trend = 1, include trend and quadratic trend = 2.
 #' @param confint Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.
@@ -181,12 +181,11 @@
 #'# Endogenous data
 #'  endog_data    <- ag_data[sample_start:sample_end,3:5]
 #'
-#'# Variable to shock with
+#'# Use government spending as the shock variable
 #'  shock         <- ag_data[sample_start:sample_end, 3]
 #'
-#'# Generate instrument that is correlated with government spending ('shock')
-#'  instrum       <- 0.9*ag_data[sample_start:sample_end, 3] +
-#'                   rnorm(length(shock$Gov), 0, 0.02) %>%
+#'# Generate instrument variable that is correlated with government spending
+#'  instrum       <- 0.9*shock$Gov + rnorm(length(shock$Gov), 0, 0.02) %>%
 #'                   as_tibble()
 #'
 #'# Estimate linear model
@@ -210,7 +209,7 @@
 #'
 #'
 #'# Show irf
-#'  iv_lin_plots[[1]]
+#'  iv_lin_plots[[3]]
 #' }
 #'
 #'
@@ -358,7 +357,6 @@ lp_lin_iv <- function(endog_data,
   specs$confint            <- confint
   specs$hor                <- hor
   specs$model_type         <- 1
-
 
 
 
