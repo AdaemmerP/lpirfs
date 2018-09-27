@@ -35,19 +35,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// newey_west
-List newey_west(NumericVector y, NumericMatrix x, int h);
-RcppExport SEXP _lpirfs_newey_west(SEXP ySEXP, SEXP xSEXP, SEXP hSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
-    Rcpp::traits::input_parameter< int >::type h(hSEXP);
-    rcpp_result_gen = Rcpp::wrap(newey_west(y, x, h));
-    return rcpp_result_gen;
-END_RCPP
-}
 // newey_west_tsls
 List newey_west_tsls(NumericVector y, NumericMatrix x, NumericMatrix z, int h);
 RcppExport SEXP _lpirfs_newey_west_tsls(SEXP ySEXP, SEXP xSEXP, SEXP zSEXP, SEXP hSEXP) {
@@ -62,12 +49,25 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// newey_west
+List newey_west(NumericVector y, NumericMatrix x, int h);
+RcppExport SEXP _lpirfs_newey_west(SEXP ySEXP, SEXP xSEXP, SEXP hSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type h(hSEXP);
+    rcpp_result_gen = Rcpp::wrap(newey_west(y, x, h));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_lpirfs_get_vals_lagcrit", (DL_FUNC) &_lpirfs_get_vals_lagcrit, 7},
     {"_lpirfs_hp_filter", (DL_FUNC) &_lpirfs_hp_filter, 2},
-    {"_lpirfs_newey_west", (DL_FUNC) &_lpirfs_newey_west, 3},
     {"_lpirfs_newey_west_tsls", (DL_FUNC) &_lpirfs_newey_west_tsls, 4},
+    {"_lpirfs_newey_west", (DL_FUNC) &_lpirfs_newey_west, 3},
     {NULL, NULL, 0}
 };
 
