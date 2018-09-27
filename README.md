@@ -80,10 +80,7 @@ All remaining errors are obviously mine.
 
 ## Development
 
-I am currently working on
-
-  - including 2SLS into *lp\_lin\_iv* and *lp\_nl\_iv*,
-  - a function to conduct panel-lp estimation.
+I am currently working on a function to conduct panel-lp estimation.
 
 ### Author
 

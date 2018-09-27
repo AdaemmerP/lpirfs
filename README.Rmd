@@ -69,10 +69,7 @@ never started this project.
 All remaining errors are obviously mine. 
 
 ## Development
-I am currently working on 
-
-- including 2SLS into *lp_lin_iv* and *lp_nl_iv*,
-- a function to conduct panel-lp estimation.
+I am currently working on a function to conduct panel-lp estimation.
 
 
 ### Author
