@@ -18,7 +18,7 @@ using namespace Rcpp;
 // [[Rcpp::export]]
 List newey_west_tsls(NumericVector y, NumericMatrix x, NumericMatrix z, int h){
   NumericMatrix V;
-  arma::mat G, M, xx, xx_one, yy, xx_hat, zz, M1, M2, ga, g1, w, za, xpxi, emat, hhat;
+  arma::mat G, M, xx, xx_one, yy, xx_hat, zz, M1, M2, ga, g1, w, za, xpxi, xpxi_iv, emat, hhat;
   arma::vec w1, beta_iv, resids;
   int nrow_hhat, a, nobs, num_exog, nlag;
   List ret(2);
@@ -38,8 +38,8 @@ List newey_west_tsls(NumericVector y, NumericMatrix x, NumericMatrix z, int h){
   xx_hat   = zz*inv(zz.t()*zz)*zz.t()*xx;
 
   // Estimate beta_iv
-  xpxi     = inv(xx_hat.t()*xx_hat);
-  beta_iv  = xpxi*xx_hat.t()*yy;
+  xpxi_iv  = inv(xx_hat.t()*xx_hat);
+  beta_iv  = xpxi_iv*xx_hat.t()*yy;
 
   // Estimate corrected residuals
   resids   = yy - xx*beta_iv;
