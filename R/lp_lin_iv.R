@@ -169,7 +169,7 @@
 #'#####                         Use 2SLS                               #########
 #'##############################################################################
 #'
-#'# Fix random number generator
+#'# Set seed
 #'  set.seed(007)
 #'
 #'# Load data
@@ -437,13 +437,14 @@ if(is.nan(specs$lags_criterion) == TRUE){
                                 }
                                       }   else   {
 
-                               # Extract instrument matrix z_lin
-                                zz <- specs$z_lin[1 : (dim(z_lin)[1] - h + 1), ]
+                               # Extract instrument matrix and save as matrix
+                                zz <- specs$z_lin[1 : (dim(z_lin)[1] - h + 1), ] %>%
+                                      as.matrix()
 
                                 # Estimate 2SLS betas and newey west std.err
                                 if(specs$endog == 1 ){
                                   nw_results   <- lpirfs::newey_west_tsls(yy, xx, zz, h)
-                                        }   else   {
+                                              }   else   {
                                   nw_results   <- lpirfs::newey_west_tsls(yy[, k], xx, zz, h)
                                 }
 

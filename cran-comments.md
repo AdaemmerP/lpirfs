@@ -2,10 +2,10 @@
 
 ## Purpose
 * Included an option to conduct 2SLS with *lp_lin_iv*.
-* Included an option to set the lag length of the endogenous variable in *lp_lin_iv* and *lp_nl_iv* to zero.
+* Included an option to set the lag length of the endogenous variables in *lp_lin_iv* and *lp_nl_iv* to zero.
 * Deleted the deprecated plot functions *plot_lin_irfs* and *plot_nl_irfs*.
 * Improved documentation.
-* Input names in `lp_lin_iv()` and `lp_nl_iv()` have been changed for consistency:
+* Changed input names in `lp_lin_iv()` and `lp_nl_iv()` for consistency:
 
 function | old input name | new input name
 :--------|:-------------  |:------------- 

@@ -162,7 +162,7 @@ Compute linear impulse responses with identified shock or via 2SLS.
 #####                         Use 2SLS                               #########
 ##############################################################################
 
-# Fix random number generator
+# Set seed
  set.seed(007)
 
 # Load data
