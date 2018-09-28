@@ -1,15 +1,14 @@
 #' @name lp_nl_iv
 #' @title Compute nonlinear impulse responses with identified shock
 #' @description Compute nonlinear impulse responses with local projections and identified shock
-#' (see e.g. Jordà et al., 2015; and Ramey and Zubairy, 2018). The data are separated into two states via a smooth transition
+#' The data are separated into two states via a smooth transition
 #' function as in Auerbach and Gorodnichenko (2012).
-#'
 #' @param endog_data A \link{data.frame}, containing all endogenous variables for the VAR. The column order
 #'                     is used for the Cholesky decomposition.
 #' @param lags_endog_nl NaN or integer. Number of lags for nonlinear VAR. NaN if lag length criterion is given.
 #' @param shock One column \link{data.frame}, including the instrument to shock with.
 #'              The row length has to be the same as \emph{endog_data}.
-#' @param instr Deprecated input name. Use 'shock' instead.
+#' @param instr Deprecated input name. Use \emph{shock} instead. See \emph{shock} for details.
 #' @param exog_data A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
 #'                  Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.
 #' @param lags_exog Null or an integer, indicating the number of lags for exogenous data.
@@ -44,7 +43,7 @@
 #'
 #'\item{irf_s1_mean}{A \link{matrix}, containing the impulse responses of the first regime.
 #'                    The row in each matrix denotes the responses of the \emph{ith}
-#'                    variable to the instrument shock. The columns are the horizons.}
+#'                    variable to the shock. The columns are the horizons.}
 #'
 #'\item{irf_s1_low}{A \link{matrix}, containing all lower confidence bands of
 #'                    the impulse responses, based on robust standard errors by Newey and West (1987).

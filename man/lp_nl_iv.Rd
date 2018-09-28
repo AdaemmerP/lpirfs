@@ -19,7 +19,7 @@ is used for the Cholesky decomposition.}
 \item{shock}{One column \link{data.frame}, including the instrument to shock with.
 The row length has to be the same as \emph{endog_data}.}
 
-\item{instr}{Deprecated input name. Use 'shock' instead.}
+\item{instr}{Deprecated input name. Use \emph{shock} instead. See \emph{shock} for details.}
 
 \item{exog_data}{A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
 Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.}
@@ -64,7 +64,7 @@ A list containing:
 
 \item{irf_s1_mean}{A \link{matrix}, containing the impulse responses of the first regime.
                    The row in each matrix denotes the responses of the \emph{ith}
-                   variable to the instrument shock. The columns are the horizons.}
+                   variable to the shock. The columns are the horizons.}
 
 \item{irf_s1_low}{A \link{matrix}, containing all lower confidence bands of
                    the impulse responses, based on robust standard errors by Newey and West (1987).
@@ -91,7 +91,7 @@ A list containing:
 }
 \description{
 Compute nonlinear impulse responses with local projections and identified shock
-(see e.g. Jordà et al., 2015; and Ramey and Zubairy, 2018). The data are separated into two states via a smooth transition
+The data are separated into two states via a smooth transition
 function as in Auerbach and Gorodnichenko (2012).
 }
 \examples{
