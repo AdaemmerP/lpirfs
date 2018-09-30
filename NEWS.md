@@ -1,9 +1,13 @@
 # lpirfs 0.1.3
 
 * Included an option to conduct 2SLS with *lp_lin_iv*.
+
 * Included an option to set the lag length of the endogenous variables in *lp_lin_iv* and *lp_nl_iv* to zero.
+
 * Deleted the deprecated plot functions *plot_lin_irfs* and *plot_nl_irfs*.
+
 * Improved documentation.
+
 * Changed input names in `lp_lin_iv()` and `lp_nl_iv()` for consistency:
 
 function | old input name | new input name
