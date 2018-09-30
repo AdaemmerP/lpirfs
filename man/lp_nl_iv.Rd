@@ -11,26 +11,25 @@ lp_nl_iv(endog_data, lags_endog_nl = NULL, shock = NULL,
   use_hp = NULL, lambda = NULL, gamma = NULL, num_cores = NULL)
 }
 \arguments{
-\item{endog_data}{A \link{data.frame}, containing all endogenous variables for the VAR. The column order
-is used for the Cholesky decomposition.}
+\item{endog_data}{A \link{data.frame}, containing all endogenous variables for the VAR.}
 
-\item{lags_endog_nl}{NaN or integer. Number of lags for nonlinear VAR. NaN if lag length criterion is given.}
+\item{lags_endog_nl}{NaN or integer. NaN if lags are chosen by a lag length criterion. Integer for number of lags for \emph{endog_data}.}
 
 \item{shock}{One column \link{data.frame}, including the instrument to shock with.
 The row length has to be the same as \emph{endog_data}.}
 
 \item{instr}{Deprecated input name. Use \emph{shock} instead. See \emph{shock} for details.}
 
-\item{exog_data}{A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
+\item{exog_data}{A \link{data.frame}, containing exogenous variables. The row length has to be the same as \emph{endog_data}.
 Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.}
 
-\item{lags_exog}{Null or an integer, indicating the number of lags for exogenous data.}
+\item{lags_exog}{NULL or Integer. Integer for the number of lags for the exogenous data.}
 
 \item{contemp_data}{A \link{data.frame}, containing exogenous data with contemporaneous impact. This data will not be lagged.
 The row length has to be the same as \emph{endog_data}.}
 
 \item{lags_criterion}{NaN or character. NaN means that the number of lags
-will be given at \emph{lags_endog_nl} and \emph{lags_lin}. The lag length criteria are 'AICc', 'AIC' and 'BIC'.}
+will be given at \emph{lags_endog_nl}. Possible lag length criteria are 'AICc', 'AIC' or 'BIC'.}
 
 \item{max_lags}{NaN or integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC'). NaN otherwise.}
 
@@ -85,14 +84,14 @@ A list containing:
                    robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s2_mean}.}
 
 \item{specs}{A list with properties of \emph{endog_data} for the plot function. It also contains
-            lagged data (y_nl and x_nl) used for the estimations of the impulse responses}
+            lagged data (y_nl and x_nl) used for the estimations of the impulse responses.}
 
 \item{fz}{A vector, containing the values of the transition function F(z_{t-1}).}
 }
 \description{
-Compute nonlinear impulse responses with local projections and identified shock
+Compute nonlinear impulse responses with local projections and identified shock.
 The data are separated into two states via a smooth transition
-function as in Auerbach and Gorodnichenko (2012).
+function as applied in Auerbach and Gorodnichenko (2012).
 }
 \examples{
 \donttest{
@@ -171,6 +170,10 @@ Auerbach, A. J., and  Gorodnichenko Y. (2012). "Measuring the Output Responses t
 
 Auerbach, A. J., and Gorodnichenko Y. (2013). "Fiscal Multipliers in Recession and Expansion."
 \emph{NBER Working Paper Series}. Nr 17447.
+
+Blanchard, O., and Perotti, R. (2002). “An Empirical Characterization of the
+Dynamic Effects of Changes in Government Spending and Taxes on Output.” \emph{Quarterly
+Journal of Economics}, 117(4): 1329–1368.
 
 Hurvich, C. M., and Tsai, C.-L. (1989), "Regression and time series model selection in small samples",
 \emph{Biometrika}, 76(2): 297–307

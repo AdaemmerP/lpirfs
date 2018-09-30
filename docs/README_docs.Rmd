@@ -217,7 +217,7 @@ Show all impulse responses of regime 2 (low inflation rates):
   marrangeGrob(s2_plots, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
 ```
 
-### Example: Linear impulse responses with instrument variable and local projections
+### Example: Linear impulse responses with identified shock
 
 This example replicates results from the Supplementary Appendix
 by [Ramey and Zubairy (2018)](https://www.journals.uchicago.edu/doi/10.1086/696277) (RZ-18). 
@@ -233,7 +233,7 @@ Load data which is included in the package and taken from [RZ-18](https://www.jo
 # Endogenous variables
  endog_data        <- ag_data[sample_start:sample_end,3:5]
  
-# Shock variable ('Instrument') 
+# Shock variable 
  shock             <- endog_data[, 1]
 ```
 
@@ -258,9 +258,9 @@ Make and save plots
  iv_lin_plots    <- plot_lin(results_lin_iv)
 ```
 - The first element of 'iv_lin_plots' shows the response of the first
-  variable (Gov) to the 'instrument-shock' (Gov).
+  variable (Gov) to the identified shock (Gov).
 - The second element of 'iv_lin_plots' shows the response of the second
-  variable (Tax) to the 'instrument-shock' (Gov).
+  variable (Tax) to the the identified shock (Gov).
 - ...
 
 This plot equals the left plot in the mid-panel of Figure 12 in the Supplementary Appendix by 
@@ -293,7 +293,7 @@ iv_lin_plots[[3]]
 ```
 
 
-## Example: Nonlinear impulse responses with instrument variable and local projections
+## Example: Nonlinear impulse responses with identified shock
 
 Load data
 ```{r, message = FALSE }
@@ -386,6 +386,52 @@ It is the same data, identification scheme and threshold definition as in AG-12 
  plot(plots_nl_iv$gg_s2[[3]])
 ```
 
+## Example: Linear impulse responses via 2SLS
+
+```{r, message = FALSE }
+# Set seed
+ set.seed(007)
+
+# Load data
+ ag_data       <- ag_data
+ sample_start  <- 7
+ sample_end    <- dim(ag_data)[1]
+
+# Endogenous data
+ endog_data    <- ag_data[sample_start:sample_end,3:5]
+
+# Variable to shock with (government spending)
+ shock         <- ag_data[sample_start:sample_end, 3]
+
+# Generate instrument variable that is correlated with government spending
+ instrum       <- 0.9*shock$Gov + rnorm(length(shock$Gov), 0, 0.02) %>%
+                  as.data.frame()
+
+# Estimate linear model via SLS
+ results_lin_iv <- lp_lin_iv(endog_data,
+                            lags_endog_lin = 4,
+                            shock          = shock,
+                            instrum        = instrum,
+                            twosls         = TRUE,
+                            exog_data      = NULL,
+                            lags_exog      = NULL,
+                            contemp_data   = NULL,
+                            lags_criterion = NaN,
+                            max_lags       = NaN,
+                            trend          = 0,
+                            confint        = 1.96,
+                            hor            = 20,
+                            num_cores      = NULL)
+
+# Create all plots
+ iv_lin_plots    <- plot_lin(results_lin_iv)
+
+```
+
+```{r, fig.height = 2.5, fig.width = 3, fig.align = "center", message = FALSE }
+# Show response of GDP
+ iv_lin_plots[[3]]
+```
 
 ## References
 * Ahmed, M.I. , Cassou, S.C. (2016) "Does Consumer Confidence Affect Durable Goods Spending
@@ -400,7 +446,7 @@ During Bad and Good Economic Times Equally?" *Journal of Macroeconomics*, 50(1):
 [doi:10.1257/0002828053828518](https://www.aeaweb.org/articles?id=10.1257/0002828053828518)
 
 * Jordà, Ò, Schularick, M., Taylor, A.M. (2015), "Betting the house", *Journal of International Economics*,
- 96, S2-S18.
+ 96, S2-S18. [doi:10.1016/j.jinteco.2014.12.011](https://doi.org/10.1016/j.jinteco.2014.12.011)
 
 * Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and Autocorrelation Consistent Covariance Matrix.” *Econometrica*, 55: 703–708. [doi:10.2307/1913610](https://www.jstor.org/stable/1913610?seq=1#page_scan_tab_contents)
 
@@ -408,7 +454,7 @@ During Bad and Good Economic Times Equally?" *Journal of Macroeconomics*, 50(1):
  *Journal of Political Economy*, 126(2): 850 - 901. [doi:10.1086/696277](https://www.journals.uchicago.edu/doi/10.1086/696277)
 
 * Ravn, M.O., Uhlig, H. (2002). "On Adjusting the Hodrick-Prescott Filter for the Frequency of Observations."
-  *Review of Economics and Statistics*, 84(2), 371-376.
+  *Review of Economics and Statistics*, 84(2), 371-376. [doi:10.1162/003465302317411604](https://www.mitpressjournals.org/doi/10.1162/003465302317411604) 
 
 ### Author
 Philipp Adämmer

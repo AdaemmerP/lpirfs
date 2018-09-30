@@ -95,7 +95,7 @@ A list containing:
 }
 \description{
 Compute nonlinear impulse responses with local projections by Jordà (2005). The
-data are separated into two states via a smooth transition function as in Auerbach and Gorodnichenko (2012).
+data are separated into two states via a smooth transition function as applied in Auerbach and Gorodnichenko (2012).
 }
 \examples{
 \donttest{

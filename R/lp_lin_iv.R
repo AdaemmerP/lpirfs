@@ -1,21 +1,21 @@
 #' @name lp_lin_iv
-#' @title Compute linear impulse responses with identified shock or via 2SLS
-#' @description Compute linear impulse responses with identified shock or via 2SLS.
+#' @title Compute linear impulse responses with identified shock and/or with 2SLS
+#' @description Compute linear impulse responses with identified shock and/or with 2SLS.
 #' @param endog_data A \link{data.frame}, containing the values of the dependent variable(s).
 #' @param shock A one column \link{data.frame}, including the variable to shock with. The row length has to be the same as \emph{endog_data}.
 #' When \emph{twosls = TRUE}, this variable will be approximated/regressed on the instrument variable(s) given in \emph{instrum}.
 #' @param instr Deprecated input name. Use \emph{shock} instead. See \emph{shock} for details.
 #' @param twosls Use two stage least squares? TRUE or FALSE.
 #' @param instrum A \link{data.frame}, containing the instrument(s) to use for 2SLS. This instrument will be used for the
-#'  variable in See \emph{shock}.
+#'  variable in \emph{shock}.
 #' @param lags_endog_lin NaN or integer. NaN if lags are chosen by a lag length criterion. Integer for number of lags for \emph{endog_data}.
-#' @param exog_data A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
+#' @param exog_data A \link{data.frame}, containing exogenous variables. The row length has to be the same as \emph{endog_data}.
 #'                  Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.
 #' @param lags_exog NULL or Integer. Integer for the number of lags for the exogenous data.
 #' @param contemp_data A \link{data.frame}, containing exogenous data with contemporaneous impact.
 #'                      The row length has to be the same as \emph{endog_data}.
 #' @param lags_criterion NaN or character. NaN means that the number of lags
-#'         will be given at \emph{lags_endog_lin}. The character refers to the corresponding lag length criterion ('AICc', 'AIC' or 'BIC').
+#'         will be given at \emph{lags_endog_lin}. Possible lag length criteria are 'AICc', 'AIC' or 'BIC'.
 #'         Note that when \emph{twosls = TRUE}, the lag lengths are chosen based on normal OLS regressions, without using the instruments.
 #' @param max_lags NaN or integer. Maximum number of lags if \emph{lags_criterion} is a character denoting the lag length criterion. NaN otherwise.
 #' @param trend Integer. No trend =  0 , include trend = 1, include trend and quadratic trend = 2.
@@ -43,7 +43,7 @@
 #'                    Properties are equal to \emph{irf_lin_mean}.}
 #'
 #'\item{specs}{A list with properties of \emph{endog_data} for the plot function. It also contains
-#'             lagged data (y_lin and x_lin) used for the estimations of the impulse responses}
+#'             lagged data (y_lin and x_lin) used for the estimations of the impulse responses.}
 #'
 #'
 #'
@@ -133,9 +133,9 @@
 #'  marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = 1, top = NULL)
 #'
 #'
-#'# Add lags of the identified shock
+#'## Add lags of the identified shock ##
 #'
-#'# Endogenous data but exclude government spending
+#'# Endogenous data but now exclude government spending
 #'  endog_data    <- ag_data[sample_start:sample_end, 4:5]
 #'
 #'# Variable to shock with (government spending)
@@ -184,8 +184,7 @@
 #'  shock         <- ag_data[sample_start:sample_end, 3]
 #'
 #'# Generate instrument variable that is correlated with government spending
-#'  instrum       <- 0.9*shock$Gov + rnorm(length(shock$Gov), 0, 0.02) %>%
-#'                   as.data.frame()
+#'  instrum       <- as.data.frame(0.9*shock$Gov + rnorm(length(shock$Gov), 0, 0.02) )
 #'
 #'# Estimate linear model via SLS
 #'  results_lin_iv <- lp_lin_iv(endog_data,
@@ -323,7 +322,7 @@ lp_lin_iv <- function(endog_data,
 
 
   # Give message when no exogenous data is provided
-  if(is.null(exog_data)){
+  if(!is.null(exog_data)){
     message('You estimate the model without exogenous data.')
   }
 
