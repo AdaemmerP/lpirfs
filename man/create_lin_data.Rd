@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_lin_data.R
 \name{create_lin_data}
 \alias{create_lin_data}
-\title{Compute data for linear model with instrument variable  approach}
+\title{Compute data for linear model}
 \usage{
 create_lin_data(specs, endog_data)
 }
@@ -15,7 +15,7 @@ create_lin_data(specs, endog_data)
 List with filled matrices of lagged left (y_lin) and right hand side (x_lin) variables.
 }
 \description{
-Function to create data for linear model with instrument variable approach.
+Function to create data for linear model.
 }
 \author{
 Philipp Adämmer

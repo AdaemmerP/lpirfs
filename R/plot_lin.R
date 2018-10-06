@@ -19,7 +19,7 @@ plot_lin <- function(results_lin){
   irf_lin_up   <- results_lin[[3]]
 
 
-  specs        <- results_lin[[4]]
+  specs        <- results_lin$specs
 
   # Plots for lin function
   if(specs$model_type == 0){

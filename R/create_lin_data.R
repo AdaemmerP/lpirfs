@@ -1,6 +1,6 @@
 #' @name create_lin_data
-#' @title Compute data for linear model with instrument variable  approach
-#' @description Function to create data for linear model with instrument variable approach.
+#' @title Compute data for linear model
+#' @description Function to create data for linear model.
 #' @param specs A \link{list}(). Inputs are created in \link{lp_lin_iv}.
 #' @param endog_data A \link{data.frame} with dependent variables.
 #' @return List with filled matrices of lagged left (y_lin) and right hand side (x_lin) variables.
@@ -19,19 +19,25 @@ create_lin_data     <- function(specs, endog_data){
 
     # Make exogenous lagged data and check, whether lag length is zero
     if(specs$lags_endog_lin == 0){
+
       x_lin <- data.frame(x = rep(Inf, nrow(endog_data)))
+
               } else {
+
       x_lin <- create_lags(endog_data, specs$lags_endog_lin)
+
       }
 
     # Check whether model type is 'iv'.
     # 0 = Normal model, 1 = IV model
     # Prepare instrument variable and add to exogenous data
     if(specs$model_type == 1){
-    shock             <- specs$shock
-    colnames(shock)   <- 'shock'
-    x_lin             <- cbind(shock, x_lin)
-             }
+
+      shock             <- specs$shock
+      colnames(shock)   <- 'shock'
+      x_lin             <- cbind(shock, x_lin)
+
+    }
 
     # Include no trend, trend or quadratic trend
     if (specs$trend == 0){
