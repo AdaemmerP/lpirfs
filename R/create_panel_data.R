@@ -3,7 +3,7 @@
 #' @description Function to create panel data for linear panel model.
 #' @param specs A list with specifications created in \link{lp_panel_lin}
 #' @param data_set A data.frame consisting of a panel data set
-#'
+#' @import dplyr
 #' @return A list with prepared endogenous and exogenous data as well as the updated list \emph{specs}.
 #' @keywords internal
 #'
@@ -42,7 +42,7 @@ create_panel_data <- function(specs, data_set){
 
     # Lag function
     lag_names      <- paste("lag", lags,  sep = "_")
-    lag_functions  <- setNames(paste("dplyr::lag(., ", lags, ")"), lag_names)
+    lag_functions  <- stats::setNames(paste("dplyr::lag(., ", lags, ")"), lag_names)
 
     # Create lagged exogenous data
     lag_panel_data <- data %>%
@@ -153,7 +153,7 @@ create_panel_data <- function(specs, data_set){
     lag_names     <- paste("lag", lags_exog,  sep = "_")
 
     # Create lag function to use with dplyr
-    lag_functions <- setNames(paste("dplyr::lag(., ", lags_exog, ")"), lag_names)
+    lag_functions <- stats::setNames(paste("dplyr::lag(., ", lags_exog, ")"), lag_names)
 
     l_x_data      <-  x_data %>%
                       dplyr::select(cross_id, date_id, specs$l_exog_data) %>%
@@ -214,7 +214,7 @@ create_panel_data <- function(specs, data_set){
     lag_names     <- paste("lag", lags_exog,  sep = "_")
 
     # Create lag function to use with dplyr
-    lag_functions <- setNames(paste("dplyr::lag(., ", lags_exog, ")"), lag_names)
+    lag_functions <- stats::setNames(paste("dplyr::lag(., ", lags_exog, ")"), lag_names)
 
     # Create data
     ld_x_data     <- d_x_data            %>%

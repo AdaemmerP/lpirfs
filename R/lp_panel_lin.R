@@ -16,8 +16,6 @@
 #' @param iv_reg     Boolean. Use instrument variable approach? TRUE or FALSE
 #' @param instrum    NULL or Character. The name(s) of the instrument variable(s)
 #' @param robust_se Boolean. Estimate robust standard errors á la Driscoll and Kraay (1998)? TRUE or FALSE.
-#' @param exog_data  Character. The names of the exogenous variables. This also includes the name of the endogenous variable
-#'                   if it shall be used as a regressor.
 #' @param c_exog_data NULL or Character. Names of exogenous variables with contemporaneous impact.
 #' @param l_exog_data NULL or Character. Names of exogenous variables with lagged impact.
 #' @param lags_exog_data Integer. Lag length for the exogenous data with lagged impact.
@@ -49,6 +47,9 @@
 #'\item{specs}{A list with properties of \emph{endog_data} for the plot function. It also contains
 #'             the data sets used for the estimations (xy_data_sets) and the regression outputs (reg_summaries).}
 #'
+#' @importFrom dplyr lead lag filter
+#' @importFrom plm plm
+#' @importFrom lmtest coeftest
 #' @export
 #'
 #' @references
@@ -79,33 +80,34 @@
 #'  jst_data <- jst_data %>%
 #'              dplyr::select(country, year, everything())
 #'
-#'# Prepare variables. This is based on the 'data.do' file
+#'# Prepare variables. This is based on the 'data.do' file on Òscar Jordà's website
 #'# Select data
 #'   data_set <- jst_data %>%
-#'                mutate(stir     = stir)                         %>% # Variable to shock with
-#'                mutate(mortgdp  = 100*(tmort/gdp))              %>% #  Endogenous variable
+#'                mutate(stir     = stir)                         %>%
+#'                mutate(mortgdp  = 100*(tmort/gdp))              %>%
 #'                mutate(hpreal   = hpnom/cpi)                    %>%
 #'                group_by(country)                               %>%
-#'                mutate(hpreal   = hpreal/hpreal[year==1990][1]) %>% # Normalize to 1990
+#'                mutate(hpreal   = hpreal/hpreal[year==1990][1]) %>%
 #'                mutate(lhpreal  = log(hpreal))                  %>%
 #'
 #'                mutate(lhpy     = lhpreal - log(rgdppc))        %>%
-#'                mutate(lhpy     = lhpy - lhpy[year == 1990][1]) %>% #  real per capita investment
+#'                mutate(lhpy     = lhpy - lhpy[year == 1990][1]) %>%
 #'                mutate(lhpreal  = 100*lhpreal)                  %>%
 #'                mutate(lhpy     = 100*lhpy)                     %>%
 #'                ungroup()                                       %>%
 #'
-#'                mutate(lrgdp    = 100*log(rgdppc))              %>%  # real GDP index from Barro
-#'                mutate(lcpi     = 100*log(cpi)) 		            %>%  # real CPI
-#'                mutate(lriy     = 100*log(iy*rgdppc))           %>%  # real per capita investment
-#'                mutate(cay      = 100*(ca/gdp))                 %>%  # current Account over GDP ratio
-#'                mutate(tnmort   = tloans - tmort)               %>%  # total non-mortgage loans
+#'                mutate(lrgdp    = 100*log(rgdppc))              %>%
+#'                mutate(lcpi     = 100*log(cpi)) 		            %>%
+#'                mutate(lriy     = 100*log(iy*rgdppc))           %>%
+#'                mutate(cay      = 100*(ca/gdp))                 %>%
+#'                mutate(tnmort   = tloans - tmort)               %>%
 #'                mutate(nmortgdp = 100*(tnmort/gdp))             %>%
 #'
 #'              # Prepare instrument
 #'                mutate(lnarrow  = log(narrowm))                 %>%
 #'                mutate(rlnarrow = lnarrow - lcpi)               %>%
-#'                dplyr::select(country, year, mortgdp, stir, ltrate, lhpy, lrgdp, lcpi, lriy, cay, nmortgdp, rlnarrow)
+#'                dplyr::select(country, year, mortgdp, stir, ltrate, lhpy,
+#'                              lrgdp, lcpi, lriy, cay, nmortgdp, rlnarrow)
 #'
 #'
 #'# Use sample from 1870 - 2013 AND exclude WWI and WWII
@@ -299,13 +301,13 @@ lp_panel_lin <- function(
     iv_formula     <- paste(iv_formula, "+", paste(specs$instrum, collapse =  " + "))
 
     # Convert string to formula
-    plm_formula    <- as.formula(iv_formula)
+    plm_formula    <- stats::as.formula(iv_formula)
 
                } else {
 
 
     # Convert ols string to formula
-    plm_formula    <- as.formula(ols_formula)
+    plm_formula    <- stats::as.formula(ols_formula)
   }
 
 
@@ -343,7 +345,7 @@ lp_panel_lin <- function(
 
 
     # Do panel estimation
-    panel_results  <- plm(formula = plm_formula,
+    panel_results  <- plm::plm(formula = plm_formula,
                           data     = yx_data,
                           index    = c("cross_id", "date_id"),
                           model    = "within")
@@ -353,7 +355,7 @@ lp_panel_lin <- function(
     if(isTRUE(specs$robust_se)){
 
       # Estimate model robust standard errors a la Driscoll and Kraay (1998)
-      reg_results <- coeftest(panel_results, vcov. = vcovSCC, maxlag = ii)
+      reg_results <-  lmtest::coeftest(panel_results, vcov. = plm::vcovSCC, maxlag = ii)
 
       # Estimate irfs and confidence bands
       irf_panel_mean[[1, ii]]   <- reg_results[1, 1]

@@ -48,9 +48,6 @@ a sequence of the dates, years, etc. to use.}
 \item{confint}{Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 9\% = 1.96.}
 
 \item{hor}{Integer. Number of horizons for impulse responses.}
-
-\item{exog_data}{Character. The names of the exogenous variables. This also includes the name of the endogenous variable
-if it shall be used as a regressor.}
 }
 \value{
 A list containing:
@@ -99,33 +96,34 @@ This function estimates impulse responses with local projections for panel data.
  jst_data <- jst_data \%>\%
              dplyr::select(country, year, everything())
 
-# Prepare variables. This is based on the 'data.do' file
+# Prepare variables. This is based on the 'data.do' file on Òscar Jordà's website
 # Select data
   data_set <- jst_data \%>\%
-               mutate(stir     = stir)                         \%>\% # Variable to shock with
-               mutate(mortgdp  = 100*(tmort/gdp))              \%>\% #  Endogenous variable
+               mutate(stir     = stir)                         \%>\%
+               mutate(mortgdp  = 100*(tmort/gdp))              \%>\%
                mutate(hpreal   = hpnom/cpi)                    \%>\%
                group_by(country)                               \%>\%
-               mutate(hpreal   = hpreal/hpreal[year==1990][1]) \%>\% # Normalize to 1990
+               mutate(hpreal   = hpreal/hpreal[year==1990][1]) \%>\%
                mutate(lhpreal  = log(hpreal))                  \%>\%
 
                mutate(lhpy     = lhpreal - log(rgdppc))        \%>\%
-               mutate(lhpy     = lhpy - lhpy[year == 1990][1]) \%>\% #  real per capita investment
+               mutate(lhpy     = lhpy - lhpy[year == 1990][1]) \%>\%
                mutate(lhpreal  = 100*lhpreal)                  \%>\%
                mutate(lhpy     = 100*lhpy)                     \%>\%
                ungroup()                                       \%>\%
 
-               mutate(lrgdp    = 100*log(rgdppc))              \%>\%  # real GDP index from Barro
-               mutate(lcpi     = 100*log(cpi)) 		            \%>\%  # real CPI
-               mutate(lriy     = 100*log(iy*rgdppc))           \%>\%  # real per capita investment
-               mutate(cay      = 100*(ca/gdp))                 \%>\%  # current Account over GDP ratio
-               mutate(tnmort   = tloans - tmort)               \%>\%  # total non-mortgage loans
+               mutate(lrgdp    = 100*log(rgdppc))              \%>\%
+               mutate(lcpi     = 100*log(cpi)) 		            \%>\%
+               mutate(lriy     = 100*log(iy*rgdppc))           \%>\%
+               mutate(cay      = 100*(ca/gdp))                 \%>\%
+               mutate(tnmort   = tloans - tmort)               \%>\%
                mutate(nmortgdp = 100*(tnmort/gdp))             \%>\%
 
              # Prepare instrument
                mutate(lnarrow  = log(narrowm))                 \%>\%
                mutate(rlnarrow = lnarrow - lcpi)               \%>\%
-               dplyr::select(country, year, mortgdp, stir, ltrate, lhpy, lrgdp, lcpi, lriy, cay, nmortgdp, rlnarrow)
+               dplyr::select(country, year, mortgdp, stir, ltrate, lhpy,
+                             lrgdp, lcpi, lriy, cay, nmortgdp, rlnarrow)
 
 
 # Use sample from 1870 - 2013 AND exclude WWI and WWII
