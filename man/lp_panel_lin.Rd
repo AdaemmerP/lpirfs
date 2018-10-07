@@ -77,7 +77,7 @@ This function estimates impulse responses with local projections for panel data 
 \examples{
 \donttest{
 
-# This example aims to replicate the STATA example for panel estimation, provided on
+# This example aims to replicate the STATA example, provided on
 # Òscar Jordà's website (https://sites.google.com/site/oscarjorda/home/local-projections)
 # It estimates the impulse reponse of the ratio of (mortgage lending/GDP) to a
 # +1\% change in the short term interest rate
@@ -156,15 +156,15 @@ results_panel <-  lp_panel_lin(data_set          = data_set,
 
 # Create and plot irfs
  plot_panel_lin <- plot_lin(results_panel)
-
  plot(plot_panel_lin[[1]])
 
 
 # Create and add instrument to data_set
-
- instrument <- 0.9*data_set$stir + rnorm(length(data_set$stir), 0, sd(na.omit(data_set$stir)))
+ set.seed(123)
  data_set   <- data_set \%>\%
-               mutate(instrument = instrument)
+               group_by(country) \%>\%
+               mutate(instrument = 0.8*stir + rnorm(length(stir), 0, sd(na.omit(stir))/10)) \%>\%
+               ungroup()
 
 
 # Estimate panel model with iv
@@ -176,7 +176,7 @@ results_panel <-  lp_panel_lin(data_set          = data_set,
                                shock             = "stir",
                                diff_shock        = TRUE,
                                iv_reg            = TRUE,
-                               instrum           = instrument,
+                               instrum           = "instrument",
                                robust_se         = TRUE,
 
                                c_exog_data       = "cay",

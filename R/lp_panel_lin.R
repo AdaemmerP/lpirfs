@@ -1,7 +1,7 @@
 #' @name lp_panel_lin
 #' @title Estimate impulse responses with local projections for panel data
 #' @description This function estimates impulse responses with local projections for panel data with fixed effects
-#'              as in e.g. Jordà et al. (2018). It uses the \emph{plm()} function from the plm package to estimate the irfs.
+#'              as in e.g. Jordà et al. (2018). It is based on the \emph{plm()} function from the plm package.
 #'               The function also allows to estimate cumulative impulse responses.
 #' @param data_set A \link{data.frame}, containing the entire panel data set. The first column has to be the
 #'                 variable denoting the cross-section. The second column has to be the
@@ -64,7 +64,7 @@
 #' @examples
 #'\donttest{
 #'
-#'# This example aims to replicate the STATA example for panel estimation, provided on
+#'# This example aims to replicate the STATA example, provided on
 #'# Òscar Jordà's website (https://sites.google.com/site/oscarjorda/home/local-projections)
 #'# It estimates the impulse reponse of the ratio of (mortgage lending/GDP) to a
 #'# +1% change in the short term interest rate
@@ -143,15 +143,15 @@
 #'
 #'# Create and plot irfs
 #'  plot_panel_lin <- plot_lin(results_panel)
-#'
 #'  plot(plot_panel_lin[[1]])
 #'
 #'
 #'# Create and add instrument to data_set
-#'
-#'  instrument <- 0.9*data_set$stir + rnorm(length(data_set$stir), 0, sd(na.omit(data_set$stir)))
+#'  set.seed(123)
 #'  data_set   <- data_set %>%
-#'                mutate(instrument = instrument)
+#'                group_by(country) %>%
+#'                mutate(instrument = 0.8*stir + rnorm(length(stir), 0, sd(na.omit(stir))/10)) %>%
+#'                ungroup()
 #'
 #'
 #' # Estimate panel model with iv
