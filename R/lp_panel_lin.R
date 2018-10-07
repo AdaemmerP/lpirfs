@@ -1,20 +1,21 @@
 #' @name lp_panel_lin
 #' @title Estimate impulse responses with local projections for panel data
-#' @description This function estimates impulse responses with local projections for panel data.
-#'              It works a bit different than the other 'lp_' functions. Instead of providing the endogenous
-#'              and exogenous data sepearately as a data.frame, you to provide the entire panel data set as a data.frame.
-#'              You can then simply have to give the names of the different variables to use.
-#' @param data_set A \link{data.frame}, containing the panel data set. The first column has to be the
+#' @description This function estimates impulse responses with local projections for panel data with fixed effects
+#'              as in e.g. Jordà et al. (2018). It uses the \emph{plm()} function from the plm package to estimate the irfs.
+#'               The function also allows to estimate cumulative impulse responses.
+#' @param data_set A \link{data.frame}, containing the entire panel data set. The first column has to be the
 #'                 variable denoting the cross-section. The second column has to be the
 #'                 variable denoting the time-section.
-#' @param sample   Boolean or character. Use full sample? TRUE (default). To estimate only a subset of the data, you have to provide
-#'                 a sequence of the dates, years, etc. to use.
-#' @param endog_data Character. Name of the endogenous variable. You can only provide one endogenous variable.
-#' @param cumul_mult Boolean. Estimate cumulative multipliers? TRUE or FALSE.
-#' @param shock      The name of the variable to shock with.
+#' @param sample   Boolean or character. Use full sample? TRUE (default). To estimate a subset, you have to provide
+#'                 a sequence of those dates to use. This sequence has to be in the same format as the second column,
+#'                 which contains the time-section.
+#' @param endog_data Character. Name of the endogenous variable. You can only provide one endogenous variable at a time.
+#' @param cumul_mult Boolean. Estimate cumulative multipliers? TRUE or FALSE. If TRUE, cumulative responses
+#'                   are estimated via: \deqn{y_(t+h) - y_(t-1)} for h = 0,..., H-1.
+#' @param shock      Character. The column name of the variable to shock with.
 #' @param diff_shock Boolean. Take first differences of the shock variable? TRUE or FALSE.
-#' @param iv_reg     Boolean. Use instrument variable approach? TRUE or FALSE
-#' @param instrum    NULL or Character. The name(s) of the instrument variable(s)
+#' @param iv_reg     Boolean. Use instrument variable approach? TRUE or FALSE.
+#' @param instrum    NULL or Character. The name(s) of the instrument variable(s) if iv_reg = TRUE.
 #' @param robust_se Boolean. Estimate robust standard errors á la Driscoll and Kraay (1998)? TRUE or FALSE.
 #' @param c_exog_data NULL or Character. Names of exogenous variables with contemporaneous impact.
 #' @param l_exog_data NULL or Character. Names of exogenous variables with lagged impact.
@@ -32,20 +33,17 @@
 #'\item{irf_lin_mean}{A \link{matrix}, containing the impulse responses.
 #'                   The columns are the horizons.}
 #'
-#'\item{irf_lin_low}{A \link{matrix}, containing all lower confidence bands of
-#'                    the impulse responses, based on robust standard errors by Driscoll
-#'                    and Kraay (1998). Properties are equal to \emph{irf_lin_mean}.}
+#'\item{irf_lin_low}{A \link{matrix}, containing all lower confidence bands.
+#'                   The columns are the horizons.}
 #'
-#'\item{irf_lin_up}{A \link{matrix}, containing all upper confidence bands of
-#'                    the impulse responses, based on robust standard errors by Driscoll
-#'                    and Kraay (1998). Properties are equal to \emph{irf_lin_mean}.}
+#'\item{irf_lin_up}{A \link{matrix}, containing all upper confidence bands.
+#'                                   The columns are the horizons.}
 #'
 #'\item{reg_summaries}{Regression output for each horizon.}
 #'
-#'\item{xy_data_sets}{Created panel data set with endogenous and exogenous variable for each horizon.}
+#'\item{xy_data_sets}{Panel data sets with endogenous and exogenous variables for each horizon.}
 #'
-#'\item{specs}{A list with properties of \emph{endog_data} for the plot function. It also contains
-#'             the data sets used for the estimations (xy_data_sets) and the regression outputs (reg_summaries).}
+#'\item{specs}{A list with data properties for the plot function.}
 #'
 #' @importFrom dplyr lead lag filter
 #' @importFrom plm plm
@@ -54,34 +52,39 @@
 #'
 #' @references
 #'
-#' Driscoll, J.C., and Kraay, A.C. (1998). Consistent Covariance Matrix Estimation with Spatially Dependent
-#' Panel Data, \emph{Review of Economics and Statistics}, 80(4), pp. 549–560.
+#' Driscoll, J.C., and Kraay, A.C. (1998). "Consistent Covariance Matrix Estimation with Spatially Dependent
+#' Panel Data", \emph{Review of Economics and Statistics}, 80(4), pp. 549–560.
 #'
 #' Jordà, Ò. (2005). "Estimation and Inference of Impulse Responses by Local Projections."
 #' \emph{American Economic Review}, 95 (1): 161-182.
 #'
+#' Jordà, Ò., Schualrick, M., Taylor, A.M. (2018). "Large and State-Dependent Effects of Quasi-Random Monetary Experiments",
+#' \emph{NBER} working paper 23074, \emph{FRBSF} working paper 2017-02.
+#'
 #' @examples
 #'\donttest{
 #'
-#'# This example aims to replicate the STATA code for panel estimation, provided on
-#'#  Òscar Jordà's website
+#'# This example aims to replicate the STATA example for panel estimation, provided on
+#'# Òscar Jordà's website (https://sites.google.com/site/oscarjorda/home/local-projections)
+#'# It estimates the impulse reponse of the ratio of (mortgage lending/GDP) to a
+#'# +1% change in the short term interest rate
 #'
-#'# Load libraries to download and reade excel file
+#'# Load libraries to download and read excel file from the website
 #'  library(httr)
 #'  library(readxl)
 #'  library(dplyr)
 #'
-#'# Retrieve the Jordà-Schularick-Taylor Macrohistory Database from the macrohistory lab in Bonn
+#'# Retrieve the JST Macrohistory Database
 #'  url_jst <-"http://www.macrohistory.net/JST/JSTdatasetR3.xlsx"
 #'  GET(url_jst, write_disk(jst_link <- tempfile(fileext = ".xlsx")))
 #'  jst_data <- read_excel(jst_link, 2L)
 #'
-#'# Swap the first two columns so that 'country' is the first and 'year' the second column
+#'# Swap the first two columns so that 'country' is the first (cross section) and 'year' the
+#'# second (time section) column
 #'  jst_data <- jst_data %>%
 #'              dplyr::select(country, year, everything())
 #'
-#'# Prepare variables. This is based on the 'data.do' file on Òscar Jordà's website
-#'# Select data
+#'# Prepare variables. This is based on the STATA 'data.do' file on Òscar Jordà's website
 #'   data_set <- jst_data %>%
 #'                mutate(stir     = stir)                         %>%
 #'                mutate(mortgdp  = 100*(tmort/gdp))              %>%
@@ -110,9 +113,11 @@
 #'                              lrgdp, lcpi, lriy, cay, nmortgdp, rlnarrow)
 #'
 #'
-#'# Use sample from 1870 - 2013 AND exclude WWI and WWII
+#'# Use sample from 1870 - 2013 BUT exclude WWI and WWII
 #'   sample <-   seq(1870, 2016)[which(!(seq(1870, 2016) %in%
-#'                               c(seq(1914, 1918), seq(1939, 1947), seq(2014, 2016))))]
+#'                               c(seq(1914, 1918),
+#'                                 seq(1939, 1947),
+#'                                 seq(2014, 2016))))]
 #'
 #'# Estimate panel model
 #' results_panel <-  lp_panel_lin(data_set          = data_set,
@@ -126,7 +131,6 @@
 #'                                instrum           = NULL,
 #'                                robust_se         = TRUE,
 #'
-#'                                exog_data         = colnames(data_set)[3:11],
 #'                                c_exog_data       = "cay",
 #'                                l_exog_data       = NULL,
 #'                                lags_exog_data    = NULL,
@@ -135,8 +139,12 @@
 #'                                lags_fd_exog_data = 2,
 #'
 #'                                confint           = 1.67,
-#'                                hor               = 5)
+#'                                hor               = 10)
 #'
+#'# Create and plot irfs
+#'  plot_panel_lin <- plot_lin(results_panel)
+#'
+#'  plot(plot_panel_lin[[1]])
 #'
 #'
 #'# Create and add instrument to data_set
@@ -155,10 +163,9 @@
 #'                                shock             = "stir",
 #'                                diff_shock        = TRUE,
 #'                                iv_reg            = TRUE,
-#'                                instrum           = instrument,
+#'                                instrum           = "instrument",
 #'                                robust_se         = TRUE,
 #'
-#'                                exog_data         = colnames(data_set)[3:11],
 #'                                c_exog_data       = "cay",
 #'                                l_exog_data       = NULL,
 #'                                lags_exog_data    = NULL,
@@ -167,7 +174,11 @@
 #'                                lags_fd_exog_data = 2,
 #'
 #'                                confint           = 1.67,
-#'                                hor               = 5)
+#'                                hor               = 10)
+#'
+#'# Create and plot irfs
+#'  plot_panel_lin <- plot_lin(results_panel)
+#'  plot(plot_panel_lin[[1]])
 #'
 #'}
 #'
