@@ -3,7 +3,7 @@
 #' @description This function estimates impulse responses with local projections for panel data with fixed effects
 #'              as in e.g. Jordà et al. (2018). It is based on the \emph{plm()} function from the plm package.
 #'               The function also allows to estimate cumulative impulse responses.
-#' @param data_set A \link{data.frame}, containing the entire panel data set. The first column has to be the
+#' @param data_set A \link{data.frame}, containing the panel data set. The first column has to be the
 #'                 variable denoting the cross-section. The second column has to be the
 #'                 variable denoting the time-section.
 #' @param sample   Boolean or character. Use full sample? TRUE (default). To estimate a subset, you have to provide
