@@ -6,19 +6,19 @@
 \usage{
 lp_panel_lin(data_set = NULL, sample = "Full", endog_data = NULL,
   cumul_mult = TRUE, shock = NULL, diff_shock = TRUE,
-  iv_reg = FALSE, instrum = NULL, robust_se = FALSE,
-  c_exog_data = NULL, l_exog_data = NULL, lags_exog_data = NaN,
-  c_fd_exog_data = NULL, l_fd_exog_data = NULL,
-  lags_fd_exog_data = NaN, confint = NULL, hor = NULL)
+  iv_reg = FALSE, instrum = NULL, panel_model = "within",
+  panel_effect = "individual", robust_cov = NULL, c_exog_data = NULL,
+  l_exog_data = NULL, lags_exog_data = NaN, c_fd_exog_data = NULL,
+  l_fd_exog_data = NULL, lags_fd_exog_data = NaN, confint = NULL,
+  hor = NULL)
 }
 \arguments{
 \item{data_set}{A \link{data.frame}, containing the panel data set. The first column has to be the
-variable denoting the cross-section. The second column has to be the
-variable denoting the time-section.}
+variable denoting the cross section. The second column has to be the
+variable denoting the time section.}
 
 \item{sample}{Boolean or character. Use full sample? TRUE (default). To estimate a subset, you have to provide
-a sequence of those dates to use. This sequence has to be in the same format as the second column,
-which contains the time-section.}
+the sequence of dates to use. This sequence has to be in the same format as the second column (time-section).}
 
 \item{endog_data}{Character. Name of the endogenous variable. You can only provide one endogenous variable at a time.}
 
@@ -33,19 +33,25 @@ are estimated via: \deqn{y_(t+h) - y_(t-1)} for h = 0,..., H-1.}
 
 \item{instrum}{NULL or Character. The name(s) of the instrument variable(s) if iv_reg = TRUE.}
 
-\item{robust_se}{Boolean. Estimate robust standard errors á la Driscoll and Kraay (1998)? TRUE or FALSE.}
+\item{panel_model}{Character. Type of panel model. The default is "within" (fixed effects). See vignette of plm package for options and details details.}
+
+\item{panel_effect}{Character. The effects introduced in the model, one of "individual", "time", "twoways",
+or "nested". See vignette of plm package for details."}
+
+\item{robust_cov}{NULL or Character. Character specifies the method to estimate robust standard errors: "vcovBK", "vcovDC",
+"vcovG", "vcovHC", "vcovNW", "vcovSCC". See vignette of plm() package for details.}
 
 \item{c_exog_data}{NULL or Character. Names of exogenous variables with contemporaneous impact.}
 
 \item{l_exog_data}{NULL or Character. Names of exogenous variables with lagged impact.}
 
-\item{lags_exog_data}{Integer. Lag length for the exogenous data with lagged impact.}
+\item{lags_exog_data}{Integer. Lag length for the exogenous variables with lagged impact.}
 
 \item{c_fd_exog_data}{NULL or Character. Names of exogenous variables with contemporaneous impact of first differences.}
 
 \item{l_fd_exog_data}{NULL or Character. Names of exogenous variables with lagged impact of first differences.}
 
-\item{lags_fd_exog_data}{NaN or Integer. Number of lags for first differenced variables.}
+\item{lags_fd_exog_data}{NaN or Integer. Number of lags for variables with impact of first differences.}
 
 \item{confint}{Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 9\% = 1.96.}
 
@@ -70,14 +76,13 @@ A list containing:
 \item{specs}{A list with data properties for the plot function.}
 }
 \description{
-This function estimates impulse responses with local projections for panel data with fixed effects
-             as in e.g. Jordà et al. (2018). It is based on the \emph{plm()} function from the plm package.
-              The function also allows to estimate cumulative impulse responses.
+This function estimates impulse responses with local projections for panel data either with an
+             identified shock or via an instrument variable approach.
 }
 \examples{
 \donttest{
 
-# This example aims to replicate the STATA example, provided on
+# This example is based on the STATA code 'LPs_basic_doall.do', provided on
 # Òscar Jordà's website (https://sites.google.com/site/oscarjorda/home/local-projections)
 # It estimates the impulse reponse of the ratio of (mortgage lending/GDP) to a
 # +1\% change in the short term interest rate
@@ -97,7 +102,7 @@ This function estimates impulse responses with local projections for panel data 
  jst_data <- jst_data \%>\%
              dplyr::select(country, year, everything())
 
-# Prepare variables. This is based on the STATA 'data.do' file on Òscar Jordà's website
+# Prepare variables. This is based on the 'data.do' file
   data_set <- jst_data \%>\%
                mutate(stir     = stir)                         \%>\%
                mutate(mortgdp  = 100*(tmort/gdp))              \%>\%
@@ -142,7 +147,9 @@ results_panel <-  lp_panel_lin(data_set          = data_set,
                                diff_shock        = TRUE,
                                iv_reg            = FALSE,
                                instrum           = NULL,
-                               robust_se         = TRUE,
+                               panel_model       = "within",
+                               panel_effect      = "individual",
+                               robust_cov        = NULL,
 
                                c_exog_data       = "cay",
                                l_exog_data       = NULL,
@@ -177,7 +184,9 @@ results_panel <-  lp_panel_lin(data_set          = data_set,
                                diff_shock        = TRUE,
                                iv_reg            = TRUE,
                                instrum           = "instrument",
-                               robust_se         = TRUE,
+                               panel_model       = "within",
+                               panel_effect      = "individual",
+                               robust_cov        = NULL,
 
                                c_exog_data       = "cay",
                                l_exog_data       = NULL,
@@ -197,14 +206,17 @@ results_panel <-  lp_panel_lin(data_set          = data_set,
 
 }
 \references{
-Driscoll, J.C., and Kraay, A.C. (1998). "Consistent Covariance Matrix Estimation with Spatially Dependent
-Panel Data", \emph{Review of Economics and Statistics}, 80(4), pp. 549–560.
+Croissant, Y., Millo, G. (2008). “Panel Data Econometrics in R: The plm Package.” \emph{Journal of Statistical Software}, 27(2), 1-43. doi:
+10.18637/jss.v027.i02 (URL: \url{http://doi.org/10.18637/jss.v027.i02}).
 
 Jordà, Ò. (2005). "Estimation and Inference of Impulse Responses by Local Projections."
 \emph{American Economic Review}, 95 (1): 161-182.
 
 Jordà, Ò., Schualrick, M., Taylor, A.M. (2018). "Large and State-Dependent Effects of Quasi-Random Monetary Experiments",
 \emph{NBER} working paper 23074, \emph{FRBSF} working paper 2017-02.
+
+Millo G (2017). “Robust Standard Error Estimators for Panel Models: A Unifying Approach.” \emph{Journal of Statistical Software}, 82(3), 1-27. doi:
+10.18637/jss.v082.i03 (URL: \url{http://doi.org/10.18637/jss.v082.i03}).
 }
 \author{
 Philipp Adämmer

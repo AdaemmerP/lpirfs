@@ -1,14 +1,12 @@
 #' @name lp_panel_lin
 #' @title Estimate impulse responses with local projections for panel data
-#' @description This function estimates impulse responses with local projections for panel data with fixed effects
-#'              as in e.g. Jordà et al. (2018). It is based on the \emph{plm()} function from the plm package.
-#'               The function also allows to estimate cumulative impulse responses.
+#' @description This function estimates impulse responses with local projections for panel data either with an
+#'              identified shock or via an instrument variable approach.
 #' @param data_set A \link{data.frame}, containing the panel data set. The first column has to be the
-#'                 variable denoting the cross-section. The second column has to be the
-#'                 variable denoting the time-section.
+#'                 variable denoting the cross section. The second column has to be the
+#'                 variable denoting the time section.
 #' @param sample   Boolean or character. Use full sample? TRUE (default). To estimate a subset, you have to provide
-#'                 a sequence of those dates to use. This sequence has to be in the same format as the second column,
-#'                 which contains the time-section.
+#'                 the sequence of dates to use. This sequence has to be in the same format as the second column (time-section).
 #' @param endog_data Character. Name of the endogenous variable. You can only provide one endogenous variable at a time.
 #' @param cumul_mult Boolean. Estimate cumulative multipliers? TRUE or FALSE. If TRUE, cumulative responses
 #'                   are estimated via: \deqn{y_(t+h) - y_(t-1)} for h = 0,..., H-1.
@@ -16,13 +14,17 @@
 #' @param diff_shock Boolean. Take first differences of the shock variable? TRUE or FALSE.
 #' @param iv_reg     Boolean. Use instrument variable approach? TRUE or FALSE.
 #' @param instrum    NULL or Character. The name(s) of the instrument variable(s) if iv_reg = TRUE.
-#' @param robust_se Boolean. Estimate robust standard errors á la Driscoll and Kraay (1998)? TRUE or FALSE.
+#' @param panel_model Character. Type of panel model. The default is "within" (fixed effects). See vignette of plm package for options and details details.
+#' @param panel_effect Character. The effects introduced in the model, one of "individual", "time", "twoways",
+#'                           or "nested". See vignette of plm package for details."
+#' @param robust_cov NULL or Character. Character specifies the method to estimate robust standard errors: "vcovBK", "vcovDC",
+#'                    "vcovG", "vcovHC", "vcovNW", "vcovSCC". See vignette of plm() package for details.
 #' @param c_exog_data NULL or Character. Names of exogenous variables with contemporaneous impact.
 #' @param l_exog_data NULL or Character. Names of exogenous variables with lagged impact.
-#' @param lags_exog_data Integer. Lag length for the exogenous data with lagged impact.
+#' @param lags_exog_data Integer. Lag length for the exogenous variables with lagged impact.
 #' @param c_fd_exog_data NULL or Character. Names of exogenous variables with contemporaneous impact of first differences.
 #' @param l_fd_exog_data NULL or Character. Names of exogenous variables with lagged impact of first differences.
-#' @param lags_fd_exog_data NaN or Integer. Number of lags for first differenced variables.
+#' @param lags_fd_exog_data NaN or Integer. Number of lags for variables with impact of first differences.
 #' @param confint Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 9\% = 1.96.
 #' @param hor Integer. Number of horizons for impulse responses.
 #'
@@ -52,8 +54,8 @@
 #'
 #' @references
 #'
-#' Driscoll, J.C., and Kraay, A.C. (1998). "Consistent Covariance Matrix Estimation with Spatially Dependent
-#' Panel Data", \emph{Review of Economics and Statistics}, 80(4), pp. 549–560.
+#' Croissant, Y., Millo, G. (2008). “Panel Data Econometrics in R: The plm Package.” \emph{Journal of Statistical Software}, 27(2), 1-43. doi:
+#' 10.18637/jss.v027.i02 (URL: \url{http://doi.org/10.18637/jss.v027.i02}).
 #'
 #' Jordà, Ò. (2005). "Estimation and Inference of Impulse Responses by Local Projections."
 #' \emph{American Economic Review}, 95 (1): 161-182.
@@ -61,10 +63,12 @@
 #' Jordà, Ò., Schualrick, M., Taylor, A.M. (2018). "Large and State-Dependent Effects of Quasi-Random Monetary Experiments",
 #' \emph{NBER} working paper 23074, \emph{FRBSF} working paper 2017-02.
 #'
+#' Millo G (2017). “Robust Standard Error Estimators for Panel Models: A Unifying Approach.” \emph{Journal of Statistical Software}, 82(3), 1-27. doi:
+#' 10.18637/jss.v082.i03 (URL: \url{http://doi.org/10.18637/jss.v082.i03}).
 #' @examples
 #'\donttest{
 #'
-#'# This example aims to replicate the STATA example, provided on
+#'# This example is based on the STATA code 'LPs_basic_doall.do', provided on
 #'# Òscar Jordà's website (https://sites.google.com/site/oscarjorda/home/local-projections)
 #'# It estimates the impulse reponse of the ratio of (mortgage lending/GDP) to a
 #'# +1% change in the short term interest rate
@@ -84,7 +88,7 @@
 #'  jst_data <- jst_data %>%
 #'              dplyr::select(country, year, everything())
 #'
-#'# Prepare variables. This is based on the STATA 'data.do' file on Òscar Jordà's website
+#'# Prepare variables. This is based on the 'data.do' file
 #'   data_set <- jst_data %>%
 #'                mutate(stir     = stir)                         %>%
 #'                mutate(mortgdp  = 100*(tmort/gdp))              %>%
@@ -113,7 +117,7 @@
 #'                              lrgdp, lcpi, lriy, cay, nmortgdp, rlnarrow)
 #'
 #'
-#'# Use sample from 1870 - 2013 BUT exclude WWI and WWII
+#'# Use sample from 1870 to 2013 BUT exclude WWI and WWII
 #'   sample <-   seq(1870, 2016)[which(!(seq(1870, 2016) %in%
 #'                               c(seq(1914, 1918),
 #'                                 seq(1939, 1947),
@@ -129,7 +133,9 @@
 #'                                diff_shock        = TRUE,
 #'                                iv_reg            = FALSE,
 #'                                instrum           = NULL,
-#'                                robust_se         = TRUE,
+#'                                panel_model       = "within",
+#'                                panel_effect      = "individual",
+#'                                robust_cov        = NULL,
 #'
 #'                                c_exog_data       = "cay",
 #'                                l_exog_data       = NULL,
@@ -164,7 +170,9 @@
 #'                                diff_shock        = TRUE,
 #'                                iv_reg            = TRUE,
 #'                                instrum           = "instrument",
-#'                                robust_se         = TRUE,
+#'                                panel_model       = "within",
+#'                                panel_effect      = "individual",
+#'                                robust_cov        = NULL,
 #'
 #'                                c_exog_data       = "cay",
 #'                                l_exog_data       = NULL,
@@ -192,7 +200,9 @@ lp_panel_lin <- function(
                     diff_shock        = TRUE,
                     iv_reg            = FALSE,
                     instrum           = NULL,
-                    robust_se         = FALSE,
+                    panel_model       = "within",
+                    panel_effect      = "individual",
+                    robust_cov        = NULL,
 
                     c_exog_data       = NULL,
                     l_exog_data       = NULL,
@@ -252,8 +262,15 @@ lp_panel_lin <- function(
   specs$diff_shock          <- diff_shock
 
   specs$instrum             <- instrum
+  specs$panel_model         <- panel_model
+  specs$panel_effect        <- panel_effect
   specs$iv_reg              <- iv_reg
-  specs$robust_se           <- robust_se
+
+  if(is.character(robust_cov)){
+     specs$robust_cov       <- robust_cov # paste("plm::", robust_cov, sep="")
+                    } else{
+     specs$robust_cov       <- robust_cov
+            }
 
   specs$exog_data           <- colnames(data_set)[which(! colnames(data_set) %in% c("cross_id", "date_id"))]
   specs$c_exog_data         <- c_exog_data
@@ -359,14 +376,15 @@ lp_panel_lin <- function(
     panel_results  <- plm::plm(formula = plm_formula,
                           data     = yx_data,
                           index    = c("cross_id", "date_id"),
-                          model    = "within")
+                          model    = specs$panel_model,
+                          effect   = specs$panel_effect)
 
 
     # Estimate confidence bands with robust standard errors?
-    if(isTRUE(specs$robust_se)){
+    if(is.character(specs$robust_cov)){
 
       # Estimate model robust standard errors a la Driscoll and Kraay (1998)
-      reg_results <-  lmtest::coeftest(panel_results, vcov. = plm::vcovSCC, maxlag = ii)
+      reg_results <-  lmtest::coeftest(panel_results, vcov. = match.fun(specs$robust_cov))
 
       # Estimate irfs and confidence bands
       irf_panel_mean[[1, ii]]   <- reg_results[1, 1]

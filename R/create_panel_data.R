@@ -36,25 +36,6 @@ create_panel_data <- function(specs, data_set){
   }
 
 
-
-  # Function to create lags
-  create_panel_lags <- function(data, lags){
-
-    # Lag function
-    lag_names      <- paste("lag", lags,  sep = "_")
-    lag_functions  <- stats::setNames(paste("dplyr::lag(., ", lags, ")"), lag_names)
-
-    # Create lagged exogenous data
-    lag_panel_data <- data %>%
-                      group_by(cross_id) %>%
-                      mutate_at(vars(-cross_id, -date_id), funs_(lag_functions))
-
-    return(lag_panel_data)
-
-
-  }
-
-
   # Make list to store endogenous variables
   y_data <- rep(list(NaN), specs$hor)
 
