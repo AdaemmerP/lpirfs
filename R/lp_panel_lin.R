@@ -14,10 +14,10 @@
 #' @param diff_shock Boolean. Take first differences of the shock variable? TRUE or FALSE.
 #' @param iv_reg     Boolean. Use instrument variable approach? TRUE or FALSE.
 #' @param instrum    NULL or Character. The name(s) of the instrument variable(s) if iv_reg = TRUE.
-#' @param panel_model Character. Type of panel model. The default is "within" (fixed effects). See vignette of plm package for options and details details.
+#' @param panel_model Character. Type of panel model. The default is "within" (fixed effects). See vignette of plm package for options and details.
 #' @param panel_effect Character. The effects introduced in the model, one of "individual", "time", "twoways",
-#'                           or "nested". See vignette of plm package for details."
-#' @param robust_cov NULL or Character. Character specifies the method to estimate robust standard errors: "vcovBK", "vcovDC",
+#'                           or "nested". See vignette of plm package for details.
+#' @param robust_cov NULL or Character. The character specifies the method how to estimate robust standard errors: "vcovBK", "vcovDC",
 #'                    "vcovG", "vcovHC", "vcovNW", "vcovSCC". See vignette of plm() package for details.
 #' @param c_exog_data NULL or Character. Names of exogenous variables with contemporaneous impact.
 #' @param l_exog_data NULL or Character. Names of exogenous variables with lagged impact.

@@ -33,10 +33,10 @@ are estimated via: \deqn{y_(t+h) - y_(t-1)} for h = 0,..., H-1.}
 
 \item{instrum}{NULL or Character. The name(s) of the instrument variable(s) if iv_reg = TRUE.}
 
-\item{panel_model}{Character. Type of panel model. The default is "within" (fixed effects). See vignette of plm package for options and details details.}
+\item{panel_model}{Character. Type of panel model. The default is "within" (fixed effects). See vignette of plm package for options and details.}
 
 \item{panel_effect}{Character. The effects introduced in the model, one of "individual", "time", "twoways",
-or "nested". See vignette of plm package for details."}
+or "nested". See vignette of plm package for details.}
 
 \item{robust_cov}{NULL or Character. Character specifies the method to estimate robust standard errors: "vcovBK", "vcovDC",
 "vcovG", "vcovHC", "vcovNW", "vcovSCC". See vignette of plm() package for details.}
@@ -131,7 +131,7 @@ This function estimates impulse responses with local projections for panel data 
                              lrgdp, lcpi, lriy, cay, nmortgdp, rlnarrow)
 
 
-# Use sample from 1870 - 2013 BUT exclude WWI and WWII
+# Use sample from 1870 to 2013 BUT exclude WWI and WWII
   sample <-   seq(1870, 2016)[which(!(seq(1870, 2016) \%in\%
                               c(seq(1914, 1918),
                                 seq(1939, 1947),
