@@ -60,7 +60,7 @@ plot_lin <- function(results_lin){
  }
 }
 
-         } else if(specs$model_type == 1){
+         } else if(specs$model_type == 1| specs$model_type == 2){
 
       gg_lin       <- rep(list(NaN), specs$endog)
 

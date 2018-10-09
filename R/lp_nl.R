@@ -261,44 +261,44 @@ lp_nl <- function(endog_data,
   }
 
   # Check whether 'trend' is given
-  if(is.null(specs$trend) == TRUE){
+  if(is.null(specs$trend)){
     stop('Please specify whether and which type of trend to include.')
   }
 
   # Check whether 'shock_type' is given
-  if(is.null(specs$shock_type) == TRUE){
+  if(is.null(specs$shock_type)){
     stop('Please specify which type of shock to use.')
   }
 
   # Check whether switching variable is given
-  if(is.null(specs$switching) == TRUE){
+  if(is.null(specs$switching)){
     stop('Please provide a switching variable.')
   }
 
   # Check whether 'use_hp' is given
-  if(is.null(specs$use_hp) == TRUE){
+  if(is.null(specs$use_hp)){
     stop('Please specify whether to use the HP-filter for the switching variable.')
   }
 
   # Check whether lambda is given if 'use_hp == 1'
   if((specs$use_hp == 1) &
-     (is.null(specs$lambda) == TRUE)){
+     (is.null(specs$lambda))){
     stop('Please specify lambda for the HP-filter.')
   }
 
   # Check whether 'gamma' is given
-  if(is.null(specs$gamma) == TRUE){
+  if(is.null(specs$gamma)){
     stop('Please specify gamma for the transition function.')
   }
 
   # Check whether 'confint' is given
-  if(is.null(specs$confint) == TRUE){
+  if(is.null(specs$confint)){
     stop('Please specify a value for the width of the confidence bands.')
   }
 
 
   # Check whether number of horizons is given
-  if(is.null(specs$hor) == TRUE){
+  if(is.null(specs$hor)){
     stop('Please specify the number of horizons.')
   }
 
@@ -310,29 +310,29 @@ lp_nl <- function(endog_data,
 
 
   # Check whether lags criterion and fixed number of lags for nonlinear model is given
-  if((is.character(specs$lags_criterion) == TRUE) &
-     (!is.na(specs$lags_endog_nl) == TRUE)){
+  if((is.character(specs$lags_criterion)) &
+     (!is.na(specs$lags_endog_nl))){
     stop('You can not provide a lag criterion (AICc, AIC or BIC) and a fixed number of lags.')
   }
 
 
   # Check whether lags criterion and fixed number of lags for linear model is given
-  if((is.character(specs$lags_criterion) == TRUE) &
-     (!is.na(specs$lags_endog_lin) == TRUE)){
+  if((is.character(specs$lags_criterion)) &
+     (!is.na(specs$lags_endog_lin))){
     stop('You can not provide a lag criterion (AICc, AIC or BIC) and a fixed number of lags.')
   }
 
 
   # Check whether maximum number of lags is given for lag length criterion
-  if((is.character(specs$lags_criterion)  == TRUE) &
-     (is.na(specs$max_lags)               == TRUE)){
+  if((is.character(specs$lags_criterion)) &
+     (is.na(specs$max_lags))){
     stop('Please provide a maximum number of lags for the lag length criterion.')
   }
 
 
   # Check whether lin_lags is given if nl_lags is given
-  if((is.numeric(specs$lags_endog_nl) == TRUE) &
-     (is.null(specs$lags_endog_lin) == TRUE)){
+  if((is.numeric(specs$lags_endog_nl)) &
+     (is.null(specs$lags_endog_lin))){
     stop('Please provide a lag length for the linear model to identify the shock.')
   }
 

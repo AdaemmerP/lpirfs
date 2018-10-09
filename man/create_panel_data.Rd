@@ -7,7 +7,7 @@
 create_panel_data(specs, data_set)
 }
 \arguments{
-\item{specs}{A list with specifications created in \link{lp_panel_lin}}
+\item{specs}{A list with specifications created in \link{lp_lin_panel}}
 
 \item{data_set}{A data.frame consisting of a panel data set}
 }

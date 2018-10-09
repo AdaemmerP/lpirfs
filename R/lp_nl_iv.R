@@ -222,7 +222,6 @@ lp_nl_iv <- function(endog_data,
   }
 
 
-
   # Check whether 'trend' is given
   if(is.null(trend) == TRUE){
     stop('Please specify whether and which type of trend to include.')
@@ -299,10 +298,10 @@ lp_nl_iv <- function(endog_data,
   }
 
   # Create list to store inputs
-  specs <- list()
+    specs <- list()
 
   # Specify inputs
-  specs$lags_endog_nl               <- lags_endog_nl
+   specs$lags_endog_nl               <- lags_endog_nl
 
   if(is.data.frame(shock)){
      specs$shock   <- shock  }  else {

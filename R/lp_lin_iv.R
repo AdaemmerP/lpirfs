@@ -229,7 +229,7 @@ lp_lin_iv <- function(endog_data,
 
   # Give warning if 'instr' is used as input name
   if(!is.null(instr)){
-    shock = instr
+    shock <- instr
     warning("'instr' is a deprecated input name. Use 'shock' instead.")
   }
 

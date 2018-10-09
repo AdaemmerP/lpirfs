@@ -1,5 +1,5 @@
-#' @name lp_panel_lin
-#' @title Estimate impulse responses with local projections for panel data
+#' @name lp_lin_panel
+#' @title Compute linear impulse responses with local projections for panel data
 #' @description This function estimates impulse responses with local projections for panel data either with an
 #'              identified shock or via an instrument variable approach.
 #' @param data_set A \link{data.frame}, containing the panel data set. The first column has to be the
@@ -124,7 +124,7 @@
 #'                                 seq(2014, 2016))))]
 #'
 #'# Estimate panel model
-#' results_panel <-  lp_panel_lin(data_set          = data_set,
+#' results_panel <-  lp_lin_panel(data_set          = data_set,
 #'                                sample            = sample,
 #'                                endog_data        = "mortgdp",
 #'                                cumul_mult        = TRUE,
@@ -148,8 +148,8 @@
 #'                                hor               = 10)
 #'
 #'# Create and plot irfs
-#'  plot_panel_lin <- plot_lin(results_panel)
-#'  plot(plot_panel_lin[[1]])
+#'  plot_lin_panel <- plot_lin(results_panel)
+#'  plot(plot_lin_panel[[1]])
 #'
 #'
 #'# Create and add instrument to data_set
@@ -161,7 +161,7 @@
 #'
 #'
 #' # Estimate panel model with iv
-#' results_panel <-  lp_panel_lin(data_set          = data_set,
+#' results_panel <-  lp_lin_panel(data_set          = data_set,
 #'                                sample            = sample,
 #'                                endog_data        = "mortgdp",
 #'                                cumul_mult        = TRUE,
@@ -185,12 +185,12 @@
 #'                                hor               = 10)
 #'
 #'# Create and plot irfs
-#'  plot_panel_lin <- plot_lin(results_panel)
-#'  plot(plot_panel_lin[[1]])
+#'  plot_lin_panel <- plot_lin(results_panel)
+#'  plot(plot_lin_panel[[1]])
 #'
 #'}
 #'
-lp_panel_lin <- function(
+lp_lin_panel <- function(
                     data_set          = NULL,
                     sample            = "Full",
                     endog_data        = NULL,
@@ -213,7 +213,6 @@ lp_panel_lin <- function(
                     confint           = NULL,
                     hor               = NULL){
 
-# Check inputs
 
  # Check whether column names are named properly
   if(any(colnames(data_set)[3:dim(data_set)[2]] %in% c("cross_id", "date_id"))){
@@ -223,7 +222,7 @@ lp_panel_lin <- function(
 
  # Check whether data_set is given
   if(is.null(data_set)){
-    stop("You have to provide the data set." )
+    stop("You have to provide the panel data set." )
   }
 
 
@@ -243,7 +242,55 @@ lp_panel_lin <- function(
     stop("You have to provide the name of the instrument." )
   }
 
+  # Check panel model type is correct
+  if(!panel_model %in% c("within", "random", "ht", "between", "pooling", "fd")){
+    stop("The type of the panel model has to be 'within', 'random', 'ht', 'between', 'pooling' or 'fd'. See
+         the vignette of the plm package for details." )
+  }
 
+  # Check whether the panel effect is correctly specified
+  if(!panel_effect %in% c("individual", "time", "twoways", "nested")){
+    stop("The effect introduced in the model has to be 'individual', 'time', 'twoways' or 'nested'.
+         See the vignette of the plm package for details." )
+  }
+
+
+  # Check whether robust covariance estimator is correctly specified
+  if(!is.null(robust_cov)){
+    if(!robust_cov %in% c("vcovBK", "vcovDC", "vcovG", "vcovHC", "vcovNW", "vcovSCC")){
+    stop("The choices for robust covariance estimation are 'vcovBK', 'vcovDC', 'vcovG', 'vcovHC', 'vcovNW', 'vcovSCC'.
+         See the vignette of the plm package for details." )
+  }
+}
+
+  # Check whether lag lengths are given if necessary
+  if(!is.null(l_exog_data)){
+    if(is.null(lags_exog_data)){
+    stop("You have to provide the lag lengths for the exogenous data with lagged impact." )
+  }
+  }
+
+  # Check whether lag lengths are given if necessary
+  if(!is.null(l_fd_exog_data)){
+    if(is.null(lags_fd_exog_data)){
+    stop("You have to provide the lag lengths for the exogenous data with lagged impact of first differences." )
+  }
+  }
+
+  # Check whether width for confidence intervals is given
+  if(is.null(confint)){
+    stop('Please specify a value for the width of the confidence bands.')
+  }
+
+  # Check whether width of confidence bands is >=0
+  if(!(confint >=0)){
+    stop('The width of the confidence bands has to be >=0.')
+  }
+
+  # Check whether values for horizons are correct
+  if(!(hor > 0) | is.nan(hor) | !(hor %% 1 == 0)){
+    stop('The number of horizons has to be an integer and > 0.')
+  }
 
 
   # Rename first two column names of data.frame
@@ -284,7 +331,7 @@ lp_panel_lin <- function(
   specs$confint             <- confint
   specs$hor                 <- hor
 
-  specs$model_type          <- 1
+  specs$model_type          <- 2
   specs$endog               <- 1        # Set the number of endogenous variables for plot function
   specs$column_names        <- endog_data
 

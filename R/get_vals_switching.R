@@ -33,7 +33,7 @@ get_vals_switching <- function(switching_data, specs){
 
                     }  else  {
 
-    fz              <-   exp( (-1)*specs$gamma*switching_data)/(1 + exp((-1)*specs$gamma*switching_data))
+    fz             <-   exp( (-1)*specs$gamma*switching_data)/(1 + exp((-1)*specs$gamma*switching_data))
 
   }
 

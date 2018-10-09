@@ -1,7 +1,7 @@
 #' @name create_panel_data
 #' @title Prepare data sets for linear panel model
 #' @description Function to create panel data for linear panel model.
-#' @param specs A list with specifications created in \link{lp_panel_lin}
+#' @param specs A list with specifications created in \link{lp_lin_panel}
 #' @param data_set A data.frame consisting of a panel data set
 #' @import dplyr
 #' @return A list with prepared endogenous and exogenous data as well as the updated list \emph{specs}.

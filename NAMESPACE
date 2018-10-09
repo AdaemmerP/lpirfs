@@ -2,9 +2,10 @@
 
 export(lp_lin)
 export(lp_lin_iv)
+export(lp_lin_panel)
 export(lp_nl)
 export(lp_nl_iv)
-export(lp_panel_lin)
+export(lp_nl_panel)
 export(plot_lin)
 export(plot_nl)
 exportPattern("^[[:alpha:]]+")
