@@ -5,7 +5,7 @@
 #' @param data_set A \link{data.frame}, containing the panel data set. The first column has to be the
 #'                 variable denoting the cross section. The second column has to be the
 #'                 variable denoting the time section.
-#' @param sample   Boolean or character. Use full sample? TRUE (default). To estimate a subset, you have to provide
+#' @param data_sample   Boolean or character. Use full data_sample? TRUE (default). To estimate a subset, you have to provide
 #'                 the sequence of dates to use. This sequence has to be in the same format as the second column (time-section).
 #' @param endog_data Character. Name of the endogenous variable. You can only provide one endogenous variable at a time.
 #' @param cumul_mult Boolean. Estimate cumulative multipliers? TRUE or FALSE. If TRUE, cumulative responses
@@ -117,15 +117,15 @@
 #'                              lrgdp, lcpi, lriy, cay, nmortgdp, rlnarrow)
 #'
 #'
-#'# Use sample from 1870 to 2013 BUT exclude WWI and WWII
-#'   sample <-   seq(1870, 2016)[which(!(seq(1870, 2016) %in%
+#'# Use data_sample from 1870 to 2013 BUT exclude WWI and WWII
+#'   data_sample <-   seq(1870, 2016)[which(!(seq(1870, 2016) %in%
 #'                               c(seq(1914, 1918),
 #'                                 seq(1939, 1947),
 #'                                 seq(2014, 2016))))]
 #'
 #'# Estimate panel model
 #' results_panel <-  lp_lin_panel(data_set          = data_set,
-#'                                sample            = sample,
+#'                                data_sample            = data_sample,
 #'                                endog_data        = "mortgdp",
 #'                                cumul_mult        = TRUE,
 #'
@@ -162,7 +162,7 @@
 #'
 #' # Estimate panel model with iv
 #' results_panel <-  lp_lin_panel(data_set          = data_set,
-#'                                sample            = sample,
+#'                                data_sample            = data_sample,
 #'                                endog_data        = "mortgdp",
 #'                                cumul_mult        = TRUE,
 #'
@@ -192,7 +192,7 @@
 #'
 lp_lin_panel <- function(
                     data_set          = NULL,
-                    sample            = "Full",
+                    data_sample            = "Full",
                     endog_data        = NULL,
                     cumul_mult        = TRUE,
 
@@ -301,7 +301,7 @@ lp_lin_panel <- function(
   specs <- list()
 
   # Specify inputs
-  specs$sample              <- sample
+  specs$data_sample         <- data_sample
   specs$endog_data          <- endog_data
   specs$cumul_mult          <- cumul_mult
 
@@ -313,11 +313,10 @@ lp_lin_panel <- function(
   specs$panel_effect        <- panel_effect
   specs$iv_reg              <- iv_reg
 
-  if(is.character(robust_cov)){
-     specs$robust_cov       <- robust_cov # paste("plm::", robust_cov, sep="")
-                    } else{
-     specs$robust_cov       <- robust_cov
-            }
+
+   specs$robust_cov         <- robust_cov
+
+
 
   specs$exog_data           <- colnames(data_set)[which(! colnames(data_set) %in% c("cross_id", "date_id"))]
   specs$c_exog_data         <- c_exog_data
@@ -334,6 +333,8 @@ lp_lin_panel <- function(
   specs$model_type          <- 2
   specs$endog               <- 1        # Set the number of endogenous variables for plot function
   specs$column_names        <- endog_data
+
+  specs$is_nl               <- FALSE    # For create panel data function
 
 
   #--- Create data
@@ -410,11 +411,11 @@ lp_lin_panel <- function(
     }
 
 
-    # Choose sample if specified
-    if(!(specs$sample[1] == 'Full')){
+    # Choose data_sample if specified
+    if(!(specs$data_sample[1] == 'Full')){
 
       yx_data      <-   yx_data %>%
-                        dplyr::filter(date_id %in% specs$sample)
+                        dplyr::filter(date_id %in% specs$data_sample)
 
     }
 

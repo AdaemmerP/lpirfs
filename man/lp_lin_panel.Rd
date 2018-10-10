@@ -4,20 +4,20 @@
 \alias{lp_lin_panel}
 \title{Compute linear impulse responses with local projections for panel data}
 \usage{
-lp_lin_panel(data_set = NULL, sample = "Full", endog_data = NULL,
-  cumul_mult = TRUE, shock = NULL, diff_shock = TRUE,
-  iv_reg = FALSE, instrum = NULL, panel_model = "within",
-  panel_effect = "individual", robust_cov = NULL, c_exog_data = NULL,
-  l_exog_data = NULL, lags_exog_data = NaN, c_fd_exog_data = NULL,
-  l_fd_exog_data = NULL, lags_fd_exog_data = NaN, confint = NULL,
-  hor = NULL)
+lp_lin_panel(data_set = NULL, data_sample = "Full",
+  endog_data = NULL, cumul_mult = TRUE, shock = NULL,
+  diff_shock = TRUE, iv_reg = FALSE, instrum = NULL,
+  panel_model = "within", panel_effect = "individual",
+  robust_cov = NULL, c_exog_data = NULL, l_exog_data = NULL,
+  lags_exog_data = NaN, c_fd_exog_data = NULL, l_fd_exog_data = NULL,
+  lags_fd_exog_data = NaN, confint = NULL, hor = NULL)
 }
 \arguments{
 \item{data_set}{A \link{data.frame}, containing the panel data set. The first column has to be the
 variable denoting the cross section. The second column has to be the
 variable denoting the time section.}
 
-\item{sample}{Boolean or character. Use full sample? TRUE (default). To estimate a subset, you have to provide
+\item{data_sample}{Boolean or character. Use full data_sample? TRUE (default). To estimate a subset, you have to provide
 the sequence of dates to use. This sequence has to be in the same format as the second column (time-section).}
 
 \item{endog_data}{Character. Name of the endogenous variable. You can only provide one endogenous variable at a time.}
@@ -131,15 +131,15 @@ This function estimates impulse responses with local projections for panel data 
                              lrgdp, lcpi, lriy, cay, nmortgdp, rlnarrow)
 
 
-# Use sample from 1870 to 2013 BUT exclude WWI and WWII
-  sample <-   seq(1870, 2016)[which(!(seq(1870, 2016) \%in\%
+# Use data_sample from 1870 to 2013 BUT exclude WWI and WWII
+  data_sample <-   seq(1870, 2016)[which(!(seq(1870, 2016) \%in\%
                               c(seq(1914, 1918),
                                 seq(1939, 1947),
                                 seq(2014, 2016))))]
 
 # Estimate panel model
 results_panel <-  lp_lin_panel(data_set          = data_set,
-                               sample            = sample,
+                               data_sample            = data_sample,
                                endog_data        = "mortgdp",
                                cumul_mult        = TRUE,
 
@@ -176,7 +176,7 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
 
 # Estimate panel model with iv
 results_panel <-  lp_lin_panel(data_set          = data_set,
-                               sample            = sample,
+                               data_sample            = data_sample,
                                endog_data        = "mortgdp",
                                cumul_mult        = TRUE,
 

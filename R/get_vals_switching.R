@@ -21,21 +21,94 @@
 
 get_vals_switching <- function(switching_data, specs){
 
- # Decide whether to use HP filter.
-  if(specs$use_hp == 1){
+ # Use switching variable for non-panel data
+ if(specs$model_type == 0 | specs$model_type == 1){
 
-  # Use HP-filter to decompose switching variable.
-   filter_results  <-   hp_filter(matrix(switching_data), specs$lambda)
-   gamma_fz        <-   specs$gamma
-   z_0             <-   as.numeric(scale(filter_results[[1]], center = TRUE))
-   fz              <-   exp((-1)*gamma_fz*z_0)/(1 + exp((-1)*gamma_fz*z_0))
+  # Decide whether to use HP filter.
+    if(specs$use_hp == TRUE){
+
+    # Use HP-filter to decompose switching variable.
+     filter_results  <-   hp_filter(matrix(switching_data), specs$lambda)
+     gamma_fz        <-   specs$gamma
+     z_0             <-   as.numeric(scale(filter_results[[1]], center = TRUE))
+     fz              <-   exp((-1)*gamma_fz*z_0)/(1 + exp((-1)*gamma_fz*z_0))
+
+     fz              <-   create_lags(as.data.frame(fz), 1)   %>%
+                          as.matrix() %>%
+                          as.numeric()
 
 
-                    }  else  {
+                          }  else  {
 
-    fz             <-   exp( (-1)*specs$gamma*switching_data)/(1 + exp((-1)*specs$gamma*switching_data))
+      fz              <-   exp((-1)*specs$gamma*switching_data)/(1 + exp((-1)*specs$gamma*switching_data))
+
+      fz              <-   create_lags(as.data.frame(fz), 1)        %>%
+                           as.matrix() %>%
+                           as.numeric()
+
+                      }
+
+########################### For panel data #####################################
+                              } else  {
+################################################################################
+
+  # Estimate switching values for panel data
+  if(specs$model_type == 2){
+
+    # Decide whether to use HP filter.
+    if(specs$use_hp == TRUE){
+
+    # Function to use hp_filter in dplyr
+    use_hp_dplyr <- function(data, lambda){
+
+         hp_values <- hp_filter(matrix(data), lambda)
+         return(hp_values[[1]])
+    }
+
+    switching_tbl <- switching_data                                         %>%
+                      dplyr::select(cross_id, date_id, specs$switching)     %>%
+                      dplyr::group_by(cross_id)                             %>%
+                      dplyr::mutate_at(vars(specs$switching), funs(use_hp_dplyr(., specs$lambda))) %>%
+                      dplyr::rename(switching = specs$switching)            %>%
+                      dplyr::ungroup()
+
+    # Plug values from HP-filter into switching function
+    gamma_fz        <-   specs$gamma
+    z_0             <-   as.numeric(scale(switching_tbl$switching, center = TRUE))
+    fz              <-   exp((-1)*gamma_fz*z_0)/(1 + exp((-1)*gamma_fz*z_0))
+
+    # Use first lag of value from switching function?
+    if(isTRUE(specs$lag_switching)){
+
+      fz            <-   create_lags(as.data.frame(fz), 1)   %>%
+                         as.matrix() %>%
+                         as.numeric()
+
+    }
+
+
+    return(fz)
+                             }  else  {
+
+    fz              <-   exp((-1)*specs$gamma*switching_data)/(1 + exp((-1)*specs$gamma*switching_data))
+
+    # Use first lag of value from switching function?
+    if(isTRUE(specs$lag_switching)){
+
+      fz            <-   create_lags(as.data.frame(fz), 1)   %>%
+                         as.matrix() %>%
+                         as.numeric()
+
+    }
+
+    }
+ }
+
+
+
 
   }
+
 
   return(fz)
 

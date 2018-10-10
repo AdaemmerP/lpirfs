@@ -208,7 +208,60 @@ create_panel_data <- function(specs, data_set){
                       dplyr::left_join(ld_x_data))
   }
 
-  # Save x_instrument if
+################################################################################
+#################    Separate data in two states if model is nonlinear  ########
+################################################################################
+
+    if(specs$model_type == 2 & isTRUE(specs$is_nl)){
+
+    fz   <- get_vals_switching(data_set, specs)
+
+
+
+    # Separate shock into two regimes vars(cross_id, date_id, substring(specs$shock,2))
+    # Choose shock variable
+    shock           <- data_set %>%
+                       dplyr::select(cross_id, date_id, if_else(specs$diff_shock,
+                                                                substring(specs$shock,2),
+                                                                specs$shock))        %>%
+                       dplyr::rename(shock = if_else(specs$diff_shock,
+                                                     substring(specs$shock,2),
+                                                     specs$shock))
+
+    # Make states of shock variable
+    shock_s1        <- shock %>%
+                        dplyr::mutate_at(vars(-cross_id, -date_id), funs(shock_s1 = .*(1 - fz)))  %>%
+                        dplyr::select(-shock)
+
+    shock_s2        <- shock %>%
+                        dplyr::mutate_at(vars(-cross_id, -date_id), funs(shock_s2 = .*fz))        %>%
+                        dplyr::select(-shock)
+
+    # Exclude linear shock variable from x_reg_data
+    test            <- x_reg_data %>%
+                        dplyr::select(-c(specs$shock))
+
+
+    # Separate exogenous data
+    x_linear_names  <- colnames(x_reg_data)[!colnames(x_reg_data) %in% c("cross_id", "date_id")]
+
+    x_nl_s1         <- x_reg_data %>%
+                        dplyr::mutate_at(vars(-cross_id, -date_id), funs(s1 = .*(1 - fz))) %>%
+                        dplyr::select(-one_of(x_linear_names))
+
+    x_nl_s2         <- x_reg_data %>%
+                        dplyr::mutate_at(vars(-cross_id, -date_id), funs(s2 = .*fz))  %>%
+                        dplyr::select(-one_of(x_linear_names))
+
+    x_reg_data      <-  suppressMessages(dplyr::left_join(shock_s1, shock_s2) %>%
+                        dplyr::left_join(x_nl_s1)            %>%
+                        dplyr::left_join(x_nl_s2))
+  }
+
+################################################################################
+################################################################################
+
+  # Save x_instrument if specified
   if(isTRUE(specs$iv_reg)){
 
     x_instrument <- x_instrument
@@ -219,9 +272,20 @@ create_panel_data <- function(specs, data_set){
 
   }
 
+  # Return different lists depending on whether the model is linear or nonlinear
+  if(!is.null(specs$switching)) {
+  return(list(x_reg_data     = x_reg_data,
+                y_data       = y_data,
+                x_instrument = x_instrument,
+                fz           = fz,
+                specs        = specs))
+
+
+                 } else {
+
   return(list(x_reg_data   = x_reg_data,
               y_data       = y_data,
               x_instrument = x_instrument,
               specs        = specs))
-
+ }
 }

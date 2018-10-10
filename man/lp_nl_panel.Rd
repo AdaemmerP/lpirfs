@@ -4,21 +4,21 @@
 \alias{lp_nl_panel}
 \title{Compute nonlinear impulse responses for panel data}
 \usage{
-lp_nl_panel(data_set = NULL, sample = "Full", endog_data = NULL,
+lp_nl_panel(data_set = NULL, data_sample = "Full", endog_data = NULL,
   cumul_mult = TRUE, shock = NULL, diff_shock = TRUE,
-  iv_reg = FALSE, instrum = NULL, panel_model = "within",
-  panel_effect = "individual", robust_cov = NULL, c_exog_data = NULL,
-  l_exog_data = NULL, lags_exog_data = NaN, c_fd_exog_data = NULL,
-  l_fd_exog_data = NULL, lags_fd_exog_data = NaN, switching = NULL,
-  lag_switching = TRUE, use_hp = NULL, lambda = NULL, gamma = NULL,
-  confint = NULL, hor = NULL)
+  panel_model = "within", panel_effect = "individual",
+  robust_cov = NULL, c_exog_data = NULL, l_exog_data = NULL,
+  lags_exog_data = NaN, c_fd_exog_data = NULL, l_fd_exog_data = NULL,
+  lags_fd_exog_data = NaN, switching = NULL, lag_switching = TRUE,
+  use_hp = NULL, lambda = NULL, gamma = NULL, confint = NULL,
+  hor = NULL)
 }
 \arguments{
 \item{data_set}{A \link{data.frame}, containing the panel data set. The first column has to be the
 variable denoting the cross section. The second column has to be the
 variable denoting the time section.}
 
-\item{sample}{Boolean or character. Use full sample? TRUE (default). To estimate a subset, you have to provide
+\item{data_sample}{Boolean or character. Use full data_sample? TRUE (default). To estimate a subset, you have to provide
 the sequence of dates to use. This sequence has to be in the same format as the second column (time-section).}
 
 \item{endog_data}{Character. Name of the endogenous variable. You can only provide one endogenous variable at a time.}
@@ -29,10 +29,6 @@ are estimated via: \deqn{y_(t+h) - y_(t-1)} for h = 0,..., H-1.}
 \item{shock}{Character. The column name of the variable to shock with.}
 
 \item{diff_shock}{Boolean. Take first differences of the shock variable? TRUE or FALSE.}
-
-\item{iv_reg}{Boolean. Use instrument variable approach? TRUE or FALSE.}
-
-\item{instrum}{NULL or Character. The name(s) of the instrument variable(s) if iv_reg = TRUE.}
 
 \item{panel_model}{Character. Type of panel model. The default is "within" (fixed effects). See vignette of plm package for options and details.}
 
@@ -57,14 +53,12 @@ or "nested". See vignette of plm package for details.}
 \item{switching}{Character. Name of the column to use for the switching variable. This series can either
 be decomposed via the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013) or
 directly plugged into the following smooth transition function:
-\deqn{ F_{z_t} = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)}. }
-Warning: \eqn{F_{z_t}} will be lagged by one and then multiplied with the data.
-If the variable shall not be lagged, the vector has to be given with a lead of one.
-The data for the two regimes are: \cr
+\deqn{F_{z_t} = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)}.}
+The data for the two regimes are lagged by defaults: \cr
 Regime 1 = (1-\eqn{F(z_{t-1})})*y_{(t-p)}, \cr
 Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.}
 
-\item{lag_switching}{Boolean. Use the first lag of the values of the transition function? TRUE or FALSE (default).}
+\item{lag_switching}{Boolean. Use the first lag of the values of the transition function? TRUE (default) or FALSE.}
 
 \item{use_hp}{Boolean. Use HP-filter? TRUE or FALSE.}
 
@@ -95,8 +89,8 @@ A list containing:
 \item{specs}{A list with data properties for the plot function.}
 }
 \description{
-This function estimates impulse responses with local projections for panel data either with an
-             identified shock or via an instrument variable approach.
+This function estimates nonlinear impulse responses with local projections for panel data either with an
+             identified shock.
 }
 \examples{
 \donttest{
@@ -150,25 +144,29 @@ This function estimates impulse responses with local projections for panel data 
                              lrgdp, lcpi, lriy, cay, nmortgdp, rlnarrow)
 
 
-# Use sample from 1870 to 2013 BUT exclude WWI and WWII
-  sample <-   seq(1870, 2016)[which(!(seq(1870, 2016) \%in\%
+# Use data_sample from 1870 to 2013 BUT exclude WWI and WWII
+  data_sample <-   seq(1870, 2016)[which(!(seq(1870, 2016) \%in\%
                               c(seq(1914, 1918),
                                 seq(1939, 1947),
                                 seq(2014, 2016))))]
 
 # Estimate panel model
-results_panel <-  lp_panel_lin(data_set          = data_set,
-                               sample            = sample,
+results_panel <-  lp_nl_panel(data_set          = data_set,
+                               data_sample       = data_sample,
                                endog_data        = "mortgdp",
                                cumul_mult        = TRUE,
 
                                shock             = "stir",
                                diff_shock        = TRUE,
-                               iv_reg            = FALSE,
-                               instrum           = NULL,
                                panel_model       = "within",
                                panel_effect      = "individual",
                                robust_cov        = NULL,
+
+                               switching         = "lrgdp",
+                               lag_switching     = TRUE,
+                               use_hp            = TRUE,
+                               lambda            = 6.25,
+                               gamma             = 10,
 
                                c_exog_data       = "cay",
                                l_exog_data       = NULL,
@@ -181,45 +179,24 @@ results_panel <-  lp_panel_lin(data_set          = data_set,
                                hor               = 10)
 
 # Create and plot irfs
- plot_panel_lin <- plot_lin(results_panel)
- plot(plot_panel_lin[[1]])
+ nl_plots <- plot_nl(results_panel)
+
+ plot(nl_plots$gg_s1[[1]])
+ plot(nl_plots$gg_s2[[1]])
+
+# Plot values of the transition function for USA between 1950 and 2016
+ library(ggplot2)
+ library(dplyr)
+
+ data_set \%>\%
+    mutate(fz = results_panel$fz) \%>\%
+    select(country, year, fz) \%>\%
+    filter(country == "USA" & year > 1950  & year <= 2016) \%>\%
+    ggplot()+
+    geom_line(aes(x = year, y = fz)) +
+    scale_x_continuous(breaks = seq(1950, 2016, 5))
 
 
-# Create and add instrument to data_set
- set.seed(123)
- data_set   <- data_set \%>\%
-               group_by(country) \%>\%
-               mutate(instrument = 0.8*stir + rnorm(length(stir), 0, sd(na.omit(stir))/10)) \%>\%
-               ungroup()
-
-
-# Estimate panel model with iv
-results_panel <-  lp_panel_lin(data_set          = data_set,
-                               sample            = sample,
-                               endog_data        = "mortgdp",
-                               cumul_mult        = TRUE,
-
-                               shock             = "stir",
-                               diff_shock        = TRUE,
-                               iv_reg            = TRUE,
-                               instrum           = "instrument",
-                               panel_model       = "within",
-                               panel_effect      = "individual",
-                               robust_cov        = NULL,
-
-                               c_exog_data       = "cay",
-                               l_exog_data       = NULL,
-                               lags_exog_data    = NULL,
-                               c_fd_exog_data    = colnames(data_set)[c(seq(4,9),11)],
-                               l_fd_exog_data    = colnames(data_set)[c(seq(3,9),11)],
-                               lags_fd_exog_data = 2,
-
-                               confint           = 1.67,
-                               hor               = 10)
-
-# Create and plot irfs
- plot_panel_lin <- plot_lin(results_panel)
- plot(plot_panel_lin[[1]])
 
 }
 

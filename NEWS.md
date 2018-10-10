@@ -1,3 +1,7 @@
+# lpirfs 0.1.3.9000
+
+* Added functions to estimate linear and nonlinear irfs for panel data.
+
 # lpirfs 0.1.3
 
 * Included an option to conduct 2SLS with *lp_lin_iv*.

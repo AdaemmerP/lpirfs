@@ -93,7 +93,7 @@ plot_nl <- function(results_nl){
     }
 
   }
-                                  } else if(specs$model_type == 1){
+                    } else if(specs$model_type == 1| specs$model_type == 2){
 
 
 

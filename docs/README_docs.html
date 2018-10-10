@@ -327,17 +327,17 @@ $(document).ready(function () {
 <pre class="r"><code>  endog_data &lt;- interest_rules_var_data</code></pre>
 <p>Estimate linear impulse responses with function <em>lp_lin</em>. Note that the endogenous and exogenous data have to be a data.frame.</p>
 <pre class="r"><code>results_lin &lt;- lp_lin(endog_data, 
-                           lags_endog_lin = 4,   # Number of lags for endogenous data
+                           lags_endog_lin = 4,    # Number of lags for endogenous data
                            lags_criterion = NaN,  # Lag length criterion (AICc, AIC or BIC) or NaN
                            max_lags       = NaN,  # Maximum number of lags or NaN
                            exog_data      = NULL, # Exogenous data
                            lags_exog      = NULL, # Lags for exogenous data
                            contemp_data   = NULL, # Exogenous data with contemporaneous impact
-                           trend          = 0,   # 0 = no trend, 1 = trend, 2 = trend &amp; trend^2    
-                           shock_type     = 1,   # 0 = standard deviation shock, 1 = unit shock
+                           trend          = 0,    # 0 = no trend, 1 = trend, 2 = trend &amp; trend^2    
+                           shock_type     = 1,    # 0 = standard deviation shock, 1 = unit shock
                            confint        = 1.96, # Width of confidence bands: 
                                                   # 1 = 68%, 1.67 = 90%, 1.96 = 95%
-                           hor            = 24,  # Number of horizons for impulse responses
+                           hor            = 24,   # Number of horizons for impulse responses
                            num_cores      = NULL) # Number of cores to use. When NULL, the number of cores is chosen 
                                                   # automatically    </code></pre>
 <p>Create plots for impulse responses of linear model with function <em>plot_lin</em>.</p>

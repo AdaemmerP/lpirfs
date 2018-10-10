@@ -16,9 +16,6 @@ create_nl_data <- function(specs, endog_data){
 
     # Load switching variable
     fz  <- get_vals_switching(specs$switching, specs)
-    fz  <- create_lags(as.data.frame(fz), 1)        %>%
-                                        as.matrix() %>%
-                                        as.numeric()
 
     # Select data for endogenous variables
     y_nl    <- endog_data
@@ -46,26 +43,26 @@ create_nl_data <- function(specs, endog_data){
 
 
     # Check whether model type is 'iv'.
-    # 0 = Normal model, 1 = IV model
-    # Prepare instrument variable and add to exogenous data
+    # 0 = Normal model, 1 = IV type model
+    # Prepare identified shock variable and add to exogenous data
     if(specs$model_type == 1){
-    # Prepare instrument variable
-    instrum           <- specs$shock
-    colnames(instrum) <- 'instrum'
-    instrum_names     <- colnames(instrum)
+    # Prepare shock variable
+    shock           <- specs$shock
+    colnames(shock) <- 'shock'
+    shock_name      <- colnames(shock)
 
-    # Make states of instrument
+    # Make states of shock
 
-    instrum_s1        <- instrum %>%
-                          dplyr::mutate_all(funs(instrum_s1 = .*(1 - fz)))  %>%
-                          dplyr::select(-one_of(instrum_names))
+    shock_s1        <- shock %>%
+                          dplyr::mutate_all(funs(shock_s1 = .*(1 - fz)))  %>%
+                          dplyr::select(-one_of(shock_name))
 
-    instrum_s2        <- instrum %>%
-                          dplyr::mutate_all(funs(instrum_s2 = .*fz))        %>%
-                          dplyr::select(-one_of(instrum_names))
+    shock_s2        <- shock %>%
+                          dplyr::mutate_all(funs(shock_s2 = .*fz))        %>%
+                          dplyr::select(-one_of(shock_name))
 
-    # Add instrument variable
-    x_nl              <- cbind(instrum_s1, instrum_s2,  x_nl)
+    # Add shock variable
+    x_nl              <- cbind(shock_s1, shock_s2,  x_nl)
                       }
 
     # Include no trend, trend or quadratic trend
@@ -149,9 +146,9 @@ create_nl_data <- function(specs, endog_data){
       # 0 = Normal model, 1 = IV model
       # Prepare instrument variable and add to exogenous data
       if(specs$model_type == 1){
-      instrum           <- specs$shock
-      colnames(instrum) <- 'instrum'
-      instrum_names     <- colnames(instrum)
+      shock           <- specs$shock
+      colnames(shock) <- 'shock'
+      shock_name     <- colnames(shock)
       }
 
 
@@ -175,22 +172,22 @@ create_nl_data <- function(specs, endog_data){
 
   # Prepare states of instrument
       if(specs$model_type == 1){
-      instrum_s1      <- instrum %>%
-                         dplyr::mutate_all(funs(instrum_s1 = .*(1 - fz)))  %>%
-                         dplyr::select(-one_of(instrum_names))
+      shock_s1      <- shock %>%
+                         dplyr::mutate_all(funs(shock_s1 = .*(1 - fz)))  %>%
+                         dplyr::select(-one_of(shock_name))
 
-      instrum_s2        <- instrum %>%
-                           dplyr::mutate_all(funs(instrum_s2 = .*fz))        %>%
-                           dplyr::select(-one_of(instrum_names))
+      shock_s2      <- shock %>%
+                         dplyr::mutate_all(funs(shock_s2 = .*fz))        %>%
+                         dplyr::select(-one_of(shock_name))
 
   # Add state instruments
-        x_nl              <- cbind(instrum_s1, instrum_s2,  x_nl)
+        x_nl          <- cbind(shock_s1, shock_s2,  x_nl)
       }
 
   # Add trend if set
      if(specs$trend == 0){
 
-       x_nl             <-   x_nl
+       x_nl            <-   x_nl
 
 
                     } else if (specs$trend == 1){
