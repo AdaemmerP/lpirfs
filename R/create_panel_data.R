@@ -1,7 +1,7 @@
 #' @name create_panel_data
-#' @title Prepare data sets for linear panel model
-#' @description Function to create panel data for linear panel model.
-#' @param specs A list with specifications created in \link{lp_lin_panel}
+#' @title Prepare data sets for linear and nonlinear panel model
+#' @description Function to create panel data linear and nonlinear panel model.
+#' @param specs A list with specifications created in \link{lp_lin_panel} or \link{lp_nl_panel}
 #' @param data_set A data.frame consisting of a panel data set
 #' @import dplyr
 #' @return A list with prepared endogenous and exogenous data as well as the updated list \emph{specs}.
@@ -52,9 +52,9 @@ create_panel_data <- function(specs, data_set){
                                        funs(cumul_function(., ii)))                %>%
                                 dplyr::ungroup()
     }
-                         ################
+
                          }    else     {
-                         ################
+
 
     # Loop to create endogenous variables
     for(ii in 0:(specs$hor-1)){
@@ -74,7 +74,7 @@ create_panel_data <- function(specs, data_set){
                    dplyr::select(cross_id, date_id,  specs$shock)
 
 
-  # Take first differences of shock?
+  # Take first differences of shock variable?
   if(specs$diff_shock == TRUE){
 
     x_reg_data    <- x_reg_data %>%
@@ -102,15 +102,15 @@ create_panel_data <- function(specs, data_set){
                           dplyr::rename_at(vars(specs$instrum), funs(paste0("d",.)))
 
     # Rename instrument to use later in instrument regression
-    specs$instrum  <- colnames(x_instrument)[which(!(colnames(x_instrument) %in% c("cross_id", "date_id")))]
+    specs$instrum  <- colnames(x_instrument)[which(!(colnames(x_instrument) %in%
+                                                     c("cross_id", "date_id")))]
 
   }
 
 
-
   # Choose exogenous data
-  x_data        <- data_set %>%
-                    dplyr::select(cross_id, date_id,  specs$exog_data)
+  x_data          <- data_set %>%
+                     dplyr::select(cross_id, date_id,  specs$exog_data)
 
 
   # Choose exogeonus data with contemporaneous impact
@@ -144,7 +144,7 @@ create_panel_data <- function(specs, data_set){
                       dplyr::select(cross_id, date_id, contains("lag_"))
 
 
-    # Use lagged exogenous data as regress
+    # Use lagged exogenous data as regressor
     x_reg_data    <- suppressMessages(x_reg_data %>%
                       dplyr::left_join(l_x_data))
 

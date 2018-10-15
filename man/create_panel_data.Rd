@@ -2,12 +2,12 @@
 % Please edit documentation in R/create_panel_data.R
 \name{create_panel_data}
 \alias{create_panel_data}
-\title{Prepare data sets for linear panel model}
+\title{Prepare data sets for linear and nonlinear panel model}
 \usage{
 create_panel_data(specs, data_set)
 }
 \arguments{
-\item{specs}{A list with specifications created in \link{lp_lin_panel}}
+\item{specs}{A list with specifications created in \link{lp_lin_panel} or \link{lp_nl_panel}}
 
 \item{data_set}{A data.frame consisting of a panel data set}
 }
@@ -15,6 +15,6 @@ create_panel_data(specs, data_set)
 A list with prepared endogenous and exogenous data as well as the updated list \emph{specs}.
 }
 \description{
-Function to create panel data for linear panel model.
+Function to create panel data linear and nonlinear panel model.
 }
 \keyword{internal}

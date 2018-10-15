@@ -27,6 +27,8 @@
 #' @param lags_fd_exog_data NaN or Integer. Number of lags for variables with impact of first differences.
 #' @param confint Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 9\% = 1.96.
 #' @param hor Integer. Number of horizons for impulse responses.
+#' @param num_cores NULL or Integer. The number of cores to use for the estimation. If NULL, the function will
+#'                 use the maximum number of cores minus one.
 #'
 #' @author Philipp Adämmer
 #'
@@ -50,6 +52,7 @@
 #' @importFrom dplyr lead lag filter
 #' @importFrom plm plm
 #' @importFrom lmtest coeftest
+#' @importFrom foreach foreach
 #' @export
 #'
 #' @references
@@ -211,7 +214,8 @@ lp_lin_panel <- function(
                     l_fd_exog_data    = NULL,
                     lags_fd_exog_data = NaN,
                     confint           = NULL,
-                    hor               = NULL){
+                    hor               = NULL,
+                    num_cores         = NULL){
 
 
  # Check whether column names are named properly
@@ -313,12 +317,10 @@ lp_lin_panel <- function(
   specs$panel_effect        <- panel_effect
   specs$iv_reg              <- iv_reg
 
+  specs$robust_cov         <- robust_cov
 
-   specs$robust_cov         <- robust_cov
-
-
-
-  specs$exog_data           <- colnames(data_set)[which(! colnames(data_set) %in% c("cross_id", "date_id"))]
+  specs$exog_data           <- colnames(data_set)[which(!colnames(data_set) %in%
+                                                         c("cross_id", "date_id"))]
   specs$c_exog_data         <- c_exog_data
   specs$l_exog_data         <- l_exog_data
   specs$lags_exog_data      <- lags_exog_data
@@ -387,24 +389,22 @@ lp_lin_panel <- function(
   }
 
 
-
-
-  # Loop to estimate irfs with local projections
+  # Loop to estimate irfs
   for(ii in 1:specs$hor){
 
     if(isTRUE(specs$iv_reg)){
 
       yx_data        <- suppressMessages(
-                        left_join(y_data[[ii]], x_reg_data)  %>%
-                        left_join(x_instrument)              %>%
+                        dplyr::left_join(y_data[[ii]], x_reg_data)  %>%
+                        dplyr::left_join(x_instrument)              %>%
                         stats::na.omit()
                         )
 
-               }   else    {
+                     }   else    {
 
 
       yx_data        <- suppressMessages(
-                        left_join(y_data[[ii]], x_reg_data)  %>%
+                        dplyr::left_join(y_data[[ii]], x_reg_data)  %>%
                         stats::na.omit()
                         )
 
@@ -422,24 +422,24 @@ lp_lin_panel <- function(
 
     # Do panel estimation
     panel_results  <- plm::plm(formula = plm_formula,
-                          data     = yx_data,
-                          index    = c("cross_id", "date_id"),
-                          model    = specs$panel_model,
-                          effect   = specs$panel_effect)
+                               data     = yx_data,
+                               index    = c("cross_id", "date_id"),
+                               model    = specs$panel_model,
+                               effect   = specs$panel_effect)
 
 
     # Estimate confidence bands with robust standard errors?
     if(is.character(specs$robust_cov)){
 
       # Estimate model robust standard errors a la Driscoll and Kraay (1998)
-      reg_results <-  lmtest::coeftest(panel_results, vcov. = match.fun(specs$robust_cov))
+      reg_results <-  lmtest::coeftest(panel_results, vcov. = plm::vcovSCC)
 
       # Estimate irfs and confidence bands
       irf_panel_mean[[1, ii]]   <- reg_results[1, 1]
       irf_panel_up[[1,   ii]]   <- reg_results[1, 1] + specs$confint*reg_results[1,2]
       irf_panel_low[[1,  ii]]   <- reg_results[1, 1] - specs$confint*reg_results[1,2]
 
-                         }      else      {
+                             }      else      {
 
       reg_results <- summary(panel_results)
 
@@ -454,7 +454,6 @@ lp_lin_panel <- function(
     # Save regression results and data_sets
     reg_summaries[[ii]]       <- reg_results
     xy_data_sets[[ii]]        <- yx_data
-
   }
 
 

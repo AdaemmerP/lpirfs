@@ -33,18 +33,29 @@ get_vals_switching <- function(switching_data, specs){
      z_0             <-   as.numeric(scale(filter_results[[1]], center = TRUE))
      fz              <-   exp((-1)*gamma_fz*z_0)/(1 + exp((-1)*gamma_fz*z_0))
 
-     fz              <-   create_lags(as.data.frame(fz), 1)   %>%
+     # Use first lag of value from switching function?
+     if(isTRUE(specs$lag_switching)){
+
+       fz            <-   create_lags(as.data.frame(fz), 1)   %>%
                           as.matrix() %>%
                           as.numeric()
+
+     }
 
 
                           }  else  {
 
       fz              <-   exp((-1)*specs$gamma*switching_data)/(1 + exp((-1)*specs$gamma*switching_data))
 
-      fz              <-   create_lags(as.data.frame(fz), 1)        %>%
-                           as.matrix() %>%
-                           as.numeric()
+      # Use first lag of value from switching function?
+      if(isTRUE(specs$lag_switching)){
+
+        fz            <-   create_lags(as.data.frame(fz), 1)   %>%
+                            as.matrix() %>%
+                            as.numeric()
+
+      }
+
 
                       }
 

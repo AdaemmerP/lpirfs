@@ -56,7 +56,7 @@
 #' Schwarz, Gideon E. (1978). "Estimating the dimension of a model", \emph{Annals of Statistics}, 6 (2): 461–464.
 #'
 #' @author Philipp Adämmer
-#' @import foreach
+#' @importFrom foreach foreach
 #' @examples
 #'\donttest{
 #'
@@ -324,7 +324,7 @@ lp_lin <- function(endog_data,
 
   # Make cluster
   if(is.null(num_cores)){
-    num_cores     <- min(specs$endog, parallel::detectCores() - 1)
+    num_cores    <- min(specs$endog, parallel::detectCores() - 1)
   }
 
   cl             <- parallel::makeCluster(num_cores)

@@ -2,6 +2,8 @@
 
 * Added functions to estimate linear and nonlinear irfs for panel data.
 
+* Added an option to choose whether to use lagged values of the switching values. 
+
 # lpirfs 0.1.3
 
 * Included an option to conduct 2SLS with *lp_lin_iv*.

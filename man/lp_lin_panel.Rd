@@ -10,7 +10,8 @@ lp_lin_panel(data_set = NULL, data_sample = "Full",
   panel_model = "within", panel_effect = "individual",
   robust_cov = NULL, c_exog_data = NULL, l_exog_data = NULL,
   lags_exog_data = NaN, c_fd_exog_data = NULL, l_fd_exog_data = NULL,
-  lags_fd_exog_data = NaN, confint = NULL, hor = NULL)
+  lags_fd_exog_data = NaN, confint = NULL, hor = NULL,
+  num_cores = NULL)
 }
 \arguments{
 \item{data_set}{A \link{data.frame}, containing the panel data set. The first column has to be the
@@ -56,6 +57,9 @@ or "nested". See vignette of plm package for details.}
 \item{confint}{Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 9\% = 1.96.}
 
 \item{hor}{Integer. Number of horizons for impulse responses.}
+
+\item{num_cores}{NULL or Integer. The number of cores to use for the estimation. If NULL, the function will
+use the maximum number of cores minus one.}
 }
 \value{
 A list containing:

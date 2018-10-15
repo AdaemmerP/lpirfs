@@ -15,7 +15,7 @@ create_nl_data <- function(specs, endog_data){
   if (is.nan(specs$lags_criterion) == TRUE) {
 
     # Load switching variable
-    fz  <- get_vals_switching(specs$switching, specs)
+    fz      <- get_vals_switching(specs$switching, specs)
 
     # Select data for endogenous variables
     y_nl    <- endog_data

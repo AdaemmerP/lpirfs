@@ -82,7 +82,8 @@ All remaining errors are obviously mine.
 
 ## Development
 
-I am currently working on a function for panel-lp estimation.
+The development version contains two new functions to estimate linear
+and nonlinear local projections for panel data.
 
 ### Author
 
