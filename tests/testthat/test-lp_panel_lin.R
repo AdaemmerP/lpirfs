@@ -23,7 +23,7 @@ library(dplyr)
 
 # Estimate panel model
 results_panel <-  lp_lin_panel(data_set          = data_set,
-                               data_sample            = 'Full',
+                               data_sample       = 'Full',
                                endog_data        = "y",
                                cumul_mult        = TRUE,
 

@@ -187,7 +187,8 @@ lp_nl_panel <- function(
                       gamma             = NULL,
 
                       confint           = NULL,
-                      hor               = NULL){
+                      hor               = NULL,
+                      num_cores         = NULL){
 
 
   # Check whether column names are named properly
@@ -248,7 +249,7 @@ lp_nl_panel <- function(
     }
   }
 
-  # Check whether width for confidence intervals is given
+  # Check whether width of confidence intervals is given
   if(is.null(confint)){
     stop('Please specify a value for the width of the confidence bands.')
   }
@@ -260,7 +261,7 @@ lp_nl_panel <- function(
 
   # Check whether values for horizons are correct
   if(!(hor > 0) | is.nan(hor) | !(hor %% 1 == 0)){
-    stop('The number of horizons has to be an integer and > 0.')
+    stop('The number of horizons has to be an integer and >0.')
   }
 
   # Check whether switching variable is given
@@ -268,13 +269,13 @@ lp_nl_panel <- function(
     stop("You have to provide a switching variable.")
   }
 
-  # Check whether switching variable is given
+  # Check whether to use the HP-filter
   if(is.null(use_hp)){
     stop("Please specify whether to use the HP-filter for the switching variable.")
   }
 
   if(isTRUE(use_hp) & is.null(lambda)){
-    stop("Please give a value for lambda to use in the HP-filter.")
+    stop("Please give a value for lambda for the HP-filter.")
   }
 
 
@@ -309,7 +310,7 @@ lp_nl_panel <- function(
   specs$lambda             <- lambda
   specs$gamma              <- gamma
 
-  specs$exog_data          <- colnames(data_set)[which(! colnames(data_set) %in% c("cross_id", "date_id"))]
+  specs$exog_data          <- colnames(data_set)[which(!colnames(data_set) %in% c("cross_id", "date_id", shock))]
   specs$c_exog_data        <- c_exog_data
   specs$l_exog_data        <- l_exog_data
   specs$lags_exog_data     <- lags_exog_data
@@ -320,15 +321,16 @@ lp_nl_panel <- function(
 
   specs$confint            <- confint
   specs$hor                <- hor
+  specs$num_cores          <- num_cores
 
-  specs$model_type         <- 2
+  specs$model_type         <- 2        # Model type for panel data
   specs$endog              <- 1        # Set the number of endogenous variables for plot function
   specs$column_names       <- endog_data
 
-  specs$is_nl              <- TRUE     # To construct nonlinear data
+  specs$is_nl              <- TRUE     # Indicator to use in 'create_panel_data'
 
 
-  #--- Create data
+  # Create data
   lin_panel_data   <- create_panel_data(specs, data_set)
 
   # Extract endogenous and exogenous data
@@ -350,8 +352,8 @@ lp_nl_panel <- function(
 
 
   # List to store regression results
-  reg_summaries      <- list(rep(NaN), specs$hor)
-  xy_data_sets       <- list(rep(NaN), specs$hor)
+  reg_summaries  <- list(rep(NaN), specs$hor)
+  xy_data_sets   <- list(rep(NaN), specs$hor)
 
 
   # Prepare formula names
@@ -372,7 +374,7 @@ lp_nl_panel <- function(
   for(ii in 1:specs$hor){
 
 
-    # Join y and ex data
+    # Join endogenous and exogenous data
     yx_data        <- suppressMessages(
                       left_join(y_data[[ii]], x_reg_data)  %>%
                       stats::na.omit()
@@ -400,30 +402,31 @@ lp_nl_panel <- function(
     # Estimate confidence bands with robust standard errors?
     if(is.character(specs$robust_cov)){
 
-      # Estimate model robust standard errors a la Driscoll and Kraay (1998)
+      # Estimate model with robust standard via coeftest function
       reg_results <-  lmtest::coeftest(panel_results, vcov. = plm::vcovNW) #match.fun(specs$robust_cov))
 
       # Estimate irfs and confidence bands
-      irf_s1_mean[[1, ii]]   <- reg_results[1, 1]
-      irf_s1_up[[1,   ii]]   <- reg_results[1, 1] + specs$confint*reg_results[1,2]
-      irf_s1_low[[1,  ii]]   <- reg_results[1, 1] - specs$confint*reg_results[1,2]
+      irf_s1_mean[1, ii]   <- reg_results[1, 1]
+      irf_s1_up[1,   ii]   <- reg_results[1, 1] + specs$confint*reg_results[1,2]
+      irf_s1_low[1,  ii]   <- reg_results[1, 1] - specs$confint*reg_results[1,2]
 
-      irf_s2_mean[[1, ii]]   <- reg_results[2, 1]
-      irf_s2_up[[1,   ii]]   <- reg_results[2, 1] + specs$confint*reg_results[2,2]
-      irf_s2_low[[1,  ii]]   <- reg_results[2, 1] - specs$confint*reg_results[2,2]
+      irf_s2_mean[1, ii]   <- reg_results[2, 1]
+      irf_s2_up[1,   ii]   <- reg_results[2, 1] + specs$confint*reg_results[2,2]
+      irf_s2_low[1,  ii]   <- reg_results[2, 1] - specs$confint*reg_results[2,2]
 
+      # Estimate model without robust standard errors
                                }      else      {
 
       reg_results <- summary(panel_results)
 
       # Estimate irfs and confidence bands
-      irf_s1_mean[[1, ii]]   <- reg_results$coefficients[1, 1]
-      irf_s1_up[[1,   ii]]   <- reg_results$coefficients[1, 1] + specs$confint*reg_results$coefficients[1,2]
-      irf_s1_low[[1,  ii]]   <- reg_results$coefficients[1, 1] - specs$confint*reg_results$coefficients[1,2]
+      irf_s1_mean[1, ii]   <- reg_results$coefficients[1, 1]
+      irf_s1_up[1,   ii]   <- reg_results$coefficients[1, 1] + specs$confint*reg_results$coefficients[1,2]
+      irf_s1_low[1,  ii]   <- reg_results$coefficients[1, 1] - specs$confint*reg_results$coefficients[1,2]
 
-      irf_s2_mean[[1, ii]]   <- reg_results$coefficients[2, 1]
-      irf_s2_up[[1,   ii]]   <- reg_results$coefficients[2, 1] + specs$confint*reg_results$coefficients[2,2]
-      irf_s2_low[[1,  ii]]   <- reg_results$coefficients[2, 1] - specs$confint*reg_results$coefficients[2,2]
+      irf_s2_mean[1, ii]   <- reg_results$coefficients[2, 1]
+      irf_s2_up[1,   ii]   <- reg_results$coefficients[2, 1] + specs$confint*reg_results$coefficients[2,2]
+      irf_s2_low[1,  ii]   <- reg_results$coefficients[2, 1] - specs$confint*reg_results$coefficients[2,2]
 
     }
 
@@ -434,7 +437,7 @@ lp_nl_panel <- function(
 
   }
 
-
+  # List to return
   return(list(irf_s1_mean    = irf_s1_mean,
               irf_s1_up      = irf_s1_up,
               irf_s1_low     = irf_s1_low,

@@ -28,6 +28,7 @@
 #'               The data for the two regimes are: \cr
 #'               Regime 1 = (1-\eqn{F(z_{t-1})})*y_{(t-p)}, \cr
 #'               Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.
+#'@param lag_switching Boolean. Use the first lag of the values of the transition function? TRUE (default) or FALSE.
 #'@param gamma Double. Positive number which is used in the transition function.
 #'@param use_hp Boolean. Use HP-filter? TRUE or FALSE.
 #'@param lambda Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter (if use_hp = TRUE).
@@ -185,6 +186,7 @@ lp_nl_iv <- function(endog_data,
                             confint           = NULL,
                             hor               = NULL,
                             switching         = NULL,
+                            lag_switching     = TRUE,
                             use_hp            = NULL,
                             lambda            = NULL,
                             gamma             = NULL,
@@ -326,6 +328,7 @@ lp_nl_iv <- function(endog_data,
     specs$confint        <- confint
     specs$hor            <- hor
     specs$switching      <- switching
+    specs$lag_switching  <- lag_switching
     specs$use_hp         <- use_hp
     specs$lambda         <- lambda
     specs$gamma          <- gamma

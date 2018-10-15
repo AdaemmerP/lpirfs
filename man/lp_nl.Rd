@@ -7,8 +7,9 @@
 lp_nl(endog_data, lags_endog_lin = NULL, lags_endog_nl = NULL,
   lags_criterion = NULL, max_lags = NULL, trend = NULL,
   shock_type = NULL, confint = NULL, hor = NULL, switching = NULL,
-  use_hp = NULL, lambda = NULL, gamma = NULL, exog_data = NULL,
-  lags_exog = NULL, contemp_data = NULL, num_cores = NULL)
+  lag_switching = TRUE, use_hp = NULL, lambda = NULL, gamma = NULL,
+  exog_data = NULL, lags_exog = NULL, contemp_data = NULL,
+  num_cores = NULL)
 }
 \arguments{
 \item{endog_data}{A \link{data.frame}, containing all endogenous variables for the VAR. The Cholesky decomposition is based on the
@@ -41,6 +42,8 @@ If the variable shall not be lagged, the vector has to be given with a lead of o
 The data for the two regimes are: \cr
 Regime 1 = (1-\eqn{F(z_{t-1})})*y_{(t-p)}, \cr
 Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.}
+
+\item{lag_switching}{Boolean. Use the first lag of the values of the transition function? TRUE (default) or FALSE.}
 
 \item{use_hp}{Boolean. Use HP-filter? TRUE or FALSE.}
 

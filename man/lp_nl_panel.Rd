@@ -11,7 +11,7 @@ lp_nl_panel(data_set = NULL, data_sample = "Full", endog_data = NULL,
   lags_exog_data = NaN, c_fd_exog_data = NULL, l_fd_exog_data = NULL,
   lags_fd_exog_data = NaN, switching = NULL, lag_switching = TRUE,
   use_hp = NULL, lambda = NULL, gamma = NULL, confint = NULL,
-  hor = NULL)
+  hor = NULL, num_cores = NULL)
 }
 \arguments{
 \item{data_set}{A \link{data.frame}, containing the panel data set. The first column has to be the
@@ -69,6 +69,9 @@ Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.}
 \item{confint}{Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 9\% = 1.96.}
 
 \item{hor}{Integer. Number of horizons for impulse responses.}
+
+\item{num_cores}{NULL or Integer. The number of cores to use for the estimation. If NULL, the function will
+use the maximum number of cores minus one.}
 }
 \value{
 A list containing:
