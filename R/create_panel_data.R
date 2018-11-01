@@ -40,7 +40,7 @@ create_panel_data <- function(specs, data_set){
   y_data <- rep(list(NaN), specs$hor)
 
   # Create horizons of dependent variables based on whether to use cumulative multipliers
-  if(specs$cumul_mult == TRUE){
+  if(isTRUE(specs$cumul_mult)){
 
     # Loop to create endogenous variables
     for(ii in 0:(specs$hor-1)){
@@ -75,7 +75,7 @@ create_panel_data <- function(specs, data_set){
 
 
   # Take first differences of shock variable?
-  if(specs$diff_shock == TRUE){
+  if(isTRUE(specs$diff_shock)){
 
     x_reg_data    <- x_reg_data %>%
                       dplyr::mutate_at(vars(specs$shock), diff_function) %>%
@@ -95,7 +95,7 @@ create_panel_data <- function(specs, data_set){
 
 
   # Take first differences of instrument?
-  if(isTRUE(specs$iv_reg) & specs$diff_shock == TRUE){
+  if(isTRUE(specs$iv_reg) & isTRUE(specs$diff_shock)){
 
     x_instrument   <- x_instrument %>%
                           dplyr::mutate_at(vars(specs$instrum), diff_function) %>%

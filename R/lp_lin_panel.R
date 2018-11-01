@@ -1,7 +1,7 @@
 #' @name lp_lin_panel
 #' @title Compute linear impulse responses with local projections for panel data
 #' @description This function estimates impulse responses with local projections for panel data either with an
-#'              identified shock or via an instrument variable approach.
+#'              identified shock or by an instrument variable approach.
 #' @param data_set A \link{data.frame}, containing the panel data set. The first column has to be the
 #'                 variable denoting the cross section. The second column has to be the
 #'                 variable denoting the time section.
@@ -73,10 +73,11 @@
 #'
 #'# This example is based on the STATA code 'LPs_basic_doall.do', provided on
 #'# Òscar Jordà's website (https://sites.google.com/site/oscarjorda/home/local-projections)
-#'# It estimates the impulse reponse of the ratio of (mortgage lending/GDP) to a
+#'# It estimates impulse reponses of the ratio of (mortgage lending/GDP) to a
 #'# +1% change in the short term interest rate
 #'
 #'# Load libraries to download and read excel file from the website
+#'  library(lpirfs)
 #'  library(httr)
 #'  library(readxl)
 #'  library(dplyr)
@@ -128,7 +129,7 @@
 #'
 #'# Estimate panel model
 #' results_panel <-  lp_lin_panel(data_set          = data_set,
-#'                                data_sample            = data_sample,
+#'                                data_sample       = data_sample,
 #'                                endog_data        = "mortgdp",
 #'                                cumul_mult        = TRUE,
 #'
@@ -165,7 +166,7 @@
 #'
 #' # Estimate panel model with iv
 #' results_panel <-  lp_lin_panel(data_set          = data_set,
-#'                                data_sample            = data_sample,
+#'                                data_sample       = data_sample,
 #'                                endog_data        = "mortgdp",
 #'                                cumul_mult        = TRUE,
 #'
@@ -195,7 +196,7 @@
 #'
 lp_lin_panel <- function(
                     data_set          = NULL,
-                    data_sample            = "Full",
+                    data_sample       = "Full",
                     endog_data        = NULL,
                     cumul_mult        = TRUE,
 
@@ -370,12 +371,14 @@ lp_lin_panel <- function(
   ols_formula    <- paste(y_reg_name, "~",
                           paste(x_reg_names[!(x_reg_names %in% c("cross_id", "date_id"))], collapse = " + "))
 
+
   # Make formula for iv_regression
   if(isTRUE(specs$iv_reg)){
 
     # Make formula string for iv_regression
     iv_formula     <- paste(ols_formula, paste(x_reg_names[!(x_reg_names %in% c("cross_id",
-                                                                                "date_id", y_reg_name, specs$shock))], collapse = " + "), sep =  "| ")
+                                                                                "date_id", y_reg_name, specs$shock))],
+                                               collapse = " + "), sep =  "| ")
     iv_formula     <- paste(iv_formula, "+", paste(specs$instrum, collapse =  " + "))
 
     # Convert string to formula

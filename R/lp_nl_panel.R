@@ -58,10 +58,11 @@
 #'
 #'# This example is based on the STATA code 'LPs_basic_doall.do', provided on
 #'# Òscar Jordà's website (https://sites.google.com/site/oscarjorda/home/local-projections)
-#'# It estimates the impulse reponse of the ratio of (mortgage lending/GDP) to a
+#'# It estimates impulse reponses of the ratio of (mortgage lending/GDP) to a
 #'# +1% change in the short term interest rate
 #'
 #'# Load libraries to download and read excel file from the website
+#'  library(lpirfs)
 #'  library(httr)
 #'  library(readxl)
 #'  library(dplyr)
@@ -112,7 +113,7 @@
 #'                                 seq(2014, 2016))))]
 #'
 #'# Estimate panel model
-#' results_panel <-  lp_nl_panel(data_set          = data_set,
+#' results_panel <-  lp_nl_panel(data_set           = data_set,
 #'                                data_sample       = data_sample,
 #'                                endog_data        = "mortgdp",
 #'                                cumul_mult        = TRUE,
@@ -187,8 +188,7 @@ lp_nl_panel <- function(
                       gamma             = NULL,
 
                       confint           = NULL,
-                      hor               = NULL,
-                      num_cores         = NULL){
+                      hor               = NULL){
 
 
   # Check whether column names are named properly
@@ -310,7 +310,8 @@ lp_nl_panel <- function(
   specs$lambda             <- lambda
   specs$gamma              <- gamma
 
-  specs$exog_data          <- colnames(data_set)[which(!colnames(data_set) %in% c("cross_id", "date_id", shock))]
+  specs$exog_data          <- colnames(data_set)[which(!colnames(data_set) %in%
+                                                         c("cross_id", "date_id"))]
   specs$c_exog_data        <- c_exog_data
   specs$l_exog_data        <- l_exog_data
   specs$lags_exog_data     <- lags_exog_data
@@ -321,7 +322,6 @@ lp_nl_panel <- function(
 
   specs$confint            <- confint
   specs$hor                <- hor
-  specs$num_cores          <- num_cores
 
   specs$model_type         <- 2        # Model type for panel data
   specs$endog              <- 1        # Set the number of endogenous variables for plot function
@@ -363,7 +363,8 @@ lp_nl_panel <- function(
 
   # Make formula for panel estimation
   ols_formula    <- paste(y_reg_name, "~",
-                          paste(x_reg_names[!(x_reg_names %in% c("cross_id", "date_id"))], collapse = " + "))
+                          paste(x_reg_names[!(x_reg_names %in% c("cross_id", "date_id"))],
+                                collapse = " + "))
 
 
   # Convert ols string to formula

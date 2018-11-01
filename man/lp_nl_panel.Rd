@@ -11,7 +11,7 @@ lp_nl_panel(data_set = NULL, data_sample = "Full", endog_data = NULL,
   lags_exog_data = NaN, c_fd_exog_data = NULL, l_fd_exog_data = NULL,
   lags_fd_exog_data = NaN, switching = NULL, lag_switching = TRUE,
   use_hp = NULL, lambda = NULL, gamma = NULL, confint = NULL,
-  hor = NULL, num_cores = NULL)
+  hor = NULL)
 }
 \arguments{
 \item{data_set}{A \link{data.frame}, containing the panel data set. The first column has to be the
@@ -69,9 +69,6 @@ Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.}
 \item{confint}{Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 9\% = 1.96.}
 
 \item{hor}{Integer. Number of horizons for impulse responses.}
-
-\item{num_cores}{NULL or Integer. The number of cores to use for the estimation. If NULL, the function will
-use the maximum number of cores minus one.}
 }
 \value{
 A list containing:
@@ -100,10 +97,11 @@ This function estimates nonlinear impulse responses with local projections for p
 
 # This example is based on the STATA code 'LPs_basic_doall.do', provided on
 # Òscar Jordà's website (https://sites.google.com/site/oscarjorda/home/local-projections)
-# It estimates the impulse reponse of the ratio of (mortgage lending/GDP) to a
+# It estimates impulse reponses of the ratio of (mortgage lending/GDP) to a
 # +1\% change in the short term interest rate
 
 # Load libraries to download and read excel file from the website
+ library(lpirfs)
  library(httr)
  library(readxl)
  library(dplyr)
@@ -154,7 +152,7 @@ This function estimates nonlinear impulse responses with local projections for p
                                 seq(2014, 2016))))]
 
 # Estimate panel model
-results_panel <-  lp_nl_panel(data_set          = data_set,
+results_panel <-  lp_nl_panel(data_set           = data_set,
                                data_sample       = data_sample,
                                endog_data        = "mortgdp",
                                cumul_mult        = TRUE,

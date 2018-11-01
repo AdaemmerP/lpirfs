@@ -81,17 +81,18 @@ A list containing:
 }
 \description{
 This function estimates impulse responses with local projections for panel data either with an
-             identified shock or via an instrument variable approach.
+             identified shock or by an instrument variable approach.
 }
 \examples{
 \donttest{
 
 # This example is based on the STATA code 'LPs_basic_doall.do', provided on
 # Òscar Jordà's website (https://sites.google.com/site/oscarjorda/home/local-projections)
-# It estimates the impulse reponse of the ratio of (mortgage lending/GDP) to a
+# It estimates impulse reponses of the ratio of (mortgage lending/GDP) to a
 # +1\% change in the short term interest rate
 
 # Load libraries to download and read excel file from the website
+ library(lpirfs)
  library(httr)
  library(readxl)
  library(dplyr)
@@ -143,7 +144,7 @@ This function estimates impulse responses with local projections for panel data 
 
 # Estimate panel model
 results_panel <-  lp_lin_panel(data_set          = data_set,
-                               data_sample            = data_sample,
+                               data_sample       = data_sample,
                                endog_data        = "mortgdp",
                                cumul_mult        = TRUE,
 
@@ -180,7 +181,7 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
 
 # Estimate panel model with iv
 results_panel <-  lp_lin_panel(data_set          = data_set,
-                               data_sample            = data_sample,
+                               data_sample       = data_sample,
                                endog_data        = "mortgdp",
                                cumul_mult        = TRUE,
 
