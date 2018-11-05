@@ -7,8 +7,10 @@
 lp_nl_panel(data_set = NULL, data_sample = "Full", endog_data = NULL,
   cumul_mult = TRUE, shock = NULL, diff_shock = TRUE,
   panel_model = "within", panel_effect = "individual",
-  robust_cov = NULL, c_exog_data = NULL, l_exog_data = NULL,
-  lags_exog_data = NaN, c_fd_exog_data = NULL, l_fd_exog_data = NULL,
+  robust_cov = NULL, panel_gmm = FALSE, gmm_model = "onestep",
+  gmm_effect = "twoways", gmm_transformation = "d",
+  c_exog_data = NULL, l_exog_data = NULL, lags_exog_data = NaN,
+  c_fd_exog_data = NULL, l_fd_exog_data = NULL,
   lags_fd_exog_data = NaN, switching = NULL, lag_switching = TRUE,
   use_hp = NULL, lambda = NULL, gamma = NULL, confint = NULL,
   hor = NULL)
@@ -37,6 +39,15 @@ or "nested". See the vignette of the plm package for details.}
 
 \item{robust_cov}{NULL or Character. The character specifies the method how to estimate robust standard errors: "vcovBK", "vcovDC",
 "vcovG", "vcovHC", "vcovNW", "vcovSCC". See vignette of plm() package for details.}
+
+\item{panel_gmm}{Boolean. Use GMM for estimation? TRUE or FALSE (default). See vignette of plm package for details.}
+
+\item{gmm_model}{Character. Either "onestep" (default) or "twosteps". See vignette of the plm package for details.}
+
+\item{gmm_effect}{Character. The effects introduced in the model: "twoways" (default) or "individual". See vignette of the plm package for details.}
+
+\item{gmm_transformation}{Character. Either "d" (default) for the "difference GMM" model or "ld" for the "system GMM".
+See vignette of the plm package for details.}
 
 \item{c_exog_data}{NULL or Character. Names of exogenous variables with contemporaneous impact.}
 
@@ -196,7 +207,6 @@ results_panel <-  lp_nl_panel(data_set           = data_set,
     ggplot()+
     geom_line(aes(x = year, y = fz)) +
     scale_x_continuous(breaks = seq(1950, 2016, 5))
-
 
 
 }

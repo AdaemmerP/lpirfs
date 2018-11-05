@@ -159,7 +159,6 @@
 #'     scale_x_continuous(breaks = seq(1950, 2016, 5))
 #'
 #'
-#'
 #'}
 #'
 lp_nl_panel <- function(
@@ -173,6 +172,12 @@ lp_nl_panel <- function(
                       panel_model       = "within",
                       panel_effect      = "individual",
                       robust_cov        = NULL,
+
+                      panel_gmm         = FALSE,
+                      gmm_model         = "onestep",
+                      gmm_effect        = "twoways",
+                      gmm_transformation = "d",
+
 
                       c_exog_data       = NULL,
                       l_exog_data       = NULL,
@@ -284,6 +289,23 @@ lp_nl_panel <- function(
   }
 
 
+  # Check whether input for gmm is correct
+  if(isTRUE(gmm_model) & !gmm_model %in% c("onestep", "twosteps")){
+    stop('The model type for gmm has to be "onestep" (default) or "twosteps".')
+  }
+
+  # Check whether input for gmm is correct
+  if(isTRUE(gmm_model) & !gmm_effect %in% c("twoways", "individual")){
+    stop('The effect for gmm has to be "twoways" (default) or "individual".')
+  }
+
+  # Check whether input for gmm is correct
+  if(isTRUE(gmm_model) & !gmm_transformation %in% c("d", "ld")){
+    stop('The transformation to apply to the model has to either be "d" (default)
+         for the "difference GMM" model or "ld" for the "system GMM".')
+  }
+
+
   # Rename first two column names of data.frame
   colnames(data_set)[1]     <- "cross_id"
   colnames(data_set)[2]     <- "date_id"
@@ -301,8 +323,13 @@ lp_nl_panel <- function(
 
   specs$panel_model        <- panel_model
   specs$panel_effect       <- panel_effect
-
   specs$robust_cov         <- robust_cov
+
+  specs$panel_gmm          <- panel_gmm
+  specs$gmm_model          <- gmm_model
+  specs$gmm_effect         <- gmm_effect
+  specs$gmm_transformation <- gmm_transformation
+
 
   specs$switching          <- switching
   specs$lag_switching      <- lag_switching
@@ -367,8 +394,15 @@ lp_nl_panel <- function(
                                 collapse = " + "))
 
 
-  # Convert ols string to formula
-  plm_formula    <- stats::as.formula(ols_formula)
+  # Check whether to use GMM
+  if(isTRUE(specs$panel_gmm)){
+    gmm_formula <-  stats::as.formula(paste(ols_formula, "|", "plm::lag(",y_reg_name,", 2:99)" , sep=""))
+
+                     } else {
+
+    # Convert ols string to formula
+    plm_formula    <- stats::as.formula(ols_formula)
+  }
 
 
   # Loop to estimate irfs with local projections

@@ -219,56 +219,6 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
  plot(plot_lin_panel[[1]])
 
 
-                    ### Use GMM ###
-# Simulate panel data (AR(1) with fixed effects)
- N  <- 80
- TS <- 10
-
-cross_id <- sort(rep(seq(1,N, 1), TS))
-date_id  <- rep(seq(1,TS, 1), N)
-
-set.seed(007)
-data_set    <- tibble(cross_id, date_id)             \%>\%
-                      group_by(cross_id)             \%>\%
-                mutate(x_1   = rnorm(TS))            \%>\%
-                mutate(l_x_1 = dplyr::lag(x_1, 1))   \%>\%
-                mutate(fe    = runif(1, 0, 1))       \%>\%
-                mutate(x_1   = 0.8*l_x_1 + fe)       \%>\%
-                ungroup()                            \%>\%
-                na.omit()
-
-# Estimate model with gmm
-results_panel <-  lp_lin_panel(data_set          = data_set,
-                              data_sample       = "Full",
-                              endog_data        = "x_1",
-                              cumul_mult        = TRUE,
-
-                              shock             = "l_x_1",
-                              diff_shock        = FALSE,
-                              iv_reg            = FALSE,
-                              instrum           = NULL,
-                              panel_model       = "within",
-                              panel_effect      = "individual",
-                              robust_cov        = NULL,
-
-                              panel_gmm          = TRUE,
-                              gmm_model          = "onestep",
-                              gmm_effect         = "twoways",
-                              gmm_transformation = "ld",
-
-                              c_exog_data       = NULL,
-                              l_exog_data       = "x_1",
-                              lags_exog_data    = 1,
-                              c_fd_exog_data    = NULL,
-                              l_fd_exog_data    = NULL,
-                              lags_fd_exog_data = NULL,
-
-                              confint           = 1.96,
-                              hor               = 10)
-
-# Create and plot irfs
-plot_lin_panel <- plot_lin(results_panel)
-plot(plot_lin_panel[[1]])
 }
 
 }
