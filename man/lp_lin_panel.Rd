@@ -8,8 +8,10 @@ lp_lin_panel(data_set = NULL, data_sample = "Full",
   endog_data = NULL, cumul_mult = TRUE, shock = NULL,
   diff_shock = TRUE, iv_reg = FALSE, instrum = NULL,
   panel_model = "within", panel_effect = "individual",
-  robust_cov = NULL, c_exog_data = NULL, l_exog_data = NULL,
-  lags_exog_data = NaN, c_fd_exog_data = NULL, l_fd_exog_data = NULL,
+  robust_cov = NULL, panel_gmm = FALSE, gmm_model = "onestep",
+  gmm_effect = "twoways", gmm_transformation = "d",
+  c_exog_data = NULL, l_exog_data = NULL, lags_exog_data = NaN,
+  c_fd_exog_data = NULL, l_fd_exog_data = NULL,
   lags_fd_exog_data = NaN, confint = NULL, hor = NULL,
   num_cores = NULL)
 }
@@ -34,13 +36,19 @@ are estimated via: \deqn{y_(t+h) - y_(t-1)} for h = 0,..., H-1.}
 
 \item{instrum}{NULL or Character. The name(s) of the instrument variable(s) if iv_reg = TRUE.}
 
-\item{panel_model}{Character. Type of panel model. The default is "within" (fixed effects). See vignette of plm package for options and details.}
-
-\item{panel_effect}{Character. The effects introduced in the model, one of "individual", "time", "twoways",
-or "nested". See vignette of plm package for details.}
+\item{panel_model}{Character. Type of panel model. The default is "within" (fixed effects). See vignette of the plm package for options and details.}
 
 \item{robust_cov}{NULL or Character. The character specifies the method how to estimate robust standard errors: "vcovBK", "vcovDC",
 "vcovG", "vcovHC", "vcovNW", "vcovSCC". See vignette of plm() package for details.}
+
+\item{panel_gmm}{Boolean. Use GMM for estimation? TRUE or FALSE (default). See vignette of plm package for details.}
+
+\item{gmm_model}{Character. "onestep" (default) or "twosteps". See vignette of the plm package for details.}
+
+\item{gmm_effect}{Character. The effects introduced in the model: "twoways" (default) or "individual". See vignette of the plm package for details.}
+
+\item{gmm_transformation}{Character. Either "d" (the default value) for the “difference GMM” model or "ld" for the “system GMM”.
+See vignette of the plm package for details.}
 
 \item{c_exog_data}{NULL or Character. Names of exogenous variables with contemporaneous impact.}
 
@@ -80,8 +88,8 @@ A list containing:
 \item{specs}{A list with data properties for the plot function.}
 }
 \description{
-This function estimates impulse responses with local projections for panel data either with an
-             identified shock or by an instrument variable approach.
+This function estimates impulse responses with local projections for panel data, either with an
+             identified shock or by an instrument variable approach. It further allows to estimate irfs by GMM.
 }
 \examples{
 \donttest{
@@ -207,6 +215,57 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
  plot_lin_panel <- plot_lin(results_panel)
  plot(plot_lin_panel[[1]])
 
+
+                    ### Use GMM ###
+# Simulate panel data
+ N  <- 80
+ TS <- 10
+
+cross_id <- sort(rep(seq(1,N, 1), TS))
+date_id  <- rep(seq(1,TS, 1), N)
+
+set.seed(007)
+data_set    <- tibble(cross_id, date_id)             \%>\%
+                      group_by(cross_id)             \%>\%
+                mutate(x_1   = rnorm(TS))            \%>\%
+                mutate(l_x_1 = dplyr::lag(x_1, 1))   \%>\%
+                mutate(fe    = runif(1, 0, 1))       \%>\%
+                mutate(x_1   = 0.8*l_x_1 + fe)       \%>\%
+                ungroup()                            \%>\%
+                na.omit()
+
+# Estimate model with gmm
+results_panel <-  lp_lin_panel(data_set          = data_set,
+                              data_sample       = 'Full',
+                              endog_data        = "x_1",
+                              cumul_mult        = TRUE,
+
+                              shock             = "l_x_1",
+                              diff_shock        = FALSE,
+                              iv_reg            = FALSE,
+                              instrum           = NULL,
+                              panel_model       = "within",
+                              panel_effect      = "individual",
+                              robust_cov        = NULL,
+
+                              panel_gmm          = TRUE,
+                              gmm_model          = "onestep",
+                              gmm_effect         = "twoways",
+                              gmm_transformation = "ld",
+
+                              c_exog_data       = NULL,
+                              l_exog_data       = "x_1",
+                              lags_exog_data    = 1,
+                              c_fd_exog_data    = NULL,
+                              l_fd_exog_data    = NULL,
+                              lags_fd_exog_data = NULL,
+
+                              confint           = 1.96,
+                              hor               = 10)
+
+# Create and plot irfs
+plot_lin_panel <- plot_lin(results_panel)
+plot(plot_lin_panel[[1]])
 }
 
 }

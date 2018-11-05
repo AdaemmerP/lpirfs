@@ -1,7 +1,7 @@
 #' @name lp_lin_panel
 #' @title Compute linear impulse responses with local projections for panel data
-#' @description This function estimates impulse responses with local projections for panel data either with an
-#'              identified shock or by an instrument variable approach.
+#' @description This function estimates impulse responses with local projections for panel data, either with an
+#'              identified shock or by an instrument variable approach. It further allows to estimate irfs by GMM.
 #' @param data_set A \link{data.frame}, containing the panel data set. The first column has to be the
 #'                 variable denoting the cross section. The second column has to be the
 #'                 variable denoting the time section.
@@ -14,9 +14,14 @@
 #' @param diff_shock Boolean. Take first differences of the shock variable? TRUE or FALSE.
 #' @param iv_reg     Boolean. Use instrument variable approach? TRUE or FALSE.
 #' @param instrum    NULL or Character. The name(s) of the instrument variable(s) if iv_reg = TRUE.
-#' @param panel_model Character. Type of panel model. The default is "within" (fixed effects). See vignette of plm package for options and details.
-#' @param panel_effect Character. The effects introduced in the model, one of "individual", "time", "twoways",
-#'                           or "nested". See vignette of plm package for details.
+#' @param panel_model Character. Type of panel model. The default is "within" (fixed effects). See vignette of the plm package for options and details.
+#'
+#' @param panel_gmm  Boolean. Use GMM for estimation? TRUE or FALSE (default). See vignette of plm package for details.
+#' @param gmm_effect Character. The effects introduced in the model: "twoways" (default) or "individual". See vignette of the plm package for details.
+#' @param gmm_model Character. "onestep" (default) or "twosteps". See vignette of the plm package for details.
+#' @param gmm_transformation Character. Either "d" (the default value) for the “difference GMM” model or "ld" for the “system GMM”.
+#' See vignette of the plm package for details.
+#'
 #' @param robust_cov NULL or Character. The character specifies the method how to estimate robust standard errors: "vcovBK", "vcovDC",
 #'                    "vcovG", "vcovHC", "vcovNW", "vcovSCC". See vignette of plm() package for details.
 #' @param c_exog_data NULL or Character. Names of exogenous variables with contemporaneous impact.
@@ -192,7 +197,58 @@
 #'  plot_lin_panel <- plot_lin(results_panel)
 #'  plot(plot_lin_panel[[1]])
 #'
-#'}
+#'
+#'                     ### Use GMM ###
+#'# Simulate panel data
+#'  N  <- 80
+#'  TS <- 10
+#'
+#' cross_id <- sort(rep(seq(1,N, 1), TS))
+#' date_id  <- rep(seq(1,TS, 1), N)
+#'
+#' set.seed(007)
+#' data_set    <- tibble(cross_id, date_id)             %>%
+#'                       group_by(cross_id)             %>%
+#'                 mutate(x_1   = rnorm(TS))            %>%
+#'                 mutate(l_x_1 = dplyr::lag(x_1, 1))   %>%
+#'                 mutate(fe    = runif(1, 0, 1))       %>%
+#'                 mutate(x_1   = 0.8*l_x_1 + fe)       %>%
+#'                 ungroup()                            %>%
+#'                 na.omit()
+#'
+#' # Estimate model with gmm
+#' results_panel <-  lp_lin_panel(data_set          = data_set,
+#'                               data_sample       = 'Full',
+#'                               endog_data        = "x_1",
+#'                               cumul_mult        = TRUE,
+#'
+#'                               shock             = "l_x_1",
+#'                               diff_shock        = FALSE,
+#'                               iv_reg            = FALSE,
+#'                               instrum           = NULL,
+#'                               panel_model       = "within",
+#'                               panel_effect      = "individual",
+#'                               robust_cov        = NULL,
+#'
+#'                               panel_gmm          = TRUE,
+#'                               gmm_model          = "onestep",
+#'                               gmm_effect         = "twoways",
+#'                               gmm_transformation = "ld",
+#'
+#'                               c_exog_data       = NULL,
+#'                               l_exog_data       = "x_1",
+#'                               lags_exog_data    = 1,
+#'                               c_fd_exog_data    = NULL,
+#'                               l_fd_exog_data    = NULL,
+#'                               lags_fd_exog_data = NULL,
+#'
+#'                               confint           = 1.96,
+#'                               hor               = 10)
+#'
+#' # Create and plot irfs
+#' plot_lin_panel <- plot_lin(results_panel)
+#' plot(plot_lin_panel[[1]])
+#' }
 #'
 lp_lin_panel <- function(
                     data_set          = NULL,
@@ -207,6 +263,11 @@ lp_lin_panel <- function(
                     panel_model       = "within",
                     panel_effect      = "individual",
                     robust_cov        = NULL,
+
+                    panel_gmm         = FALSE,
+                    gmm_model         = "onestep",
+                    gmm_effect        = "twoways",
+                    gmm_transformation = "d",
 
                     c_exog_data       = NULL,
                     l_exog_data       = NULL,
@@ -318,7 +379,12 @@ lp_lin_panel <- function(
   specs$panel_effect        <- panel_effect
   specs$iv_reg              <- iv_reg
 
-  specs$robust_cov         <- robust_cov
+  specs$panel_gmm           <- panel_gmm
+  specs$gmm_model           <- gmm_model
+  specs$gmm_effect          <- gmm_effect
+  specs$gmm_transformation  <- gmm_transformation
+
+  specs$robust_cov          <- robust_cov
 
   specs$exog_data           <- colnames(data_set)[which(!colnames(data_set) %in%
                                                          c("cross_id", "date_id"))]
@@ -386,9 +452,15 @@ lp_lin_panel <- function(
 
                } else {
 
+   # Check whether to use GMM
+    if(isTRUE(specs$panel_gmm)){
+    gmm_formula <-  stats::as.formula(paste(ols_formula, "|", "plm::lag(",y_reg_name,", 2:99)" , sep=""))
+
+             } else {
 
     # Convert ols string to formula
     plm_formula    <- stats::as.formula(ols_formula)
+    }
   }
 
 
@@ -424,12 +496,24 @@ lp_lin_panel <- function(
 
 
     # Do panel estimation
-    panel_results  <- plm::plm(formula = plm_formula,
+    # Check whether to use GMM
+    if(isTRUE(specs$panel_gmm)){
+
+    panel_results  <- plm::pgmm(gmm_formula,
+                                data           = yx_data,
+                                index          = c("cross_id", "date_id"),
+                                model          = specs$gmm_model,
+                                effect         = specs$gmm_effect,
+                                transformation = specs$gmm_transformation)
+
+                      } else {
+
+    panel_results  <- plm::plm(formula  = plm_formula,
                                data     = yx_data,
                                index    = c("cross_id", "date_id"),
                                model    = specs$panel_model,
                                effect   = specs$panel_effect)
-
+    }
 
     # Estimate confidence bands with robust standard errors?
     if(is.character(specs$robust_cov)){
