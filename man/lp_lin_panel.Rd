@@ -38,16 +38,19 @@ are estimated via: \deqn{y_(t+h) - y_(t-1)} for h = 0,..., H-1.}
 
 \item{panel_model}{Character. Type of panel model. The default is "within" (fixed effects). See vignette of the plm package for options and details.}
 
+\item{panel_effect}{Character. The effects introduced in the model: "individual", "time", "twoways",
+or "nested". See the vignette of the plm package for details.}
+
 \item{robust_cov}{NULL or Character. The character specifies the method how to estimate robust standard errors: "vcovBK", "vcovDC",
 "vcovG", "vcovHC", "vcovNW", "vcovSCC". See vignette of plm() package for details.}
 
 \item{panel_gmm}{Boolean. Use GMM for estimation? TRUE or FALSE (default). See vignette of plm package for details.}
 
-\item{gmm_model}{Character. "onestep" (default) or "twosteps". See vignette of the plm package for details.}
+\item{gmm_model}{Character. Either "onestep" (default) or "twosteps". See vignette of the plm package for details.}
 
 \item{gmm_effect}{Character. The effects introduced in the model: "twoways" (default) or "individual". See vignette of the plm package for details.}
 
-\item{gmm_transformation}{Character. Either "d" (the default value) for the “difference GMM” model or "ld" for the “system GMM”.
+\item{gmm_transformation}{Character. Either "d" (default) for the "difference GMM" model or "ld" for the "system GMM".
 See vignette of the plm package for details.}
 
 \item{c_exog_data}{NULL or Character. Names of exogenous variables with contemporaneous impact.}
@@ -217,7 +220,7 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
 
 
                     ### Use GMM ###
-# Simulate panel data
+# Simulate panel data (AR(1) with fixed effects)
  N  <- 80
  TS <- 10
 
@@ -236,7 +239,7 @@ data_set    <- tibble(cross_id, date_id)             \%>\%
 
 # Estimate model with gmm
 results_panel <-  lp_lin_panel(data_set          = data_set,
-                              data_sample       = 'Full',
+                              data_sample       = "Full",
                               endog_data        = "x_1",
                               cumul_mult        = TRUE,
 

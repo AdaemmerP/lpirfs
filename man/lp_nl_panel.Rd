@@ -32,6 +32,9 @@ are estimated via: \deqn{y_(t+h) - y_(t-1)} for h = 0,..., H-1.}
 
 \item{panel_model}{Character. Type of panel model. The default is "within" (fixed effects). See vignette of the plm package for options and details.}
 
+\item{panel_effect}{Character. The effects introduced in the model: "individual", "time", "twoways",
+or "nested". See the vignette of the plm package for details.}
+
 \item{robust_cov}{NULL or Character. The character specifies the method how to estimate robust standard errors: "vcovBK", "vcovDC",
 "vcovG", "vcovHC", "vcovNW", "vcovSCC". See vignette of plm() package for details.}
 

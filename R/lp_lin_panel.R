@@ -15,11 +15,13 @@
 #' @param iv_reg     Boolean. Use instrument variable approach? TRUE or FALSE.
 #' @param instrum    NULL or Character. The name(s) of the instrument variable(s) if iv_reg = TRUE.
 #' @param panel_model Character. Type of panel model. The default is "within" (fixed effects). See vignette of the plm package for options and details.
+#' @param panel_effect Character. The effects introduced in the model: "individual", "time", "twoways",
+#' or "nested". See the vignette of the plm package for details.
 #'
 #' @param panel_gmm  Boolean. Use GMM for estimation? TRUE or FALSE (default). See vignette of plm package for details.
 #' @param gmm_effect Character. The effects introduced in the model: "twoways" (default) or "individual". See vignette of the plm package for details.
-#' @param gmm_model Character. "onestep" (default) or "twosteps". See vignette of the plm package for details.
-#' @param gmm_transformation Character. Either "d" (the default value) for the “difference GMM” model or "ld" for the “system GMM”.
+#' @param gmm_model Character. Either "onestep" (default) or "twosteps". See vignette of the plm package for details.
+#' @param gmm_transformation Character. Either "d" (default) for the "difference GMM" model or "ld" for the "system GMM".
 #' See vignette of the plm package for details.
 #'
 #' @param robust_cov NULL or Character. The character specifies the method how to estimate robust standard errors: "vcovBK", "vcovDC",
@@ -199,7 +201,7 @@
 #'
 #'
 #'                     ### Use GMM ###
-#'# Simulate panel data
+#'# Simulate panel data (AR(1) with fixed effects)
 #'  N  <- 80
 #'  TS <- 10
 #'
@@ -218,7 +220,7 @@
 #'
 #' # Estimate model with gmm
 #' results_panel <-  lp_lin_panel(data_set          = data_set,
-#'                               data_sample       = 'Full',
+#'                               data_sample       = "Full",
 #'                               endog_data        = "x_1",
 #'                               cumul_mult        = TRUE,
 #'
@@ -356,6 +358,22 @@ lp_lin_panel <- function(
   # Check whether values for horizons are correct
   if(!(hor > 0) | is.nan(hor) | !(hor %% 1 == 0)){
     stop('The number of horizons has to be an integer and > 0.')
+  }
+
+  # Check whether input for gmm is correct
+  if(isTRUE(gmm_model) & !gmm_model %in% c("onestep", "twosteps")){
+    stop('The model type for gmm has to be "onestep" (default) or "twosteps".')
+  }
+
+  # Check whether input for gmm is correct
+  if(isTRUE(gmm_model) & !gmm_effect %in% c("twoways", "individual")){
+    stop('The effect for gmm has to be "twoways" (default) or "individual".')
+  }
+
+  # Check whether input for gmm is correct
+  if(isTRUE(gmm_model) & !gmm_transformation %in% c("d", "ld")){
+    stop('The transformation to apply to the model has to either be "d" (default)
+         for the "difference GMM" model or "ld" for the "system GMM".')
   }
 
 
