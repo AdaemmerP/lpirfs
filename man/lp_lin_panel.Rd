@@ -20,7 +20,7 @@ lp_lin_panel(data_set = NULL, data_sample = "Full",
 variable denoting the cross section. The second column has to be the
 variable denoting the time section.}
 
-\item{data_sample}{Boolean or character. Use full data_sample? TRUE (default). To estimate a subset, you have to provide
+\item{data_sample}{Character. Use full data_sample? "Full" (default). To estimate a subset, you have to provide
 the sequence of dates to use. This sequence has to be in the same format as the second column (time-section).}
 
 \item{endog_data}{Character. Name of the endogenous variable. You can only provide one endogenous variable at a time.}
@@ -217,6 +217,46 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
 # Create and plot irfs
  plot_lin_panel <- plot_lin(results_panel)
  plot(plot_lin_panel[[1]])
+
+### Use GMM ###
+
+# Use a much smaller sample to have fewer T than N
+data_sample <-   seq(2000, 2012)
+
+# Estimate panel model with gmm
+results_panel <-  lp_lin_panel(data_set          = data_set,
+                              data_sample       = data_sample,
+                              endog_data        = "mortgdp",
+                              cumul_mult        = TRUE,
+
+                              shock             = "stir",
+                              diff_shock        = TRUE,
+                              iv_reg            = FALSE,
+                              instrum           = NULL,
+                              panel_model       = NULL,
+                              panel_effect      = NULL,
+                              robust_cov        = NULL,
+
+                              panel_gmm         = TRUE,
+                              gmm_model         = "onestep",
+                              gmm_effect        = "twoways",
+                              gmm_transformation = "ld",
+
+
+                              c_exog_data       = NULL,
+                              l_exog_data       = "mortgdp",
+                              lags_exog_data    = 2,
+                              c_fd_exog_data    = NULL,
+                              l_fd_exog_data    = colnames(data_set)[c(4, 6)],
+                              lags_fd_exog_data = 1,
+
+                              confint           = 1.67,
+                              hor               = 10)
+
+# Create and plot irfs
+plot_lin_panel <- plot_lin(results_panel)
+plot(plot_lin_panel[[1]])
+
 
 
 }

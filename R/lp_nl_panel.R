@@ -152,12 +152,56 @@
 #'
 #'  data_set %>%
 #'     mutate(fz = results_panel$fz) %>%
-#'     select(country, year, fz) %>%
+#'     select(country, year, fz)     %>%
 #'     filter(country == "USA" & year > 1950  & year <= 2016) %>%
 #'     ggplot()+
 #'     geom_line(aes(x = year, y = fz)) +
 #'     scale_x_continuous(breaks = seq(1950, 2016, 5))
 #'
+#' ### Use GMM ###
+#'
+#' # Use a much smaller sample to have fewer T than N
+#' data_sample <-   seq(2000, 2012)
+#'
+#'
+#  Estimate panel model with gmm
+#' results_panel <-  lp_nl_panel(data_set           = data_set,
+#'                                data_sample       = data_sample,
+#'                                endog_data        = "mortgdp",
+#'                                cumul_mult        = TRUE,
+#'
+#'                                shock             = "stir",
+#'                                diff_shock        = TRUE,
+#'                                panel_model       = "within",
+#'                                panel_effect      = "individual",
+#'                                robust_cov        = NULL,
+#'
+#'                                panel_gmm         = TRUE,
+#'                                gmm_model         = "onestep",
+#'                                gmm_effect        = "twoways",
+#'                                gmm_transformation = "ld",
+#'
+#'                                switching         = "lrgdp",
+#'                                lag_switching     = TRUE,
+#'                                use_hp            = TRUE,
+#'                                lambda            = 6.25,
+#'                                gamma             = 10,
+#'
+#'                                c_exog_data       = "cay",
+#'                                l_exog_data       = NULL,
+#'                                lags_exog_data    = NULL,
+#'                                c_fd_exog_data    = colnames(data_set)[c(seq(4,9),11)],
+#'                                l_fd_exog_data    = colnames(data_set)[c(seq(3,9),11)],
+#'                                lags_fd_exog_data = 2,
+#'
+#'                                confint           = 1.67,
+#'                                hor               = 10)
+#'
+#'# Create and plot irfs
+#'  nl_plots <- plot_nl(results_panel)
+#'
+#'  plot(nl_plots$gg_s1[[1]])
+#'  plot(nl_plots$gg_s2[[1]])
 #'
 #'}
 #'
@@ -427,18 +471,31 @@ lp_nl_panel <- function(
 
 
     # Do panel estimation
-    panel_results  <- plm::plm(formula = plm_formula,
-                               data     = yx_data,
-                               index    = c("cross_id", "date_id"),
-                               model    = specs$panel_model,
-                               effect   = specs$panel_effect)
+    # Check whether to use gmm
+    if(isTRUE(specs$panel_gmm)){
+
+      panel_results  <- plm::pgmm(gmm_formula,
+                                  data           = yx_data,
+                                  index          = c("cross_id", "date_id"),
+                                  model          = specs$gmm_model,
+                                  effect         = specs$gmm_effect,
+                                  transformation = specs$gmm_transformation)
+
+    } else {
+
+      panel_results  <- plm::plm(formula  = plm_formula,
+                                 data     = yx_data,
+                                 index    = c("cross_id", "date_id"),
+                                 model    = specs$panel_model,
+                                 effect   = specs$panel_effect)
+    }
 
 
     # Estimate confidence bands with robust standard errors?
     if(is.character(specs$robust_cov)){
 
-      # Estimate model with robust standard via coeftest function
-      reg_results <-  lmtest::coeftest(panel_results, vcov. = plm::vcovNW) #match.fun(specs$robust_cov))
+      # Estimate robust covariance matrices
+      reg_results <-  lmtest::coeftest(panel_results, vcov. = get(specs$robust_cov, envir = environment(plm)))
 
       # Estimate irfs and confidence bands
       irf_s1_mean[1, ii]   <- reg_results[1, 1]

@@ -5,7 +5,7 @@
 #' @param data_set A \link{data.frame}, containing the panel data set. The first column has to be the
 #'                 variable denoting the cross section. The second column has to be the
 #'                 variable denoting the time section.
-#' @param data_sample   Boolean or character. Use full data_sample? TRUE (default). To estimate a subset, you have to provide
+#' @param data_sample   Character. Use full data_sample? "Full" (default). To estimate a subset, you have to provide
 #'                 the sequence of dates to use. This sequence has to be in the same format as the second column (time-section).
 #' @param endog_data Character. Name of the endogenous variable. You can only provide one endogenous variable at a time.
 #' @param cumul_mult Boolean. Estimate cumulative multipliers? TRUE or FALSE. If TRUE, cumulative responses
@@ -199,6 +199,46 @@
 #'  plot_lin_panel <- plot_lin(results_panel)
 #'  plot(plot_lin_panel[[1]])
 #'
+#' ### Use GMM ###
+#'
+#' # Use a much smaller sample to have fewer T than N
+#' data_sample <-   seq(2000, 2012)
+#'
+#' # Estimate panel model with gmm
+#' results_panel <-  lp_lin_panel(data_set          = data_set,
+#'                               data_sample       = data_sample,
+#'                               endog_data        = "mortgdp",
+#'                               cumul_mult        = TRUE,
+#'
+#'                               shock             = "stir",
+#'                               diff_shock        = TRUE,
+#'                               iv_reg            = FALSE,
+#'                               instrum           = NULL,
+#'                               panel_model       = NULL,
+#'                               panel_effect      = NULL,
+#'                               robust_cov        = NULL,
+#'
+#'                               panel_gmm          = TRUE,
+#'                               gmm_model          = "onestep",
+#'                               gmm_effect         = "twoways",
+#'                               gmm_transformation = "ld",
+#'
+#'
+#'                               c_exog_data       = NULL,
+#'                               l_exog_data       = "mortgdp",
+#'                               lags_exog_data    = 2,
+#'                               c_fd_exog_data    = NULL,
+#'                               l_fd_exog_data    = colnames(data_set)[c(4, 6)],
+#'                               lags_fd_exog_data = 1,
+#'
+#'                               confint           = 1.67,
+#'                               hor               = 10)
+#'
+#' # Create and plot irfs
+#' plot_lin_panel <- plot_lin(results_panel)
+#' plot(plot_lin_panel[[1]])
+#'
+#'
 #'
 #' }
 #'
@@ -261,17 +301,20 @@ lp_lin_panel <- function(
   }
 
   # Check panel model type is correct
-  if(!panel_model %in% c("within", "random", "ht", "between", "pooling", "fd")){
-    stop("The type of the panel model has to be 'within', 'random', 'ht', 'between', 'pooling' or 'fd'. See
-         the vignette of the plm package for details." )
+  if(!isTRUE(panel_gmm)){
+    if(!panel_model %in% c("within", "random", "ht", "between", "pooling", "fd")){
+      stop("The type of the panel model has to be 'within', 'random', 'ht', 'between', 'pooling' or 'fd'. See
+           the vignette of the plm package for details." )
+    }
   }
 
   # Check whether the panel effect is correctly specified
-  if(!panel_effect %in% c("individual", "time", "twoways", "nested")){
-    stop("The effect introduced in the model has to be 'individual', 'time', 'twoways' or 'nested'.
-         See the vignette of the plm package for details." )
+  if(!isTRUE(panel_gmm)){
+    if(!panel_effect %in% c("individual", "time", "twoways", "nested")){
+      stop("The effect introduced in the model has to be 'individual', 'time', 'twoways' or 'nested'.
+           See the vignette of the plm package for details." )
+    }
   }
-
 
   # Check whether robust covariance estimator is correctly specified
   if(!is.null(robust_cov)){
@@ -424,7 +467,7 @@ lp_lin_panel <- function(
     if(isTRUE(specs$panel_gmm)){
     gmm_formula <-  stats::as.formula(paste(ols_formula, "|", "plm::lag(",y_reg_name,", 2:99)" , sep=""))
 
-             } else {
+               } else {
 
     # Convert ols string to formula
     plm_formula    <- stats::as.formula(ols_formula)
@@ -443,7 +486,7 @@ lp_lin_panel <- function(
                         stats::na.omit()
                         )
 
-                     }   else    {
+                       }  else  {
 
 
       yx_data        <- suppressMessages(
@@ -464,7 +507,7 @@ lp_lin_panel <- function(
 
 
     # Do panel estimation
-    # Check whether to use GMM
+    # Check whether to use gmm
     if(isTRUE(specs$panel_gmm)){
 
     panel_results  <- plm::pgmm(gmm_formula,
@@ -474,7 +517,7 @@ lp_lin_panel <- function(
                                 effect         = specs$gmm_effect,
                                 transformation = specs$gmm_transformation)
 
-                      } else {
+                         } else {
 
     panel_results  <- plm::plm(formula  = plm_formula,
                                data     = yx_data,
@@ -486,8 +529,8 @@ lp_lin_panel <- function(
     # Estimate confidence bands with robust standard errors?
     if(is.character(specs$robust_cov)){
 
-      # Estimate model robust standard errors a la Driscoll and Kraay (1998)
-      reg_results <-  lmtest::coeftest(panel_results, vcov. = plm::vcovSCC)
+      # Estimate robust covariance matrices
+      reg_results <-  lmtest::coeftest(panel_results, vcov. = get(specs$robust_cov, envir = environment(plm)))
 
       # Estimate irfs and confidence bands
       irf_panel_mean[[1, ii]]   <- reg_results[1, 1]
