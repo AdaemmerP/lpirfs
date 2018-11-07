@@ -4,8 +4,8 @@
 #' used in Auerbach and Gorodnichenko (2012). The time series used in the transition function
 #' can be detrended via the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013).
 #' @param switching_data A numeric vector.
-#' @param specs A \link{list}() with inputs as in \link{lp_nl}().
-#' @return \item{fz}{A numeric vector with values from smooth transition function \eqn{F(z_{t-1})}.}
+#' @param specs A \link{list} with inputs as in \link{lp_nl}().
+#' @return \item{fz}{A numeric vector with values from the smooth transition function \eqn{F(z_{t-1})}.}
 #' @keywords internal
 #' @references
 #' Auerbach, A. J., and  Gorodnichenko Y. (2012). "Measuring the Output Responses to Fiscal Policy."

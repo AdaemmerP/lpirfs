@@ -1,8 +1,8 @@
 #' @name create_panel_data
 #' @title Prepare data sets for linear and nonlinear panel model
-#' @description Function to create panel data linear and nonlinear panel model.
-#' @param specs A list with specifications created in \link{lp_lin_panel} or \link{lp_nl_panel}
-#' @param data_set A data.frame consisting of a panel data set
+#' @description Function to create panel data for linear and nonlinear model.
+#' @param specs A list with specifications created in \link{lp_lin_panel} or \link{lp_nl_panel}.
+#' @param data_set A data.frame consisting of a panel data set.
 #' @import dplyr
 #' @return A list with prepared endogenous and exogenous data as well as the updated list \emph{specs}.
 #' @keywords internal
@@ -101,7 +101,7 @@ create_panel_data <- function(specs, data_set){
                           dplyr::mutate_at(vars(specs$instrum), diff_function) %>%
                           dplyr::rename_at(vars(specs$instrum), funs(paste0("d",.)))
 
-    # Rename instrument to use later in instrument regression
+    # Rename instrument
     specs$instrum  <- colnames(x_instrument)[which(!(colnames(x_instrument) %in%
                                                      c("cross_id", "date_id")))]
 
@@ -189,7 +189,6 @@ create_panel_data <- function(specs, data_set){
     # Specify column names to choose
     specs$l_fd_exog_data <- paste("d", specs$l_fd_exog_data, sep = "")
 
-
     # Make lag sequence
     lags_exog     <- seq(specs$lags_fd_exog_data)
     lag_names     <- paste("lag", lags_exog,  sep = "_")
@@ -218,14 +217,14 @@ create_panel_data <- function(specs, data_set){
 
 
 
-    # Separate shock into two regimes vars(cross_id, date_id, substring(specs$shock,2))
+    # Separate shock into two regimes
     # Choose shock variable
     shock           <- data_set %>%
                        dplyr::select(cross_id, date_id, if_else(specs$diff_shock,
-                                                                substring(specs$shock,2),
+                                                                substring(specs$shock, 2),
                                                                 specs$shock))        %>%
                        dplyr::rename(shock = if_else(specs$diff_shock,
-                                                     substring(specs$shock,2),
+                                                     substring(specs$shock, 2),
                                                      specs$shock))
 
     # Make states of shock variable
@@ -274,18 +273,18 @@ create_panel_data <- function(specs, data_set){
 
   # Return different lists depending on whether the model is linear or nonlinear
   if(!is.null(specs$switching)) {
+
   return(list(x_reg_data     = x_reg_data,
                 y_data       = y_data,
                 x_instrument = x_instrument,
                 fz           = fz,
                 specs        = specs))
 
-
                  } else {
 
-  return(list(x_reg_data   = x_reg_data,
-              y_data       = y_data,
-              x_instrument = x_instrument,
-              specs        = specs))
+  return(list(x_reg_data     = x_reg_data,
+              y_data         = y_data,
+              x_instrument   = x_instrument,
+              specs          = specs))
  }
 }

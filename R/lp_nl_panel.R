@@ -1,6 +1,6 @@
 #' @name lp_nl_panel
 #' @title Compute nonlinear impulse responses for panel data
-#' @description This function estimates nonlinear impulse responses with local projections for panel data either with an
+#' @description This function estimates nonlinear impulse responses with local projections for panel data with an
 #'              identified shock.
 #' @inheritParams lp_lin_panel
 #'
@@ -8,12 +8,12 @@
 #'               be decomposed via the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013) or
 #'               directly plugged into the following smooth transition function:
 #'               \deqn{F_{z_t} = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)}.}
-#'               The data for the two regimes are lagged by defaults: \cr
+#'               The data for the two regimes are lagged by default: \cr
 #'               Regime 1 = (1-\eqn{F(z_{t-1})})*y_{(t-p)}, \cr
 #'               Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.
 #' @param lag_switching Boolean. Use the first lag of the values of the transition function? TRUE (default) or FALSE.
 #' @param gamma Double. Positive number which is used in the transition function.
-#' @param use_hp Boolean. Use HP-filter? TRUE or FALSE.
+#' @param use_hp Boolean. Use HP-filter? TRUE or FALSE (default).
 #' @param lambda Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter (if use_hp = TRUE).
 #'
 #' @author Philipp Adämmer
@@ -106,7 +106,7 @@
 #'                              lrgdp, lcpi, lriy, cay, nmortgdp, rlnarrow)
 #'
 #'
-#'# Use data_sample from 1870 to 2013 BUT exclude WWI and WWII
+#'# Use data_sample from 1870 to 2013 and exclude WWI and WWII
 #'   data_sample <-   seq(1870, 2016)[which(!(seq(1870, 2016) %in%
 #'                               c(seq(1914, 1918),
 #'                                 seq(1939, 1947),
@@ -122,7 +122,7 @@
 #'                                diff_shock        = TRUE,
 #'                                panel_model       = "within",
 #'                                panel_effect      = "individual",
-#'                                robust_cov        = NULL,
+#'                                robust_cov        = "vcovSCC",
 #'
 #'                                switching         = "lrgdp",
 #'                                lag_switching     = TRUE,
@@ -158,13 +158,16 @@
 #'     geom_line(aes(x = year, y = fz)) +
 #'     scale_x_continuous(breaks = seq(1950, 2016, 5))
 #'
-#' ### Use GMM ###
+#'                               ### Use GMM ###
 #'
 #' # Use a much smaller sample to have fewer T than N
 #' data_sample <-   seq(2000, 2012)
 #'
 #'
-#  Estimate panel model with gmm
+#' # Estimate panel model with gmm
+#' # This example gives a warning at each iteration. The data set is not well suited for
+#' # GMM as GMM is based on N-asymptotics and the data set only contains 27 countries
+#'
 #' results_panel <-  lp_nl_panel(data_set           = data_set,
 #'                                data_sample       = data_sample,
 #'                                endog_data        = "mortgdp",
@@ -232,7 +235,7 @@ lp_nl_panel <- function(
 
                       switching         = NULL,
                       lag_switching     = TRUE,
-                      use_hp            = NULL,
+                      use_hp            = FALSE,
                       lambda            = NULL,
                       gamma             = NULL,
 
@@ -263,7 +266,7 @@ lp_nl_panel <- function(
     stop("You have to provide the name of the variable to shock with." )
   }
 
-  # Check panel model type is correct
+  # Check whether panel model type is correct
   if(!panel_model %in% c("within", "random", "ht", "between", "pooling", "fd")){
     stop("The type of the panel model has to be 'within', 'random', 'ht', 'between', 'pooling' or 'fd'. See
          the vignette of the plm package for details." )
@@ -323,15 +326,15 @@ lp_nl_panel <- function(
     stop("Please specify whether to use the HP-filter for the switching variable.")
   }
 
+  # Check whether value for lamda is given
   if(isTRUE(use_hp) & is.null(lambda)){
     stop("Please give a value for lambda for the HP-filter.")
   }
 
-
+  # Check whether value for gamma is given
   if(is.null(gamma)){
-    stop("Please give a value for gamma >0.")
+    stop("Please give a value for gamma > 0.")
   }
-
 
   # Check whether input for gmm is correct
   if(isTRUE(gmm_model) & !gmm_model %in% c("onestep", "twosteps")){
@@ -374,7 +377,6 @@ lp_nl_panel <- function(
   specs$gmm_effect         <- gmm_effect
   specs$gmm_transformation <- gmm_transformation
 
-
   specs$switching          <- switching
   specs$lag_switching      <- lag_switching
   specs$use_hp             <- use_hp
@@ -402,14 +404,14 @@ lp_nl_panel <- function(
 
 
   # Create data
-  lin_panel_data   <- create_panel_data(specs, data_set)
+  nl_panel_data   <- create_panel_data(specs, data_set)
 
   # Extract endogenous and exogenous data
-  specs            <- lin_panel_data$specs
-  x_reg_data       <- lin_panel_data$x_reg_data
-  y_data           <- lin_panel_data$y_data
+  specs            <- nl_panel_data$specs
+  x_reg_data       <- nl_panel_data$x_reg_data
+  y_data           <- nl_panel_data$y_data
 
-  fz               <- lin_panel_data$fz
+  fz               <- nl_panel_data$fz
 
 
   # Prepare matrices to store irfs
@@ -460,7 +462,6 @@ lp_nl_panel <- function(
       )
 
 
-
     # Choose data_sample if specified
     if(!(specs$data_sample[1] == 'Full')){
 
@@ -481,7 +482,7 @@ lp_nl_panel <- function(
                                   effect         = specs$gmm_effect,
                                   transformation = specs$gmm_transformation)
 
-    } else {
+                            } else {
 
       panel_results  <- plm::plm(formula  = plm_formula,
                                  data     = yx_data,

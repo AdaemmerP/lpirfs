@@ -1,7 +1,7 @@
 #' @name lp_lin_panel
 #' @title Compute linear impulse responses with local projections for panel data
 #' @description This function estimates impulse responses with local projections for panel data, either with an
-#'              identified shock or by an instrument variable approach. It further allows to estimate irfs by GMM.
+#'              identified shock or by an instrument variable approach.
 #' @param data_set A \link{data.frame}, containing the panel data set. The first column has to be the
 #'                 variable denoting the cross section. The second column has to be the
 #'                 variable denoting the time section.
@@ -9,33 +9,31 @@
 #'                 the sequence of dates to use. This sequence has to be in the same format as the second column (time-section).
 #' @param endog_data Character. Name of the endogenous variable. You can only provide one endogenous variable at a time.
 #' @param cumul_mult Boolean. Estimate cumulative multipliers? TRUE or FALSE. If TRUE, cumulative responses
-#'                   are estimated via: \deqn{y_(t+h) - y_(t-1)} for h = 0,..., H-1.
+#'                   are estimated via: \deqn{y_(t+h) - y_(t-1)}, where h = 0,..., H-1.
 #' @param shock      Character. The column name of the variable to shock with.
-#' @param diff_shock Boolean. Take first differences of the shock variable? TRUE or FALSE.
+#' @param diff_shock Boolean. Take first differences of the shock variable? TRUE (default) or FALSE.
 #' @param iv_reg     Boolean. Use instrument variable approach? TRUE or FALSE.
 #' @param instrum    NULL or Character. The name(s) of the instrument variable(s) if iv_reg = TRUE.
 #' @param panel_model Character. Type of panel model. The default is "within" (fixed effects). See vignette of the plm package for options and details.
 #' @param panel_effect Character. The effects introduced in the model: "individual", "time", "twoways",
-#' or "nested". See the vignette of the plm package for details.
+#' or "nested". See the vignette of the plm-package for details.
 #'
 #' @param panel_gmm  Boolean. Use GMM for estimation? TRUE or FALSE (default). See vignette of plm package for details.
-#' @param gmm_effect Character. The effects introduced in the model: "twoways" (default) or "individual". See vignette of the plm package for details.
+#' @param gmm_effect Character. The effects introduced in the model: "twoways" (default) or "individual". See vignette of the plm-package for details.
 #' @param gmm_model Character. Either "onestep" (default) or "twosteps". See vignette of the plm package for details.
 #' @param gmm_transformation Character. Either "d" (default) for the "difference GMM" model or "ld" for the "system GMM".
 #' See vignette of the plm package for details.
 #'
 #' @param robust_cov NULL or Character. The character specifies the method how to estimate robust standard errors: "vcovBK", "vcovDC",
-#'                    "vcovG", "vcovHC", "vcovNW", "vcovSCC". See vignette of plm() package for details.
+#'                    "vcovG", "vcovHC", "vcovNW", "vcovSCC". See vignette of plm package for details.
 #' @param c_exog_data NULL or Character. Names of exogenous variables with contemporaneous impact.
 #' @param l_exog_data NULL or Character. Names of exogenous variables with lagged impact.
 #' @param lags_exog_data Integer. Lag length for the exogenous variables with lagged impact.
 #' @param c_fd_exog_data NULL or Character. Names of exogenous variables with contemporaneous impact of first differences.
 #' @param l_fd_exog_data NULL or Character. Names of exogenous variables with lagged impact of first differences.
 #' @param lags_fd_exog_data NaN or Integer. Number of lags for variables with impact of first differences.
-#' @param confint Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 9\% = 1.96.
+#' @param confint Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.
 #' @param hor Integer. Number of horizons for impulse responses.
-#' @param num_cores NULL or Integer. The number of cores to use for the estimation. If NULL, the function will
-#'                 use the maximum number of cores minus one.
 #'
 #' @author Philipp Adämmer
 #'
@@ -121,14 +119,11 @@
 #'                mutate(tnmort   = tloans - tmort)               %>%
 #'                mutate(nmortgdp = 100*(tnmort/gdp))             %>%
 #'
-#'              # Prepare instrument
-#'                mutate(lnarrow  = log(narrowm))                 %>%
-#'                mutate(rlnarrow = lnarrow - lcpi)               %>%
 #'                dplyr::select(country, year, mortgdp, stir, ltrate, lhpy,
 #'                              lrgdp, lcpi, lriy, cay, nmortgdp, rlnarrow)
 #'
 #'
-#'# Use data_sample from 1870 to 2013 BUT exclude WWI and WWII
+#'# Use data_sample from 1870 to 2013 and exclude WWI and WWII
 #'   data_sample <-   seq(1870, 2016)[which(!(seq(1870, 2016) %in%
 #'                               c(seq(1914, 1918),
 #'                                 seq(1939, 1947),
@@ -146,7 +141,7 @@
 #'                                instrum           = NULL,
 #'                                panel_model       = "within",
 #'                                panel_effect      = "individual",
-#'                                robust_cov        = NULL,
+#'                                robust_cov        = "vcovSCC",
 #'
 #'                                c_exog_data       = "cay",
 #'                                l_exog_data       = NULL,
@@ -163,7 +158,7 @@
 #'  plot(plot_lin_panel[[1]])
 #'
 #'
-#'# Create and add instrument to data_set
+#'# Simulate and add instrument to data_set
 #'  set.seed(123)
 #'  data_set   <- data_set %>%
 #'                group_by(country) %>%
@@ -171,7 +166,7 @@
 #'                ungroup()
 #'
 #'
-#' # Estimate panel model with iv
+#' # Estimate panel model with iv approach
 #' results_panel <-  lp_lin_panel(data_set          = data_set,
 #'                                data_sample       = data_sample,
 #'                                endog_data        = "mortgdp",
@@ -183,7 +178,7 @@
 #'                                instrum           = "instrument",
 #'                                panel_model       = "within",
 #'                                panel_effect      = "individual",
-#'                                robust_cov        = NULL,
+#'                                robust_cov        = "vcovSCC",
 #'
 #'                                c_exog_data       = "cay",
 #'                                l_exog_data       = NULL,
@@ -199,13 +194,16 @@
 #'  plot_lin_panel <- plot_lin(results_panel)
 #'  plot(plot_lin_panel[[1]])
 #'
-#' ### Use GMM ###
+#'                                  ### Use GMM ###
 #'
 #' # Use a much smaller sample to have fewer T than N
 #' data_sample <-   seq(2000, 2012)
 #'
 #' # Estimate panel model with gmm
-#' results_panel <-  lp_lin_panel(data_set          = data_set,
+#' # This example gives a warning at each iteration. The data set is not well suited for
+#' # GMM as GMM is based on N-asymptotics and the data set only contains 27 countries
+#'
+#' results_panel <-  lp_lin_panel(data_set         = data_set,
 #'                               data_sample       = data_sample,
 #'                               endog_data        = "mortgdp",
 #'                               cumul_mult        = TRUE,
@@ -268,8 +266,7 @@ lp_lin_panel <- function(
                     l_fd_exog_data    = NULL,
                     lags_fd_exog_data = NaN,
                     confint           = NULL,
-                    hor               = NULL,
-                    num_cores         = NULL){
+                    hor               = NULL){
 
 
  # Check whether column names are named properly
@@ -300,7 +297,7 @@ lp_lin_panel <- function(
     stop("You have to provide the name of the instrument." )
   }
 
-  # Check panel model type is correct
+  # Check whether panel model type is correct
   if(!isTRUE(panel_gmm)){
     if(!panel_model %in% c("within", "random", "ht", "between", "pooling", "fd")){
       stop("The type of the panel model has to be 'within', 'random', 'ht', 'between', 'pooling' or 'fd'. See
@@ -414,7 +411,7 @@ lp_lin_panel <- function(
   specs$endog               <- 1        # Set the number of endogenous variables for plot function
   specs$column_names        <- endog_data
 
-  specs$is_nl               <- FALSE    # For create panel data function
+  specs$is_nl               <- FALSE    # Indicator to use in 'create_panel_data'
 
 
   #--- Create data
@@ -444,7 +441,7 @@ lp_lin_panel <- function(
   x_reg_names    <- names(x_reg_data)
 
 
-  # Make formula for normal panel estimation without iv
+  # Make formula for normal panel estimation (no iv)
   ols_formula    <- paste(y_reg_name, "~",
                           paste(x_reg_names[!(x_reg_names %in% c("cross_id", "date_id"))], collapse = " + "))
 

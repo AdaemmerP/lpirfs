@@ -12,8 +12,7 @@ lp_lin_panel(data_set = NULL, data_sample = "Full",
   gmm_effect = "twoways", gmm_transformation = "d",
   c_exog_data = NULL, l_exog_data = NULL, lags_exog_data = NaN,
   c_fd_exog_data = NULL, l_fd_exog_data = NULL,
-  lags_fd_exog_data = NaN, confint = NULL, hor = NULL,
-  num_cores = NULL)
+  lags_fd_exog_data = NaN, confint = NULL, hor = NULL)
 }
 \arguments{
 \item{data_set}{A \link{data.frame}, containing the panel data set. The first column has to be the
@@ -26,11 +25,11 @@ the sequence of dates to use. This sequence has to be in the same format as the 
 \item{endog_data}{Character. Name of the endogenous variable. You can only provide one endogenous variable at a time.}
 
 \item{cumul_mult}{Boolean. Estimate cumulative multipliers? TRUE or FALSE. If TRUE, cumulative responses
-are estimated via: \deqn{y_(t+h) - y_(t-1)} for h = 0,..., H-1.}
+are estimated via: \deqn{y_(t+h) - y_(t-1)}, where h = 0,..., H-1.}
 
 \item{shock}{Character. The column name of the variable to shock with.}
 
-\item{diff_shock}{Boolean. Take first differences of the shock variable? TRUE or FALSE.}
+\item{diff_shock}{Boolean. Take first differences of the shock variable? TRUE (default) or FALSE.}
 
 \item{iv_reg}{Boolean. Use instrument variable approach? TRUE or FALSE.}
 
@@ -39,16 +38,16 @@ are estimated via: \deqn{y_(t+h) - y_(t-1)} for h = 0,..., H-1.}
 \item{panel_model}{Character. Type of panel model. The default is "within" (fixed effects). See vignette of the plm package for options and details.}
 
 \item{panel_effect}{Character. The effects introduced in the model: "individual", "time", "twoways",
-or "nested". See the vignette of the plm package for details.}
+or "nested". See the vignette of the plm-package for details.}
 
 \item{robust_cov}{NULL or Character. The character specifies the method how to estimate robust standard errors: "vcovBK", "vcovDC",
-"vcovG", "vcovHC", "vcovNW", "vcovSCC". See vignette of plm() package for details.}
+"vcovG", "vcovHC", "vcovNW", "vcovSCC". See vignette of plm package for details.}
 
 \item{panel_gmm}{Boolean. Use GMM for estimation? TRUE or FALSE (default). See vignette of plm package for details.}
 
 \item{gmm_model}{Character. Either "onestep" (default) or "twosteps". See vignette of the plm package for details.}
 
-\item{gmm_effect}{Character. The effects introduced in the model: "twoways" (default) or "individual". See vignette of the plm package for details.}
+\item{gmm_effect}{Character. The effects introduced in the model: "twoways" (default) or "individual". See vignette of the plm-package for details.}
 
 \item{gmm_transformation}{Character. Either "d" (default) for the "difference GMM" model or "ld" for the "system GMM".
 See vignette of the plm package for details.}
@@ -65,12 +64,9 @@ See vignette of the plm package for details.}
 
 \item{lags_fd_exog_data}{NaN or Integer. Number of lags for variables with impact of first differences.}
 
-\item{confint}{Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 9\% = 1.96.}
+\item{confint}{Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.}
 
 \item{hor}{Integer. Number of horizons for impulse responses.}
-
-\item{num_cores}{NULL or Integer. The number of cores to use for the estimation. If NULL, the function will
-use the maximum number of cores minus one.}
 }
 \value{
 A list containing:
@@ -92,7 +88,7 @@ A list containing:
 }
 \description{
 This function estimates impulse responses with local projections for panel data, either with an
-             identified shock or by an instrument variable approach. It further allows to estimate irfs by GMM.
+             identified shock or by an instrument variable approach.
 }
 \examples{
 \donttest{
@@ -140,14 +136,11 @@ This function estimates impulse responses with local projections for panel data,
                mutate(tnmort   = tloans - tmort)               \%>\%
                mutate(nmortgdp = 100*(tnmort/gdp))             \%>\%
 
-             # Prepare instrument
-               mutate(lnarrow  = log(narrowm))                 \%>\%
-               mutate(rlnarrow = lnarrow - lcpi)               \%>\%
                dplyr::select(country, year, mortgdp, stir, ltrate, lhpy,
                              lrgdp, lcpi, lriy, cay, nmortgdp, rlnarrow)
 
 
-# Use data_sample from 1870 to 2013 BUT exclude WWI and WWII
+# Use data_sample from 1870 to 2013 and exclude WWI and WWII
   data_sample <-   seq(1870, 2016)[which(!(seq(1870, 2016) \%in\%
                               c(seq(1914, 1918),
                                 seq(1939, 1947),
@@ -165,7 +158,7 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
                                instrum           = NULL,
                                panel_model       = "within",
                                panel_effect      = "individual",
-                               robust_cov        = NULL,
+                               robust_cov        = "vcovSCC",
 
                                c_exog_data       = "cay",
                                l_exog_data       = NULL,
@@ -182,7 +175,7 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
  plot(plot_lin_panel[[1]])
 
 
-# Create and add instrument to data_set
+# Simulate and add instrument to data_set
  set.seed(123)
  data_set   <- data_set \%>\%
                group_by(country) \%>\%
@@ -190,7 +183,7 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
                ungroup()
 
 
-# Estimate panel model with iv
+# Estimate panel model with iv approach
 results_panel <-  lp_lin_panel(data_set          = data_set,
                                data_sample       = data_sample,
                                endog_data        = "mortgdp",
@@ -202,7 +195,7 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
                                instrum           = "instrument",
                                panel_model       = "within",
                                panel_effect      = "individual",
-                               robust_cov        = NULL,
+                               robust_cov        = "vcovSCC",
 
                                c_exog_data       = "cay",
                                l_exog_data       = NULL,
@@ -218,13 +211,16 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
  plot_lin_panel <- plot_lin(results_panel)
  plot(plot_lin_panel[[1]])
 
-### Use GMM ###
+                                 ### Use GMM ###
 
 # Use a much smaller sample to have fewer T than N
 data_sample <-   seq(2000, 2012)
 
 # Estimate panel model with gmm
-results_panel <-  lp_lin_panel(data_set          = data_set,
+# This example gives a warning at each iteration. The data set is not well suited for
+# GMM as GMM is based on N-asymptotics and the data set only contains 27 countries
+
+results_panel <-  lp_lin_panel(data_set         = data_set,
                               data_sample       = data_sample,
                               endog_data        = "mortgdp",
                               cumul_mult        = TRUE,
@@ -237,9 +233,9 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
                               panel_effect      = NULL,
                               robust_cov        = NULL,
 
-                              panel_gmm         = TRUE,
-                              gmm_model         = "onestep",
-                              gmm_effect        = "twoways",
+                              panel_gmm          = TRUE,
+                              gmm_model          = "onestep",
+                              gmm_effect         = "twoways",
                               gmm_transformation = "ld",
 
 

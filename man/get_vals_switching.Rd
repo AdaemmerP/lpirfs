@@ -9,10 +9,10 @@ get_vals_switching(switching_data, specs)
 \arguments{
 \item{switching_data}{A numeric vector.}
 
-\item{specs}{A \link{list}() with inputs as in \link{lp_nl}().}
+\item{specs}{A \link{list} with inputs as in \link{lp_nl}().}
 }
 \value{
-\item{fz}{A numeric vector with values from smooth transition function \eqn{F(z_{t-1})}.}
+\item{fz}{A numeric vector with values from the smooth transition function \eqn{F(z_{t-1})}.}
 }
 \description{
 Computes transition values by using a smooth transition function as

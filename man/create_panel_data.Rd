@@ -7,14 +7,14 @@
 create_panel_data(specs, data_set)
 }
 \arguments{
-\item{specs}{A list with specifications created in \link{lp_lin_panel} or \link{lp_nl_panel}}
+\item{specs}{A list with specifications created in \link{lp_lin_panel} or \link{lp_nl_panel}.}
 
-\item{data_set}{A data.frame consisting of a panel data set}
+\item{data_set}{A data.frame consisting of a panel data set.}
 }
 \value{
 A list with prepared endogenous and exogenous data as well as the updated list \emph{specs}.
 }
 \description{
-Function to create panel data linear and nonlinear panel model.
+Function to create panel data for linear and nonlinear model.
 }
 \keyword{internal}
