@@ -215,8 +215,6 @@ create_panel_data <- function(specs, data_set){
 
     fz   <- get_vals_switching(data_set, specs)
 
-
-
     # Separate shock into two regimes
     # Choose shock variable
     shock           <- data_set %>%
@@ -227,6 +225,14 @@ create_panel_data <- function(specs, data_set){
                                                      substring(specs$shock, 2),
                                                      specs$shock))
 
+    # Take first difference of shock?
+    if(isTRUE(specs$diff_shock)){
+
+    shock          <- shock %>%
+                       dplyr::mutate_at(vars(shock), diff_function)
+    }
+
+
     # Make states of shock variable
     shock_s1        <- shock %>%
                         dplyr::mutate_at(vars(-cross_id, -date_id), funs(shock_s1 = .*(1 - fz)))  %>%
@@ -236,10 +242,9 @@ create_panel_data <- function(specs, data_set){
                         dplyr::mutate_at(vars(-cross_id, -date_id), funs(shock_s2 = .*fz))        %>%
                         dplyr::select(-shock)
 
-    # Exclude linear shock variable from x_reg_data
-    test            <- x_reg_data %>%
+    # Exclude shock variable from 'x_reg_data'
+    x_reg_data      <- x_reg_data %>%
                         dplyr::select(-c(specs$shock))
-
 
     # Separate exogenous data
     x_linear_names  <- colnames(x_reg_data)[!colnames(x_reg_data) %in% c("cross_id", "date_id")]
