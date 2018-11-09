@@ -24,7 +24,7 @@ Load library:
 
 Load data from package to estimate a simple, new-Keynesian, closed-economy 
 model. These data are used by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) in chapter IV, p. 174. 
-See the data's help file in the package or the [paper](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) for a detailed description on the data. 
+See the data's help file in the package or the [paper](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) for a detailed description of the data. 
 ```{r, message = FALSE }
   endog_data <- interest_rules_var_data
 ```
@@ -34,18 +34,12 @@ a data.frame.
 ```{r, message = FALSE }  
 results_lin <- lp_lin(endog_data, 
                            lags_endog_lin = 4,    # Number of lags for endogenous data
-                           lags_criterion = NaN,  # Lag length criterion (AICc, AIC or BIC) or NaN
-                           max_lags       = NaN,  # Maximum number of lags or NaN
-                           exog_data      = NULL, # Exogenous data
-                           lags_exog      = NULL, # Lags for exogenous data
-                           contemp_data   = NULL, # Exogenous data with contemporaneous impact
                            trend          = 0,    # 0 = no trend, 1 = trend, 2 = trend & trend^2    
                            shock_type     = 1,    # 0 = standard deviation shock, 1 = unit shock
                            confint        = 1.96, # Width of confidence bands: 
                                                   # 1 = 68%, 1.67 = 90%, 1.96 = 95%
-                           hor            = 24,   # Number of horizons for impulse responses
-                           num_cores      = NULL) # Number of cores to use. When NULL, the number of cores is chosen 
-                                                  # automatically    
+                           hor            = 24)   # Number of cores to use. When NULL, the number of cores 
+                                                  # is chosen automatically    
 ```
 
 Create plots for impulse responses of linear model with function *plot_lin*.
@@ -54,8 +48,8 @@ Create plots for impulse responses of linear model with function *plot_lin*.
 ```
 Display single impulse responses: 
 
-- The first plot shows the response of the first variable (GDP_gap) to a shock in the first variable (GDP_gap). 
-- The second plot shows the response of the first variable (GDP_gap) to a shock in the second variable (inflation). 
+- The first plot shows the response of the first variable (GDP_gap) to a shock of the first variable (GDP_gap). 
+- The second plot shows the response of the first variable (GDP_gap) to a shock of the second variable (inflation). 
 - ...
 ```{r, fig.height = 2.5, fig.width = 3, fig.align = "center", message = FALSE }
   linear_plots[[1]]
@@ -78,7 +72,7 @@ Display all plots (compare with Figure 5 in Jordà (2005), p. 176):
 
 Load data set from package to estimate a nonlinear, new-Keynesian, closed-economy 
 model. These data are used by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) in chapter IV, p.176. 
-See the data's help file or the [paper](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) for a detailed description on the data. 
+See the data's help file or the [paper](https://www.aeaweb.org/articles?id=10.1257/0002828053828518) for a detailed description of the data. 
 ```{r, message = FALSE }
   endog_data <- interest_rules_var_data
 ```
@@ -101,8 +95,7 @@ and
 
  IMPORTANT: The index of $z$ is set to *t − 1* in order to avoid contemporaneous feedback (see 
 [Auerbach and Gorodnichenko 2012](https://www.aeaweb.org/articles?id=10.1257/pol.4.2.1)). 
-The lag is automatically created in the package function *create_nl_data*. 
-If you do not want the exogenous variables to be multiplied with lagged values of $F({z_t})$, you have to provide the switching variable with a lead of one.
+You can suppress this option, however, with 'lag_switching = FALSE'.
 
 Nonlinear impulse responses are computed as in [Ahmed and Cassou (2016)](https://www.sciencedirect.com/science/article/pii/S0164070416300490). 
 First, a reduced VAR is estimated to obtain the covariance matrix of the residuals $\Sigma$. The Cholesky decomposition is then applied to obtain the shock matrix with columns denoted by $d_j$. IRFs for both regimes are estimated via:
@@ -127,19 +120,14 @@ Estimate nonlinear impulse responses with package function *lp_nl*. Note that th
 to be a data.frame.
 ```{r, message = FALSE }  
 results_nl <- lp_nl(endog_data, 
-                        lags_endog_lin = 4,   # Number of lags for (reduced) linear VAR to obtain shock matrix. 
-                        lags_endog_nl  = 4,   # Number of lags for nonlinear model. 
-                        lags_criterion = NaN,  # Lag length criterion (AICc, AIC or BIC) or NaN.
-                        max_lags       = NaN,  # If lags_criterion is chosen, maximum number of lags. 
-                        exog_data      = NULL, # Exogenous data
-                        lags_exog      = NULL, # Lags for exogenous data
-                        contemp_data   = NULL, # Exogenous data with contemporaneous impact
-                        trend          = 1,   # 0 = no trend, 1 = trend, 2 = trend & trend^2.
-                        shock_type     = 0,   # 0 = standard deviation shock, 1 = unit shock.
+                        lags_endog_lin = 4,    # Number of lags for (reduced) linear VAR to obtain shock matrix. 
+                        lags_endog_nl  = 4,    # Number of lags for nonlinear model. 
+                        trend          = 1,    # 0 = no trend, 1 = trend, 2 = trend & trend^2.
+                        shock_type     = 0,    # 0 = standard deviation shock, 1 = unit shock.
                         confint        = 1.67, # Width of confidence bands: 
                                                # 1 = 68%, 1.67 = 90%, 1.96 = 95%.
-                        hor            = 24,   # Length of horizon.
-                        switching      = endog_data$Infl, # Inflation rate.
+                        hor            = 24,   # Length of irf horizons.
+                        switching      = endog_data$Infl, # Use inflation rate as switching variable.
                         use_hp         = TRUE, # Use HP-filter? TRUE or FALSE.   
                         lambda         = 1600, # Ravn and Uhlig (2002):
                                                # Anuual data    = 6.25
@@ -150,7 +138,7 @@ results_nl <- lp_nl(endog_data,
                                                # automatically    
 ```
 
-Save values from transition function and list which contains data information. 
+Save values from transition function and list which contains further information on the data for plot function. 
 ```{r, message = FALSE } 
   fz      <- results_nl$fz
   specs   <- results_nl$specs
@@ -162,22 +150,23 @@ Plot output gap.
   dates   <- seq(as.Date("1955/12/1"), as.Date("2003/1/1"), by = "quarter")
   data_df <- data.frame(x = dates, fz = fz, switch_var = specs$switching[(specs$lags_endog_nl+1):length(endog_data$FF)])
 
-# Plot  
-  ggplot(data = data_df) +
+# Plot inflation rate  
+  ggplot(data = data_df)                  +
     geom_line(aes(x = x, y = switch_var)) +
-    theme_bw() +
-    ylab("") +
-    xlab("Date") +
+    theme_bw()                            +
+    ylab("")                              +
+    xlab("Date")                          +
     scale_x_date(date_breaks = "5 year",  date_labels = "%Y")
 ```
 
-Plot transition function.
+
 ```{r, fig.height = 4, fig.width = 6, fig.align = "center", message = FALSE }  
-  ggplot(data = data_df) +
+# Plot transition function
+  ggplot(data = data_df)          +
     geom_line(aes(x = x, y = fz)) +
-    theme_bw() +
-    ylab("") +
-    xlab("Date") +
+    theme_bw()                    +
+    ylab("")                      +
+    xlab("Date")                  +
     scale_x_date(date_breaks = "5 year",  date_labels = "%Y")
 ```
 Note that values close to one correspond to periods of low inflation rates (regime 2) and values close
@@ -195,7 +184,7 @@ Show single impulse responses for each regime:
 - The second plot shows the response of the first variable (GDP_gap) to a shock in the second variable (Inflation) in regime 2. 
 ```{r, fig.height = 2.5, fig.width = 3, fig.align = "center", message = FALSE }
 # Load packages
-# The package does not depend on those packages so they have to be installed
+# lpirfs does not depend on those packages so they have to be additionally installed
   library(ggpubr)
   library(gridExtra)
 
@@ -224,8 +213,9 @@ by [Ramey and Zubairy (2018)](https://www.journals.uchicago.edu/doi/10.1086/6962
 They use local projections to re-evaluate findings in [Auerbach and Gorodnichenko (2012)](https://www.aeaweb.org/articles?id=10.1257/pol.4.2.1)
 (AG-12).
 
-Load data which is included in the package and taken from [RZ-18](https://www.journals.uchicago.edu/doi/10.1086/696277).
+
 ```{r, message = FALSE }
+# Load data which is taken from https://www.journals.uchicago.edu/doi/10.1086/696277
  ag_data           <- ag_data
  sample_start      <- 8
  sample_end        <- dim(ag_data)[1]
@@ -235,10 +225,8 @@ Load data which is included in the package and taken from [RZ-18](https://www.jo
  
 # Shock variable 
  shock             <- endog_data[, 1]
-```
-
-Estimate model with constant and 4 lags.
-```{r, message = FALSE }
+ 
+# Estimate model with constant and 4 lags
  results_lin_iv <- lp_lin_iv(endog_data,
                          shock          = shock,
                          lags_endog_lin = 4,
@@ -252,11 +240,10 @@ Estimate model with constant and 4 lags.
                          hor            = 20,
                          num_cores      = NULL)
 
-```
-Make and save plots
-```{r, message = FALSE }
+# Make and save plots
  iv_lin_plots    <- plot_lin(results_lin_iv)
 ```
+
 - The first element of 'iv_lin_plots' shows the response of the first
   variable (Gov) to the identified shock (Gov).
 - The second element of 'iv_lin_plots' shows the response of the second
@@ -295,15 +282,15 @@ iv_lin_plots[[3]]
 
 ## Example: Nonlinear impulse responses with identified shock
 
-Load data
 ```{r, message = FALSE }
+# Load data
  ag_data           <- ag_data
  sample_start      <- 7
  sample_end        <- dim(ag_data)[1]
  endog_data        <- ag_data[sample_start:sample_end, 3:5]
 ```
 
-The shock variable ('instrument') is created by RZ-18 and available as supplementary data
+The shock variable is created by RZ-18 and available as supplementary data
 to their paper. The government spending shock is included in the package.
 ```{r, message = FALSE }
  shock            <- as.data.frame(ag_data$Gov_shock_mean[sample_start:sample_end])
@@ -322,9 +309,8 @@ They adjust it to have suffiently long recession periods.
 ```
 
 
-
-Estimate nonlinear model 
 ```{r, message = FALSE }
+# Estimate nonlinear model 
  results_nl_iv <- lp_nl_iv(endog_data,
                            lags_endog_nl     = 3,
                            shock             = shock,
@@ -372,19 +358,23 @@ Make and save plots
  s2_plots    <- sapply(plots_nl_iv$gg_s2, ggplotGrob)
 ```
 
-This plot corresponds to the red dotted line in the lower panel (right plot) in Figure 12 in the Supplementary Appendix of RZ-18.
-It shows the response of GDP to a shock in government spending equal to 1% of GDP during periods of economic expansions.
-It is the same data, identification scheme and threshold definition as in AG-12 (see RZ-18). 
+
 ```{r, fig.height = 2.5, fig.width = 3, fig.align = "center", message = FALSE }
+# Show plot
  plot(plots_nl_iv$gg_s1[[3]])
 ```
+This plot corresponds to the red dotted line in the lower panel (right plot) of Figure 12 in the Supplementary Appendix of RZ-18.
+It shows the response of GDP to a shock in government spending equal to 1% of GDP during periods of economic expansions.
+It is the same data, identification scheme and threshold definition as in AG-12 (see RZ-18). ```
 
-This plot corresponds to the blue dotted line in the lower panel (right plot) in Figure 12 in the Supplementary Appendix of RZ-18.
-It shows the response of GDP to a shock in government spending equal to 1% of GDP during periods of economic slack.
-It is the same data, identification scheme and threshold definition as in AG-12 (see RZ-18). 
+
 ```{r, fig.height = 2.5, fig.width = 3, fig.align = "center", message = FALSE }
+# Show plot
  plot(plots_nl_iv$gg_s2[[3]])
 ```
+This plot corresponds to the blue dotted line in the lower panel (right plot) of Figure 12 in the Supplementary Appendix of RZ-18.
+It shows the response of GDP to a shock in government spending equal to 1% of GDP during periods of economic slack.
+It is the same data, identification scheme and threshold definition as in AG-12 (see RZ-18). 
 
 ## Example: Linear impulse responses via 2SLS
 
@@ -433,6 +423,230 @@ It is the same data, identification scheme and threshold definition as in AG-12 
  iv_lin_plots[[3]]
 ```
 
+### Example: Linear impulse responses for panel-data
+```{r, message = FALSE }
+
+
+# This example is based on the STATA code 'LPs_basic_doall.do', provided on
+# Òscar Jordà's website (https://sites.google.com/site/oscarjorda/home/local-projections)
+# It estimates impulse reponses of the ratio of (mortgage lending/GDP) to a
+# +1% change in the short term interest rate
+
+# Load libraries to download and read excel file from the website
+ library(lpirfs)
+ library(httr)
+ library(readxl)
+ library(dplyr)
+
+# Retrieve the JST Macrohistory Database
+ url_jst <-"http://www.macrohistory.net/JST/JSTdatasetR3.xlsx"
+ GET(url_jst, write_disk(jst_link <- tempfile(fileext = ".xlsx")))
+ jst_data <- read_excel(jst_link, 2L)
+
+# Swap the first two columns so that 'country' is the first (cross section) and 'year' the
+# second (time section) column
+ jst_data <- jst_data %>%
+             dplyr::select(country, year, everything())
+
+# Prepare variables. This is based on the 'data.do' file
+  data_set <- jst_data %>%
+               mutate(stir     = stir)                         %>%
+               mutate(mortgdp  = 100*(tmort/gdp))              %>%
+               mutate(hpreal   = hpnom/cpi)                    %>%
+               group_by(country)                               %>%
+               mutate(hpreal   = hpreal/hpreal[year==1990][1]) %>%
+               mutate(lhpreal  = log(hpreal))                  %>%
+
+               mutate(lhpy     = lhpreal - log(rgdppc))        %>%
+               mutate(lhpy     = lhpy - lhpy[year == 1990][1]) %>%
+               mutate(lhpreal  = 100*lhpreal)                  %>%
+               mutate(lhpy     = 100*lhpy)                     %>%
+               ungroup()                                       %>%
+
+               mutate(lrgdp    = 100*log(rgdppc))              %>%
+               mutate(lcpi     = 100*log(cpi)) 		            %>%
+               mutate(lriy     = 100*log(iy*rgdppc))           %>%
+               mutate(cay      = 100*(ca/gdp))                 %>%
+               mutate(tnmort   = tloans - tmort)               %>%
+               mutate(nmortgdp = 100*(tnmort/gdp))             %>%
+
+               dplyr::select(country, year, mortgdp, stir, ltrate, lhpy,
+                             lrgdp, lcpi, lriy, cay, nmortgdp)
+
+
+# Use data_sample from 1870 to 2013 and exclude WWI and WWII
+  data_sample <-   seq(1870, 2016)[which(!(seq(1870, 2016) %in%
+                              c(seq(1914, 1918),
+                                seq(1939, 1947),
+                                seq(2014, 2016))))]
+
+# Estimate panel model
+results_panel <-  lp_lin_panel(data_set          = data_set,
+                               data_sample       = data_sample,
+                               endog_data        = "mortgdp",
+                               cumul_mult        = TRUE,
+
+                               shock             = "stir",
+                               diff_shock        = TRUE,
+                               iv_reg            = FALSE,
+                               instrum           = NULL,
+                               panel_model       = "within",
+                               panel_effect      = "individual",
+                               robust_cov        = NULL,
+
+                               c_exog_data       = "cay",
+                               l_exog_data       = NULL,
+                               lags_exog_data    = NULL,
+                               c_fd_exog_data    = colnames(data_set)[c(seq(4,9),11)],
+                               l_fd_exog_data    = colnames(data_set)[c(seq(3,9),11)],
+                               lags_fd_exog_data = 2,
+
+                               confint           = 1.67,
+                               hor               = 10)
+```
+
+```{r, fig.height = 2.5, fig.width = 3, fig.align = "center", message = FALSE }
+# Create and plot irfs
+ plot_lin_panel <- plot_lin(results_panel)
+ plot(plot_lin_panel[[1]])
+```
+
+
+```{r, message = FALSE}
+# Create and add instrument to data_set
+ set.seed(123)
+ data_set   <- data_set %>%
+               group_by(country) %>%
+               mutate(instrument = 0.8*stir + rnorm(length(stir), 0, sd(na.omit(stir))/10)) %>%
+               ungroup()
+
+
+# Estimate panel model with iv
+results_panel <-  lp_lin_panel(data_set          = data_set,
+                               data_sample       = data_sample,
+                               endog_data        = "mortgdp",
+                               cumul_mult        = TRUE,
+
+                               shock             = "stir",
+                               diff_shock        = TRUE,
+                               iv_reg            = TRUE,
+                               instrum           = "instrument",
+                               panel_model       = "within",
+                               panel_effect      = "individual",
+                               robust_cov        = NULL,
+
+                               c_exog_data       = "cay",
+                               l_exog_data       = NULL,
+                               lags_exog_data    = NULL,
+                               c_fd_exog_data    = colnames(data_set)[c(seq(4,9),11)],
+                               l_fd_exog_data    = colnames(data_set)[c(seq(3,9),11)],
+                               lags_fd_exog_data = 2,
+
+                               confint           = 1.67,
+                               hor               = 10)
+```
+
+```{r, fig.height = 2.5, fig.width = 3, fig.align = "center", message = FALSE }
+# Create and plot irfs
+ plot_lin_panel <- plot_lin(results_panel)
+ plot(plot_lin_panel[[1]])
+```
+
+Use GMM to estimate panel model.
+```{r, message = FALSE, warning = FALSE}
+# Use a much smaller sample to have fewer T than N
+data_sample <-   seq(2000, 2012)
+
+
+# Running this example gives a warning at each iteration as the data set is not well suited for
+# GMM. GMM is based on N-asymptotics and the data set only contains 27 countries
+results_panel <-  lp_lin_panel(data_set         = data_set,
+                              data_sample       = data_sample,
+                              endog_data        = "mortgdp",
+                              cumul_mult        = TRUE,
+
+                              shock             = "stir",
+                              diff_shock        = TRUE,
+                              iv_reg            = FALSE,
+                              instrum           = NULL,
+                              panel_model       = NULL,
+                              panel_effect      = NULL,
+                              robust_cov        = NULL,
+
+                              panel_gmm          = TRUE,
+                              gmm_model          = "onestep",
+                              gmm_effect         = "twoways",
+                              gmm_transformation = "ld",
+
+
+                              c_exog_data       = NULL,
+                              l_exog_data       = "mortgdp",
+                              lags_exog_data    = 2,
+                              c_fd_exog_data    = NULL,
+                              l_fd_exog_data    = colnames(data_set)[c(4, 6)],
+                              lags_fd_exog_data = 1,
+
+                              confint           = 1.67,
+                              hor               = 10)
+
+
+```
+
+```{r, fig.height = 2.5, fig.width = 3, fig.align = "center", message = FALSE }
+# Create and plot irfs
+plot_lin_panel <- plot_lin(results_panel)
+plot(plot_lin_panel[[1]])
+```
+
+### Example: Nonlinear impulse responses for panel-data
+```{r, message = FALSE }
+
+# Use data_sample from 1870 to 2013 and exclude WWI and WWII
+data_sample <-   seq(1870, 2016)[which(!(seq(1870, 2016) %in%
+                                           c(seq(1914, 1918),
+                                             seq(1939, 1947),
+                                             seq(2014, 2016))))]
+
+# Estimate panel model
+results_panel <-  lp_nl_panel(data_set           = data_set,
+                               data_sample       = data_sample,
+                               endog_data        = "mortgdp",
+                               cumul_mult        = TRUE,
+
+                               shock             = "stir",
+                               diff_shock        = TRUE,
+                               panel_model       = "within",
+                               panel_effect      = "individual",
+                               robust_cov        = "vcovSCC",
+
+                               switching         = "lrgdp",
+                               lag_switching     = TRUE,
+                               use_hp            = TRUE,
+                               lambda            = 6.25,
+                               gamma             = 10,
+
+                               c_exog_data       = "cay",
+                               l_exog_data       = NULL,
+                               lags_exog_data    = NULL,
+                               c_fd_exog_data    = colnames(data_set)[c(seq(4,9),11)],
+                               l_fd_exog_data    = colnames(data_set)[c(seq(3,9),11)],
+                               lags_fd_exog_data = 2,
+
+                               confint           = 1.67,
+                               hor               = 10)
+```
+
+```{r, fig.height = 2.5, fig.width = 6, fig.align = "center", message = FALSE }
+# Create irf plots
+ nl_plots <- plot_nl(results_panel)
+
+ # Compare states
+ library(ggpubr)
+ library(gridExtra)
+ combine_plots <- list(nl_plots$gg_s1[[1]], nl_plots$gg_s2[[1]])
+ marrangeGrob(combine_plots, nrow = 1, ncol = 2, top = NULL)
+```
+
 ## References
 * Ahmed, M.I. , Cassou, S.C. (2016) "Does Consumer Confidence Affect Durable Goods Spending
 During Bad and Good Economic Times Equally?" *Journal of Macroeconomics*, 50(1): 86-97.
@@ -441,6 +655,9 @@ During Bad and Good Economic Times Equally?" *Journal of Macroeconomics*, 50(1):
 * Auerbach, A. J., and Gorodnichenko Y. (2012). "Measuring the Output Responses to Fiscal Policy." *American Economic Journal: Economic Policy*, 4    (2):   1-27. [doi:10.1257/pol.4.2.1](https://www.aeaweb.org/articles?id=10.1257/pol.4.2.1)
 
 *  Auerbach, A. J., and Gorodnichenko Y. (2013). "Fiscal Multipliers in Recession and Expansion" *NBER Working Paper Series*. Nr 17447.  [National Bureau of Economic Research](http://www.nber.org/papers/w17447.pdf)
+
+* Croissant, Y., Millo, G. (2008). “Panel Data Econometrics in R: The plm Package.” \emph{Journal of Statistical Software}, 27(2), 1-43. doi:
+10.18637/jss.v027.i02 (URL: \url{http://doi.org/10.18637/jss.v027.i02}).
 
 * Jordà, Ò. (2005) "Estimation and Inference of Impulse Responses by Local Projections." *American Economic Review*, 95 (1): 161-182.
 [doi:10.1257/0002828053828518](https://www.aeaweb.org/articles?id=10.1257/0002828053828518)
