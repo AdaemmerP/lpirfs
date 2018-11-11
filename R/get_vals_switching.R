@@ -3,7 +3,7 @@
 #' @description Computes transition values by using a smooth transition function as
 #' used in Auerbach and Gorodnichenko (2012). The time series used in the transition function
 #' can be detrended via the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013).
-#' @param switching_data A numeric vector.
+#' @param switching_data A numeric vector or a panel data set, depending on the model to estimate.
 #' @param specs A \link{list} with inputs as in \link{lp_nl}().
 #' @return \item{fz}{A numeric vector with values from the smooth transition function \eqn{F(z_{t-1})}.}
 #' @keywords internal
@@ -36,9 +36,7 @@ get_vals_switching <- function(switching_data, specs){
      # Use first lag of value from switching function?
      if(isTRUE(specs$lag_switching)){
 
-       fz            <-   create_lags(as.data.frame(fz), 1)   %>%
-                          as.matrix() %>%
-                          as.numeric()
+       fz            <-    dplyr::lag(fz, 1)
 
      }
 
@@ -50,9 +48,7 @@ get_vals_switching <- function(switching_data, specs){
       # Use first lag of value from switching function?
       if(isTRUE(specs$lag_switching)){
 
-        fz            <-   create_lags(as.data.frame(fz), 1)   %>%
-                            as.matrix() %>%
-                            as.numeric()
+        fz            <-   dplyr::lag(fz, 1)
 
       }
 
@@ -67,7 +63,7 @@ get_vals_switching <- function(switching_data, specs){
   if(specs$model_type == 2){
 
     # Decide whether to use HP filter.
-    if(specs$use_hp == TRUE){
+    if(isTRUE(specs$use_hp)){
 
     # Function to use hp_filter in dplyr
     use_hp_dplyr <- function(data, lambda){
@@ -91,9 +87,7 @@ get_vals_switching <- function(switching_data, specs){
     # Use first lag of value from switching function?
     if(isTRUE(specs$lag_switching)){
 
-      fz            <-   create_lags(as.data.frame(fz), 1)   %>%
-                         as.matrix() %>%
-                         as.numeric()
+      fz            <-   dplyr::lag(fz, 1)
 
     }
 
@@ -101,18 +95,17 @@ get_vals_switching <- function(switching_data, specs){
     return(fz)
                              }  else  {
 
-    fz              <-   exp((-1)*specs$gamma*switching_data)/(1 + exp((-1)*specs$gamma*switching_data))
+
+    fz              <-   exp((-1)*specs$gamma*switching_data[specs$switching])/
+                         (1 + exp((-1)*specs$gamma*switching_data[specs$switching]))
 
     # Use first lag of value from switching function?
     if(isTRUE(specs$lag_switching)){
 
-      fz            <-   create_lags(as.data.frame(fz), 1)   %>%
-                         as.matrix() %>%
-                         as.numeric()
+      fz            <-    dplyr::lag(fz, 1)
 
-    }
-
-    }
+     }
+   }
  }
 
 

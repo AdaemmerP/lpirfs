@@ -1,8 +1,10 @@
 # lpirfs 0.1.3.9000
 
-* Added functions to estimate linear and nonlinear irfs for panel data.
+* Added two functions to estimate linear and nonlinear irfs for panel data.
 
 * Added an option to choose whether to use lagged values of the switching values. 
+
+* Added an option to simply use a dummy to separate the states. 
 
 # lpirfs 0.1.3
 

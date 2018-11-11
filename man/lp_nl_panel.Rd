@@ -11,9 +11,9 @@ lp_nl_panel(data_set = NULL, data_sample = "Full", endog_data = NULL,
   gmm_effect = "twoways", gmm_transformation = "d",
   c_exog_data = NULL, l_exog_data = NULL, lags_exog_data = NaN,
   c_fd_exog_data = NULL, l_fd_exog_data = NULL,
-  lags_fd_exog_data = NaN, switching = NULL, lag_switching = TRUE,
-  use_hp = FALSE, lambda = NULL, gamma = NULL, confint = NULL,
-  hor = NULL)
+  lags_fd_exog_data = NaN, switching = NULL, use_logistic = TRUE,
+  lag_switching = TRUE, use_hp = FALSE, lambda = NULL,
+  gamma = NULL, confint = NULL, hor = NULL)
 }
 \arguments{
 \item{data_set}{A \link{data.frame}, containing the panel data set. The first column has to be the
@@ -37,8 +37,9 @@ are estimated via: \deqn{y_(t+h) - y_(t-1)}, where h = 0,..., H-1.}
 \item{panel_effect}{Character. The effects introduced in the model: "individual", "time", "twoways",
 or "nested". See the vignette of the plm-package for details.}
 
-\item{robust_cov}{NULL or Character. The character specifies the method how to estimate robust standard errors: "vcovBK", "vcovDC",
-"vcovG", "vcovHC", "vcovNW", "vcovSCC". See vignette of plm package for details.}
+\item{robust_cov}{NULL or Character. The character specifies the method how to estimate robust standard errors: Options are "Vw" (white), "Vcx" (clustered by group
+and arrellano method), "Vcx" (clustered by time and arrellano method), "Vctx" (clustered by group and time). For details see Miller (2017).
+ The other options are "vcovBK", "vcovDC", "vcovG", "vcovHC", "vcovNW", "vcovSCC". For these options see vignette of plm package.}
 
 \item{panel_gmm}{Boolean. Use GMM for estimation? TRUE or FALSE (default). See vignette of plm package for details.}
 
@@ -68,6 +69,9 @@ directly plugged into the following smooth transition function:
 The data for the two regimes are lagged by default: \cr
 Regime 1 = (1-\eqn{F(z_{t-1})})*y_{(t-p)}, \cr
 Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.}
+
+\item{use_logistic}{Boolean. Use logistic function to separate states? TRUE (default) of FALSE. If FALSE, the values of the switching variable
+have to be zero or one.}
 
 \item{lag_switching}{Boolean. Use the first lag of the values of the transition function? TRUE (default) or FALSE.}
 
@@ -188,7 +192,7 @@ results_panel <-  lp_nl_panel(data_set           = data_set,
                                lags_fd_exog_data = 2,
 
                                confint           = 1.67,
-                               hor               = 10)
+                               hor               = 5)
 
 # Create and plot irfs
  nl_plots <- plot_nl(results_panel)
@@ -248,7 +252,7 @@ results_panel <-  lp_nl_panel(data_set           = data_set,
                                lags_fd_exog_data = 2,
 
                                confint           = 1.67,
-                               hor               = 10)
+                               hor               = 5)
 
 # Create and plot irfs
  nl_plots <- plot_nl(results_panel)

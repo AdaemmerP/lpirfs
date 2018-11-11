@@ -4,10 +4,10 @@
 #'
 #' @param endog_data A \link{data.frame}, containing the endogenous variables for the VAR. The Cholesky decomposition is based on the
 #'          column order.
-#' @param lags_criterion NaN or character. NaN means that the number of lags
+#' @param lags_criterion NaN or character. NaN (default) means that the number of lags
 #'         has to be given at \emph{lags_endog_lin}. The character specifies the lag length criterion ('AICc', 'AIC' or 'BIC').
 #' @param lags_endog_lin NaN or integer. NaN if lag length criterion is used. Integer for number of lags for \emph{endog_data}.
-#' @param max_lags NaN or integer. Maximum number of lags if \emph{lags_criterion} is given. NaN otherwise.
+#' @param max_lags NaN or integer. Maximum number of lags if \emph{lags_criterion} is given. NaN (default) otherwise.
 #' @param trend Integer. No trend =  0 , include trend = 1, include trend and quadratic trend = 2.
 #' @param shock_type Integer. Standard deviation shock = 0, unit shock = 1.
 #' @param confint Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.
@@ -146,8 +146,8 @@
 #'  }
 lp_lin <- function(endog_data,
                         lags_endog_lin = NULL,
-                        lags_criterion = NULL,
-                        max_lags       = NULL,
+                        lags_criterion = NaN,
+                        max_lags       = NaN,
                         trend          = NULL,
                         shock_type     = NULL,
                         confint        = NULL,

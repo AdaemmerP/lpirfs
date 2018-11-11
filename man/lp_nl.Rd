@@ -5,11 +5,11 @@
 \title{Compute nonlinear impulse responses}
 \usage{
 lp_nl(endog_data, lags_endog_lin = NULL, lags_endog_nl = NULL,
-  lags_criterion = NULL, max_lags = NULL, trend = NULL,
+  lags_criterion = NaN, max_lags = NaN, trend = NULL,
   shock_type = NULL, confint = NULL, hor = NULL, switching = NULL,
-  lag_switching = TRUE, use_hp = NULL, lambda = NULL, gamma = NULL,
-  exog_data = NULL, lags_exog = NULL, contemp_data = NULL,
-  num_cores = NULL)
+  lag_switching = TRUE, use_logistic = TRUE, use_hp = NULL,
+  lambda = NULL, gamma = NULL, exog_data = NULL, lags_exog = NULL,
+  contemp_data = NULL, num_cores = NULL)
 }
 \arguments{
 \item{endog_data}{A \link{data.frame}, containing all endogenous variables for the VAR. The Cholesky decomposition is based on the
@@ -20,10 +20,10 @@ Integer for number of lags for linear VAR to identify shock.}
 
 \item{lags_endog_nl}{NaN or integer. Number of lags for nonlinear VAR. NaN if lag length criterion is given.}
 
-\item{lags_criterion}{NaN or character. NaN means that the number of lags
+\item{lags_criterion}{NaN or character. NaN (default) means that the number of lags
 will be given at \emph{lags_endog_nl} and \emph{lags_endog_lin}. The lag length criteria are 'AICc', 'AIC' and 'BIC'.}
 
-\item{max_lags}{NaN or integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC'). NaN otherwise.}
+\item{max_lags}{NaN or integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC'). NaN (default) otherwise.}
 
 \item{trend}{Integer. Include no trend =  0 , include trend = 1, include trend and quadratic trend = 2.}
 
@@ -33,17 +33,19 @@ will be given at \emph{lags_endog_nl} and \emph{lags_endog_lin}. The lag length 
 
 \item{hor}{Integer. Number of horizons for impulse responses.}
 
-\item{switching}{Numeric vector. A column vector with the same length as \emph{endog_data}. This series can either
+\item{switching}{Numeric vector. A column vector with the same length as \emph{endog_data}. If 'use_logistic = TRUE', this series can either
 be decomposed via the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013) or
-directly plugged into the following smooth transition function:
+directly plugged into the following logistic function:
 \deqn{ F_{z_t} = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)}. }
-Warning: \eqn{F_{z_t}} will be lagged by one and then multiplied with the data.
-If the variable shall not be lagged, the vector has to be given with a lead of one.
-The data for the two regimes are: \cr
+Important: \eqn{F_{z_t}} will be lagged by one and then multiplied with the data.
+If the variable shall not be lagged, use 'lag_switching = FALSE': \cr
 Regime 1 = (1-\eqn{F(z_{t-1})})*y_{(t-p)}, \cr
 Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.}
 
 \item{lag_switching}{Boolean. Use the first lag of the values of the transition function? TRUE (default) or FALSE.}
+
+\item{use_logistic}{Boolean. Use logistic function to separate states? TRUE (default) of FALSE. If FALSE, the values of the switching variable
+have to be zero or one.}
 
 \item{use_hp}{Boolean. Use HP-filter? TRUE or FALSE.}
 

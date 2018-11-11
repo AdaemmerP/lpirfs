@@ -40,8 +40,9 @@ are estimated via: \deqn{y_(t+h) - y_(t-1)}, where h = 0,..., H-1.}
 \item{panel_effect}{Character. The effects introduced in the model: "individual", "time", "twoways",
 or "nested". See the vignette of the plm-package for details.}
 
-\item{robust_cov}{NULL or Character. The character specifies the method how to estimate robust standard errors: "vcovBK", "vcovDC",
-"vcovG", "vcovHC", "vcovNW", "vcovSCC". See vignette of plm package for details.}
+\item{robust_cov}{NULL or Character. The character specifies the method how to estimate robust standard errors: Options are "Vw" (white), "Vcx" (clustered by group
+and arrellano method), "Vcx" (clustered by time and arrellano method), "Vctx" (clustered by group and time). For details see Miller (2017).
+ The other options are "vcovBK", "vcovDC", "vcovG", "vcovHC", "vcovNW", "vcovSCC". For these options see vignette of plm package.}
 
 \item{panel_gmm}{Boolean. Use GMM for estimation? TRUE or FALSE (default). See vignette of plm package for details.}
 
@@ -137,7 +138,7 @@ This function estimates impulse responses with local projections for panel data,
                mutate(nmortgdp = 100*(tnmort/gdp))             \%>\%
 
                dplyr::select(country, year, mortgdp, stir, ltrate, lhpy,
-                             lrgdp, lcpi, lriy, cay, nmortgdp, rlnarrow)
+                             lrgdp, lcpi, lriy, cay, nmortgdp)
 
 
 # Use data_sample from 1870 to 2013 and exclude WWI and WWII
@@ -168,7 +169,7 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
                                lags_fd_exog_data = 2,
 
                                confint           = 1.67,
-                               hor               = 10)
+                               hor               = 5)
 
 # Create and plot irfs
  plot_lin_panel <- plot_lin(results_panel)
@@ -205,7 +206,7 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
                                lags_fd_exog_data = 2,
 
                                confint           = 1.67,
-                               hor               = 10)
+                               hor               = 5)
 
 # Create and plot irfs
  plot_lin_panel <- plot_lin(results_panel)
@@ -247,7 +248,7 @@ results_panel <-  lp_lin_panel(data_set         = data_set,
                               lags_fd_exog_data = 1,
 
                               confint           = 1.67,
-                              hor               = 10)
+                              hor               = 5)
 
 # Create and plot irfs
 plot_lin_panel <- plot_lin(results_panel)
@@ -259,8 +260,11 @@ plot(plot_lin_panel[[1]])
 
 }
 \references{
-Croissant, Y., Millo, G. (2008). “Panel Data Econometrics in R: The plm Package.” \emph{Journal of Statistical Software}, 27(2), 1-43. doi:
+Croissant, Y., Millo, G. (2008). "Panel Data Econometrics in R: The plm Package." \emph{Journal of Statistical Software}, 27(2), 1-43. doi:
 10.18637/jss.v027.i02 (URL: \url{http://doi.org/10.18637/jss.v027.i02}).
+
+#' Croissant, Y., Millo, G. (2017). "Robust Standard Error Estimators for Panel Models: A Unifying Approach." \emph{Journal of Statistical Software}, 27(2), 1-43. doi:
+	10.18637/jss.v082.i03 (URL: \url{https://www.jstatsoft.org/article/view/v082i03}).
 
 Jordà, Ò. (2005). "Estimation and Inference of Impulse Responses by Local Projections."
 \emph{American Economic Review}, 95 (1): 161-182.

@@ -24,8 +24,9 @@
 #' @param gmm_transformation Character. Either "d" (default) for the "difference GMM" model or "ld" for the "system GMM".
 #' See vignette of the plm package for details.
 #'
-#' @param robust_cov NULL or Character. The character specifies the method how to estimate robust standard errors: "vcovBK", "vcovDC",
-#'                    "vcovG", "vcovHC", "vcovNW", "vcovSCC". See vignette of plm package for details.
+#' @param robust_cov NULL or Character. The character specifies the method how to estimate robust standard errors: Options are "Vw" (white), "Vcx" (clustered by group
+#'                   and arrellano method), "Vcx" (clustered by time and arrellano method), "Vctx" (clustered by group and time). For details see Miller (2017).
+#'                    The other options are "vcovBK", "vcovDC", "vcovG", "vcovHC", "vcovNW", "vcovSCC". For these options see vignette of plm package.
 #' @param c_exog_data NULL or Character. Names of exogenous variables with contemporaneous impact.
 #' @param l_exog_data NULL or Character. Names of exogenous variables with lagged impact.
 #' @param lags_exog_data Integer. Lag length for the exogenous variables with lagged impact.
@@ -58,12 +59,16 @@
 #' @importFrom plm plm
 #' @importFrom lmtest coeftest
 #' @importFrom foreach foreach
+#' @importFrom sandwich vcovHC
 #' @export
 #'
 #' @references
 #'
-#' Croissant, Y., Millo, G. (2008). “Panel Data Econometrics in R: The plm Package.” \emph{Journal of Statistical Software}, 27(2), 1-43. doi:
+#' Croissant, Y., Millo, G. (2008). "Panel Data Econometrics in R: The plm Package." \emph{Journal of Statistical Software}, 27(2), 1-43. doi:
 #' 10.18637/jss.v027.i02 (URL: \url{http://doi.org/10.18637/jss.v027.i02}).
+#'
+#' #' Croissant, Y., Millo, G. (2017). "Robust Standard Error Estimators for Panel Models: A Unifying Approach." \emph{Journal of Statistical Software}, 27(2), 1-43. doi:
+#' 	10.18637/jss.v082.i03 (URL: \url{https://www.jstatsoft.org/article/view/v082i03}).
 #'
 #' Jordà, Ò. (2005). "Estimation and Inference of Impulse Responses by Local Projections."
 #' \emph{American Economic Review}, 95 (1): 161-182.
@@ -120,7 +125,7 @@
 #'                mutate(nmortgdp = 100*(tnmort/gdp))             %>%
 #'
 #'                dplyr::select(country, year, mortgdp, stir, ltrate, lhpy,
-#'                              lrgdp, lcpi, lriy, cay, nmortgdp, rlnarrow)
+#'                              lrgdp, lcpi, lriy, cay, nmortgdp)
 #'
 #'
 #'# Use data_sample from 1870 to 2013 and exclude WWI and WWII
@@ -151,7 +156,7 @@
 #'                                lags_fd_exog_data = 2,
 #'
 #'                                confint           = 1.67,
-#'                                hor               = 10)
+#'                                hor               = 5)
 #'
 #'# Create and plot irfs
 #'  plot_lin_panel <- plot_lin(results_panel)
@@ -188,7 +193,7 @@
 #'                                lags_fd_exog_data = 2,
 #'
 #'                                confint           = 1.67,
-#'                                hor               = 10)
+#'                                hor               = 5)
 #'
 #'# Create and plot irfs
 #'  plot_lin_panel <- plot_lin(results_panel)
@@ -230,7 +235,7 @@
 #'                               lags_fd_exog_data = 1,
 #'
 #'                               confint           = 1.67,
-#'                               hor               = 10)
+#'                               hor               = 5)
 #'
 #' # Create and plot irfs
 #' plot_lin_panel <- plot_lin(results_panel)
@@ -315,8 +320,8 @@ lp_lin_panel <- function(
 
   # Check whether robust covariance estimator is correctly specified
   if(!is.null(robust_cov)){
-    if(!robust_cov %in% c("vcovBK", "vcovDC", "vcovG", "vcovHC", "vcovNW", "vcovSCC")){
-    stop("The choices for robust covariance estimation are 'vcovBK', 'vcovDC', 'vcovG', 'vcovHC', 'vcovNW', 'vcovSCC'.
+    if(!robust_cov %in% c("Vw", "Vcx", "Vct", "Vcxt", "vcovBK", "vcovDC", "vcovG", "vcovHC", "vcovNW", "vcovSCC")){
+    stop("The choices for robust covariance estimation are 'Vw', 'Vcx', 'Vct', 'Vcxt', 'vcovBK', 'vcovDC', 'vcovG', 'vcovHC', 'vcovNW', 'vcovSCC'.
          See the vignette of the plm package for details." )
   }
 }
@@ -393,7 +398,6 @@ lp_lin_panel <- function(
   specs$gmm_transformation  <- gmm_transformation
 
   specs$robust_cov          <- robust_cov
-
   specs$exog_data           <- colnames(data_set)[which(!colnames(data_set) %in%
                                                          c("cross_id", "date_id"))]
   specs$c_exog_data         <- c_exog_data
@@ -415,7 +419,7 @@ lp_lin_panel <- function(
 
 
   #--- Create data
-  lin_panel_data            <- create_panel_data(specs, data_set)
+  lin_panel_data   <- create_panel_data(specs, data_set)
 
   # Extract endogenous and exogenous data
   specs            <- lin_panel_data$specs
@@ -527,7 +531,15 @@ lp_lin_panel <- function(
     if(is.character(specs$robust_cov)){
 
       # Estimate robust covariance matrices
+      if(specs$robust_cov %in% c("vcovBK", "vcovDC", "vcovG", "vcovHC", "vcovNW", "vcovSCC")){
+
       reg_results <-  lmtest::coeftest(panel_results, vcov. = get(specs$robust_cov, envir = environment(plm)))
+
+                                   } else {
+
+      reg_results <-  lmtest::coeftest(panel_results,  vcov = se_hc_panel_cluster(specs$robust_cov))
+
+      }
 
       # Estimate irfs and confidence bands
       irf_panel_mean[[1, ii]]   <- reg_results[1, 1]

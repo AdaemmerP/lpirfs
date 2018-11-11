@@ -8,8 +8,8 @@ lp_nl_iv(endog_data, lags_endog_nl = NULL, shock = NULL,
   instr = NULL, exog_data = NULL, lags_exog = NULL,
   contemp_data = NULL, lags_criterion = NULL, max_lags = NULL,
   trend = NULL, confint = NULL, hor = NULL, switching = NULL,
-  lag_switching = TRUE, use_hp = NULL, lambda = NULL, gamma = NULL,
-  num_cores = NULL)
+  lag_switching = TRUE, use_logistic = TRUE, use_hp = NULL,
+  lambda = NULL, gamma = NULL, num_cores = NULL)
 }
 \arguments{
 \item{endog_data}{A \link{data.frame}, containing all endogenous variables for the VAR.}
@@ -51,6 +51,9 @@ Regime 1 = (1-\eqn{F(z_{t-1})})*y_{(t-p)}, \cr
 Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.}
 
 \item{lag_switching}{Boolean. Use the first lag of the values of the transition function? TRUE (default) or FALSE.}
+
+\item{use_logistic}{Boolean. Use logistic function to separate states? TRUE (default) of FALSE. If FALSE, the values of the switching variable
+have to be zero or one.}
 
 \item{use_hp}{Boolean. Use HP-filter? TRUE or FALSE.}
 

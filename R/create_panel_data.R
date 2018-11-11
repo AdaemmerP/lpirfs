@@ -213,7 +213,18 @@ create_panel_data <- function(specs, data_set){
 
     if(specs$model_type == 2 & isTRUE(specs$is_nl)){
 
-    fz   <- get_vals_switching(data_set, specs)
+
+
+    # Get transition probabilities by logistic function?
+      if(isTRUE(specs$use_logistic)){
+
+        fz      <- get_vals_switching(data_set, specs)
+
+                 } else {
+
+        fz      <- as.matrix(data_set[, specs$switching])
+
+      }
 
     # Separate shock into two regimes
     # Choose shock variable

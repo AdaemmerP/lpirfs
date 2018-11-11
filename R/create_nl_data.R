@@ -14,8 +14,16 @@ create_nl_data <- function(specs, endog_data){
   # Check whether lag lengths have to be determined
   if (is.nan(specs$lags_criterion) == TRUE) {
 
-    # Load switching variable
+    # Get transition probabilities by logistic function?
+    if(isTRUE(specs$use_logistic)){
+
     fz      <- get_vals_switching(specs$switching, specs)
+
+                   } else {
+
+    fz      <- specs$switching
+
+   }
 
     # Select data for endogenous variables
     y_nl    <- endog_data
