@@ -43,12 +43,16 @@ get_vals_switching <- function(switching_data, specs){
 
                           }  else  {
 
-      fz              <-   exp((-1)*specs$gamma*switching_data)/(1 + exp((-1)*specs$gamma*switching_data))
+      fz              <-  as_tibble(exp((-1)*specs$gamma*switching_data)/(1 + exp((-1)*specs$gamma*switching_data)))
 
       # Use first lag of value from switching function?
       if(isTRUE(specs$lag_switching)){
 
-        fz            <-   dplyr::lag(fz, 1)
+        fz            <-  create_lags(as.data.frame(fz), 1)        %>%
+                          as.matrix() %>%
+                          as.numeric()
+
+
 
       }
 
@@ -87,7 +91,9 @@ get_vals_switching <- function(switching_data, specs){
     # Use first lag of value from switching function?
     if(isTRUE(specs$lag_switching)){
 
-      fz            <-   dplyr::lag(fz, 1)
+      fz            <-   create_lags(as.data.frame(fz), 1)        %>%
+                         as.matrix() %>%
+                         as.numeric()
 
     }
 

@@ -62,8 +62,8 @@ See vignette of the plm package for details.}
 
 \item{lags_fd_exog_data}{NaN or Integer. Number of lags for variables with impact of first differences.}
 
-\item{switching}{Character. Name of the column to use for the switching variable. This series can either
-be decomposed via the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013) or
+\item{switching}{Character. Name of the column to use for the switching variable. If the "use_logistic = TRUE", this series can either
+be decomposed by the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013) or
 directly plugged into the following smooth transition function:
 \deqn{F_{z_t} = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)}.}
 The data for the two regimes are lagged by default: \cr

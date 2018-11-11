@@ -23,6 +23,16 @@ create_nl_data <- function(specs, endog_data){
 
     fz      <- specs$switching
 
+    # Use first lag of value from switching function?
+    if(isTRUE(specs$lag_switching)){
+
+    fz            <-    create_lags(as.data.frame(fz), 1)        %>%
+                        as.matrix() %>%
+                        as.numeric()
+
+
+    }
+
    }
 
     # Select data for endogenous variables
@@ -142,11 +152,24 @@ create_nl_data <- function(specs, endog_data){
     # Create list with endogenous variables
       y_nl      <- endog_data
 
-    # Load switching variable
-      fz  <- get_vals_switching(specs$switching, specs)
-      fz  <- create_lags(as.data.frame(fz), 1)            %>%
-                            as.matrix() %>%
-                            as.numeric()
+      # Get transition probabilities by logistic function?
+      if(isTRUE(specs$use_logistic)){
+
+        fz      <- get_vals_switching(specs$switching, specs)
+
+                         } else {
+
+        fz      <- specs$switching
+                         }
+
+        # Use first lag of value from switching function?
+        if(isTRUE(specs$lag_switching)){
+
+          fz            <-   create_lags(as.data.frame(fz), 1)        %>%
+                             as.matrix() %>%
+                             as.numeric()
+
+        }
 
 
     # Prepare instrument variable
@@ -160,10 +183,10 @@ create_nl_data <- function(specs, endog_data){
       }
 
 
-    for(i in 1:specs$max_lags){
+    for(ii in 1:specs$max_lags){
 
   # Create lagged variables
-      x_nl_temp      <- create_lags(endog_data, i)
+      x_nl_temp      <- create_lags(endog_data, ii)
 
       linear_names   <- names(x_nl_temp)
 
@@ -232,12 +255,12 @@ create_nl_data <- function(specs, endog_data){
         yx_all               <-  cbind(y_nl, fz, x_nl)         %>%
                                  stats::na.omit()
 
-        y_nl_store[[i]]      <-  yx_all[, 1:ncol(endog_data)]  %>%
+        y_nl_store[[ii]]      <-  yx_all[, 1:ncol(endog_data)]  %>%
                                  as.matrix()
 
-        fz_store[[i]]        <-  yx_all[, (1 + ncol(endog_data))]
+        fz_store[[ii]]        <-  yx_all[, (1 + ncol(endog_data))]
 
-        x_nl_store[[i]]      <-  yx_all[, (2 + ncol(endog_data)): dim(yx_all)[2]]   %>%
+        x_nl_store[[ii]]      <-  yx_all[, (2 + ncol(endog_data)): dim(yx_all)[2]]   %>%
                                  as.matrix()
 
 

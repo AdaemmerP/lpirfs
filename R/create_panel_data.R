@@ -224,6 +224,13 @@ create_panel_data <- function(specs, data_set){
 
         fz      <- as.matrix(data_set[, specs$switching])
 
+        # Use first lag of value from switching function?
+        if(isTRUE(specs$lag_switching)){
+
+          fz            <-    dplyr::lag(fz, 1)
+
+        }
+
       }
 
     # Separate shock into two regimes

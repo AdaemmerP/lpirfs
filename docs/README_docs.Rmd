@@ -305,7 +305,7 @@ as exogenous regressors in their model (see RZ-18).
 AG-12 use the 7-quarter moving average growth rate as switching variable.
 They adjust it to have suffiently long recession periods.
 ```{r, message = FALSE }
- switching_variable <- as.data.frame(ag_data$GDP_MA[sample_start:sample_end]) - 0.8
+ switching_variable <- ag_data[sample_start:sample_end, 6] - 0.8
 ```
 
 

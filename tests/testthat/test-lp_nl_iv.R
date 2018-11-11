@@ -380,6 +380,8 @@ test_that("Compare results with RZ-2018", {
                             confint           = 1.96,
                             hor               = 20,
                             switching         = switching_variable,
+                            use_logistic      = TRUE,
+                            lag_switching     = TRUE,
                             use_hp            = 0,
                             lambda            = NaN,
                             gamma             = 3,

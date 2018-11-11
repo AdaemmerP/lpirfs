@@ -7,7 +7,7 @@
 get_vals_switching(switching_data, specs)
 }
 \arguments{
-\item{switching_data}{A numeric vector.}
+\item{switching_data}{A numeric vector or a panel data set, depending on the model to estimate.}
 
 \item{specs}{A \link{list} with inputs as in \link{lp_nl}().}
 }

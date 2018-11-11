@@ -518,7 +518,7 @@ results_lin_iv  &lt;- list(irf_lin_mean  = multiplier_mean,
 <p>AG-12 include four lags of the 7-quarter moving average growth rate as exogenous regressors in their model (see RZ-18).</p>
 <pre class="r"><code> exog_data        &lt;- as.data.frame(ag_data$GDP_MA[sample_start:sample_end])</code></pre>
 <p>AG-12 use the 7-quarter moving average growth rate as switching variable. They adjust it to have suffiently long recession periods.</p>
-<pre class="r"><code> switching_variable &lt;- as.data.frame(ag_data$GDP_MA[sample_start:sample_end]) - 0.8</code></pre>
+<pre class="r"><code> switching_variable &lt;- ag_data[sample_start:sample_end, 6] - 0.8</code></pre>
 <pre class="r"><code># Estimate nonlinear model 
  results_nl_iv &lt;- lp_nl_iv(endog_data,
                            lags_endog_nl     = 3,
@@ -624,11 +624,11 @@ results_nl_iv  &lt;- list(irf_s1_mean  = irf_s1_mean,
  url_jst &lt;-&quot;http://www.macrohistory.net/JST/JSTdatasetR3.xlsx&quot;
  GET(url_jst, write_disk(jst_link &lt;- tempfile(fileext = &quot;.xlsx&quot;)))
 #&gt; Response [http://www.macrohistory.net/JST/JSTdatasetR3.xlsx]
-#&gt;   Date: 2018-11-09 13:58
+#&gt;   Date: 2018-11-11 20:46
 #&gt;   Status: 200
 #&gt;   Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
 #&gt;   Size: 635 kB
-#&gt; &lt;ON DISK&gt;  /tmp/RtmpoYxLOy/file49b5681ef189.xlsx
+#&gt; &lt;ON DISK&gt;  /tmp/RtmpKfe6ej/file9cb4dd6eb8f.xlsx
  jst_data &lt;- read_excel(jst_link, 2L)
 
 # Swap the first two columns so that 'country' is the first (cross section) and 'year' the

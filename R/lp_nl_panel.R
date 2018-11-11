@@ -4,8 +4,8 @@
 #'              identified shock.
 #' @inheritParams lp_lin_panel
 #'
-#' @param switching Character. Name of the column to use for the switching variable. This series can either
-#'               be decomposed via the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013) or
+#' @param switching Character. Name of the column to use for the switching variable. If the "use_logistic = TRUE", this series can either
+#'               be decomposed by the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013) or
 #'               directly plugged into the following smooth transition function:
 #'               \deqn{F_{z_t} = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)}.}
 #'               The data for the two regimes are lagged by default: \cr
