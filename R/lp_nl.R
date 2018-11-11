@@ -5,27 +5,28 @@
 #'
 #' @param endog_data A \link{data.frame}, containing all endogenous variables for the VAR. The Cholesky decomposition is based on the
 #'                   column order.
-#' @param lags_criterion NaN or character. NaN means that the number of lags
+#' @param lags_criterion NaN or character. NaN (default) means that the number of lags
 #'         will be given at \emph{lags_endog_nl} and \emph{lags_endog_lin}. The lag length criteria are 'AICc', 'AIC' and 'BIC'.
 #' @param lags_endog_lin NaN or integer. NaN if lag length criterion is used.
 #'                                Integer for number of lags for linear VAR to identify shock.
 #' @param lags_endog_nl NaN or integer. Number of lags for nonlinear VAR. NaN if lag length criterion is given.
-#' @param max_lags NaN or integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC'). NaN otherwise.
+#' @param max_lags NaN or integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC'). NaN (default) otherwise.
 #' @param trend Integer. Include no trend =  0 , include trend = 1, include trend and quadratic trend = 2.
 #' @param shock_type Integer. Standard deviation shock = 0, unit shock = 1.
 #' @param confint Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.
 #' @param hor Integer. Number of horizons for impulse responses.
-#' @param switching Numeric vector. A column vector with the same length as \emph{endog_data}. This series can either
+#' @param switching Numeric vector. A column vector with the same length as \emph{endog_data}. If 'use_logistic = TRUE', this series can either
 #'               be decomposed via the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013) or
-#'               directly plugged into the following smooth transition function:
+#'               directly plugged into the following logistic function:
 #'               \deqn{ F_{z_t} = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)}. }
-#'               Warning: \eqn{F_{z_t}} will be lagged by one and then multiplied with the data.
-#'               If the variable shall not be lagged, the vector has to be given with a lead of one.
-#'               The data for the two regimes are: \cr
+#'               Important: \eqn{F_{z_t}} will be lagged by one and then multiplied with the data.
+#'               If the variable shall not be lagged, use 'lag_switching = FALSE': \cr
 #'               Regime 1 = (1-\eqn{F(z_{t-1})})*y_{(t-p)}, \cr
 #'               Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.
 #'@param lag_switching Boolean. Use the first lag of the values of the transition function? TRUE (default) or FALSE.
 #'@param gamma Double. Positive number which is used in the transition function.
+#'@param use_logistic Boolean. Use logistic function to separate states? TRUE (default) of FALSE. If FALSE, the values of the switching variable
+#'                     have to be zero or one.
 #'@param use_hp Boolean. Use HP-filter? TRUE or FALSE.
 #'@param lambda Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter (if use_hp = TRUE).
 #'@param exog_data A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
@@ -212,14 +213,15 @@
 lp_nl <- function(endog_data,
                                lags_endog_lin = NULL,
                                lags_endog_nl  = NULL,
-                               lags_criterion = NULL,
-                               max_lags       = NULL,
+                               lags_criterion = NaN,
+                               max_lags       = NaN,
                                trend          = NULL,
                                shock_type     = NULL,
                                confint        = NULL,
                                hor            = NULL,
                                switching      = NULL,
                                lag_switching  = TRUE,
+                               use_logistic   = TRUE,
                                use_hp         = NULL,
                                lambda         = NULL,
                                gamma          = NULL,
@@ -242,6 +244,7 @@ lp_nl <- function(endog_data,
     specs$hor            <- hor
     specs$switching      <- switching
     specs$lag_switching  <- lag_switching
+    specs$use_logistic   <- use_logistic
     specs$use_hp         <- use_hp
     specs$lambda         <- lambda
     specs$gamma          <- gamma

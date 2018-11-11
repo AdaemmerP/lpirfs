@@ -13,6 +13,8 @@
 #'               Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.
 #' @param lag_switching Boolean. Use the first lag of the values of the transition function? TRUE (default) or FALSE.
 #' @param gamma Double. Positive number which is used in the transition function.
+#' @param use_logistic Boolean. Use logistic function to separate states? TRUE (default) of FALSE. If FALSE, the values of the switching variable
+#'                     have to be zero or one.
 #' @param use_hp Boolean. Use HP-filter? TRUE or FALSE (default).
 #' @param lambda Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter (if use_hp = TRUE).
 #'
@@ -138,7 +140,7 @@
 #'                                lags_fd_exog_data = 2,
 #'
 #'                                confint           = 1.67,
-#'                                hor               = 10)
+#'                                hor               = 5)
 #'
 #'# Create and plot irfs
 #'  nl_plots <- plot_nl(results_panel)
@@ -198,7 +200,7 @@
 #'                                lags_fd_exog_data = 2,
 #'
 #'                                confint           = 1.67,
-#'                                hor               = 10)
+#'                                hor               = 5)
 #'
 #'# Create and plot irfs
 #'  nl_plots <- plot_nl(results_panel)
@@ -234,6 +236,7 @@ lp_nl_panel <- function(
                       lags_fd_exog_data = NaN,
 
                       switching         = NULL,
+                      use_logistic      = TRUE,
                       lag_switching     = TRUE,
                       use_hp            = FALSE,
                       lambda            = NULL,
@@ -281,11 +284,11 @@ lp_nl_panel <- function(
 
   # Check whether robust covariance estimator is correctly specified
   if(!is.null(robust_cov)){
-    if(!robust_cov %in% c("vcovBK", "vcovDC", "vcovG", "vcovHC", "vcovNW", "vcovSCC")){
-      stop("The choices for robust covariance estimation are 'vcovBK', 'vcovDC', 'vcovG', 'vcovHC', 'vcovNW', 'vcovSCC'.
-           See the vignette of the plm package for details." )
+    if(!robust_cov %in% c("Vw", "Vcx", "Vct", "Vcxt", "vcovBK", "vcovDC", "vcovG", "vcovHC", "vcovNW", "vcovSCC")){
+      stop("The choices for robust covariance estimation are 'Vw', 'Vcx', 'Vct', 'Vcxt', 'vcovBK', 'vcovDC', 'vcovG', 'vcovHC', 'vcovNW', 'vcovSCC'.
+         See the vignette of the plm package for details." )
     }
-    }
+  }
 
   # Check whether lag lengths are given if necessary
   if(!is.null(l_exog_data)){
@@ -379,6 +382,7 @@ lp_nl_panel <- function(
 
   specs$switching          <- switching
   specs$lag_switching      <- lag_switching
+  specs$use_logistic       <- use_logistic
   specs$use_hp             <- use_hp
   specs$lambda             <- lambda
   specs$gamma              <- gamma
@@ -496,7 +500,15 @@ lp_nl_panel <- function(
     if(is.character(specs$robust_cov)){
 
       # Estimate robust covariance matrices
-      reg_results <-  lmtest::coeftest(panel_results, vcov. = get(specs$robust_cov, envir = environment(plm)))
+      if(specs$robust_cov %in% c("vcovBK", "vcovDC", "vcovG", "vcovHC", "vcovNW", "vcovSCC")){
+
+        reg_results <-  lmtest::coeftest(panel_results, vcov. = get(specs$robust_cov, envir = environment(plm)))
+
+                                                } else {
+
+        reg_results <-  lmtest::coeftest(panel_results,  vcov = se_hc_panel_cluster(specs$robust_cov))
+
+      }
 
       # Estimate irfs and confidence bands
       irf_s1_mean[1, ii]   <- reg_results[1, 1]

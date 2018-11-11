@@ -30,6 +30,8 @@
 #'               Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.
 #'@param lag_switching Boolean. Use the first lag of the values of the transition function? TRUE (default) or FALSE.
 #'@param gamma Double. Positive number which is used in the transition function.
+#'@param use_logistic Boolean. Use logistic function to separate states? TRUE (default) of FALSE. If FALSE, the values of the switching variable
+#'                     have to be zero or one.
 #'@param use_hp Boolean. Use HP-filter? TRUE or FALSE.
 #'@param lambda Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter (if use_hp = TRUE).
 #'@param num_cores Integer. The number of cores to use for the estimation. If NULL, the function will
@@ -187,6 +189,7 @@ lp_nl_iv <- function(endog_data,
                             hor               = NULL,
                             switching         = NULL,
                             lag_switching     = TRUE,
+                            use_logistic      = TRUE,
                             use_hp            = NULL,
                             lambda            = NULL,
                             gamma             = NULL,
@@ -329,6 +332,7 @@ lp_nl_iv <- function(endog_data,
     specs$hor            <- hor
     specs$switching      <- switching
     specs$lag_switching  <- lag_switching
+    specs$use_logistic   <- use_logistic
     specs$use_hp         <- use_hp
     specs$lambda         <- lambda
     specs$gamma          <- gamma
