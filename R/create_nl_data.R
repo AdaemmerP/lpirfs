@@ -26,9 +26,7 @@ create_nl_data <- function(specs, endog_data){
     # Use first lag of value from switching function?
     if(isTRUE(specs$lag_switching)){
 
-    fz            <-    create_lags(as.data.frame(fz), 1)        %>%
-                        as.matrix() %>%
-                        as.numeric()
+    fz      <-  dplyr::lag(fz, 1)
 
 
     }
@@ -165,9 +163,7 @@ create_nl_data <- function(specs, endog_data){
         # Use first lag of value from switching function?
         if(isTRUE(specs$lag_switching)){
 
-          fz            <-   create_lags(as.data.frame(fz), 1)        %>%
-                             as.matrix() %>%
-                             as.numeric()
+          fz            <-   dplyr::lag(fz, 1)
 
         }
 

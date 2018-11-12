@@ -24,11 +24,15 @@ get_vals_switching <- function(switching_data, specs){
  # Use switching variable for non-panel data
  if(specs$model_type == 0 | specs$model_type == 1){
 
+  # Convert switching data to tibble
+   switching_data        <- as_tibble(switching_data)
+   names(switching_data) <- "switch_name"
+
   # Decide whether to use HP filter.
     if(specs$use_hp == TRUE){
 
     # Use HP-filter to decompose switching variable.
-     filter_results  <-   hp_filter(matrix(switching_data), specs$lambda)
+     filter_results  <-   hp_filter(as.matrix(switching_data), specs$lambda)
      gamma_fz        <-   specs$gamma
      z_0             <-   as.numeric(scale(filter_results[[1]], center = TRUE))
      fz              <-   exp((-1)*gamma_fz*z_0)/(1 + exp((-1)*gamma_fz*z_0))
@@ -43,14 +47,12 @@ get_vals_switching <- function(switching_data, specs){
 
                           }  else  {
 
-      fz              <-  as_tibble(exp((-1)*specs$gamma*switching_data)/(1 + exp((-1)*specs$gamma*switching_data)))
+      fz              <-  exp((-1)*specs$gamma*switching_data$switch_name)/(1 + exp((-1)*specs$gamma*switching_data$switch_name))
 
       # Use first lag of value from switching function?
       if(isTRUE(specs$lag_switching)){
 
-        fz            <-  create_lags(as.data.frame(fz), 1)        %>%
-                          as.matrix() %>%
-                          as.numeric()
+        fz            <-    dplyr::lag(fz, 1)
 
 
 
@@ -91,9 +93,7 @@ get_vals_switching <- function(switching_data, specs){
     # Use first lag of value from switching function?
     if(isTRUE(specs$lag_switching)){
 
-      fz            <-   create_lags(as.data.frame(fz), 1)        %>%
-                         as.matrix() %>%
-                         as.numeric()
+      fz            <-  dplyr::lag(fz, 1)
 
     }
 
