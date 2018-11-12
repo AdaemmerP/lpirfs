@@ -149,8 +149,8 @@
 #'                                robust_cov        = "vcovSCC",
 #'
 #'                                c_exog_data       = "cay",
-#'                                l_exog_data       = NULL,
-#'                                lags_exog_data    = NULL,
+#'                                l_exog_data       = "cay",
+#'                                lags_exog_data    = 2,
 #'                                c_fd_exog_data    = colnames(data_set)[c(seq(4,9),11)],
 #'                                l_fd_exog_data    = colnames(data_set)[c(seq(3,9),11)],
 #'                                lags_fd_exog_data = 2,
@@ -186,8 +186,8 @@
 #'                                robust_cov        = "vcovSCC",
 #'
 #'                                c_exog_data       = "cay",
-#'                                l_exog_data       = NULL,
-#'                                lags_exog_data    = NULL,
+#'                                l_exog_data       = "cay",
+#'                                lags_exog_data    = 2,
 #'                                c_fd_exog_data    = colnames(data_set)[c(seq(4,9),11)],
 #'                                l_fd_exog_data    = colnames(data_set)[c(seq(3,9),11)],
 #'                                lags_fd_exog_data = 2,
@@ -369,6 +369,17 @@ lp_lin_panel <- function(
   if(isTRUE(gmm_model) & !gmm_transformation %in% c("d", "ld")){
     stop('The transformation to apply to the model has to either be "d" (default)
          for the "difference GMM" model or "ld" for the "system GMM".')
+  }
+
+  # Check whether input for gmm is correct
+  if(isTRUE(gmm_model) & !gmm_transformation %in% c("d", "ld")){
+    stop('The transformation to apply to the model has to either be "d" (default)
+         for the "difference GMM" model or "ld" for the "system GMM".')
+  }
+
+  # Verify that if gmm is estimated robust_cov is NULL
+  if(is.character(robust_cov) & isTRUE(panel_gmm)){
+    stop('If you want to estimate a gmm model, please set  "robust_cov = NULL".')
   }
 
 
