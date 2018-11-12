@@ -20,7 +20,7 @@ context("check_input_lp_nl_iv")
   test_that("Check whether endogenous data is a data.frame", {
     endog_data    <- as.matrix(endog_data)
 
-    expect_error(lp_nl_iv(endog_data,
+    testthat::expect_error(lp_nl_iv(endog_data,
                               lags_endog_nl           = 3,
                               shock             = instrument,
                               exog_data         = NULL,
@@ -41,7 +41,7 @@ context("check_input_lp_nl_iv")
 
 
   test_that("Check whether trend is given", {
-    expect_error(lp_nl_iv(endog_data,
+    testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = 3,
                           shock             = instrument,
                           exog_data         = NULL,
@@ -63,7 +63,7 @@ context("check_input_lp_nl_iv")
 
 
   test_that("Check whether switching variable is given", {
-    expect_error(lp_nl_iv(endog_data,
+    testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = 3,
                           shock             = instrument,
                           exog_data         = NULL,
@@ -84,7 +84,7 @@ context("check_input_lp_nl_iv")
 
 
   test_that("Check whether use_hp is set", {
-    expect_error(lp_nl_iv(endog_data,
+    testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = 3,
                           shock             = instrument,
                           exog_data         = NULL,
@@ -105,7 +105,7 @@ context("check_input_lp_nl_iv")
 
 
   test_that("Check whetherlambda is given", {
-    expect_error(lp_nl_iv(endog_data,
+    testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = 3,
                           shock             = instrument,
                           exog_data         = NULL,
@@ -126,7 +126,7 @@ context("check_input_lp_nl_iv")
 
 
   test_that("Check whether gamma is given", {
-    expect_error(lp_nl_iv(endog_data,
+    testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = 3,
                           shock             = instrument,
                           exog_data         = NULL,
@@ -147,7 +147,7 @@ context("check_input_lp_nl_iv")
 
 
   test_that("Check whether width for confidence bands is given", {
-    expect_error(lp_nl_iv(endog_data,
+    testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = 3,
                           shock             = instrument,
                           exog_data         = NULL,
@@ -167,7 +167,7 @@ context("check_input_lp_nl_iv")
   })
 
   test_that("Check whether number of horizons is given", {
-    expect_error(lp_nl_iv(endog_data,
+    testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = 3,
                           shock             = instrument,
                           exog_data         = NULL,
@@ -187,7 +187,7 @@ context("check_input_lp_nl_iv")
   })
 
   test_that("Check whether lag  length criterion is correctly spelled", {
-    expect_error(lp_nl_iv(endog_data,
+    testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = NaN,
                           shock             = instrument,
                           exog_data         = NULL,
@@ -208,7 +208,7 @@ context("check_input_lp_nl_iv")
 
 
   test_that("Check whether lags criterion and fixed number of lags for nonlinear model is given", {
-    expect_error(lp_nl_iv(endog_data,
+    testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = 3,
                           shock             = instrument,
                           exog_data         = NULL,
@@ -229,7 +229,7 @@ context("check_input_lp_nl_iv")
 
 
   test_that("Check whether maximum number of lags is given", {
-    expect_error(lp_nl_iv(endog_data,
+    testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = NaN,
                           shock             = instrument,
                           exog_data         = NULL,
@@ -249,7 +249,7 @@ context("check_input_lp_nl_iv")
   })
 
   test_that("Check whether number of horizons is positive", {
-    expect_error(lp_nl_iv(endog_data,
+    testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = NaN,
                           shock             = instrument,
                           exog_data         = NULL,
@@ -270,7 +270,7 @@ context("check_input_lp_nl_iv")
 
 
   test_that("Check whether trend is correctly specified", {
-    expect_error(lp_nl_iv(endog_data,
+    testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = NaN,
                           shock             = instrument,
                           exog_data         = NULL,
@@ -292,7 +292,7 @@ context("check_input_lp_nl_iv")
 
 
   test_that("Check whether width of confidence bands is correctly specified", {
-    expect_error(lp_nl_iv(endog_data,
+    testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = NaN,
                           shock             = instrument,
                           exog_data         = NULL,
@@ -313,7 +313,7 @@ context("check_input_lp_nl_iv")
 
 
   test_that("Check whether gamma is negative number", {
-    expect_error(lp_nl_iv(endog_data,
+    testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = NaN,
                           shock             = instrument,
                           exog_data         = NULL,
@@ -330,6 +330,27 @@ context("check_input_lp_nl_iv")
                           gamma             = -3,
                           num_cores         = 1),
                  'Gamma has to be a positive number.', fixed = TRUE)
+  })
+
+
+  test_that("Check that data is correctly specified when lag length criterion is given", {
+    testthat::expect_error(lp_nl_iv(endog_data,
+                                    lags_endog_nl     = NaN,
+                                    shock             = instrument,
+                                    exog_data         = NULL,
+                                    lags_exog         = NULL,
+                                    contemp_data      = NULL,
+                                    lags_criterion    = 'AIC',
+                                    max_lags          = 4,
+                                    trend             = 1,
+                                    confint           = 2,
+                                    hor               = 12,
+                                    switching         = switching_variable,
+                                    use_hp            = TRUE,
+                                    lambda            = 1600,
+                                    gamma             = 3,
+                                    num_cores         = 1),
+                           NA)
   })
 
 # This example replicates results from the Supplementary Appendix
@@ -353,7 +374,7 @@ context("check_input_lp_nl_iv")
   exog_data         <- as.data.frame(ag_data$GDP_MA[sample_start:sample_end])
 
 # Choose exogenous data
-  switching_variable <- ag_data$GDP_MA[sample_start:sample_end] - 0.8
+  switching_variable <- as.data.frame(ag_data$GDP_MA[sample_start:sample_end]) - 0.8
 
 
 # These results are taken from the available Matlab code by Ramey and Zubairy (2018)
