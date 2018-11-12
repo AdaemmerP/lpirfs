@@ -323,6 +323,8 @@ They adjust it to have suffiently long recession periods.
                            confint           = 1.96,
                            hor               = 20,
                            switching         = switching_variable,
+                           use_logistic      = TRUE,
+                           lag_switching     = TRUE, 
                            use_hp            = FALSE,
                            lambda            = NaN,
                            gamma             = 3)
