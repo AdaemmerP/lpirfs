@@ -355,3 +355,40 @@ context("check_input_lp_lin_iv")
 
   })
 
+
+  test_that("Run twosls", {
+
+    # Set seed
+    set.seed(007)
+
+    # Load data
+    ag_data       <- ag_data
+    sample_start  <- 7
+    sample_end    <- dim(ag_data)[1]
+
+    # Endogenous data
+    endog_data    <- ag_data[sample_start:sample_end,3:5]
+
+    # Variable to shock with (government spending)
+    shock         <- ag_data[sample_start:sample_end, 3]
+
+    # Generate instrument variable that is correlated with government spending
+    instrum       <- as.data.frame(0.9*shock$Gov + rnorm(length(shock$Gov), 0, 0.02) )
+
+    # Estimate linear model
+    testthat::expect_error( lp_lin_iv(endog_data,
+                                      lags_endog_lin = 4,
+                                      shock          = shock,
+                                      instrum        = instrum,
+                                      twosls         = TRUE,
+                                      exog_data      = NULL,
+                                      lags_exog      = NULL,
+                                      contemp_data   = NULL,
+                                      lags_criterion = NaN,
+                                      max_lags       = NaN,
+                                      trend          = 0,
+                                      confint        = 1.96,
+                                      hor            = 20,
+                                      num_cores      = 1),
+                           NA )
+  })
