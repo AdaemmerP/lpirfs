@@ -290,17 +290,19 @@ context("check_input_lp_lin_iv")
     testthat::expect_error(lp_lin_iv(endog_data,
                            shock          = instrument,
                            lags_endog_lin = NaN,
-                           exog_data      = NULL,
-                           lags_exog      = NULL,
+                           exog_data      = as.data.frame(rnorm(length(instrument[, 1]))),
+                           lags_exog      = 2,
                            contemp_data   = NULL,
                            lags_criterion = 'AIC',
                            max_lags       = 4,
-                           trend          = 1,
+                           trend          = 2,
                            confint        = 1,
                            hor            = 12,
                            num_cores      = 1),
                                            NA)
   })
+
+
 
 
 
