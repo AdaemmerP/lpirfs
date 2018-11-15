@@ -18,7 +18,7 @@
 #' @param panel_effect Character. The effects introduced in the model: "individual", "time", "twoways",
 #' or "nested". See the vignette of the plm-package for details.
 #'
-#' @param panel_gmm  Boolean. Use GMM for estimation? TRUE or FALSE (default). See vignette of plm package for details.
+#' @param use_gmm  Boolean. Use GMM for estimation? TRUE or FALSE (default). See vignette of plm package for details.
 #' @param gmm_effect Character. The effects introduced in the model: "twoways" (default) or "individual". See vignette of the plm-package for details.
 #' @param gmm_model Character. Either "onestep" (default) or "twosteps". See vignette of the plm package for details.
 #' @param gmm_transformation Character. Either "d" (default) for the "difference GMM" model or "ld" for the "system GMM".
@@ -221,7 +221,7 @@
 #'                               panel_effect      = NULL,
 #'                               robust_cov        = NULL,
 #'
-#'                               panel_gmm          = TRUE,
+#'                               use_gmm          = TRUE,
 #'                               gmm_model          = "onestep",
 #'                               gmm_effect         = "twoways",
 #'                               gmm_transformation = "ld",
@@ -259,7 +259,7 @@ lp_lin_panel <- function(
                     panel_effect      = "individual",
                     robust_cov        = NULL,
 
-                    panel_gmm         = FALSE,
+                    use_gmm         = FALSE,
                     gmm_model         = "onestep",
                     gmm_effect        = "twoways",
                     gmm_transformation = "d",
@@ -274,17 +274,18 @@ lp_lin_panel <- function(
                     hor               = NULL){
 
 
+
+  # Check whether data_set is given
+  if(is.null(data_set)){
+    stop("You have to provide the panel data set.")
+  }
+
+
  # Check whether column names are named properly
   if(any(colnames(data_set)[3:dim(data_set)[2]] %in% c("cross_id", "date_id"))){
     stop("You cannot use the column names 'cross_id' or 'date_id' besides the first two columns of your data.frame.
          Please rename them." )
   }
-
- # Check whether data_set is given
-  if(is.null(data_set)){
-    stop("You have to provide the panel data set." )
-  }
-
 
  # Check whether name for endogenous variable is given
   if(is.null(endog_data)){
@@ -303,7 +304,7 @@ lp_lin_panel <- function(
   }
 
   # Check whether panel model type is correct
-  if(!isTRUE(panel_gmm)){
+  if(!isTRUE(use_gmm)){
     if(!panel_model %in% c("within", "random", "ht", "between", "pooling", "fd")){
       stop("The type of the panel model has to be 'within', 'random', 'ht', 'between', 'pooling' or 'fd'. See
            the vignette of the plm package for details." )
@@ -311,7 +312,7 @@ lp_lin_panel <- function(
   }
 
   # Check whether the panel effect is correctly specified
-  if(!isTRUE(panel_gmm)){
+  if(!isTRUE(use_gmm)){
     if(!panel_effect %in% c("individual", "time", "twoways", "nested")){
       stop("The effect introduced in the model has to be 'individual', 'time', 'twoways' or 'nested'.
            See the vignette of the plm package for details." )
@@ -356,30 +357,24 @@ lp_lin_panel <- function(
   }
 
   # Check whether input for gmm is correct
-  if(isTRUE(gmm_model) & !gmm_model %in% c("onestep", "twosteps")){
+  if(isTRUE(use_gmm) & !gmm_model %in% c("onestep", "twosteps")){
     stop('The model type for gmm has to be "onestep" (default) or "twosteps".')
   }
 
   # Check whether input for gmm is correct
-  if(isTRUE(gmm_model) & !gmm_effect %in% c("twoways", "individual")){
+  if(isTRUE(use_gmm) & !gmm_effect %in% c("twoways", "individual")){
     stop('The effect for gmm has to be "twoways" (default) or "individual".')
   }
 
   # Check whether input for gmm is correct
-  if(isTRUE(gmm_model) & !gmm_transformation %in% c("d", "ld")){
-    stop('The transformation to apply to the model has to either be "d" (default)
-         for the "difference GMM" model or "ld" for the "system GMM".')
-  }
-
-  # Check whether input for gmm is correct
-  if(isTRUE(gmm_model) & !gmm_transformation %in% c("d", "ld")){
+  if(isTRUE(use_gmm) & !gmm_transformation %in% c("d", "ld")){
     stop('The transformation to apply to the model has to either be "d" (default)
          for the "difference GMM" model or "ld" for the "system GMM".')
   }
 
   # Verify that if gmm is estimated robust_cov is NULL
-  if(is.character(robust_cov) & isTRUE(panel_gmm)){
-    stop('If you want to estimate a gmm model, please set  "robust_cov = NULL".')
+  if(is.character(robust_cov) & isTRUE(use_gmm)){
+    stop('If you want to estimate a gmm model, set "robust_cov = NULL".')
   }
 
 
@@ -403,7 +398,7 @@ lp_lin_panel <- function(
   specs$panel_effect        <- panel_effect
   specs$iv_reg              <- iv_reg
 
-  specs$panel_gmm           <- panel_gmm
+  specs$use_gmm             <- use_gmm
   specs$gmm_model           <- gmm_model
   specs$gmm_effect          <- gmm_effect
   specs$gmm_transformation  <- gmm_transformation
@@ -476,7 +471,7 @@ lp_lin_panel <- function(
                } else {
 
    # Check whether to use GMM
-    if(isTRUE(specs$panel_gmm)){
+    if(isTRUE(specs$use_gmm)){
     gmm_formula <-  stats::as.formula(paste(ols_formula, "|", "plm::lag(",y_reg_name,", 2:99)" , sep=""))
 
                } else {
@@ -520,7 +515,7 @@ lp_lin_panel <- function(
 
     # Do panel estimation
     # Check whether to use gmm
-    if(isTRUE(specs$panel_gmm)){
+    if(isTRUE(specs$use_gmm)){
 
     panel_results  <- plm::pgmm(gmm_formula,
                                 data           = yx_data,
