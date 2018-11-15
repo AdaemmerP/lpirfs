@@ -181,7 +181,7 @@
 #'                                panel_effect      = "individual",
 #'                                robust_cov        = NULL,
 #'
-#'                                panel_gmm         = TRUE,
+#'                                use_gmm         = TRUE,
 #'                                gmm_model         = "onestep",
 #'                                gmm_effect        = "twoways",
 #'                                gmm_transformation = "ld",
@@ -222,7 +222,7 @@ lp_nl_panel <- function(
                       panel_effect      = "individual",
                       robust_cov        = NULL,
 
-                      panel_gmm         = FALSE,
+                      use_gmm         = FALSE,
                       gmm_model         = "onestep",
                       gmm_effect        = "twoways",
                       gmm_transformation = "d",
@@ -340,17 +340,17 @@ lp_nl_panel <- function(
   }
 
   # Check whether input for gmm is correct
-  if(isTRUE(gmm_model) & !gmm_model %in% c("onestep", "twosteps")){
+  if(isTRUE(use_gmm) & !gmm_model %in% c("onestep", "twosteps")){
     stop('The model type for gmm has to be "onestep" (default) or "twosteps".')
   }
 
   # Check whether input for gmm is correct
-  if(isTRUE(gmm_model) & !gmm_effect %in% c("twoways", "individual")){
+  if(isTRUE(use_gmm) & !gmm_effect %in% c("twoways", "individual")){
     stop('The effect for gmm has to be "twoways" (default) or "individual".')
   }
 
   # Check whether input for gmm is correct
-  if(isTRUE(gmm_model) & !gmm_transformation %in% c("d", "ld")){
+  if(isTRUE(use_gmm) & !gmm_transformation %in% c("d", "ld")){
     stop('The transformation to apply to the model has to either be "d" (default)
          for the "difference GMM" model or "ld" for the "system GMM".')
   }
@@ -375,7 +375,7 @@ lp_nl_panel <- function(
   specs$panel_effect       <- panel_effect
   specs$robust_cov         <- robust_cov
 
-  specs$panel_gmm          <- panel_gmm
+  specs$use_gmm          <- use_gmm
   specs$gmm_model          <- gmm_model
   specs$gmm_effect         <- gmm_effect
   specs$gmm_transformation <- gmm_transformation
@@ -445,7 +445,7 @@ lp_nl_panel <- function(
 
 
   # Check whether to use GMM
-  if(isTRUE(specs$panel_gmm)){
+  if(isTRUE(specs$use_gmm)){
     gmm_formula <-  stats::as.formula(paste(ols_formula, "|", "plm::lag(",y_reg_name,", 2:99)" , sep=""))
 
                      } else {
@@ -477,7 +477,7 @@ lp_nl_panel <- function(
 
     # Do panel estimation
     # Check whether to use gmm
-    if(isTRUE(specs$panel_gmm)){
+    if(isTRUE(specs$use_gmm)){
 
       panel_results  <- plm::pgmm(gmm_formula,
                                   data           = yx_data,
