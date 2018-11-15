@@ -211,39 +211,39 @@
 #'}
 #'
 lp_nl_panel <- function(
-                      data_set          = NULL,
-                      data_sample       = "Full",
-                      endog_data        = NULL,
-                      cumul_mult        = TRUE,
+                      data_set           = NULL,
+                      data_sample        = "Full",
+                      endog_data         = NULL,
+                      cumul_mult         = TRUE,
 
-                      shock             = NULL,
-                      diff_shock        = TRUE,
-                      panel_model       = "within",
-                      panel_effect      = "individual",
-                      robust_cov        = NULL,
+                      shock              = NULL,
+                      diff_shock         = TRUE,
+                      panel_model        = "within",
+                      panel_effect       = "individual",
+                      robust_cov         = NULL,
 
-                      use_gmm         = FALSE,
-                      gmm_model         = "onestep",
-                      gmm_effect        = "twoways",
+                      use_gmm            = FALSE,
+                      gmm_model          = "onestep",
+                      gmm_effect         = "twoways",
                       gmm_transformation = "d",
 
 
-                      c_exog_data       = NULL,
-                      l_exog_data       = NULL,
-                      lags_exog_data    = NaN,
-                      c_fd_exog_data    = NULL,
-                      l_fd_exog_data    = NULL,
-                      lags_fd_exog_data = NaN,
+                      c_exog_data        = NULL,
+                      l_exog_data        = NULL,
+                      lags_exog_data     = NaN,
+                      c_fd_exog_data     = NULL,
+                      l_fd_exog_data     = NULL,
+                      lags_fd_exog_data  = NaN,
 
-                      switching         = NULL,
-                      use_logistic      = TRUE,
-                      lag_switching     = TRUE,
-                      use_hp            = FALSE,
-                      lambda            = NULL,
-                      gamma             = NULL,
+                      switching          = NULL,
+                      use_logistic       = TRUE,
+                      lag_switching      = TRUE,
+                      use_hp             = FALSE,
+                      lambda             = NULL,
+                      gamma              = NULL,
 
-                      confint           = NULL,
-                      hor               = NULL){
+                      confint            = NULL,
+                      hor                = NULL){
 
 
   # Check whether column names are named properly
@@ -375,7 +375,7 @@ lp_nl_panel <- function(
   specs$panel_effect       <- panel_effect
   specs$robust_cov         <- robust_cov
 
-  specs$use_gmm          <- use_gmm
+  specs$use_gmm            <- use_gmm
   specs$gmm_model          <- gmm_model
   specs$gmm_effect         <- gmm_effect
   specs$gmm_transformation <- gmm_transformation
