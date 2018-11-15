@@ -8,7 +8,7 @@ lp_lin_panel(data_set = NULL, data_sample = "Full",
   endog_data = NULL, cumul_mult = TRUE, shock = NULL,
   diff_shock = TRUE, iv_reg = FALSE, instrum = NULL,
   panel_model = "within", panel_effect = "individual",
-  robust_cov = NULL, panel_gmm = FALSE, gmm_model = "onestep",
+  robust_cov = NULL, use_gmm = FALSE, gmm_model = "onestep",
   gmm_effect = "twoways", gmm_transformation = "d",
   c_exog_data = NULL, l_exog_data = NULL, lags_exog_data = NaN,
   c_fd_exog_data = NULL, l_fd_exog_data = NULL,
@@ -44,7 +44,7 @@ or "nested". See the vignette of the plm-package for details.}
 and arrellano method), "Vcx" (clustered by time and arrellano method), "Vctx" (clustered by group and time). For details see Miller (2017).
  The other options are "vcovBK", "vcovDC", "vcovG", "vcovHC", "vcovNW", "vcovSCC". For these options see vignette of plm package.}
 
-\item{panel_gmm}{Boolean. Use GMM for estimation? TRUE or FALSE (default). See vignette of plm package for details.}
+\item{use_gmm}{Boolean. Use GMM for estimation? TRUE or FALSE (default). See vignette of plm package for details.}
 
 \item{gmm_model}{Character. Either "onestep" (default) or "twosteps". See vignette of the plm package for details.}
 
@@ -234,7 +234,7 @@ results_panel <-  lp_lin_panel(data_set         = data_set,
                               panel_effect      = NULL,
                               robust_cov        = NULL,
 
-                              panel_gmm          = TRUE,
+                              use_gmm          = TRUE,
                               gmm_model          = "onestep",
                               gmm_effect         = "twoways",
                               gmm_transformation = "ld",

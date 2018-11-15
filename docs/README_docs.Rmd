@@ -658,8 +658,8 @@ During Bad and Good Economic Times Equally?" *Journal of Macroeconomics*, 50(1):
 
 *  Auerbach, A. J., and Gorodnichenko Y. (2013). "Fiscal Multipliers in Recession and Expansion" *NBER Working Paper Series*. Nr 17447.  [National Bureau of Economic Research](http://www.nber.org/papers/w17447.pdf)
 
-* Croissant, Y., Millo, G. (2008). “Panel Data Econometrics in R: The plm Package.” \emph{Journal of Statistical Software}, 27(2), 1-43. doi:
-10.18637/jss.v027.i02 (URL: \url{http://doi.org/10.18637/jss.v027.i02}).
+* Croissant, Y., Millo, G. (2008). “Panel Data Econometrics in R: The plm Package.” \emph{Journal of Statistical Software}, 27(2), 1-43. [doi:
+10.18637/jss.v027.i02](http://doi.org/10.18637/jss.v027.i02).
 
 * Jordà, Ò. (2005) "Estimation and Inference of Impulse Responses by Local Projections." *American Economic Review*, 95 (1): 161-182.
 [doi:10.1257/0002828053828518](https://www.aeaweb.org/articles?id=10.1257/0002828053828518)

@@ -41,8 +41,6 @@ or "nested". See the vignette of the plm-package for details.}
 and arrellano method), "Vcx" (clustered by time and arrellano method), "Vctx" (clustered by group and time). For details see Miller (2017).
  The other options are "vcovBK", "vcovDC", "vcovG", "vcovHC", "vcovNW", "vcovSCC". For these options see vignette of plm package.}
 
-\item{panel_gmm}{Boolean. Use GMM for estimation? TRUE or FALSE (default). See vignette of plm package for details.}
-
 \item{gmm_model}{Character. Either "onestep" (default) or "twosteps". See vignette of the plm package for details.}
 
 \item{gmm_effect}{Character. The effects introduced in the model: "twoways" (default) or "individual". See vignette of the plm-package for details.}
