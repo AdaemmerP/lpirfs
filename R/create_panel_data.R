@@ -98,8 +98,10 @@ create_panel_data <- function(specs, data_set){
   if(isTRUE(specs$iv_reg) & isTRUE(specs$diff_shock)){
 
     x_instrument   <- x_instrument %>%
-                          dplyr::mutate_at(vars(specs$instrum), diff_function) %>%
-                          dplyr::rename_at(vars(specs$instrum), funs(paste0("d",.)))
+                          dplyr::group_by(cross_id)                                  %>%
+                          dplyr::mutate_at(vars(specs$instrum), diff_function)       %>%
+                          dplyr::rename_at(vars(specs$instrum), funs(paste0("d",.))) %>%
+                          dplyr::ungroup()
 
     # Rename instrument
     specs$instrum  <- colnames(x_instrument)[which(!(colnames(x_instrument) %in%
