@@ -373,6 +373,11 @@ lp_nl <- function(endog_data,
     stop('The width of the confidence bands has to be >=0.')
   }
 
+  # Check whether 'gamma' is given
+   if(isTRUE(use_logistic) & is.null(gamma) == TRUE){
+     stop('Please specify gamma for the transition function.')
+   }
+
   # Check whether gamma is positive
   if((specs$gamma < 0)){
     stop('Gamma has to be a positive number.')
@@ -393,10 +398,6 @@ lp_nl <- function(endog_data,
       stop('The maximum number of lags can only be used if a lag length criterion is given.')
     }
 
-  # Give message if no use_hp is used but gamma and lambda given
-    if(specs$use_hp == 0 & !is.null(specs$lambda)){
-      message('A provided value for lambda will not be used as no HP-filter is applied.')
-    }
 
 
   # Safe data frame specifications in 'specs for functions

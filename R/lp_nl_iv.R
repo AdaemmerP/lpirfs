@@ -255,7 +255,7 @@ lp_nl_iv <- function(endog_data,
   }
 
   # Check whether 'gamma' is given
-  if(is.null(gamma) == TRUE){
+  if(isTRUE(use_logistic) & is.null(gamma) == TRUE){
     stop('Please specify gamma for the transition function.')
   }
 

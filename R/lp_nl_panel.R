@@ -237,24 +237,24 @@ lp_nl_panel <- function(
 
                       switching          = NULL,
                       use_logistic       = TRUE,
-                      lag_switching      = TRUE,
                       use_hp             = FALSE,
+                      lag_switching      = TRUE,
                       lambda             = NULL,
                       gamma              = NULL,
 
                       confint            = NULL,
                       hor                = NULL){
 
+  # Check whether data_set is given
+  if(is.null(data_set)){
+    stop("You have to provide the panel data set." )
+  }
+
 
   # Check whether column names are named properly
   if(any(colnames(data_set)[3:dim(data_set)[2]] %in% c("cross_id", "date_id"))){
     stop("You cannot use the column names 'cross_id' or 'date_id' besides the first two columns of your data.frame.
          Please rename them." )
-  }
-
-  # Check whether data_set is given
-  if(is.null(data_set)){
-    stop("You have to provide the panel data set." )
   }
 
 
@@ -306,26 +306,26 @@ lp_nl_panel <- function(
 
   # Check whether width of confidence intervals is given
   if(is.null(confint)){
-    stop('Please specify a value for the width of the confidence bands.')
+    stop("Please specify a value for the width of the confidence bands.")
   }
 
   # Check whether width of confidence bands is >=0
   if(!(confint >=0)){
-    stop('The width of the confidence bands has to be >=0.')
+    stop("The width of the confidence bands has to be >=0.")
   }
 
   # Check whether values for horizons are correct
   if(!(hor > 0) | is.nan(hor) | !(hor %% 1 == 0)){
-    stop('The number of horizons has to be an integer and >0.')
+    stop("The number of horizons has to be an integer and >0.")
   }
 
   # Check whether switching variable is given
   if(is.null(switching)){
-    stop("You have to provide a switching variable.")
+    stop("You have to provide a name for the switching variable.")
   }
 
   # Check whether to use the HP-filter
-  if(is.null(use_hp)){
+  if(isTRUE(use_logistic) & is.null(use_hp)){
     stop("Please specify whether to use the HP-filter for the switching variable.")
   }
 
@@ -335,24 +335,28 @@ lp_nl_panel <- function(
   }
 
   # Check whether value for gamma is given
-  if(is.null(gamma)){
-    stop("Please give a value for gamma > 0.")
+  if(isTRUE(use_logistic) & is.null(gamma)){
+    stop("Please give a value for gamma (>0).")
   }
 
   # Check whether input for gmm is correct
   if(isTRUE(use_gmm) & !gmm_model %in% c("onestep", "twosteps")){
-    stop('The model type for gmm has to be "onestep" (default) or "twosteps".')
+    stop("The model type for gmm has to be 'onestep' (default) or 'twosteps'.")
   }
 
   # Check whether input for gmm is correct
   if(isTRUE(use_gmm) & !gmm_effect %in% c("twoways", "individual")){
-    stop('The effect for gmm has to be "twoways" (default) or "individual".')
+    stop("The effect for gmm has to be 'twoways' (default) or 'individual'.")
   }
 
   # Check whether input for gmm is correct
   if(isTRUE(use_gmm) & !gmm_transformation %in% c("d", "ld")){
-    stop('The transformation to apply to the model has to either be "d" (default)
-         for the "difference GMM" model or "ld" for the "system GMM".')
+    stop("The transformation to apply to the model has to either be 'd' (default)
+         for the 'difference GMM' model or 'ld' for the 'system GMM'.")
+  }
+
+  if(isTRUE(use_gmm) & !is.null(robust_cov)){
+    stop("Please set 'robust_cov = NULL' when using gmm.")
   }
 
 
