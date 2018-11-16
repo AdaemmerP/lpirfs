@@ -12,7 +12,7 @@ lp_nl_panel(data_set = NULL, data_sample = "Full", endog_data = NULL,
   c_exog_data = NULL, l_exog_data = NULL, lags_exog_data = NaN,
   c_fd_exog_data = NULL, l_fd_exog_data = NULL,
   lags_fd_exog_data = NaN, switching = NULL, use_logistic = TRUE,
-  lag_switching = TRUE, use_hp = FALSE, lambda = NULL,
+  use_hp = FALSE, lag_switching = TRUE, lambda = NULL,
   gamma = NULL, confint = NULL, hor = NULL)
 }
 \arguments{
@@ -73,9 +73,9 @@ Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.}
 \item{use_logistic}{Boolean. Use logistic function to separate states? TRUE (default) of FALSE. If FALSE, the values of the switching variable
 have to be zero or one.}
 
-\item{lag_switching}{Boolean. Use the first lag of the values of the transition function? TRUE (default) or FALSE.}
-
 \item{use_hp}{Boolean. Use HP-filter? TRUE or FALSE (default).}
+
+\item{lag_switching}{Boolean. Use the first lag of the values of the transition function? TRUE (default) or FALSE.}
 
 \item{lambda}{Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter (if use_hp = TRUE).}
 
