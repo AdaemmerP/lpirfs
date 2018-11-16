@@ -1,4 +1,4 @@
-context("check_plot_nl")
+context("plot_nl")
 
 # Endogenous data
   endog_data     <- interest_rules_var_data
@@ -7,7 +7,7 @@ context("check_plot_nl")
   switching      <- endog_data$GDP_gap
 
 
-test_that("Check whether list length is consistent number of endogenous variables
+test_that("Test whether list length is consistent number of endogenous variables
              for lp_nl model",{
 
 
@@ -36,7 +36,7 @@ test_that("Check whether list length is consistent number of endogenous variable
 })
 
 
-test_that("Check whether list length is consistent number of endogenous variables
+test_that("Test whether list length is consistent number of endogenous variables
              for lp_nl_iv model",{
 
                # Load and prepare data

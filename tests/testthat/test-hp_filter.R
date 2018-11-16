@@ -1,4 +1,4 @@
-context("check_hp_filter")
+context("hp_filter")
 
 # Load data
 data_set_df <- interest_rules_var_data
@@ -28,7 +28,7 @@ hp_filter_r <- function(x, lambda){
 }
 
 
-test_that("Check whether value hp-function is identical to function from mFilter package", {
+test_that("Test whether value hp-function is identical to function from mFilter package", {
 
 
   x         <- as.matrix(rnorm(100))

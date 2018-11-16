@@ -1,4 +1,4 @@
-context("check_input_get_var_lagcrit")
+context("get_var_lagcrit")
 
 # Adapted VARselect function from 'vars' package
 varSELECT     <- function (endog_data, lag.max = 2, type = c("const", "trend", "both",
@@ -62,7 +62,7 @@ varSELECT     <- function (endog_data, lag.max = 2, type = c("const", "trend", "
 
 
 
- test_that("Check whether package function chooses same number of lags as
+ test_that("Test whether package function chooses same number of lags as
            VARselect function", {
 
 

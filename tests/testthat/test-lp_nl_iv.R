@@ -1,4 +1,4 @@
-context("check_input_lp_nl_iv")
+context("lp_nl_iv")
 
 # Load package data
   ag_data           <- ag_data
@@ -17,7 +17,7 @@ context("check_input_lp_nl_iv")
 
 
 
-  test_that("Check whether endogenous data is a data.frame", {
+  test_that("Test whether endogenous data is a data.frame", {
     endog_data    <- as.matrix(endog_data)
 
     testthat::expect_error(lp_nl_iv(endog_data,
@@ -40,7 +40,7 @@ context("check_input_lp_nl_iv")
   })
 
 
-  test_that("Check whether trend is given", {
+  test_that("Test whether trend is given", {
     testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = 3,
                           shock             = instrument,
@@ -62,7 +62,7 @@ context("check_input_lp_nl_iv")
 
 
 
-  test_that("Check whether switching variable is given", {
+  test_that("Test whether switching variable is given", {
     testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = 3,
                           shock             = instrument,
@@ -83,7 +83,7 @@ context("check_input_lp_nl_iv")
   })
 
 
-  test_that("Check whether use_hp is set", {
+  test_that("Test whether use_hp is set", {
     testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = 3,
                           shock             = instrument,
@@ -104,7 +104,7 @@ context("check_input_lp_nl_iv")
   })
 
 
-  test_that("Check whetherlambda is given", {
+  test_that("Test whetherlambda is given", {
     testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = 3,
                           shock             = instrument,
@@ -125,7 +125,7 @@ context("check_input_lp_nl_iv")
   })
 
 
-  test_that("Check whether gamma is given", {
+  test_that("Test whether gamma is given", {
     testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = 3,
                           shock             = instrument,
@@ -146,7 +146,7 @@ context("check_input_lp_nl_iv")
   })
 
 
-  test_that("Check whether width for confidence bands is given", {
+  test_that("Test whether width for confidence bands is given", {
     testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = 3,
                           shock             = instrument,
@@ -166,7 +166,7 @@ context("check_input_lp_nl_iv")
                  'Please specify a value for the width of the confidence bands.', fixed = TRUE)
   })
 
-  test_that("Check whether number of horizons is given", {
+  test_that("Test whether number of horizons is given", {
     testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = 3,
                           shock             = instrument,
@@ -186,7 +186,7 @@ context("check_input_lp_nl_iv")
                  'Please specify the number of horizons.', fixed = TRUE)
   })
 
-  test_that("Check whether lag  length criterion is correctly spelled", {
+  test_that("Test whether lag  length criterion is correctly spelled", {
     testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = NaN,
                           shock             = instrument,
@@ -207,7 +207,7 @@ context("check_input_lp_nl_iv")
   })
 
 
-  test_that("Check whether lags criterion and fixed number of lags for nonlinear model is given", {
+  test_that("Test whether lags criterion and fixed number of lags for nonlinear model is given", {
     testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = 3,
                           shock             = instrument,
@@ -228,7 +228,7 @@ context("check_input_lp_nl_iv")
   })
 
 
-  test_that("Check whether maximum number of lags is given", {
+  test_that("Test whether maximum number of lags is given", {
     testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = NaN,
                           shock             = instrument,
@@ -248,7 +248,7 @@ context("check_input_lp_nl_iv")
                  'Please provide a maximum number of lags for the lag length criterion.', fixed = TRUE)
   })
 
-  test_that("Check whether number of horizons is positive", {
+  test_that("Test whether number of horizons is positive", {
     testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = NaN,
                           shock             = instrument,
@@ -269,7 +269,7 @@ context("check_input_lp_nl_iv")
   })
 
 
-  test_that("Check whether trend is correctly specified", {
+  test_that("Test whether trend is correctly specified", {
     testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = NaN,
                           shock             = instrument,
@@ -291,7 +291,7 @@ context("check_input_lp_nl_iv")
 
 
 
-  test_that("Check whether width of confidence bands is correctly specified", {
+  test_that("Test whether width of confidence bands is correctly specified", {
     testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = NaN,
                           shock             = instrument,
@@ -312,7 +312,7 @@ context("check_input_lp_nl_iv")
   })
 
 
-  test_that("Check whether gamma is negative number", {
+  test_that("Test whether gamma is negative number", {
     testthat::expect_error(lp_nl_iv(endog_data,
                           lags_endog_nl           = NaN,
                           shock             = instrument,
@@ -333,7 +333,7 @@ context("check_input_lp_nl_iv")
   })
 
 
-  test_that("Check that data is correctly specified when lag length criterion is given", {
+  test_that("Test that data is correctly specified when lag length criterion is given", {
     testthat::expect_error(lp_nl_iv(endog_data,
                                     lags_endog_nl     = NaN,
                                     shock             = instrument,

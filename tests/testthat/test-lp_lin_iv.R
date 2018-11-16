@@ -1,4 +1,4 @@
-context("check_input_lp_lin_iv")
+context("lp_lin_iv")
 
 
 # Load package data
@@ -13,7 +13,7 @@ context("check_input_lp_lin_iv")
   instrument       <- as.data.frame(ag_data$Gov[sample_start:sample_end])
 
 
-  test_that("Check whether data is a data.frame", {
+  test_that("Test whether data is a data.frame", {
     endog_data   <- as.matrix(endog_data)
     testthat::expect_error(lp_lin_iv(endog_data,
                             shock          = instrument,
@@ -31,7 +31,7 @@ context("check_input_lp_lin_iv")
   })
 
 
-  test_that("Check whether instrument is given", {
+  test_that("Test whether instrument is given", {
     testthat::expect_error(lp_lin_iv(endog_data,
                            shock          = NULL,
                            lags_endog_lin       = 4,
@@ -47,7 +47,7 @@ context("check_input_lp_lin_iv")
                  'You have to provide an instrument to shock with.', fixed = TRUE)
   })
 
-  test_that("Check whether lags_endog_lin is falsely NaN", {
+  test_that("Test whether lags_endog_lin is falsely NaN", {
     testthat::expect_error(lp_lin_iv(endog_data,
                            shock          = instrument,
                            lags_endog_lin       = NaN,
@@ -66,7 +66,7 @@ context("check_input_lp_lin_iv")
 
 
 
-  test_that("Check whether message is given when no exogenous data is provided", {
+  test_that("Test whether message is given when no exogenous data is provided", {
 
     testthat::expect_message(lp_lin_iv(endog_data,
                            shock          = instrument,
@@ -83,7 +83,7 @@ context("check_input_lp_lin_iv")
                  'You estimate the model without exogenous data.')
   })
 
-  test_that("Check whether message is given when no contemporaneous data is provided", {
+  test_that("Test whether message is given when no contemporaneous data is provided", {
     testthat::expect_message(lp_lin_iv(endog_data,
                            shock          = instrument,
                            lags_endog_lin       = 4,
@@ -100,7 +100,7 @@ context("check_input_lp_lin_iv")
   })
 
 
-  test_that("Check whether lag length criterion is correctly specified", {
+  test_that("Test whether lag length criterion is correctly specified", {
     testthat::expect_error(lp_lin_iv(endog_data,
                              shock          = instrument,
                              lags_endog_lin       = 4,
@@ -118,7 +118,7 @@ context("check_input_lp_lin_iv")
 
 
 
-  test_that("Check whether trend is given", {
+  test_that("Test whether trend is given", {
     testthat::expect_error(lp_lin_iv(endog_data,
                            shock          = instrument,
                            lags_endog_lin       = 4,
@@ -135,7 +135,7 @@ context("check_input_lp_lin_iv")
   })
 
 
-  test_that("Check whether number of horizons is given", {
+  test_that("Test whether number of horizons is given", {
     testthat::expect_error(lp_lin_iv(endog_data,
                            shock          = instrument,
                            lags_endog_lin       = 4,
@@ -152,7 +152,7 @@ context("check_input_lp_lin_iv")
   })
 
 
-  test_that("Check whether lag lengt criterion is correctly given", {
+  test_that("Test whether lag lengt criterion is correctly given", {
     testthat::expect_error(lp_lin_iv(endog_data,
                            shock          = instrument,
                            lags_endog_lin       = 4,
@@ -169,7 +169,7 @@ context("check_input_lp_lin_iv")
   })
 
 
-  test_that("Check whether number of horizons is correctly given", {
+  test_that("Test whether number of horizons is correctly given", {
     testthat::expect_error(lp_lin_iv(endog_data,
                            shock          = instrument,
                            lags_endog_lin       = 4,
@@ -185,7 +185,7 @@ context("check_input_lp_lin_iv")
                  'The number of horizons has to be an integer and > 0.', fixed = TRUE)
   })
 
-  test_that("Check whether trend is correctly specified", {
+  test_that("Test whether trend is correctly specified", {
     testthat::expect_error(lp_lin_iv(endog_data,
                            shock          = instrument,
                            lags_endog_lin       = 4,
@@ -202,7 +202,7 @@ context("check_input_lp_lin_iv")
   })
 
 
-  test_that("Check whether the width of the confidence bands is correctly specified", {
+  test_that("Test whether the width of the confidence bands is correctly specified", {
     testthat::expect_error(lp_lin_iv(endog_data,
                            shock          = instrument,
                            lags_endog_lin       = 4,
@@ -218,7 +218,7 @@ context("check_input_lp_lin_iv")
                  'The width of the confidence bands has to be >=0.', fixed = TRUE)
   })
 
-  test_that("Check whether exogenous data is a data.frame", {
+  test_that("Test whether exogenous data is a data.frame", {
     testthat::expect_error(lp_lin_iv(endog_data,
                            shock          = instrument,
                            lags_endog_lin       = 4,
@@ -235,7 +235,7 @@ context("check_input_lp_lin_iv")
   })
 
 
-  test_that("Check whether instrument is a data.frame", {
+  test_that("Test whether instrument is a data.frame", {
     testthat::expect_error(lp_lin_iv(endog_data,
                            shock          = instrument,
                            lags_endog_lin       = 4,
@@ -252,7 +252,7 @@ context("check_input_lp_lin_iv")
   })
 
 
-  test_that("Check whether lag length for exogenous data is given", {
+  test_that("Test whether lag length for exogenous data is given", {
     testthat::expect_error(lp_lin_iv(endog_data,
                            shock          = instrument,
                            lags_endog_lin       = 4,
@@ -268,7 +268,7 @@ context("check_input_lp_lin_iv")
                  'Please provide a lag length for the exogenous data.', fixed = TRUE)
   })
 
-  test_that("Check whether lag length and lag length criterion is given", {
+  test_that("Test whether lag length and lag length criterion is given", {
     testthat::expect_error(lp_lin_iv(endog_data,
                            shock          = instrument,
                            lags_endog_lin       = 4,
@@ -286,7 +286,7 @@ context("check_input_lp_lin_iv")
   })
 
 
-  test_that("Check that model works with automatic lag length selection", {
+  test_that("Test that model works with automatic lag length selection", {
     testthat::expect_error(lp_lin_iv(endog_data,
                            shock          = instrument,
                            lags_endog_lin = NaN,

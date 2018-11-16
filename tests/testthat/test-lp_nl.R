@@ -1,4 +1,4 @@
-context("check_input_lp_nl")
+context("lp_nl")
 
 # Load data
   endog_data <- monetary_var_data
@@ -24,7 +24,7 @@ context("check_input_lp_nl")
   confint        <- 1.96
   hor            <- 24
 
-test_that("Check whether data is a data.frame", {
+test_that("Test whether data is a data.frame", {
   endog_data   <- as.matrix(endog_data)
   testthat::expect_error(lp_nl(endog_data,
                                     lags_endog_lin   = lags_endog_lin,
@@ -43,7 +43,7 @@ test_that("Check whether data is a data.frame", {
 })
 
 
-test_that("Check whether trend is given", {
+test_that("Test whether trend is given", {
   trend   <- NULL
   testthat::expect_error(lp_nl(endog_data, lags_endog_lin   = lags_endog_lin,
                                  lags_endog_nl    = lags_endog_nl,
@@ -61,7 +61,7 @@ test_that("Check whether trend is given", {
 })
 
 
-test_that("Check whether shock_type is given", {
+test_that("Test whether shock_type is given", {
   shock_type   <- NULL
   testthat::expect_error(lp_nl(endog_data,
                                lags_endog_lin   = lags_endog_lin,
@@ -80,7 +80,7 @@ test_that("Check whether shock_type is given", {
 })
 
 
-test_that("Check whether a switching variable is given", {
+test_that("Test whether a switching variable is given", {
   switching    <- NULL
   testthat::expect_error(lp_nl(endog_data,
                                lags_endog_lin   = lags_endog_lin,
@@ -99,7 +99,7 @@ test_that("Check whether a switching variable is given", {
 })
 
 
-test_that("Check whether 'use_hp' is given", {
+test_that("Test whether 'use_hp' is given", {
   use_hp    <- NULL
   testthat::expect_error(lp_nl(endog_data,
                                lags_endog_lin   = lags_endog_lin,
@@ -118,7 +118,7 @@ test_that("Check whether 'use_hp' is given", {
 })
 
 
-test_that("Check whether lambda is given if use_hp == 1", {
+test_that("Test whether lambda is given if use_hp == 1", {
   use_hp    <- 1
   lambda       <- NULL
   testthat::expect_error(lp_nl(endog_data,
@@ -138,7 +138,7 @@ test_that("Check whether lambda is given if use_hp == 1", {
 })
 
 
-test_that("Check whether 'gamma' is given", {
+test_that("Test whether 'gamma' is given", {
    gamma        <- NULL
    testthat::expect_error(lp_nl(endog_data,
                                 lags_endog_lin   = lags_endog_lin,
@@ -156,7 +156,7 @@ test_that("Check whether 'gamma' is given", {
                                      'Please specify gamma for the transition function.', fixed = TRUE)
 })
 
-test_that("Check whether 'confint' is given", {
+test_that("Test whether 'confint' is given", {
   confint        <- NULL
   testthat::expect_error(lp_nl(endog_data,
                                lags_endog_lin   = lags_endog_lin,
@@ -175,7 +175,7 @@ test_that("Check whether 'confint' is given", {
 })
 
 
-test_that("Check whether number of horizons is given", {
+test_that("Test whether number of horizons is given", {
   hor          <- NULL
   testthat::expect_error(lp_nl(endog_data,
                                lags_endog_lin   = lags_endog_lin,
@@ -194,7 +194,7 @@ test_that("Check whether number of horizons is given", {
 })
 
 
-test_that("Check whether wrong lag length is given", {
+test_that("Test whether wrong lag length is given", {
   lags_criterion <- 'AICCd'
   testthat::expect_error(lp_nl(endog_data,
                                lags_endog_lin   = lags_endog_lin,
@@ -213,7 +213,7 @@ test_that("Check whether wrong lag length is given", {
 } )
 
 
-test_that("Check whether lag criterion AND fixed number of lags for non-linear are given", {
+test_that("Test whether lag criterion AND fixed number of lags for non-linear are given", {
   lags_endog_nl <- 1
   testthat::expect_error(lp_nl(endog_data,
                                lags_endog_lin   = lags_endog_lin,
@@ -232,7 +232,7 @@ test_that("Check whether lag criterion AND fixed number of lags for non-linear a
 } )
 
 
-test_that("Check whether lag criterion AND fixed number of lags for linear are given", {
+test_that("Test whether lag criterion AND fixed number of lags for linear are given", {
   lags_endog_lin <- 1
   testthat::expect_error(lp_nl(endog_data,
                                lags_endog_lin   = lags_endog_lin,
@@ -252,7 +252,7 @@ test_that("Check whether lag criterion AND fixed number of lags for linear are g
 
 
 
-test_that("Check whether lag criterion AND maximum number of lags are given", {
+test_that("Test whether lag criterion AND maximum number of lags are given", {
   max_lags <- NaN
   testthat::expect_error(lp_nl(endog_data,
                                lags_endog_lin   = lags_endog_lin,
@@ -271,7 +271,7 @@ test_that("Check whether lag criterion AND maximum number of lags are given", {
 } )
 
 
-test_that("Check whether values for horizons are correct", {
+test_that("Test whether values for horizons are correct", {
   hor <- -1
   testthat::expect_error(lp_nl(endog_data,
                                lags_endog_lin   = lags_endog_lin,
@@ -290,7 +290,7 @@ test_that("Check whether values for horizons are correct", {
 } )
 
 
-test_that("Check whether lags are integers", {
+test_that("Test whether lags are integers", {
   lags_endog_lin         <- 1.4
   lags_endog_nl          <- -2
   lags_criterion   <- NaN
@@ -311,7 +311,7 @@ test_that("Check whether lags are integers", {
 } )
 
 
-test_that("Check whether trend is correctly specified", {
+test_that("Test whether trend is correctly specified", {
   trend <- 12
   testthat::expect_error(lp_nl(endog_data,
                                lags_endog_lin   = lags_endog_lin,
@@ -330,7 +330,7 @@ test_that("Check whether trend is correctly specified", {
 } )
 
 
-test_that("Check shock type is correctly specified", {
+test_that("Test shock type is correctly specified", {
   shock_type <- 12
   testthat::expect_error(lp_nl(endog_data,
                                lags_endog_lin   = lags_endog_lin,
@@ -348,7 +348,7 @@ test_that("Check shock type is correctly specified", {
                'The shock_type has to be 0 = standard deviation shock or 1 = unit shock.', fixed = TRUE)
 } )
 
-test_that("Check whether width of confidence bands is correctly specified", {
+test_that("Test whether width of confidence bands is correctly specified", {
   confint <- -1
   testthat::expect_error(lp_nl(endog_data,
                                lags_endog_lin   = lags_endog_lin,
@@ -367,7 +367,7 @@ test_that("Check whether width of confidence bands is correctly specified", {
 } )
 
 
-test_that("Check whether gamma is positive", {
+test_that("Test whether gamma is positive", {
   gamma <- -1
   testthat::expect_error(lp_nl(endog_data,
                                lags_endog_lin   = lags_endog_lin,
@@ -386,7 +386,7 @@ test_that("Check whether gamma is positive", {
 } )
 
 
-test_that("Check whether use_hp is 0 or 1", {
+test_that("Test whether use_hp is 0 or 1", {
   use_hp <- - 2
   testthat::expect_error(lp_nl(endog_data,
                                lags_endog_lin   = lags_endog_lin,
@@ -404,7 +404,7 @@ test_that("Check whether use_hp is 0 or 1", {
                'Please set use_hp = 0 (do not use HP-filter), or use_hp = 1 (use HP-filter).', fixed = TRUE)
 } )
 
-test_that("Check whether maximum number of lags is positive", {
+test_that("Test whether maximum number of lags is positive", {
   max_lags <- - 2
   testthat::expect_error(lp_nl(endog_data,
                                lags_endog_lin   = lags_endog_lin,
@@ -423,7 +423,7 @@ test_that("Check whether maximum number of lags is positive", {
 } )
 
 
-test_that("Check whether whether no lag length criterion is given but maximum number of lags.", {
+test_that("Test whether whether no lag length criterion is given but maximum number of lags.", {
   lags_endog_lin       <- 3
   lags_endog_nl        <- 2
   lags_criterion <- NaN
@@ -444,7 +444,7 @@ test_that("Check whether whether no lag length criterion is given but maximum nu
                'The maximum number of lags can only be used if a lag length criterion is given.', fixed = TRUE)
 } )
 
-test_that("Check that model works when irfs are based on lag length criterion.", {
+test_that("Test that model works when irfs are based on lag length criterion.", {
   testthat::expect_error(lp_nl(endog_data,
                      lags_endog_lin   = lags_endog_lin,
                      lags_endog_nl    = lags_endog_nl,

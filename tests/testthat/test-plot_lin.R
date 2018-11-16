@@ -1,4 +1,4 @@
-context("check_plot_lin")
+context("plot_lin")
 
 # Load data
   endog_data <- interest_rules_var_data
@@ -14,7 +14,7 @@ context("check_plot_lin")
 
 
 
-test_that("Check whether list length is consistent number of endogenous variables
+test_that("Test whether list length is consistent number of endogenous variables
           for lin model",{
 
   results_lin <- lp_lin(endog_data,
@@ -50,7 +50,7 @@ test_that("Check whether list length is consistent number of endogenous variable
   instrument <- as.data.frame(ag_data$Gov[sample_start:sample_end])
 
 
-test_that("Check whether list length is consistent number of endogenous variables
+test_that("Test whether list length is consistent number of endogenous variables
           for lin_iv model", {
 
   results_lin_iv <- lp_lin_iv(endog_data,

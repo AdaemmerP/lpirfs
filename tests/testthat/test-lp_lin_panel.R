@@ -1,4 +1,4 @@
-context("check_lp_lin_panel")
+context("lp_lin_panel")
 
 
 library(dplyr)
@@ -22,7 +22,7 @@ library(dplyr)
                     ungroup()
 
 
-  test_that("Check that column names are correct", {
+  test_that("Test that column names are correct", {
   names(data_set)[3:4] <- c("cross_id", "date_id")
 
               testthat::expect_error(lp_lin_panel(data_set          = data_set,
@@ -51,7 +51,7 @@ library(dplyr)
          Please rename them.", fixed = TRUE)
     })
 
-  test_that("Check that data frame is given", {
+  test_that("Test that data frame is given", {
 
     testthat::expect_error(lp_lin_panel(data_set          = NULL,
                                         data_sample       = 'Full',
@@ -78,7 +78,7 @@ library(dplyr)
                            "You have to provide the panel data set.", fixed = TRUE)
   })
 
-  test_that("Check that name of endogenous variable is given", {
+  test_that("Test that name of endogenous variable is given", {
 
     testthat::expect_error(lp_lin_panel(data_set          = data_set,
                                         data_sample       = 'Full',
@@ -105,7 +105,7 @@ library(dplyr)
                            "You have to provide the name of the endogenous variable.", fixed = TRUE)
   })
 
-  test_that("Check that name of shock variable is given", {
+  test_that("Test that name of shock variable is given", {
 
     testthat::expect_error(lp_lin_panel(data_set          = data_set,
                                         data_sample       = 'Full',
@@ -132,7 +132,7 @@ library(dplyr)
                            "You have to provide the name of the variable to shock with.", fixed = TRUE)
   })
 
-  test_that("Check whether name of instrument variable is given", {
+  test_that("Test whether name of instrument variable is given", {
 
     testthat::expect_error(lp_lin_panel(data_set          = data_set,
                                         data_sample       = 'Full',
@@ -160,7 +160,7 @@ library(dplyr)
   })
 
 
-  test_that("Check whether panel model type is correct", {
+  test_that("Test whether panel model type is correct", {
 
     testthat::expect_error(lp_lin_panel(data_set          = data_set,
                                         data_sample       = 'Full',
@@ -188,7 +188,7 @@ library(dplyr)
            the vignette of the plm package for details.", fixed = TRUE)
   })
 
-  test_that("Check whether panel effect is correct", {
+  test_that("Test whether panel effect is correct", {
 
     testthat::expect_error(lp_lin_panel(data_set          = data_set,
                                         data_sample       = 'Full',
@@ -216,7 +216,7 @@ library(dplyr)
            See the vignette of the plm package for details.", fixed = TRUE)
   })
 
-  test_that("Check whether lag lengths for the exogenous data is given", {
+  test_that("Test whether lag lengths for the exogenous data is given", {
 
     testthat::expect_error(lp_lin_panel(data_set          = data_set,
                                         data_sample       = 'Full',
@@ -243,7 +243,7 @@ library(dplyr)
         "You have to provide the lag lengths for the exogenous data with lagged impact.", fixed = TRUE)
   })
 
-  test_that("Check whether lag lengths for the exogenous data (first differences) is given", {
+  test_that("Test whether lag lengths for the exogenous data (first differences) is given", {
 
     testthat::expect_error(lp_lin_panel(data_set          = data_set,
                                         data_sample       = 'Full',
@@ -270,7 +270,7 @@ library(dplyr)
                            "You have to provide the lag lengths for the exogenous data with lagged impact of first differences.", fixed = TRUE)
   })
 
-  test_that("Check that width of confidence bands is given", {
+  test_that("Test that width of confidence bands is given", {
 
     testthat::expect_error(lp_lin_panel(data_set          = data_set,
                                         data_sample       = 'Full',
@@ -297,7 +297,7 @@ library(dplyr)
                            'Please specify a value for the width of the confidence bands.', fixed = TRUE)
   })
 
-  test_that("Check that width of confidence bands is given", {
+  test_that("Test that width of confidence bands is given", {
 
     testthat::expect_error(lp_lin_panel(data_set          = data_set,
                                         data_sample       = 'Full',
@@ -325,7 +325,7 @@ library(dplyr)
   })
 
 
-  test_that("Check that horizon integer is correctly specified", {
+  test_that("Test that horizon integer is correctly specified", {
 
     testthat::expect_error(lp_lin_panel(data_set          = data_set,
                                         data_sample       = 'Full',
@@ -353,7 +353,7 @@ library(dplyr)
   })
 
 
-  test_that("Check that gmm options are correct", {
+  test_that("Test that gmm options are correct", {
 
     testthat::expect_error(lp_lin_panel(data_set          = data_set,
                                         data_sample       = 'Full',
@@ -383,7 +383,7 @@ library(dplyr)
                            'The effect for gmm has to be "twoways" (default) or "individual".', fixed = TRUE)
   })
 
-  test_that("Check that gmm options are correct", {
+  test_that("Test that gmm options are correct", {
 
     testthat::expect_error(lp_lin_panel(data_set          = data_set,
                                         data_sample       = 'Full',
@@ -415,7 +415,7 @@ library(dplyr)
   })
 
 
-  test_that("Check that gmm options are correct", {
+  test_that("Test that gmm options are correct", {
 
     testthat::expect_error(lp_lin_panel(data_set          = data_set,
                                         data_sample       = 'Full',
@@ -444,7 +444,7 @@ library(dplyr)
                            'If you want to estimate a gmm model, set "robust_cov = NULL".', fixed = TRUE)
   })
 
-  test_that("Check that gmm options are correct", {
+  test_that("Test that gmm options are correct", {
 
     testthat::expect_error(lp_lin_panel(data_set          = data_set,
                                         data_sample       = 'Full',
@@ -475,7 +475,7 @@ library(dplyr)
   })
 
 
-  # test_that("Check that gmm options are correct", {
+  # test_that("Test that gmm options are correct", {
   #
   #   testthat::expect_error(lp_lin_panel(data_set          = data_set,
   #                                       data_sample       = 'Full',
@@ -506,7 +506,7 @@ library(dplyr)
   #                          'The effect for gmm has to be "twoways" (default) or "individual".', fixed = TRUE)
   # })
 
-  # test_that("Check that data frame is given", {
+  # test_that("Test that data frame is given", {
   #   names(data_set)[3:4] <- c("cross_id", "date_id")
   #
   #   testthat::expect_error(lp_lin_panel(data_set          = NULL,
@@ -573,7 +573,7 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
                              effect   = "individual")
 
 
-  test_that("Check whether output coefficients from 'lp_lin_panel' coincide
+  test_that("Test whether output coefficients from 'lp_lin_panel' coincide
             with coefficients estimated by using the matrix prepared in 'lp-panel_lin'", {
 
     testthat::expect_equal(panel_results$coefficients, results_panel$reg_summaries[[1]]$coefficients[,1])
@@ -583,7 +583,7 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
   })
 
 
-  test_that("Check that model throws no error when estimating robust
+  test_that("Test that model throws no error when estimating robust
             covariance matrix", {
               cov_mat <- c('Vw', 'Vcx', 'Vct', 'Vcxt', 'vcovBK', 'vcovDC', 'vcovG', 'vcovHC', 'vcovNW', 'vcovSCC')
               # Estimate panel model
@@ -612,7 +612,7 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
                                                   NA)
             })
 
-  test_that("Check model when estimating normal multipliers", {
+  test_that("Test model when estimating normal multipliers", {
               # Estimate panel model
               testthat::expect_error(lp_lin_panel(data_set          = data_set,
                                                   data_sample       = 'Full',
@@ -640,7 +640,7 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
             })
 
 
-   test_that("Check gmm approach", {
+   test_that("Test gmm approach", {
 
      set.seed(123)
 
@@ -657,7 +657,7 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
        mutate(x_2 = rnorm(TS)) %>%
        mutate(x_3 = rnorm(TS)) %>%
        mutate(x_4 = rnorm(TS)) %>%
-       mutate(y   = 0.3*x_1 + 0.4*x_2 + 0.5*x_3 + 0.6*x_4) %>%
+       mutate(y   = 0.3*x_1 + 0.4*x_2 + 0.5*x_3 + 0.6*x_4 + rnorm(TS)) %>%
        ungroup()
 
               # Estimate panel model
