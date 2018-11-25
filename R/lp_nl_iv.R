@@ -1,8 +1,8 @@
 #' @name lp_nl_iv
 #' @title Compute nonlinear impulse responses with identified shock
 #' @description Compute nonlinear impulse responses with local projections and identified shock.
-#' The data are separated into two states via a smooth transition
-#' function as applied in Auerbach and Gorodnichenko (2012).
+#' The data can be separated into two states by a smooth transition function as applied in Auerbach and Gorodnichenko (2012),
+#' or by a simple dummy approach.
 #' @param endog_data A \link{data.frame}, containing all endogenous variables for the VAR.
 #' @param lags_endog_nl NaN or integer. NaN if lags are chosen by a lag length criterion. Integer for number of lags for \emph{endog_data}.
 #' @param shock One column \link{data.frame}, including the instrument to shock with.
@@ -30,8 +30,8 @@
 #'               Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.
 #'@param lag_switching Boolean. Use the first lag of the values of the transition function? TRUE (default) or FALSE.
 #'@param gamma Double. Positive number which is used in the transition function.
-#'@param use_logistic Boolean. Use logistic function to separate states? TRUE (default) of FALSE. If FALSE, the values of the switching variable
-#'                     have to be zero or one.
+#'@param use_logistic Boolean. Use logistic function to separate states? TRUE (default) or FALSE. If FALSE, the values of the switching variable
+#'                     have to be binary (0/1).
 #'@param use_hp Boolean. Use HP-filter? TRUE or FALSE.
 #'@param lambda Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter (if use_hp = TRUE).
 #'@param num_cores Integer. The number of cores to use for the estimation. If NULL, the function will
@@ -182,8 +182,8 @@ lp_nl_iv <- function(endog_data,
                             exog_data         = NULL,
                             lags_exog         = NULL,
                             contemp_data      = NULL,
-                            lags_criterion    = NULL,
-                            max_lags          = NULL,
+                            lags_criterion    = NaN,
+                            max_lags          = NaN,
                             trend             = NULL,
                             confint           = NULL,
                             hor               = NULL,
