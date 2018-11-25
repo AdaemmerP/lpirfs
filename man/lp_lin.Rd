@@ -63,7 +63,6 @@ Compute linear impulse responses with local projections by Jordà (2005).
 }
 \examples{
 \donttest{
-
           ## Example without exogenous variables
 
 # Load package
@@ -75,16 +74,10 @@ Compute linear impulse responses with local projections by Jordà (2005).
 # Estimate linear model
   results_lin <- lp_lin(endog_data,
                              lags_endog_lin = 4,
-                             exog_data      = NULL,
-                             lags_exog      = NULL,
-                             lags_criterion = NaN,
-                             max_lags       = NaN,
                              trend          = 0,
                              shock_type     = 1,
                              confint        = 1.96,
-                             hor            = 12,
-                             contemp_data   = NULL,
-                             num_cores      = NULL)
+                             hor            = 12)
 
 # Make plots
  linear_plots <- plot_lin(results_lin)
@@ -125,16 +118,13 @@ Compute linear impulse responses with local projections by Jordà (2005).
 # Estimate linear model
   results_lin <- lp_lin(endog_data,
                                lags_endog_lin = 4,
-                               lags_criterion = NaN,
-                               max_lags       = NaN,
                                trend          = 0,
                                shock_type     = 1,
                                confint        = 1.96,
                                hor            = 12,
                                exog_data      = exog_data,
                                lags_exog      = 4,
-                               contemp_data   = contemp_data,
-                               num_cores      = NULL)
+                               contemp_data   = contemp_data)
 
 # Make plots
  linear_plots <- plot_lin(results_lin)

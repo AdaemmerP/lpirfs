@@ -20,28 +20,31 @@ lp_nl_panel(data_set = NULL, data_sample = "Full", endog_data = NULL,
 variable denoting the cross section. The second column has to be the
 variable denoting the time section.}
 
-\item{data_sample}{Character. Use full data_sample? "Full" (default). To estimate a subset, you have to provide
+\item{data_sample}{Character or numeric. To use the full sample set value to "Full" (default). To estimate a subset, you have to provide
 the sequence of dates to use. This sequence has to be in the same format as the second column (time-section).}
 
-\item{endog_data}{Character. Name of the endogenous variable. You can only provide one endogenous variable at a time.}
+\item{endog_data}{Character. The column name of the endogenous variable. You can only provide one endogenous variable at a time.}
 
-\item{cumul_mult}{Boolean. Estimate cumulative multipliers? TRUE or FALSE. If TRUE, cumulative responses
-are estimated via: \deqn{y_(t+h) - y_(t-1)}, where h = 0,..., H-1.}
+\item{cumul_mult}{Boolean. Estimate cumulative multipliers? TRUE (default) or FALSE. If TRUE, cumulative responses
+are estimated via: \deqn{y_(t+h) - y_(t-1),} where h = 0,..., H-1.}
 
 \item{shock}{Character. The column name of the variable to shock with.}
 
 \item{diff_shock}{Boolean. Take first differences of the shock variable? TRUE (default) or FALSE.}
 
-\item{panel_model}{Character. Type of panel model. The default is "within" (fixed effects). See vignette of the plm package for options and details.}
+\item{panel_model}{Character. Type of panel model. The default is "within" (fixed effects). Other options are "random", "ht",
+"between", "pooling" or "fd". See vignette of the plm package for details.}
 
-\item{panel_effect}{Character. The effects introduced in the model: "individual", "time", "twoways",
+\item{panel_effect}{Character. The effects introduced in the model. Options are "individual" (default), "time", "twoways",
 or "nested". See the vignette of the plm-package for details.}
 
 \item{robust_cov}{NULL or Character. The character specifies the method how to estimate robust standard errors: Options are "Vw" (white), "Vcx" (clustered by group
 and arrellano method), "Vcx" (clustered by time and arrellano method), "Vctx" (clustered by group and time). For details see Miller (2017).
- The other options are "vcovBK", "vcovDC", "vcovG", "vcovHC", "vcovNW", "vcovSCC". For these options see vignette of plm package.}
+ The other options are "vcovBK", "vcovDC", "vcovG", "vcovHC", "vcovNW", "vcovSCC". For these options see vignette of plm package.
+ If "use_gmm = TRUE", this option has to be NULL.}
 
-\item{use_gmm}{Boolean. Use GMM for estimation? TRUE or FALSE (default). See vignette of plm package for details.}
+\item{use_gmm}{Boolean. Use GMM for estimation? TRUE or FALSE (default). See vignette of plm package for details.
+If TRUE, the option "robust_cov" has to be set to NULL.}
 
 \item{gmm_model}{Character. Either "onestep" (default) or "twosteps". See vignette of the plm package for details.}
 
@@ -50,19 +53,19 @@ and arrellano method), "Vcx" (clustered by time and arrellano method), "Vctx" (c
 \item{gmm_transformation}{Character. Either "d" (default) for the "difference GMM" model or "ld" for the "system GMM".
 See vignette of the plm package for details.}
 
-\item{c_exog_data}{NULL or Character. Names of exogenous variables with contemporaneous impact.}
+\item{c_exog_data}{NULL or Character. Name(s) of the exogenous variable(s) with contemporaneous impact.}
 
-\item{l_exog_data}{NULL or Character. Names of exogenous variables with lagged impact.}
+\item{l_exog_data}{NULL or Character. Name(s) of the exogenous variable(s) with lagged impact.}
 
-\item{lags_exog_data}{Integer. Lag length for the exogenous variables with lagged impact.}
+\item{lags_exog_data}{Integer. Lag length for the exogenous variable(s) with lagged impact.}
 
-\item{c_fd_exog_data}{NULL or Character. Names of exogenous variables with contemporaneous impact of first differences.}
+\item{c_fd_exog_data}{NULL or Character. Name(s) of the exogenous variable(s) with contemporaneous impact of first differences.}
 
-\item{l_fd_exog_data}{NULL or Character. Names of exogenous variables with lagged impact of first differences.}
+\item{l_fd_exog_data}{NULL or Character. Name(s) of exogenous variable(s) with lagged impact of first differences.}
 
-\item{lags_fd_exog_data}{NaN or Integer. Number of lags for variables with impact of first differences.}
+\item{lags_fd_exog_data}{NaN or Integer. Number of lags for variable(s) with impact of first differences.}
 
-\item{switching}{Character. Name of the column to use for the switching variable. If the "use_logistic = TRUE", this series can either
+\item{switching}{Character. Name of the column to use for the switching variable. If "use_logistic = TRUE", this series can either
 be decomposed by the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013) or
 directly plugged into the following smooth transition function:
 \deqn{F_{z_t} = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)}.}
@@ -70,14 +73,14 @@ The data for the two regimes are lagged by default: \cr
 Regime 1 = (1-\eqn{F(z_{t-1})})*y_{(t-p)}, \cr
 Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.}
 
-\item{use_logistic}{Boolean. Use logistic function to separate states? TRUE (default) of FALSE. If FALSE, the values of the switching variable
-have to be zero or one.}
+\item{use_logistic}{Boolean. Use logistic function to separate states? TRUE (default) or FALSE. If FALSE, the values of the switching variable
+have to be binary (0/1).}
 
-\item{use_hp}{Boolean. Use HP-filter? TRUE or FALSE (default).}
+\item{use_hp}{Boolean. Use HP-filter if "use_logistic = TRUE"? TRUE or FALSE (default).}
 
 \item{lag_switching}{Boolean. Use the first lag of the values of the transition function? TRUE (default) or FALSE.}
 
-\item{lambda}{Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter (if use_hp = TRUE).}
+\item{lambda}{Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter (if "use_hp = TRUE").}
 
 \item{gamma}{Double. Positive number which is used in the transition function.}
 
@@ -99,13 +102,14 @@ A list containing:
 
 \item{reg_summaries}{Regression output for each horizon.}
 
-\item{xy_data_sets}{Panel data sets with endogenous and exogenous variables for each horizon.}
+\item{xy_data_sets}{Data sets with endogenous and exogenous variables for each horizon.}
 
 \item{specs}{A list with data properties for the plot function.}
 }
 \description{
-This function estimates nonlinear impulse responses with local projections for panel data with an
-             identified shock.
+This function estimates nonlinear impulse responses by using local projections for panel data with an
+             identified shock. The data can be separated into two states by a smooth transition function as applied
+             in Auerbach and Gorodnichenko (2012), or by a simple dummy approach.
 }
 \examples{
 \donttest{
@@ -153,11 +157,8 @@ This function estimates nonlinear impulse responses with local projections for p
                mutate(tnmort   = tloans - tmort)               \%>\%
                mutate(nmortgdp = 100*(tnmort/gdp))             \%>\%
 
-             # Prepare instrument
-               mutate(lnarrow  = log(narrowm))                 \%>\%
-               mutate(rlnarrow = lnarrow - lcpi)               \%>\%
                dplyr::select(country, year, mortgdp, stir, ltrate, lhpy,
-                             lrgdp, lcpi, lriy, cay, nmortgdp, rlnarrow)
+                             lrgdp, lcpi, lriy, cay, nmortgdp)
 
 
 # Use data_sample from 1870 to 2013 and exclude WWI and WWII
@@ -185,8 +186,6 @@ results_panel <-  lp_nl_panel(data_set           = data_set,
                                gamma             = 10,
 
                                c_exog_data       = "cay",
-                               l_exog_data       = NULL,
-                               lags_exog_data    = NULL,
                                c_fd_exog_data    = colnames(data_set)[c(seq(4,9),11)],
                                l_fd_exog_data    = colnames(data_set)[c(seq(3,9),11)],
                                lags_fd_exog_data = 2,
@@ -229,13 +228,10 @@ results_panel <-  lp_nl_panel(data_set           = data_set,
 
                                shock             = "stir",
                                diff_shock        = TRUE,
-                               panel_model       = "within",
-                               panel_effect      = "individual",
-                               robust_cov        = NULL,
 
-                               use_gmm         = TRUE,
-                               gmm_model         = "onestep",
-                               gmm_effect        = "twoways",
+                               use_gmm            = TRUE,
+                               gmm_model          = "onestep",
+                               gmm_effect         = "twoways",
                                gmm_transformation = "ld",
 
                                switching         = "lrgdp",
@@ -244,12 +240,8 @@ results_panel <-  lp_nl_panel(data_set           = data_set,
                                lambda            = 6.25,
                                gamma             = 10,
 
-                               c_exog_data       = "cay",
-                               l_exog_data       = NULL,
-                               lags_exog_data    = NULL,
-                               c_fd_exog_data    = colnames(data_set)[c(seq(4,9),11)],
-                               l_fd_exog_data    = colnames(data_set)[c(seq(3,9),11)],
-                               lags_fd_exog_data = 2,
+                               l_exog_data       = "mortgdp",
+                               lags_exog_data    = 1,
 
                                confint           = 1.67,
                                hor               = 5)

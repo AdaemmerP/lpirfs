@@ -5,34 +5,35 @@
 #' @param data_set A \link{data.frame}, containing the panel data set. The first column has to be the
 #'                 variable denoting the cross section. The second column has to be the
 #'                 variable denoting the time section.
-#' @param data_sample   Character. Use full data_sample? "Full" (default). To estimate a subset, you have to provide
+#' @param data_sample  Character or numeric. To use the full sample set value to "Full" (default). To estimate a subset, you have to provide
 #'                 the sequence of dates to use. This sequence has to be in the same format as the second column (time-section).
-#' @param endog_data Character. Name of the endogenous variable. You can only provide one endogenous variable at a time.
-#' @param cumul_mult Boolean. Estimate cumulative multipliers? TRUE or FALSE. If TRUE, cumulative responses
-#'                   are estimated via: \deqn{y_(t+h) - y_(t-1)}, where h = 0,..., H-1.
+#' @param endog_data Character. The column name of the endogenous variable. You can only provide one endogenous variable at a time.
+#' @param cumul_mult Boolean. Estimate cumulative multipliers? TRUE (default) or FALSE. If TRUE, cumulative responses
+#'                   are estimated via: \deqn{y_(t+h) - y_(t-1),} where h = 0,..., H-1.
 #' @param shock      Character. The column name of the variable to shock with.
 #' @param diff_shock Boolean. Take first differences of the shock variable? TRUE (default) or FALSE.
 #' @param iv_reg     Boolean. Use instrument variable approach? TRUE or FALSE.
 #' @param instrum    NULL or Character. The name(s) of the instrument variable(s) if iv_reg = TRUE.
-#' @param panel_model Character. Type of panel model. The default is "within" (fixed effects). See vignette of the plm package for options and details.
-#' @param panel_effect Character. The effects introduced in the model: "individual", "time", "twoways",
+#' @param panel_model Character. Type of panel model. The default is "within" (fixed effects). Other options are "random", "ht",
+#'                    "between", "pooling" or "fd". See vignette of the plm package for details.
+#' @param panel_effect Character. The effects introduced in the model. Options are "individual" (default), "time", "twoways",
 #' or "nested". See the vignette of the plm-package for details.
-#'
+#' @param robust_cov NULL or Character. The character specifies the method how to estimate robust standard errors: Options are "Vw" (white), "Vcx" (clustered by group
+#'                   and arrellano method), "Vcx" (clustered by time and arrellano method), "Vctx" (clustered by group and time). For details see Miller (2017).
+#'                    The other options are "vcovBK", "vcovDC", "vcovG", "vcovHC", "vcovNW", "vcovSCC". For these options see vignette of plm package.
+#'                    If "use_gmm = TRUE", this option has to be NULL.
 #' @param use_gmm  Boolean. Use GMM for estimation? TRUE or FALSE (default). See vignette of plm package for details.
+#'                 If TRUE, the option "robust_cov" has to be set to NULL.
 #' @param gmm_effect Character. The effects introduced in the model: "twoways" (default) or "individual". See vignette of the plm-package for details.
 #' @param gmm_model Character. Either "onestep" (default) or "twosteps". See vignette of the plm package for details.
 #' @param gmm_transformation Character. Either "d" (default) for the "difference GMM" model or "ld" for the "system GMM".
 #' See vignette of the plm package for details.
-#'
-#' @param robust_cov NULL or Character. The character specifies the method how to estimate robust standard errors: Options are "Vw" (white), "Vcx" (clustered by group
-#'                   and arrellano method), "Vcx" (clustered by time and arrellano method), "Vctx" (clustered by group and time). For details see Miller (2017).
-#'                    The other options are "vcovBK", "vcovDC", "vcovG", "vcovHC", "vcovNW", "vcovSCC". For these options see vignette of plm package.
-#' @param c_exog_data NULL or Character. Names of exogenous variables with contemporaneous impact.
-#' @param l_exog_data NULL or Character. Names of exogenous variables with lagged impact.
-#' @param lags_exog_data Integer. Lag length for the exogenous variables with lagged impact.
-#' @param c_fd_exog_data NULL or Character. Names of exogenous variables with contemporaneous impact of first differences.
-#' @param l_fd_exog_data NULL or Character. Names of exogenous variables with lagged impact of first differences.
-#' @param lags_fd_exog_data NaN or Integer. Number of lags for variables with impact of first differences.
+#' @param c_exog_data NULL or Character. Name(s) of the exogenous variable(s) with contemporaneous impact.
+#' @param l_exog_data NULL or Character. Name(s) of the exogenous variable(s) with lagged impact.
+#' @param lags_exog_data Integer. Lag length for the exogenous variable(s) with lagged impact.
+#' @param c_fd_exog_data NULL or Character. Name(s) of the exogenous variable(s) with contemporaneous impact of first differences.
+#' @param l_fd_exog_data NULL or Character. Name(s) of exogenous variable(s) with lagged impact of first differences.
+#' @param lags_fd_exog_data NaN or Integer. Number of lags for variable(s) with impact of first differences.
 #' @param confint Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.
 #' @param hor Integer. Number of horizons for impulse responses.
 #'
@@ -51,7 +52,7 @@
 #'
 #'\item{reg_summaries}{Regression output for each horizon.}
 #'
-#'\item{xy_data_sets}{Panel data sets with endogenous and exogenous variables for each horizon.}
+#'\item{xy_data_sets}{Data sets with endogenous and exogenous variables for each horizon.}
 #'
 #'\item{specs}{A list with data properties for the plot function.}
 #'
@@ -123,9 +124,8 @@
 #'                mutate(cay      = 100*(ca/gdp))                 %>%
 #'                mutate(tnmort   = tloans - tmort)               %>%
 #'                mutate(nmortgdp = 100*(tnmort/gdp))             %>%
-#'
-#'                dplyr::select(country, year, mortgdp, stir, ltrate, lhpy,
-#'                              lrgdp, lcpi, lriy, cay, nmortgdp)
+#'                dplyr::select(country, year, mortgdp, stir, ltrate,
+#'                              lhpy, lrgdp, lcpi, lriy, cay, nmortgdp)
 #'
 #'
 #'# Use data_sample from 1870 to 2013 and exclude WWI and WWII
@@ -142,8 +142,6 @@
 #'
 #'                                shock             = "stir",
 #'                                diff_shock        = TRUE,
-#'                                iv_reg            = FALSE,
-#'                                instrum           = NULL,
 #'                                panel_model       = "within",
 #'                                panel_effect      = "individual",
 #'                                robust_cov        = "vcovSCC",
@@ -208,34 +206,26 @@
 #' # This example gives a warning at each iteration. The data set is not well suited for
 #' # GMM as GMM is based on N-asymptotics and the data set only contains 27 countries
 #'
-#' results_panel <-  lp_lin_panel(data_set         = data_set,
-#'                               data_sample       = data_sample,
-#'                               endog_data        = "mortgdp",
-#'                               cumul_mult        = TRUE,
+#' results_panel <-  lp_lin_panel(data_set          = data_set,
+#'                               data_sample        = data_sample,
+#'                               endog_data         = "mortgdp",
+#'                               cumul_mult         = TRUE,
 #'
-#'                               shock             = "stir",
-#'                               diff_shock        = TRUE,
-#'                               iv_reg            = FALSE,
-#'                               instrum           = NULL,
-#'                               panel_model       = NULL,
-#'                               panel_effect      = NULL,
-#'                               robust_cov        = NULL,
+#'                               shock              = "stir",
+#'                               diff_shock         = TRUE,
 #'
-#'                               use_gmm          = TRUE,
+#'                               use_gmm            = TRUE,
 #'                               gmm_model          = "onestep",
 #'                               gmm_effect         = "twoways",
 #'                               gmm_transformation = "ld",
 #'
+#'                               l_exog_data        = "mortgdp",
+#'                               lags_exog_data     = 2,
+#'                               l_fd_exog_data     = colnames(data_set)[c(4, 6)],
+#'                               lags_fd_exog_data  = 1,
 #'
-#'                               c_exog_data       = NULL,
-#'                               l_exog_data       = "mortgdp",
-#'                               lags_exog_data    = 2,
-#'                               c_fd_exog_data    = NULL,
-#'                               l_fd_exog_data    = colnames(data_set)[c(4, 6)],
-#'                               lags_fd_exog_data = 1,
-#'
-#'                               confint           = 1.67,
-#'                               hor               = 5)
+#'                               confint            = 1.67,
+#'                               hor                = 5)
 #'
 #' # Create and plot irfs
 #' plot_lin_panel <- plot_lin(results_panel)
@@ -259,9 +249,9 @@ lp_lin_panel <- function(
                     panel_effect      = "individual",
                     robust_cov        = NULL,
 
-                    use_gmm         = FALSE,
-                    gmm_model         = "onestep",
-                    gmm_effect        = "twoways",
+                    use_gmm            = FALSE,
+                    gmm_model          = "onestep",
+                    gmm_effect         = "twoways",
                     gmm_transformation = "d",
 
                     c_exog_data       = NULL,

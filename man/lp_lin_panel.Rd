@@ -19,13 +19,13 @@ lp_lin_panel(data_set = NULL, data_sample = "Full",
 variable denoting the cross section. The second column has to be the
 variable denoting the time section.}
 
-\item{data_sample}{Character. Use full data_sample? "Full" (default). To estimate a subset, you have to provide
+\item{data_sample}{Character or numeric. To use the full sample set value to "Full" (default). To estimate a subset, you have to provide
 the sequence of dates to use. This sequence has to be in the same format as the second column (time-section).}
 
-\item{endog_data}{Character. Name of the endogenous variable. You can only provide one endogenous variable at a time.}
+\item{endog_data}{Character. The column name of the endogenous variable. You can only provide one endogenous variable at a time.}
 
-\item{cumul_mult}{Boolean. Estimate cumulative multipliers? TRUE or FALSE. If TRUE, cumulative responses
-are estimated via: \deqn{y_(t+h) - y_(t-1)}, where h = 0,..., H-1.}
+\item{cumul_mult}{Boolean. Estimate cumulative multipliers? TRUE (default) or FALSE. If TRUE, cumulative responses
+are estimated via: \deqn{y_(t+h) - y_(t-1),} where h = 0,..., H-1.}
 
 \item{shock}{Character. The column name of the variable to shock with.}
 
@@ -35,16 +35,19 @@ are estimated via: \deqn{y_(t+h) - y_(t-1)}, where h = 0,..., H-1.}
 
 \item{instrum}{NULL or Character. The name(s) of the instrument variable(s) if iv_reg = TRUE.}
 
-\item{panel_model}{Character. Type of panel model. The default is "within" (fixed effects). See vignette of the plm package for options and details.}
+\item{panel_model}{Character. Type of panel model. The default is "within" (fixed effects). Other options are "random", "ht",
+"between", "pooling" or "fd". See vignette of the plm package for details.}
 
-\item{panel_effect}{Character. The effects introduced in the model: "individual", "time", "twoways",
+\item{panel_effect}{Character. The effects introduced in the model. Options are "individual" (default), "time", "twoways",
 or "nested". See the vignette of the plm-package for details.}
 
 \item{robust_cov}{NULL or Character. The character specifies the method how to estimate robust standard errors: Options are "Vw" (white), "Vcx" (clustered by group
 and arrellano method), "Vcx" (clustered by time and arrellano method), "Vctx" (clustered by group and time). For details see Miller (2017).
- The other options are "vcovBK", "vcovDC", "vcovG", "vcovHC", "vcovNW", "vcovSCC". For these options see vignette of plm package.}
+ The other options are "vcovBK", "vcovDC", "vcovG", "vcovHC", "vcovNW", "vcovSCC". For these options see vignette of plm package.
+ If "use_gmm = TRUE", this option has to be NULL.}
 
-\item{use_gmm}{Boolean. Use GMM for estimation? TRUE or FALSE (default). See vignette of plm package for details.}
+\item{use_gmm}{Boolean. Use GMM for estimation? TRUE or FALSE (default). See vignette of plm package for details.
+If TRUE, the option "robust_cov" has to be set to NULL.}
 
 \item{gmm_model}{Character. Either "onestep" (default) or "twosteps". See vignette of the plm package for details.}
 
@@ -53,17 +56,17 @@ and arrellano method), "Vcx" (clustered by time and arrellano method), "Vctx" (c
 \item{gmm_transformation}{Character. Either "d" (default) for the "difference GMM" model or "ld" for the "system GMM".
 See vignette of the plm package for details.}
 
-\item{c_exog_data}{NULL or Character. Names of exogenous variables with contemporaneous impact.}
+\item{c_exog_data}{NULL or Character. Name(s) of the exogenous variable(s) with contemporaneous impact.}
 
-\item{l_exog_data}{NULL or Character. Names of exogenous variables with lagged impact.}
+\item{l_exog_data}{NULL or Character. Name(s) of the exogenous variable(s) with lagged impact.}
 
-\item{lags_exog_data}{Integer. Lag length for the exogenous variables with lagged impact.}
+\item{lags_exog_data}{Integer. Lag length for the exogenous variable(s) with lagged impact.}
 
-\item{c_fd_exog_data}{NULL or Character. Names of exogenous variables with contemporaneous impact of first differences.}
+\item{c_fd_exog_data}{NULL or Character. Name(s) of the exogenous variable(s) with contemporaneous impact of first differences.}
 
-\item{l_fd_exog_data}{NULL or Character. Names of exogenous variables with lagged impact of first differences.}
+\item{l_fd_exog_data}{NULL or Character. Name(s) of exogenous variable(s) with lagged impact of first differences.}
 
-\item{lags_fd_exog_data}{NaN or Integer. Number of lags for variables with impact of first differences.}
+\item{lags_fd_exog_data}{NaN or Integer. Number of lags for variable(s) with impact of first differences.}
 
 \item{confint}{Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.}
 
@@ -83,7 +86,7 @@ A list containing:
 
 \item{reg_summaries}{Regression output for each horizon.}
 
-\item{xy_data_sets}{Panel data sets with endogenous and exogenous variables for each horizon.}
+\item{xy_data_sets}{Data sets with endogenous and exogenous variables for each horizon.}
 
 \item{specs}{A list with data properties for the plot function.}
 }
@@ -136,9 +139,8 @@ This function estimates impulse responses with local projections for panel data,
                mutate(cay      = 100*(ca/gdp))                 \%>\%
                mutate(tnmort   = tloans - tmort)               \%>\%
                mutate(nmortgdp = 100*(tnmort/gdp))             \%>\%
-
-               dplyr::select(country, year, mortgdp, stir, ltrate, lhpy,
-                             lrgdp, lcpi, lriy, cay, nmortgdp)
+               dplyr::select(country, year, mortgdp, stir, ltrate,
+                             lhpy, lrgdp, lcpi, lriy, cay, nmortgdp)
 
 
 # Use data_sample from 1870 to 2013 and exclude WWI and WWII
@@ -155,8 +157,6 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
 
                                shock             = "stir",
                                diff_shock        = TRUE,
-                               iv_reg            = FALSE,
-                               instrum           = NULL,
                                panel_model       = "within",
                                panel_effect      = "individual",
                                robust_cov        = "vcovSCC",
@@ -221,34 +221,26 @@ data_sample <-   seq(2000, 2012)
 # This example gives a warning at each iteration. The data set is not well suited for
 # GMM as GMM is based on N-asymptotics and the data set only contains 27 countries
 
-results_panel <-  lp_lin_panel(data_set         = data_set,
-                              data_sample       = data_sample,
-                              endog_data        = "mortgdp",
-                              cumul_mult        = TRUE,
+results_panel <-  lp_lin_panel(data_set          = data_set,
+                              data_sample        = data_sample,
+                              endog_data         = "mortgdp",
+                              cumul_mult         = TRUE,
 
-                              shock             = "stir",
-                              diff_shock        = TRUE,
-                              iv_reg            = FALSE,
-                              instrum           = NULL,
-                              panel_model       = NULL,
-                              panel_effect      = NULL,
-                              robust_cov        = NULL,
+                              shock              = "stir",
+                              diff_shock         = TRUE,
 
-                              use_gmm          = TRUE,
+                              use_gmm            = TRUE,
                               gmm_model          = "onestep",
                               gmm_effect         = "twoways",
                               gmm_transformation = "ld",
 
+                              l_exog_data        = "mortgdp",
+                              lags_exog_data     = 2,
+                              l_fd_exog_data     = colnames(data_set)[c(4, 6)],
+                              lags_fd_exog_data  = 1,
 
-                              c_exog_data       = NULL,
-                              l_exog_data       = "mortgdp",
-                              lags_exog_data    = 2,
-                              c_fd_exog_data    = NULL,
-                              l_fd_exog_data    = colnames(data_set)[c(4, 6)],
-                              lags_fd_exog_data = 1,
-
-                              confint           = 1.67,
-                              hor               = 5)
+                              confint            = 1.67,
+                              hor                = 5)
 
 # Create and plot irfs
 plot_lin_panel <- plot_lin(results_panel)

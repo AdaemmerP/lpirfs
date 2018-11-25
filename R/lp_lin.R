@@ -59,7 +59,6 @@
 #' @importFrom foreach foreach
 #' @examples
 #'\donttest{
-#'
 #'           ## Example without exogenous variables
 #'
 #'# Load package
@@ -71,16 +70,10 @@
 #'# Estimate linear model
 #'   results_lin <- lp_lin(endog_data,
 #'                              lags_endog_lin = 4,
-#'                              exog_data      = NULL,
-#'                              lags_exog      = NULL,
-#'                              lags_criterion = NaN,
-#'                              max_lags       = NaN,
 #'                              trend          = 0,
 #'                              shock_type     = 1,
 #'                              confint        = 1.96,
-#'                              hor            = 12,
-#'                              contemp_data   = NULL,
-#'                              num_cores      = NULL)
+#'                              hor            = 12)
 #'
 #'# Make plots
 #'  linear_plots <- plot_lin(results_lin)
@@ -121,16 +114,13 @@
 #'# Estimate linear model
 #'   results_lin <- lp_lin(endog_data,
 #'                                lags_endog_lin = 4,
-#'                                lags_criterion = NaN,
-#'                                max_lags       = NaN,
 #'                                trend          = 0,
 #'                                shock_type     = 1,
 #'                                confint        = 1.96,
 #'                                hor            = 12,
 #'                                exog_data      = exog_data,
 #'                                lags_exog      = 4,
-#'                                contemp_data   = contemp_data,
-#'                                num_cores      = NULL)
+#'                                contemp_data   = contemp_data)
 #'
 #'# Make plots
 #'  linear_plots <- plot_lin(results_lin)
@@ -183,16 +173,6 @@ lp_lin <- function(endog_data,
   if(!(is.data.frame(endog_data))){
     stop('The data has to be a data.frame().')
   }
-
-  # Give message when no linear model is provided
-    if(is.null(exog_data)){
-      message('You estimate the model without exogenous data.')
-    }
-
-    # Give message when no contemporaneous data is provided
-    if(is.null(contemp_data)){
-      message('You estimate the model without exogenous data with contemporaneous impact.')
-    }
 
   # Check whether 'trend' is given
   if(is.null(specs$trend)){

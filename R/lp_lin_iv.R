@@ -100,15 +100,9 @@
 #'  results_lin_iv <- lp_lin_iv(endog_data,
 #'                                lags_endog_lin = 4,
 #'                                shock          = shock,
-#'                                exog_data      = NULL,
-#'                                lags_exog      = NULL,
-#'                                contemp_data   = NULL,
-#'                                lags_criterion = NaN,
-#'                                max_lags       = NaN,
 #'                                trend          = 0,
 #'                                confint        = 1.96,
-#'                                hor            = 20,
-#'                                num_cores      = NULL)
+#'                                hor            = 20)
 #'
 #'
 #'# Make and save plots
@@ -150,13 +144,9 @@
 #'                                shock          = shock,
 #'                                exog_data      = exog_data,
 #'                                lags_exog      = 2,
-#'                                contemp_data   = NULL,
-#'                                lags_criterion = NaN,
-#'                                max_lags       = NaN,
 #'                                trend          = 0,
 #'                                confint        = 1.96,
-#'                                hor            = 20,
-#'                                num_cores      = NULL)
+#'                                hor            = 20)
 #'
 #'
 #'# Make and save plots
@@ -192,15 +182,9 @@
 #'                             shock          = shock,
 #'                             instrum        = instrum,
 #'                             twosls         = TRUE,
-#'                             exog_data      = NULL,
-#'                             lags_exog      = NULL,
-#'                             contemp_data   = NULL,
-#'                             lags_criterion = NaN,
-#'                             max_lags       = NaN,
 #'                             trend          = 0,
 #'                             confint        = 1.96,
-#'                             hor            = 20,
-#'                             num_cores      = NULL)
+#'                             hor            = 20)
 #'
 #'# Create all plots
 #'  iv_lin_plots    <- plot_lin(results_lin_iv)
@@ -320,22 +304,6 @@ lp_lin_iv <- function(endog_data,
     stop('Please specify at least one instrument to use for 2SLS.')
   }
 
-
-  # Give message when no exogenous data is provided
-  if(!is.null(exog_data)){
-    message('You estimate the model without exogenous data.')
-  }
-
-  # Give message when no contemporaneous data is provided
-  if(is.null(contemp_data)){
-    message('You estimate the model without exogenous data with contemporaneous impact.')
-  }
-
-
-  # Give message when regression is done via 2SLS
-  if(isTRUE(twosls)){
-    message('Coefficients and confidence bands are estimated via 2SLS.')
-  }
 
 
 

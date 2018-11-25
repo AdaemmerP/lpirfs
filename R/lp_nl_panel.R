@@ -1,10 +1,11 @@
 #' @name lp_nl_panel
 #' @title Compute nonlinear impulse responses for panel data
-#' @description This function estimates nonlinear impulse responses with local projections for panel data with an
-#'              identified shock.
+#' @description This function estimates nonlinear impulse responses by using local projections for panel data with an
+#'              identified shock. The data can be separated into two states by a smooth transition function as applied
+#'              in Auerbach and Gorodnichenko (2012), or by a simple dummy approach.
 #' @inheritParams lp_lin_panel
 #'
-#' @param switching Character. Name of the column to use for the switching variable. If the "use_logistic = TRUE", this series can either
+#' @param switching Character. Name of the column to use for the switching variable. If "use_logistic = TRUE", this series can either
 #'               be decomposed by the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013) or
 #'               directly plugged into the following smooth transition function:
 #'               \deqn{F_{z_t} = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)}.}
@@ -13,10 +14,10 @@
 #'               Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.
 #' @param lag_switching Boolean. Use the first lag of the values of the transition function? TRUE (default) or FALSE.
 #' @param gamma Double. Positive number which is used in the transition function.
-#' @param use_logistic Boolean. Use logistic function to separate states? TRUE (default) of FALSE. If FALSE, the values of the switching variable
-#'                     have to be zero or one.
-#' @param use_hp Boolean. Use HP-filter? TRUE or FALSE (default).
-#' @param lambda Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter (if use_hp = TRUE).
+#' @param use_logistic Boolean. Use logistic function to separate states? TRUE (default) or FALSE. If FALSE, the values of the switching variable
+#'                     have to be binary (0/1).
+#' @param use_hp Boolean. Use HP-filter if "use_logistic = TRUE"? TRUE or FALSE (default).
+#' @param lambda Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter (if "use_hp = TRUE").
 #'
 #' @author Philipp Adämmer
 #'
@@ -33,7 +34,7 @@
 #'
 #'\item{reg_summaries}{Regression output for each horizon.}
 #'
-#'\item{xy_data_sets}{Panel data sets with endogenous and exogenous variables for each horizon.}
+#'\item{xy_data_sets}{Data sets with endogenous and exogenous variables for each horizon.}
 #'
 #'\item{specs}{A list with data properties for the plot function.}
 #'
@@ -101,11 +102,8 @@
 #'                mutate(tnmort   = tloans - tmort)               %>%
 #'                mutate(nmortgdp = 100*(tnmort/gdp))             %>%
 #'
-#'              # Prepare instrument
-#'                mutate(lnarrow  = log(narrowm))                 %>%
-#'                mutate(rlnarrow = lnarrow - lcpi)               %>%
 #'                dplyr::select(country, year, mortgdp, stir, ltrate, lhpy,
-#'                              lrgdp, lcpi, lriy, cay, nmortgdp, rlnarrow)
+#'                              lrgdp, lcpi, lriy, cay, nmortgdp)
 #'
 #'
 #'# Use data_sample from 1870 to 2013 and exclude WWI and WWII
@@ -133,8 +131,6 @@
 #'                                gamma             = 10,
 #'
 #'                                c_exog_data       = "cay",
-#'                                l_exog_data       = NULL,
-#'                                lags_exog_data    = NULL,
 #'                                c_fd_exog_data    = colnames(data_set)[c(seq(4,9),11)],
 #'                                l_fd_exog_data    = colnames(data_set)[c(seq(3,9),11)],
 #'                                lags_fd_exog_data = 2,
@@ -177,13 +173,10 @@
 #'
 #'                                shock             = "stir",
 #'                                diff_shock        = TRUE,
-#'                                panel_model       = "within",
-#'                                panel_effect      = "individual",
-#'                                robust_cov        = NULL,
 #'
-#'                                use_gmm         = TRUE,
-#'                                gmm_model         = "onestep",
-#'                                gmm_effect        = "twoways",
+#'                                use_gmm            = TRUE,
+#'                                gmm_model          = "onestep",
+#'                                gmm_effect         = "twoways",
 #'                                gmm_transformation = "ld",
 #'
 #'                                switching         = "lrgdp",
@@ -192,12 +185,8 @@
 #'                                lambda            = 6.25,
 #'                                gamma             = 10,
 #'
-#'                                c_exog_data       = "cay",
-#'                                l_exog_data       = NULL,
-#'                                lags_exog_data    = NULL,
-#'                                c_fd_exog_data    = colnames(data_set)[c(seq(4,9),11)],
-#'                                l_fd_exog_data    = colnames(data_set)[c(seq(3,9),11)],
-#'                                lags_fd_exog_data = 2,
+#'                                l_exog_data       = "mortgdp",
+#'                                lags_exog_data    = 1,
 #'
 #'                                confint           = 1.67,
 #'                                hor               = 5)

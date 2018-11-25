@@ -44,8 +44,8 @@ Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.}
 
 \item{lag_switching}{Boolean. Use the first lag of the values of the transition function? TRUE (default) or FALSE.}
 
-\item{use_logistic}{Boolean. Use logistic function to separate states? TRUE (default) of FALSE. If FALSE, the values of the switching variable
-have to be zero or one.}
+\item{use_logistic}{Boolean. Use logistic function to separate states? TRUE (default) or FALSE. If FALSE, the values of the switching variable
+have to be binary (0/1).}
 
 \item{use_hp}{Boolean. Use HP-filter? TRUE or FALSE.}
 
@@ -100,11 +100,11 @@ A list containing:
 }
 \description{
 Compute nonlinear impulse responses with local projections by Jordà (2005). The
-data are separated into two states via a smooth transition function as applied in Auerbach and Gorodnichenko (2012).
+data can be separated into two states by a smooth transition function as applied in Auerbach and Gorodnichenko (2012),
+or by a simple dummy approach.
 }
 \examples{
 \donttest{
-
                   ## Example without exogenous variables ##
 
 # Load package
@@ -121,8 +121,6 @@ data are separated into two states via a smooth transition function as applied i
   results_nl    <- lp_nl(endog_data,
                                 lags_endog_lin  = 4,
                                 lags_endog_nl   = 3,
-                                lags_criterion  = NaN,
-                                max_lags        = NaN,
                                 trend           = 0,
                                 shock_type      = 1,
                                 confint         = 1.96,
@@ -130,11 +128,7 @@ data are separated into two states via a smooth transition function as applied i
                                 switching       = switching_data,
                                 use_hp          = TRUE,
                                 lambda          = 1600,
-                                gamma           = 3,
-                                exog_data       = NULL,
-                                lags_exog       = NULL,
-                                contemp_data    = NULL,
-                                num_cores       = NULL)
+                                gamma           = 3)
 
 # Make and save all plots
   nl_plots <- plot_nl(results_nl)
@@ -178,8 +172,6 @@ data are separated into two states via a smooth transition function as applied i
  results_nl <- lp_nl(endog_data,
                           lags_endog_lin  = 4,
                           lags_endog_nl   = 3,
-                          lags_criterion  = NaN,
-                          max_lags        = NaN,
                           trend           = 0,
                           shock_type      = 1,
                           confint         = 1.96,
@@ -192,9 +184,7 @@ data are separated into two states via a smooth transition function as applied i
                                                   # Monthly data   = 129 600
                           gamma           = 3,
                           exog_data       = exog_data,
-                          lags_exog       = 3,
-                          contemp_data    = NULL,
-                          num_cores       = NULL)
+                          lags_exog       = 3)
 
 # Make and save all plots
   nl_plots <- plot_nl(results_nl)

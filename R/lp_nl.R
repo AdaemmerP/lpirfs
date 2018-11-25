@@ -1,7 +1,8 @@
 #' @name lp_nl
 #' @title Compute nonlinear impulse responses
 #' @description Compute nonlinear impulse responses with local projections by Jordà (2005). The
-#' data are separated into two states via a smooth transition function as applied in Auerbach and Gorodnichenko (2012).
+#' data can be separated into two states by a smooth transition function as applied in Auerbach and Gorodnichenko (2012),
+#' or by a simple dummy approach.
 #'
 #' @param endog_data A \link{data.frame}, containing all endogenous variables for the VAR. The Cholesky decomposition is based on the
 #'                   column order.
@@ -25,8 +26,8 @@
 #'               Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.
 #'@param lag_switching Boolean. Use the first lag of the values of the transition function? TRUE (default) or FALSE.
 #'@param gamma Double. Positive number which is used in the transition function.
-#'@param use_logistic Boolean. Use logistic function to separate states? TRUE (default) of FALSE. If FALSE, the values of the switching variable
-#'                     have to be zero or one.
+#'@param use_logistic Boolean. Use logistic function to separate states? TRUE (default) or FALSE. If FALSE, the values of the switching variable
+#'                     have to be binary (0/1).
 #'@param use_hp Boolean. Use HP-filter? TRUE or FALSE.
 #'@param lambda Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter (if use_hp = TRUE).
 #'@param exog_data A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
@@ -102,7 +103,6 @@
 #' @import foreach
 #' @examples
 #'\donttest{
-#'
 #'                   ## Example without exogenous variables ##
 #'
 #'# Load package
@@ -119,8 +119,6 @@
 #'   results_nl    <- lp_nl(endog_data,
 #'                                 lags_endog_lin  = 4,
 #'                                 lags_endog_nl   = 3,
-#'                                 lags_criterion  = NaN,
-#'                                 max_lags        = NaN,
 #'                                 trend           = 0,
 #'                                 shock_type      = 1,
 #'                                 confint         = 1.96,
@@ -128,11 +126,7 @@
 #'                                 switching       = switching_data,
 #'                                 use_hp          = TRUE,
 #'                                 lambda          = 1600,
-#'                                 gamma           = 3,
-#'                                 exog_data       = NULL,
-#'                                 lags_exog       = NULL,
-#'                                 contemp_data    = NULL,
-#'                                 num_cores       = NULL)
+#'                                 gamma           = 3)
 #'
 #'# Make and save all plots
 #'   nl_plots <- plot_nl(results_nl)
@@ -176,8 +170,6 @@
 #'  results_nl <- lp_nl(endog_data,
 #'                           lags_endog_lin  = 4,
 #'                           lags_endog_nl   = 3,
-#'                           lags_criterion  = NaN,
-#'                           max_lags        = NaN,
 #'                           trend           = 0,
 #'                           shock_type      = 1,
 #'                           confint         = 1.96,
@@ -190,9 +182,7 @@
 #'                                                   # Monthly data   = 129 600
 #'                           gamma           = 3,
 #'                           exog_data       = exog_data,
-#'                           lags_exog       = 3,
-#'                           contemp_data    = NULL,
-#'                           num_cores       = NULL)
+#'                           lags_exog       = 3)
 #'
 #'# Make and save all plots
 #'   nl_plots <- plot_nl(results_nl)

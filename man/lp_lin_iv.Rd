@@ -93,15 +93,9 @@ Compute linear impulse responses with identified shock and/or with 2SLS.
  results_lin_iv <- lp_lin_iv(endog_data,
                                lags_endog_lin = 4,
                                shock          = shock,
-                               exog_data      = NULL,
-                               lags_exog      = NULL,
-                               contemp_data   = NULL,
-                               lags_criterion = NaN,
-                               max_lags       = NaN,
                                trend          = 0,
                                confint        = 1.96,
-                               hor            = 20,
-                               num_cores      = NULL)
+                               hor            = 20)
 
 
 # Make and save plots
@@ -143,13 +137,9 @@ Compute linear impulse responses with identified shock and/or with 2SLS.
                                shock          = shock,
                                exog_data      = exog_data,
                                lags_exog      = 2,
-                               contemp_data   = NULL,
-                               lags_criterion = NaN,
-                               max_lags       = NaN,
                                trend          = 0,
                                confint        = 1.96,
-                               hor            = 20,
-                               num_cores      = NULL)
+                               hor            = 20)
 
 
 # Make and save plots
@@ -185,15 +175,9 @@ Compute linear impulse responses with identified shock and/or with 2SLS.
                             shock          = shock,
                             instrum        = instrum,
                             twosls         = TRUE,
-                            exog_data      = NULL,
-                            lags_exog      = NULL,
-                            contemp_data   = NULL,
-                            lags_criterion = NaN,
-                            max_lags       = NaN,
                             trend          = 0,
                             confint        = 1.96,
-                            hor            = 20,
-                            num_cores      = NULL)
+                            hor            = 20)
 
 # Create all plots
  iv_lin_plots    <- plot_lin(results_lin_iv)
