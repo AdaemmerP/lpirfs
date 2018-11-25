@@ -2,9 +2,10 @@
 
 * Added two functions to estimate linear and nonlinear irfs for panel data.
 
-* Added an option to choose whether to use lagged values of the switching values. 
+* Added an option whether to use lagged values of the switching values in 
+  all nonlinear models. 
 
-* Added an option to simply use a dummy to separate the states. 
+* Added an option to use a dummy approach for the nonlinear models.
 
 # lpirfs 0.1.3
 

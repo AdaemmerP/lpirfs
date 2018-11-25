@@ -31,6 +31,6 @@ Imports:
     plm(>= 1.6-6),
     sandwich(>= 2.5-0),
     Rcpp(>= 0.12.17)
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 LinkingTo: Rcpp, RcppArmadillo
 Suggests: testthat, ggpubr, gridExtra, httr, readxl
