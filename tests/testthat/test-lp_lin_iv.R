@@ -64,42 +64,6 @@ context("lp_lin_iv")
   })
 
 
-
-
-  test_that("Test whether message is given when no exogenous data is provided", {
-
-    testthat::expect_message(lp_lin_iv(endog_data,
-                           shock          = instrument,
-                           lags_endog_lin = 4,
-                           exog_data      = NULL,
-                           lags_exog      = NULL,
-                           contemp_data   = NULL,
-                           lags_criterion = NaN,
-                           max_lags       = NaN,
-                           trend          = 0,
-                           confint        = 1.96,
-                           hor            = 20,
-                           num_cores      = 1),
-                 'You estimate the model without exogenous data.')
-  })
-
-  test_that("Test whether message is given when no contemporaneous data is provided", {
-    testthat::expect_message(lp_lin_iv(endog_data,
-                           shock          = instrument,
-                           lags_endog_lin       = 4,
-                           exog_data      = NULL,
-                           lags_exog      = NULL,
-                           contemp_data   = NULL,
-                           lags_criterion = NaN,
-                           max_lags       = NaN,
-                           trend          = 0,
-                           confint        = 1.96,
-                           hor            = 20,
-                           num_cores      = 1),
-                   'You estimate the model without exogenous data with contemporaneous impact', fixed = TRUE)
-  })
-
-
   test_that("Test whether lag length criterion is correctly specified", {
     testthat::expect_error(lp_lin_iv(endog_data,
                              shock          = instrument,
