@@ -133,9 +133,7 @@ results_nl <- lp_nl(endog_data,
                                                # Anuual data    = 6.25
                                                # Quarterly data = 1600
                                                # Monthly data   = 129,600
-                        gamma          = 6,    # Numeric value > 0. 
-                        num_cores      = NULL) # Number of cores to use. When NULL, the number of cores is chosen 
-                                               # automatically    
+                        gamma          = 6) 
 ```
 
 Save values from transition function and list which contains further information on the data for plot function. 
@@ -230,15 +228,9 @@ They use local projections to re-evaluate findings in [Auerbach and Gorodnichenk
  results_lin_iv <- lp_lin_iv(endog_data,
                          shock          = shock,
                          lags_endog_lin = 4,
-                         exog_data      = NULL,
-                         lags_exog      = NULL,
-                         contemp_data   = NULL,
-                         lags_criterion = NaN,
-                         max_lags       = NaN,
                          trend          = 0,
                          confint        = 1.96,
-                         hor            = 20,
-                         num_cores      = NULL)
+                         hor            = 20)
 
 # Make and save plots
  iv_lin_plots    <- plot_lin(results_lin_iv)
@@ -316,9 +308,6 @@ They adjust it to have suffiently long recession periods.
                            shock             = shock,
                            exog_data         = exog_data,
                            lags_exog         = 4,
-                           contemp_data      = NULL,
-                           lags_criterion    = NaN,
-                           max_lags          = NaN,
                            trend             = 0,
                            confint           = 1.96,
                            hor               = 20,
@@ -405,15 +394,9 @@ It is the same data, identification scheme and threshold definition as in AG-12 
                             shock          = shock,
                             instrum        = instrum,
                             twosls         = TRUE,
-                            exog_data      = NULL,
-                            lags_exog      = NULL,
-                            contemp_data   = NULL,
-                            lags_criterion = NaN,
-                            max_lags       = NaN,
                             trend          = 0,
                             confint        = 1.96,
-                            hor            = 20,
-                            num_cores      = NULL)
+                            hor            = 20)
 
 # Create all plots
  iv_lin_plots    <- plot_lin(results_lin_iv)
@@ -490,15 +473,11 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
 
                                shock             = "stir",
                                diff_shock        = TRUE,
-                               iv_reg            = FALSE,
-                               instrum           = NULL,
                                panel_model       = "within",
                                panel_effect      = "individual",
-                               robust_cov        = NULL,
+                               robust_cov        = "vcovSCC",
 
                                c_exog_data       = "cay",
-                               l_exog_data       = NULL,
-                               lags_exog_data    = NULL,
                                c_fd_exog_data    = colnames(data_set)[c(seq(4,9),11)],
                                l_fd_exog_data    = colnames(data_set)[c(seq(3,9),11)],
                                lags_fd_exog_data = 2,
@@ -535,11 +514,9 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
                                instrum           = "instrument",
                                panel_model       = "within",
                                panel_effect      = "individual",
-                               robust_cov        = NULL,
+                               robust_cov        = "vcovSCC",
 
                                c_exog_data       = "cay",
-                               l_exog_data       = NULL,
-                               lags_exog_data    = NULL,
                                c_fd_exog_data    = colnames(data_set)[c(seq(4,9),11)],
                                l_fd_exog_data    = colnames(data_set)[c(seq(3,9),11)],
                                lags_fd_exog_data = 2,
@@ -562,34 +539,26 @@ data_sample <-   seq(2000, 2012)
 
 # Running this example gives a warning at each iteration as the data set is not well suited for
 # GMM. GMM is based on N-asymptotics and the data set only contains 27 countries
-results_panel <-  lp_lin_panel(data_set         = data_set,
-                              data_sample       = data_sample,
-                              endog_data        = "mortgdp",
-                              cumul_mult        = TRUE,
+results_panel <-  lp_lin_panel(data_set          = data_set,
+                              data_sample        = data_sample,
+                              endog_data         = "mortgdp",
+                              cumul_mult         = TRUE,
 
-                              shock             = "stir",
-                              diff_shock        = TRUE,
-                              iv_reg            = FALSE,
-                              instrum           = NULL,
-                              panel_model       = NULL,
-                              panel_effect      = NULL,
-                              robust_cov        = NULL,
+                              shock              = "stir",
+                              diff_shock         = TRUE,
 
-                              panel_gmm          = TRUE,
+                              use_gmm            = TRUE,
                               gmm_model          = "onestep",
                               gmm_effect         = "twoways",
                               gmm_transformation = "ld",
 
+                              l_exog_data        = "mortgdp",
+                              lags_exog_data     = 2,
+                              l_fd_exog_data     = colnames(data_set)[c(4, 6)],
+                              lags_fd_exog_data  = 1,
 
-                              c_exog_data       = NULL,
-                              l_exog_data       = "mortgdp",
-                              lags_exog_data    = 2,
-                              c_fd_exog_data    = NULL,
-                              l_fd_exog_data    = colnames(data_set)[c(4, 6)],
-                              lags_fd_exog_data = 1,
-
-                              confint           = 1.67,
-                              hor               = 10)
+                              confint            = 1.67,
+                              hor                = 10)
 
 
 ```
@@ -628,8 +597,6 @@ results_panel <-  lp_nl_panel(data_set           = data_set,
                                gamma             = 10,
 
                                c_exog_data       = "cay",
-                               l_exog_data       = NULL,
-                               lags_exog_data    = NULL,
                                c_fd_exog_data    = colnames(data_set)[c(seq(4,9),11)],
                                l_fd_exog_data    = colnames(data_set)[c(seq(3,9),11)],
                                lags_fd_exog_data = 2,
