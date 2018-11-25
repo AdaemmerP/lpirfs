@@ -1,22 +1,21 @@
 # Submission notes
 
 ## Purpose
-* Included an option to conduct 2SLS with *lp_lin_iv*.
-* Included an option to set the lag length of the endogenous variables in *lp_lin_iv* and *lp_nl_iv* to zero.
-* Deleted the deprecated plot functions *plot_lin_irfs* and *plot_nl_irfs*.
-* Improved documentation.
-* Changed input names in `lp_lin_iv()` and `lp_nl_iv()` for consistency:
+* Added two functions to estimate linear and nonlinear irfs for panel data.
 
-function | old input name | new input name
-:--------|:-------------  |:------------- 
-`lp_lin_iv()` | `instr`     | `shock`
-`lp_nl_iv()`  | `instr`     | `shock`
+* Added an option whether to use lagged values of the switching values in 
+  all nonlinear models. 
+  
+* Added an option to use a dummy approach for the nonlinear models. 
 
 
 ## Test environments
 * local x86_64-pc-linux-gnu (64-bit), R version 3.5.1
+
 * ubuntu 14.04.5 (on travis-ci),      R version 3.4.4, R-oldrel, R-devel.
+
 * win-builder (devel) 
+
 * rhub (for Oracle Solaris)
 
 ## Check results

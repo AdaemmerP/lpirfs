@@ -28,9 +28,9 @@ with local projections by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.
 
 - Estimates linear and nonlinear impulse responses with local projections.
 - Estimates linear impulse responses with identified shock and/or with 2SLS.
+- Estimates linear and nonlinear impulse responses with local projections for panel data (development version).
 - Functions to plot linear and nonlinear impulse responses.
-- Functions are partly implemented in *Rcpp* and *RcppArmadillo* to improve efficiency.
-- High performance with parallel computation.
+
 
 ## Installation
 
@@ -67,9 +67,6 @@ I greatly benefit from the profound *R*, *Rcpp* and *GitHub* knowledge of Philip
 Last but not least, I am grateful to Philipp Dybowski for his comments and without whom I would have never started this project.
 
 All remaining errors are obviously mine. 
-
-## Development
-The development version contains two new functions to estimate linear and nonlinear local projections for panel data.
 
 
 ### Author

@@ -23,10 +23,9 @@ local projections by [Jordà
     projections.
   - Estimates linear impulse responses with identified shock and/or with
     2SLS.
+  - Estimates linear and nonlinear impulse responses with local
+    projections for panel data (development version).
   - Functions to plot linear and nonlinear impulse responses.
-  - Functions are partly implemented in *Rcpp* and *RcppArmadillo* to
-    improve efficiency.
-  - High performance with parallel computation.
 
 ## Installation
 
@@ -79,11 +78,6 @@ am grateful to Philipp Dybowski for his comments and without whom I
 would have never started this project.
 
 All remaining errors are obviously mine.
-
-## Development
-
-The development version contains two new functions to estimate linear
-and nonlinear local projections for panel data.
 
 ### Author
 
