@@ -162,7 +162,7 @@ lp_lin <- function(endog_data,
     specs$lags_exog      <- lags_exog
 
   # Set 2SLS option to FALSE
-    specs$twosls <- FALSE
+    specs$use_twosls <- FALSE
 
     # Add 'contempranoeus' as NULL for data construction
     specs$contemp_data   <- contemp_data

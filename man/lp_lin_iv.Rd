@@ -4,7 +4,7 @@
 \alias{lp_lin_iv}
 \title{Compute linear impulse responses with identified shock and/or with 2SLS}
 \usage{
-lp_lin_iv(endog_data, shock = NULL, instr = NULL, twosls = FALSE,
+lp_lin_iv(endog_data, shock = NULL, instr = NULL, use_twosls = FALSE,
   instrum = NULL, lags_endog_lin = NULL, exog_data = NULL,
   lags_exog = NULL, contemp_data = NULL, lags_criterion = NaN,
   max_lags = NaN, trend = NULL, confint = NULL, hor = NULL,
@@ -14,11 +14,11 @@ lp_lin_iv(endog_data, shock = NULL, instr = NULL, twosls = FALSE,
 \item{endog_data}{A \link{data.frame}, containing the values of the dependent variable(s).}
 
 \item{shock}{A one column \link{data.frame}, including the variable to shock with. The row length has to be the same as \emph{endog_data}.
-When \emph{twosls = TRUE}, this variable will be approximated/regressed on the instrument variable(s) given in \emph{instrum}.}
+When \emph{use_twosls = TRUE}, this variable will be approximated/regressed on the instrument variable(s) given in \emph{instrum}.}
 
 \item{instr}{Deprecated input name. Use \emph{shock} instead. See \emph{shock} for details.}
 
-\item{twosls}{Use two stage least squares? TRUE or FALSE.}
+\item{use_twosls}{Use two stage least squares? TRUE or FALSE.}
 
 \item{instrum}{A \link{data.frame}, containing the instrument(s) to use for 2SLS. This instrument will be used for the
 variable in \emph{shock}.}
@@ -35,7 +35,7 @@ The row length has to be the same as \emph{endog_data}.}
 
 \item{lags_criterion}{NaN or character. NaN means that the number of lags
 will be given at \emph{lags_endog_lin}. Possible lag length criteria are 'AICc', 'AIC' or 'BIC'.
-Note that when \emph{twosls = TRUE}, the lag lengths are chosen based on normal OLS regressions, without using the instruments.}
+Note that when \emph{use_twosls = TRUE}, the lag lengths are chosen based on normal OLS regressions, without using the instruments.}
 
 \item{max_lags}{NaN or integer. Maximum number of lags if \emph{lags_criterion} is a character denoting the lag length criterion. NaN otherwise.}
 
@@ -169,12 +169,12 @@ Compute linear impulse responses with identified shock and/or with 2SLS.
 # Generate instrument variable that is correlated with government spending
  instrum       <- as.data.frame(0.9*shock$Gov + rnorm(length(shock$Gov), 0, 0.02) )
 
-# Estimate linear model via SLS
+# Estimate linear model via 2SLS
  results_lin_iv <- lp_lin_iv(endog_data,
                             lags_endog_lin = 4,
                             shock          = shock,
                             instrum        = instrum,
-                            twosls         = TRUE,
+                            use_twosls     = TRUE,
                             trend          = 0,
                             confint        = 1.96,
                             hor            = 20)

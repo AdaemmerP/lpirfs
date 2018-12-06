@@ -3,9 +3,9 @@
 #' @description Compute linear impulse responses with identified shock and/or with 2SLS.
 #' @param endog_data A \link{data.frame}, containing the values of the dependent variable(s).
 #' @param shock A one column \link{data.frame}, including the variable to shock with. The row length has to be the same as \emph{endog_data}.
-#' When \emph{twosls = TRUE}, this variable will be approximated/regressed on the instrument variable(s) given in \emph{instrum}.
+#' When \emph{use_twosls = TRUE}, this variable will be approximated/regressed on the instrument variable(s) given in \emph{instrum}.
 #' @param instr Deprecated input name. Use \emph{shock} instead. See \emph{shock} for details.
-#' @param twosls Use two stage least squares? TRUE or FALSE.
+#' @param use_twosls Use two stage least squares? TRUE or FALSE.
 #' @param instrum A \link{data.frame}, containing the instrument(s) to use for 2SLS. This instrument will be used for the
 #'  variable in \emph{shock}.
 #' @param lags_endog_lin NaN or integer. NaN if lags are chosen by a lag length criterion. Integer for number of lags for \emph{endog_data}.
@@ -16,7 +16,7 @@
 #'                      The row length has to be the same as \emph{endog_data}.
 #' @param lags_criterion NaN or character. NaN means that the number of lags
 #'         will be given at \emph{lags_endog_lin}. Possible lag length criteria are 'AICc', 'AIC' or 'BIC'.
-#'         Note that when \emph{twosls = TRUE}, the lag lengths are chosen based on normal OLS regressions, without using the instruments.
+#'         Note that when \emph{use_twosls = TRUE}, the lag lengths are chosen based on normal OLS regressions, without using the instruments.
 #' @param max_lags NaN or integer. Maximum number of lags if \emph{lags_criterion} is a character denoting the lag length criterion. NaN otherwise.
 #' @param trend Integer. No trend =  0 , include trend = 1, include trend and quadratic trend = 2.
 #' @param confint Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.
@@ -176,12 +176,12 @@
 #'# Generate instrument variable that is correlated with government spending
 #'  instrum       <- as.data.frame(0.9*shock$Gov + rnorm(length(shock$Gov), 0, 0.02) )
 #'
-#'# Estimate linear model via SLS
+#'# Estimate linear model via 2SLS
 #'  results_lin_iv <- lp_lin_iv(endog_data,
 #'                             lags_endog_lin = 4,
 #'                             shock          = shock,
 #'                             instrum        = instrum,
-#'                             twosls         = TRUE,
+#'                             use_twosls     = TRUE,
 #'                             trend          = 0,
 #'                             confint        = 1.96,
 #'                             hor            = 20)
@@ -198,7 +198,7 @@
 lp_lin_iv <- function(endog_data,
                    shock          = NULL,
                    instr          = NULL,
-                   twosls         = FALSE,
+                   use_twosls     = FALSE,
                    instrum        = NULL,
                    lags_endog_lin = NULL,
                    exog_data      = NULL,
@@ -299,8 +299,8 @@ lp_lin_iv <- function(endog_data,
   }
 
 
-  # Give error when twosls = T but instrum = NULL
-  if(isTRUE(twosls) & is.null(instrum)){
+  # Give error when use_twosls = T but instrum = NULL
+  if(isTRUE(use_twosls) & is.null(instrum)){
     stop('Please specify at least one instrument to use for 2SLS.')
   }
 
@@ -312,7 +312,7 @@ lp_lin_iv <- function(endog_data,
 
   # Specify inputs
   specs$shock              <- shock
-  specs$twosls             <- twosls
+  specs$use_twosls         <- use_twosls
   specs$instrum            <- instrum
   specs$lags_endog_lin     <- lags_endog_lin
   specs$exog_data          <- exog_data
@@ -394,7 +394,7 @@ if(is.nan(specs$lags_criterion) == TRUE){
                           for (k in 1:specs$endog){ # Accounts for the reactions of the endogenous variables
 
                             # Check whether use OLS or 2sls
-                            if(specs$twosls == FALSE){
+                            if(specs$use_twosls == FALSE){
 
                               # Estimate OLS betas and newey west std.err
                                 if(specs$endog == 1 ){
@@ -476,7 +476,7 @@ if(is.nan(specs$lags_criterion) == TRUE){
                             xx <- xx[1:(dim(xx)[1] - h + 1),]
 
                             # Check whether use OLS or 2sls
-                            if(specs$twosls == FALSE){
+                            if(specs$use_twosls == FALSE){
 
                                 # Estimate coefficients and newey west std.err
                                 nw_results     <- lpirfs::newey_west(yy, xx, h)

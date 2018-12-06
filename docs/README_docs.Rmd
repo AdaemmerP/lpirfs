@@ -77,7 +77,7 @@ See the data's help file or the [paper](https://www.aeaweb.org/articles?id=10.12
   endog_data <- interest_rules_var_data
 ```
 
-$$ $$
+
 The switching variable ($z_t$) can either be decomposed by the Hodrick-Prescott filter (see [Auerbach and Gorodnichenko, 2013](http://www.nber.org/papers/w17447.pdf)) or directly plugged into the following logistic function:  
 
 
@@ -393,7 +393,7 @@ It is the same data, identification scheme and threshold definition as in AG-12 
                             lags_endog_lin = 4,
                             shock          = shock,
                             instrum        = instrum,
-                            twosls         = TRUE,
+                            use_twosls         = TRUE,
                             trend          = 0,
                             confint        = 1.96,
                             hor            = 20)

@@ -6,7 +6,7 @@
 #'                 variable denoting the cross section. The second column has to be the
 #'                 variable denoting the time section.
 #' @param data_sample  Character or numeric. To use the full sample set value to "Full" (default). To estimate a subset, you have to provide
-#'                 the sequence of dates to use. This sequence has to be in the same format as the second column (time-section).
+#'                 a sequence of dates. This sequence has to be in the same format as the second column (time-section).
 #' @param endog_data Character. The column name of the endogenous variable. You can only provide one endogenous variable at a time.
 #' @param cumul_mult Boolean. Estimate cumulative multipliers? TRUE (default) or FALSE. If TRUE, cumulative responses
 #'                   are estimated via: \deqn{y_(t+h) - y_(t-1),} where h = 0,..., H-1.
@@ -54,7 +54,7 @@
 #'
 #'\item{xy_data_sets}{Data sets with endogenous and exogenous variables for each horizon.}
 #'
-#'\item{specs}{A list with data properties for the plot function.}
+#'\item{specs}{A list with data properties for e.g. the plot function.}
 #'
 #' @importFrom dplyr lead lag filter
 #' @importFrom plm plm
@@ -67,9 +67,6 @@
 #'
 #' Croissant, Y., Millo, G. (2008). "Panel Data Econometrics in R: The plm Package." \emph{Journal of Statistical Software}, 27(2), 1-43. doi:
 #' 10.18637/jss.v027.i02 (URL: \url{http://doi.org/10.18637/jss.v027.i02}).
-#'
-#' #' Croissant, Y., Millo, G. (2017). "Robust Standard Error Estimators for Panel Models: A Unifying Approach." \emph{Journal of Statistical Software}, 27(2), 1-43. doi:
-#' 	10.18637/jss.v082.i03 (URL: \url{https://www.jstatsoft.org/article/view/v082i03}).
 #'
 #' Jordà, Ò. (2005). "Estimation and Inference of Impulse Responses by Local Projections."
 #' \emph{American Economic Review}, 95 (1): 161-182.
@@ -128,7 +125,7 @@
 #'                              lhpy, lrgdp, lcpi, lriy, cay, nmortgdp)
 #'
 #'
-#'# Use data_sample from 1870 to 2013 and exclude WWI and WWII
+#'# Use data_sample from 1870 to 2013 and exclude observations during WWI and WWII
 #'   data_sample <-   seq(1870, 2016)[which(!(seq(1870, 2016) %in%
 #'                               c(seq(1914, 1918),
 #'                                 seq(1939, 1947),
@@ -197,7 +194,11 @@
 #'  plot_lin_panel <- plot_lin(results_panel)
 #'  plot(plot_lin_panel[[1]])
 #'
-#'                                  ### Use GMM ###
+#'
+#'##############################################################################
+#'###                           Use GMM                                      ###
+#'##############################################################################
+#'
 #'
 #' # Use a much smaller sample to have fewer T than N
 #' data_sample <-   seq(2000, 2012)

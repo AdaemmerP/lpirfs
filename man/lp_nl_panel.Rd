@@ -21,7 +21,7 @@ variable denoting the cross section. The second column has to be the
 variable denoting the time section.}
 
 \item{data_sample}{Character or numeric. To use the full sample set value to "Full" (default). To estimate a subset, you have to provide
-the sequence of dates to use. This sequence has to be in the same format as the second column (time-section).}
+a sequence of dates. This sequence has to be in the same format as the second column (time-section).}
 
 \item{endog_data}{Character. The column name of the endogenous variable. You can only provide one endogenous variable at a time.}
 
@@ -65,24 +65,25 @@ See vignette of the plm package for details.}
 
 \item{lags_fd_exog_data}{NaN or Integer. Number of lags for variable(s) with impact of first differences.}
 
-\item{switching}{Character. Name of the column to use for the switching variable. If "use_logistic = TRUE", this series can either
+\item{switching}{Character. Column name of the switching variable. If "use_logistic = TRUE", this series can either
 be decomposed by the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013) or
 directly plugged into the following smooth transition function:
 \deqn{F_{z_t} = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)}.}
 The data for the two regimes are lagged by default: \cr
 Regime 1 = (1-\eqn{F(z_{t-1})})*y_{(t-p)}, \cr
-Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.}
+Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.
+This option can be suppressed with "lag_switching = FALSE".}
 
 \item{use_logistic}{Boolean. Use logistic function to separate states? TRUE (default) or FALSE. If FALSE, the values of the switching variable
 have to be binary (0/1).}
 
-\item{use_hp}{Boolean. Use HP-filter if "use_logistic = TRUE"? TRUE or FALSE (default).}
+\item{use_hp}{Boolean. Use HP-filter? TRUE or FALSE (default).}
 
 \item{lag_switching}{Boolean. Use the first lag of the values of the transition function? TRUE (default) or FALSE.}
 
 \item{lambda}{Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter (if "use_hp = TRUE").}
 
-\item{gamma}{Double. Positive number which is used in the transition function.}
+\item{gamma}{Double. Positive value for \eqn{\gamma}, used in the transition function.}
 
 \item{confint}{Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.}
 
@@ -104,7 +105,7 @@ A list containing:
 
 \item{xy_data_sets}{Data sets with endogenous and exogenous variables for each horizon.}
 
-\item{specs}{A list with data properties for the plot function.}
+\item{specs}{A list with data properties for e.g. the plot function.}
 }
 \description{
 This function estimates nonlinear impulse responses by using local projections for panel data with an
@@ -116,7 +117,7 @@ This function estimates nonlinear impulse responses by using local projections f
 
 # This example is based on the STATA code 'LPs_basic_doall.do', provided on
 # Òscar Jordà's website (https://sites.google.com/site/oscarjorda/home/local-projections)
-# It estimates impulse reponses of the ratio of (mortgage lending/GDP) to a
+# It estimates nonlinear impulse reponses of the ratio of (mortgage lending/GDP) to a
 # +1\% change in the short term interest rate
 
 # Load libraries to download and read excel file from the website
@@ -161,7 +162,7 @@ This function estimates nonlinear impulse responses by using local projections f
                              lrgdp, lcpi, lriy, cay, nmortgdp)
 
 
-# Use data_sample from 1870 to 2013 and exclude WWI and WWII
+# Use data_sample from 1870 to 2013 and exclude observations from WWI and WWII
   data_sample <-   seq(1870, 2016)[which(!(seq(1870, 2016) \%in\%
                               c(seq(1914, 1918),
                                 seq(1939, 1947),
@@ -211,7 +212,10 @@ results_panel <-  lp_nl_panel(data_set           = data_set,
     geom_line(aes(x = year, y = fz)) +
     scale_x_continuous(breaks = seq(1950, 2016, 5))
 
-                              ### Use GMM ###
+
+##############################################################################
+###                           Use GMM                                      ###
+##############################################################################
 
 # Use a much smaller sample to have fewer T than N
 data_sample <-   seq(2000, 2012)
@@ -265,7 +269,7 @@ Jordà, Ò. (2005). "Estimation and Inference of Impulse Responses by Local Proj
 Jordà, Ò., Schualrick, M., Taylor, A.M. (2018). "Large and State-Dependent Effects of Quasi-Random Monetary Experiments",
 \emph{NBER} working paper 23074, \emph{FRBSF} working paper 2017-02.
 
-Millo G (2017). “Robust Standard Error Estimators for Panel Models: A Unifying Approach.” \emph{Journal of Statistical Software}, 82(3), 1-27. doi:
+Millo, G. (2017). “Robust Standard Error Estimators for Panel Models: A Unifying Approach.” \emph{Journal of Statistical Software}, 82(3), 1-27. doi:
 10.18637/jss.v082.i03 (URL: \url{http://doi.org/10.18637/jss.v082.i03}).
 }
 \author{

@@ -322,7 +322,7 @@ context("lp_lin_iv")
   })
 
 
-  test_that("Run twosls", {
+  test_that("Run use_twosls", {
 
     # Set seed
     set.seed(007)
@@ -346,7 +346,7 @@ context("lp_lin_iv")
                                       lags_endog_lin = 4,
                                       shock          = shock,
                                       instrum        = instrum,
-                                      twosls         = TRUE,
+                                      use_twosls     = TRUE,
                                       exog_data      = NULL,
                                       lags_exog      = NULL,
                                       contemp_data   = NULL,

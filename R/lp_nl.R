@@ -247,7 +247,7 @@ lp_nl <- function(endog_data,
     specs$model_type     <- 0
 
     # Set 2SLS option to FALSE
-    specs$twosls <- FALSE
+    specs$use_twosls <- FALSE
 
 #--- Check inputs
 

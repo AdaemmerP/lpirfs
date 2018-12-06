@@ -361,7 +361,7 @@ $(document).ready(function () {
 <h3>Example: Nonlinear impulse responses with local projections</h3>
 <p>Load data set from package to estimate a nonlinear, new-Keynesian, closed-economy model. These data are used by <a href="https://www.aeaweb.org/articles?id=10.1257/0002828053828518">Jordà (2005)</a> in chapter IV, p.176. See the data’s help file or the <a href="https://www.aeaweb.org/articles?id=10.1257/0002828053828518">paper</a> for a detailed description of the data.</p>
 <pre class="r"><code>  endog_data &lt;- interest_rules_var_data</code></pre>
-<p><span class="math display">\[ \]</span> The switching variable (<span class="math inline">\(z_t\)</span>) can either be decomposed by the Hodrick-Prescott filter (see <a href="http://www.nber.org/papers/w17447.pdf">Auerbach and Gorodnichenko, 2013</a>) or directly plugged into the following logistic function:</p>
+<p>The switching variable (<span class="math inline">\(z_t\)</span>) can either be decomposed by the Hodrick-Prescott filter (see <a href="http://www.nber.org/papers/w17447.pdf">Auerbach and Gorodnichenko, 2013</a>) or directly plugged into the following logistic function:</p>
 <p><span class="math display">\[F({z_t})  = \  \frac{e^{(-\gamma z_t)}}{\left(1 + e^{(-\gamma z_t)}\right)},\]</span></p>
 <p>where <span class="math inline">\(\gamma &gt; 0\)</span>. To differentiate between the two regimes, the exogenous variables (<span class="math inline">\(\boldsymbol{y}_{t-p}\)</span>) are multiplied with the values of the transition function at <em>t − 1</em> where</p>
 <ul>
@@ -580,7 +580,7 @@ results_nl_iv  &lt;- list(irf_s1_mean  = irf_s1_mean,
                             lags_endog_lin = 4,
                             shock          = shock,
                             instrum        = instrum,
-                            twosls         = TRUE,
+                            use_twosls         = TRUE,
                             trend          = 0,
                             confint        = 1.96,
                             hor            = 20)
@@ -609,11 +609,11 @@ results_nl_iv  &lt;- list(irf_s1_mean  = irf_s1_mean,
  url_jst &lt;-&quot;http://www.macrohistory.net/JST/JSTdatasetR3.xlsx&quot;
  GET(url_jst, write_disk(jst_link &lt;- tempfile(fileext = &quot;.xlsx&quot;)))
 #&gt; Response [http://www.macrohistory.net/JST/JSTdatasetR3.xlsx]
-#&gt;   Date: 2018-11-25 17:41
+#&gt;   Date: 2018-12-06 13:32
 #&gt;   Status: 200
 #&gt;   Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
 #&gt;   Size: 635 kB
-#&gt; &lt;ON DISK&gt;  /tmp/RtmptG9zxg/file393781d67ca.xlsx
+#&gt; &lt;ON DISK&gt;  /tmp/RtmpA3EPyU/file2ade242ccdbd.xlsx
  jst_data &lt;- read_excel(jst_link, 2L)
 
 # Swap the first two columns so that 'country' is the first (cross section) and 'year' the
