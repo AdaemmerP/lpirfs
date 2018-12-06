@@ -93,14 +93,14 @@ create_lin_data     <- function(specs, endog_data){
 
 
     # Check whether z_lin matrix has to be build for 2sls
-      if(specs$twosls == TRUE){
+      if(specs$use_twosls == TRUE){
 
     # Compare lag length between endog_lin and lags_exog
       z_lag         <- max(specs$lags_endog_lin, specs$lags_exog)
       z_lin         <- x_lin[, -1]
       z_lin         <- cbind(specs$instrum[(z_lag + 1):dim(specs$instrum)[1], ], z_lin)
 
-    # Set instrument variable to NULL if twosls = FALSE
+    # Set instrument variable to NULL if use_twosls = FALSE
                 } else {
       z_lin <- NULL
     }
@@ -181,7 +181,7 @@ create_lin_data     <- function(specs, endog_data){
                                  as.matrix()
 
         # Check whether z_lin matrix has to be build for 2sls
-        if(specs$twosls == TRUE){
+        if(specs$use_twosls == TRUE){
 
           # Compare lag length between endog_lin and lags_exog
           z_lag                <- max(i, specs$lags_exog)
@@ -199,8 +199,8 @@ create_lin_data     <- function(specs, endog_data){
         y_lin <- y_lin_store
         x_lin <- x_lin_store
 
-        # Set instrument variable to NULL if twosls = FALSE
-        if(specs$twosls == FALSE){
+        # Set instrument variable to NULL if use_twosls = FALSE
+        if(specs$use_twosls == FALSE){
 
         z_lin <- NULL
 
