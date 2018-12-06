@@ -1,4 +1,4 @@
-# lpirfs 0.1.3.9000
+# lpirfs 0.1.4
 
 * Added two functions to estimate linear and nonlinear irfs for panel data.
 
@@ -7,7 +7,15 @@
 
 * Added an option to use a dummy approach for the nonlinear models.
 
-* Deleted messages when estimating models with or without exogenous data or with 2sls.
+* Deleted messages about how models are estimated (e.g. with or without exogenous data).
+
+* Changed input name in `lp_lin_iv()` for consistency:
+
+function | old input name | new input name
+:--------|:-------------  |:------------- 
+`lp_lin_iv()` | `twosls`     | `use_twosls`
+
+
 
 # lpirfs 0.1.3
 
