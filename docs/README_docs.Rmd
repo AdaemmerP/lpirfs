@@ -409,6 +409,14 @@ It is the same data, identification scheme and threshold definition as in AG-12 
 ```
 
 ### Example: Linear impulse responses for panel-data
+
+The general formula for panel irfs is: 
+
+$$ y_{i,t+h} = \alpha_{i,h} + shock_{i,t}\beta_h + \boldsymbol{x}_{i,t}\boldsymbol{\gamma}_h + \varepsilon_{i, t + h},
+$$
+where $\alpha_{i, h}$ is a fixed effect, and $\boldsymbol{x}_{i,t}$ is a vector of control variables that have to be specified.
+The variable $shock$ can also be estimated by an instrument variable approach.
+
 ```{r, message = FALSE }
 
 
@@ -633,6 +641,9 @@ During Bad and Good Economic Times Equally?" *Journal of Macroeconomics*, 50(1):
 
 * Jordà, Ò, Schularick, M., Taylor, A.M. (2015), "Betting the house", *Journal of International Economics*,
  96, S2-S18. [doi:10.1016/j.jinteco.2014.12.011](https://doi.org/10.1016/j.jinteco.2014.12.011)
+ 
+* Jordà, Ò., Schualrick, M., Taylor, A.M. (2018). "Large and State-Dependent Effects of Quasi-Random Monetary Experiments",
+  *FRBSF working paper*. [Working Paper](https://www.frbsf.org/economic-research/files/wp2017-02.pdf)
 
 * Newey W.K., and West K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and Autocorrelation Consistent Covariance Matrix.” *Econometrica*, 55: 703–708. [doi:10.2307/1913610](https://www.jstor.org/stable/1913610?seq=1#page_scan_tab_contents)
 
