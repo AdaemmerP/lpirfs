@@ -527,7 +527,7 @@ results_lin_iv  &lt;- list(irf_lin_mean  = multiplier_mean,
                            lambda            = NaN,
                            gamma             = 3)</code></pre>
 <p>Multiply the log output responses by a conversion factor of ~5.6 (AG-12; RZ-18).</p>
-<pre class="r"><code>GYsc            &lt;- mean(exp(endog_data$GDP)/exp(endog_data$Gov))
+<pre class="r"><code>GYsc        &lt;- mean(exp(endog_data$GDP)/exp(endog_data$Gov))
 
 irf_s1_mean &lt;- results_nl_iv$irf_s1_mean*GYsc
 irf_s1_up   &lt;- results_nl_iv$irf_s1_up*GYsc
@@ -537,7 +537,7 @@ irf_s2_mean &lt;- results_nl_iv$irf_s2_mean*GYsc
 irf_s2_up   &lt;- results_nl_iv$irf_s2_up*GYsc
 irf_s2_low  &lt;- results_nl_iv$irf_s2_low*GYsc
 
-results_nl_iv  &lt;- list(irf_s1_mean  = irf_s1_mean,
+results_nl_iv  &lt;- list(irf_s1_mean   = irf_s1_mean,
                         irf_s1_up    = irf_s1_up,
                         irf_s1_low   = irf_s1_low,
                         irf_s2_mean  = irf_s2_mean,  
@@ -580,7 +580,7 @@ results_nl_iv  &lt;- list(irf_s1_mean  = irf_s1_mean,
                             lags_endog_lin = 4,
                             shock          = shock,
                             instrum        = instrum,
-                            use_twosls         = TRUE,
+                            use_twosls     = TRUE,
                             trend          = 0,
                             confint        = 1.96,
                             hor            = 20)
@@ -612,11 +612,11 @@ results_nl_iv  &lt;- list(irf_s1_mean  = irf_s1_mean,
  url_jst &lt;-&quot;http://www.macrohistory.net/JST/JSTdatasetR3.xlsx&quot;
  GET(url_jst, write_disk(jst_link &lt;- tempfile(fileext = &quot;.xlsx&quot;)))
 #&gt; Response [http://www.macrohistory.net/JST/JSTdatasetR3.xlsx]
-#&gt;   Date: 2018-12-10 13:52
+#&gt;   Date: 2018-12-10 18:57
 #&gt;   Status: 200
 #&gt;   Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
 #&gt;   Size: 635 kB
-#&gt; &lt;ON DISK&gt;  /tmp/RtmpT5xPSo/file503d580096b9.xlsx
+#&gt; &lt;ON DISK&gt;  /tmp/Rtmp0GAO1E/filee6244de242.xlsx
  jst_data &lt;- read_excel(jst_link, 2L)
 
 # Swap the first two columns so that 'country' is the first (cross section) and 'year' the
@@ -640,7 +640,7 @@ results_nl_iv  &lt;- list(irf_s1_mean  = irf_s1_mean,
                ungroup()                                       %&gt;%
 
                mutate(lrgdp    = 100*log(rgdppc))              %&gt;%
-               mutate(lcpi     = 100*log(cpi))                  %&gt;%
+               mutate(lcpi     = 100*log(cpi))                   %&gt;%
                mutate(lriy     = 100*log(iy*rgdppc))           %&gt;%
                mutate(cay      = 100*(ca/gdp))                 %&gt;%
                mutate(tnmort   = tloans - tmort)               %&gt;%

@@ -322,7 +322,7 @@ They adjust it to have suffiently long recession periods.
 
 Multiply the log output responses by a conversion factor of ~5.6 (AG-12; RZ-18). 
 ```{r, message = FALSE }
-GYsc            <- mean(exp(endog_data$GDP)/exp(endog_data$Gov))
+GYsc        <- mean(exp(endog_data$GDP)/exp(endog_data$Gov))
 
 irf_s1_mean <- results_nl_iv$irf_s1_mean*GYsc
 irf_s1_up   <- results_nl_iv$irf_s1_up*GYsc
@@ -332,7 +332,7 @@ irf_s2_mean <- results_nl_iv$irf_s2_mean*GYsc
 irf_s2_up   <- results_nl_iv$irf_s2_up*GYsc
 irf_s2_low  <- results_nl_iv$irf_s2_low*GYsc
 
-results_nl_iv  <- list(irf_s1_mean  = irf_s1_mean,
+results_nl_iv  <- list(irf_s1_mean   = irf_s1_mean,
                         irf_s1_up    = irf_s1_up,
                         irf_s1_low   = irf_s1_low,
                         irf_s2_mean  = irf_s2_mean,  
@@ -393,7 +393,7 @@ It is the same data, identification scheme and threshold definition as in AG-12 
                             lags_endog_lin = 4,
                             shock          = shock,
                             instrum        = instrum,
-                            use_twosls         = TRUE,
+                            use_twosls     = TRUE,
                             trend          = 0,
                             confint        = 1.96,
                             hor            = 20)
@@ -457,7 +457,7 @@ The variable $shock$ can also be estimated by an instrument variable approach.
                ungroup()                                       %>%
 
                mutate(lrgdp    = 100*log(rgdppc))              %>%
-               mutate(lcpi     = 100*log(cpi)) 		            %>%
+               mutate(lcpi     = 100*log(cpi)) 		             %>%
                mutate(lriy     = 100*log(iy*rgdppc))           %>%
                mutate(cay      = 100*(ca/gdp))                 %>%
                mutate(tnmort   = tloans - tmort)               %>%
