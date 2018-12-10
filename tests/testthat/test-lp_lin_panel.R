@@ -612,6 +612,36 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
                                                   NA)
             })
 
+  test_that("Test that model works when shock = endog_data", {
+    # Estimate panel model
+    testthat::expect_error(lp_lin_panel(data_set          = data_set,
+                                        data_sample       = 'Full',
+                                        endog_data        = "y",
+                                        cumul_mult        = FALSE,
+
+                                        shock             = "y",
+                                        diff_shock        = TRUE,
+                                        iv_reg            = FALSE,
+                                        instrum           = NULL,
+                                        panel_model       = "within",
+                                        panel_effect      = "individual",
+                                        robust_cov        = "Vcx",
+
+                                        c_exog_data       = colnames(data_set)[4:6],
+                                        l_exog_data       = colnames(data_set)[4:6],
+                                        lags_exog_data    = 2,
+                                        c_fd_exog_data    = colnames(data_set)[4:6],
+                                        l_fd_exog_data    = colnames(data_set)[4:6],
+                                        lags_fd_exog_data = 2,
+
+                                        confint           = 1.67,
+                                        hor               = 10),
+                           NA)
+  })
+
+
+
+
   test_that("Test model when estimating normal multipliers", {
               # Estimate panel model
               testthat::expect_error(lp_lin_panel(data_set          = data_set,

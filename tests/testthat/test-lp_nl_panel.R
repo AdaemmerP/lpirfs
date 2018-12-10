@@ -783,6 +783,38 @@ test_that("Test that model throws no error when estimating robust
                                      NA)
             })
 
+
+test_that("Test that model works when shock = endog_data", {
+              # Estimate panel model
+              testthat::expect_error( lp_nl_panel(data_set          = data_set,
+                                                  data_sample       = 'Full',
+                                                  endog_data        = "y",
+                                                  cumul_mult        = TRUE,
+
+                                                  shock             = "y",
+                                                  diff_shock        = FALSE,
+                                                  panel_model       = "within",
+                                                  panel_effect      = "individual",
+                                                  robust_cov        = "Vcx",
+
+                                                  switching         = "x_1",
+                                                  lag_switching     = FALSE,
+                                                  use_hp            = TRUE,
+                                                  lambda            = 7,
+                                                  gamma             = 10,
+
+                                                  c_exog_data       = colnames(data_set)[4:6],
+                                                  l_exog_data       = colnames(data_set)[4:6],
+                                                  lags_exog_data    = 2,
+                                                  c_fd_exog_data    = colnames(data_set)[4:6],
+                                                  l_fd_exog_data    = colnames(data_set)[4:6],
+                                                  lags_fd_exog_data = 2,
+
+                                                  confint           = 1.67,
+                                                  hor               = 10),
+                                      NA)
+            })
+
 test_that("Test that 'robust_cov = NULL' when using gmm.", {
               # Estimate panel model
               testthat::expect_error( lp_nl_panel(data_set          = data_set,
