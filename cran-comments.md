@@ -3,8 +3,8 @@
 ## Purpose
 * Added two functions to estimate linear and nonlinear irfs for panel data.
 
-* Added an option whether to use lagged values of the switching variable in 
-  all nonlinear models. 
+* Added an option to choose whether to use lagged values of the switching variable in 
+  nonlinear models. 
   
 * Added an option to use a dummy approach for all nonlinear models. 
 
@@ -36,6 +36,3 @@ checking installed package size ... NOTE
  [8s/20s]
   
 This is compiled code in the libs/ directory.  
-
-## Downstream dependencies
-No errors, warnings, or notes were caused in other packages. I used `devtools::revdep_check()` to confirm. 

@@ -2,8 +2,8 @@
 
 * Added two functions to estimate linear and nonlinear irfs for panel data.
 
-* Added an option to choose whether to use lagged values of the switching values in 
-  the nonlinear models. 
+* Added an option to choose whether to use lagged values of the switching variable in 
+  nonlinear models. 
 
 * Added an option to use a dummy approach for the nonlinear models.
 
