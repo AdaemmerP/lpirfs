@@ -353,6 +353,13 @@ lp_nl_panel <- function(
   }
 
 
+  # Verify that column names are not identical
+  if(length(names(data_set)) != length(unique(names(data_set)))){
+    stop('Please verify that each column name is unique.')
+  }
+
+
+
   # Rename first two column names of data.frame
   colnames(data_set)[1]     <- "cross_id"
   colnames(data_set)[2]     <- "date_id"
@@ -365,7 +372,21 @@ lp_nl_panel <- function(
   specs$endog_data         <- endog_data
   specs$cumul_mult         <- cumul_mult
 
-  specs$shock              <- shock
+  # Add new column to data.frame when shock = endog
+  if(endog_data == shock){
+
+    new_shock_name    <- paste(shock,"_shock", sep ="")
+    data_set          <- data_set %>%
+                         mutate(!!new_shock_name :=  get(endog_data))
+
+    specs$shock       <- new_shock_name
+
+              }   else   {
+
+    specs$shock             <- shock
+
+  }
+
   specs$diff_shock         <- diff_shock
 
   specs$panel_model        <- panel_model
@@ -458,7 +479,7 @@ lp_nl_panel <- function(
 
     # Join endogenous and exogenous data
     yx_data        <- suppressMessages(
-                      left_join(y_data[[ii]], x_reg_data)  %>%
+                      left_join(y_data[[ii]], x_reg_data, by = c("cross_id", "date_id"))  %>%
                       stats::na.omit()
       )
 
