@@ -8,7 +8,7 @@ output: github_document
 [![Build Status](https://travis-ci.com/AdaemmerP/lpirfs.svg)](https://travis-ci.com/AdaemmerP/lpirfs) 
 [![Downloads](https://cranlogs.r-pkg.org/badges/lpirfs)](https://CRAN.R-project.org/package=lpirfs) 
 [![Total Downloads](https://cranlogs.r-pkg.org/badges/grand-total/lpirfs?color=orange)](https://CRAN.R-project.org/package=lpirfs) 
-[![Coverage Status](https://codecov.io/gh/adaemmerp/lpirfs/graph/badge.svg)](https://codecov.io/github/adaemmerp/lpirfs?branch=master)  
+[![Coverage Status](https://codecov.io/gh/adaemmerp/lpirfs/graph/badge.svg)](https://codecov.io/github/adaemmerp/lpirfs?branch=master) 
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
@@ -27,9 +27,11 @@ with local projections by [Jordà (2005)](https://www.aeaweb.org/articles?id=10.
 ## Main features
 
 - Estimates linear and nonlinear impulse responses with local projections.
-- Estimates linear impulse responses with identified shock and/or with 2SLS.
-- Estimates linear and nonlinear impulse responses with local projections for panel data (development version).
+- Estimates linear and nonlinear impulse responses with identified shock and/or with 2SLS.
+- Estimates linear and nonlinear impulse responses with local projections for panel data.
 - Functions to plot linear and nonlinear impulse responses.
+- Functions are partly implemented in *Rcpp*/*RcppArmadillo* and partly written for parallel computation
+  to improve efficiency.
 
 
 ## Installation
