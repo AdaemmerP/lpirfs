@@ -85,7 +85,7 @@ The switching variable ($z_t$) can either be decomposed by the Hodrick-Prescott 
  
 
 
-where $\gamma > 0$. To differentiate between the two regimes, the exogenous variables ($\boldsymbol{y}_{t-p}$) are multiplied with the values of the transition function at *t − 1* where
+where $\gamma > 0$. To differentiate between the two regimes, the endogenous variables ($\boldsymbol{y}_{t-p}$) are multiplied with the values of the transition function at *t − 1* where
 
 - Regime 1 $(R_1)$: $\boldsymbol{y}_{t-i}\cdot(1-F(z_{t-1}))$,  $\qquad i = 1, ..., p$,
 

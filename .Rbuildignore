@@ -1,4 +1,3 @@
-^CRAN-RELEASE$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.httr-oauth$
