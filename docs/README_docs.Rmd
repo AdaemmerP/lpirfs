@@ -38,7 +38,7 @@ results_lin <- lp_lin(endog_data,
                            shock_type     = 1,    # 0 = standard deviation shock, 1 = unit shock
                            confint        = 1.96, # Width of confidence bands: 
                                                   # 1 = 68%, 1.67 = 90%, 1.96 = 95%
-                           hor            = 24)   # Number of cores to use. When NULL, the number of cores 
+                           hor            = 12)   # Number of cores to use. When NULL, the number of cores 
                                                   # is chosen automatically    
 ```
 
@@ -126,7 +126,7 @@ results_nl <- lp_nl(endog_data,
                         shock_type     = 0,    # 0 = standard deviation shock, 1 = unit shock.
                         confint        = 1.67, # Width of confidence bands: 
                                                # 1 = 68%, 1.67 = 90%, 1.96 = 95%.
-                        hor            = 24,   # Length of irf horizons.
+                        hor            = 12,   # Length of irf horizons.
                         switching      = endog_data$Infl, # Use inflation rate as switching variable.
                         use_hp         = TRUE, # Use HP-filter? TRUE or FALSE.   
                         lambda         = 1600, # Ravn and Uhlig (2002):
