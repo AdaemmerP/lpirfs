@@ -272,18 +272,17 @@ lp_nl <- function(endog_data,
   }
 
   # Check whether 'use_hp' is given
-  if(is.null(specs$use_hp)){
+  if(isTRUE(specs$use_logistic) & is.null(specs$use_hp)){
     stop('Please specify whether to use the HP-filter for the switching variable.')
   }
 
   # Check whether lambda is given if 'use_hp == 1'
-  if((specs$use_hp == 1) &
-     (is.null(specs$lambda))){
+  if(isTRUE(specs$use_hp) & (is.null(specs$lambda))){
     stop('Please specify lambda for the HP-filter.')
   }
 
   # Check whether 'gamma' is given
-  if(is.null(specs$gamma)){
+  if(isTRUE(specs$use_logistic) & is.null(specs$gamma)){
     stop('Please specify gamma for the transition function.')
   }
 
@@ -369,13 +368,17 @@ lp_nl <- function(endog_data,
    }
 
   # Check whether gamma is positive
-  if((specs$gamma < 0)){
+  if(isTRUE(use_logistic)){
+     if(specs$gamma < 0){
     stop('Gamma has to be a positive number.')
+   }
   }
 
   # Check whether use_hp is either 0 or 1 is positive
-  if(!(specs$use_hp %in% c(0, 1))){
-    stop('Please set use_hp = 0 (do not use HP-filter), or use_hp = 1 (use HP-filter).')
+  if(isTRUE(use_logistic)){
+    if(!(specs$use_hp %in% c(0, 1))){
+      stop('Please set use_hp = 0 (do not use HP-filter), or use_hp = 1 (use HP-filter).')
+   }
   }
 
   # Check whether use_hp is either 0 or 1 is positive
