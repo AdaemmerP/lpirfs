@@ -1,3 +1,7 @@
+# lpirfs 0.1.4.9000
+
+* New checks for *lp_nl()*
+
 # lpirfs 0.1.4
 
 * Added two functions to estimate linear and nonlinear irfs for panel data.
