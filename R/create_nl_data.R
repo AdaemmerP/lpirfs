@@ -12,7 +12,7 @@
 create_nl_data <- function(specs, endog_data){
 
   # Check whether lag lengths have to be determined
-  if (is.nan(specs$lags_criterion) == TRUE) {
+  if (is.nan(specs$lags_criterion)) {
 
     # Get transition probabilities by logistic function?
     if(isTRUE(specs$use_logistic)){
