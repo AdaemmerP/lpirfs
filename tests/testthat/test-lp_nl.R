@@ -119,8 +119,9 @@ test_that("Test whether 'use_hp' is given", {
 
 
 test_that("Test whether lambda is given if use_hp == 1", {
-  use_hp    <- 1
-  lambda       <- NULL
+  use_hp    <- T
+  lambda    <- NULL
+
   testthat::expect_error(lp_nl(endog_data,
                                lags_endog_lin   = lags_endog_lin,
                                lags_endog_nl    = lags_endog_nl,
