@@ -64,6 +64,12 @@ via *devtools::install\_github(“AdaemmerP/lpirfs”)*
 Examples can be found
 [here.](https://adaemmerp.github.io/lpirfs/README_docs.html)
 
+## Development
+
+I am currently working on extending the package with the smooth local
+projection (SLP) approach by [Barnichon and Brownless
+(2017)](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2892508).
+
 ## Acknowledgements
 
 I am thankful to Òscar

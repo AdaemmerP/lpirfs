@@ -60,6 +60,8 @@ Yo can then install the package via *devtools::install_github("AdaemmerP/lpirfs"
 ## How to use 
 Examples can be found [here.](https://adaemmerp.github.io/lpirfs/README_docs.html)
 
+## Development
+I am currently working on extending the package with the smooth local projection (SLP) approach by [Barnichon and Brownless (2017)](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2892508).
 
 ## Acknowledgements
 I am thankful to Òscar [Jordà](https://sites.google.com/site/oscarjorda/) for encouraging comments and helpful suggestions. I am also indebted to Sarah [Zubairy](https://sites.google.com/site/sarahzubairy/) for providing the Matlab code before the publication of their 
