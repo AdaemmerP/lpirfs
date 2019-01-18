@@ -703,7 +703,7 @@ set.seed(123)
 
 test_that("Test whether output coefficients from 'lp_nl_panel_results' coincide
             with coefficients estimated by using the matrix prepared in 'lp_nl_panel'", {
-
+              suppressWarnings(
               # Estimate panel model
               results_panel <-  lp_nl_panel(data_set          = data_set,
                                             data_sample       = 'Full',
@@ -730,7 +730,7 @@ test_that("Test whether output coefficients from 'lp_nl_panel_results' coincide
                                             lags_fd_exog_data = 2,
 
                                             confint           = 1.67,
-                                            hor               = 10)
+                                            hor               = 10))
 
 
               lp_nl_panel_results <- results_panel$reg_summaries[[1]]

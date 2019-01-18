@@ -475,67 +475,9 @@ library(dplyr)
   })
 
 
-  # test_that("Test that gmm options are correct", {
-  #
-  #   testthat::expect_error(lp_lin_panel(data_set          = data_set,
-  #                                       data_sample       = 'Full',
-  #                                       endog_data        = "y",
-  #                                       cumul_mult        = TRUE,
-  #
-  #                                       shock             = "x_1",
-  #                                       diff_shock        = FALSE,
-  #                                       iv_reg            = TRUE,
-  #                                       instrum           = FALSE,
-  #                                       panel_model       = "within",
-  #                                       panel_effect      = "individual",
-  #                                       robust_cov        = NULL,
-  #
-  #                                       use_gmm           = TRUE,
-  #                                       gmm_effect         = "soso",
-  #
-  #
-  #                                       c_exog_data       = colnames(data_set)[4:6],
-  #                                       l_exog_data       = colnames(data_set)[4:6],
-  #                                       lags_exog_data    = 1,
-  #                                       c_fd_exog_data    = colnames(data_set)[4:6],
-  #                                       l_fd_exog_data    = colnames(data_set)[4:6],
-  #                                       lags_fd_exog_data = 2,
-  #
-  #                                       confint           = 1,
-  #                                       hor               = 5),
-  #                          'The effect for gmm has to be "twoways" (default) or "individual".', fixed = TRUE)
-  # })
-
-  # test_that("Test that data frame is given", {
-  #   names(data_set)[3:4] <- c("cross_id", "date_id")
-  #
-  #   testthat::expect_error(lp_lin_panel(data_set          = NULL,
-  #                                       data_sample       = 'Full',
-  #                                       endog_data        = "y",
-  #                                       cumul_mult        = TRUE,
-  #
-  #                                       shock             = "x_1",
-  #                                       diff_shock        = FALSE,
-  #                                       iv_reg            = FALSE,
-  #                                       instrum           = NULL,
-  #                                       panel_model       = "within",
-  #                                       panel_effect      = "individual",
-  #                                       robust_cov        = NULL,
-  #
-  #                                       c_exog_data       = colnames(data_set)[4:6],
-  #                                       l_exog_data       = colnames(data_set)[4:6],
-  #                                       lags_exog_data    = 2,
-  #                                       c_fd_exog_data    = colnames(data_set)[4:6],
-  #                                       l_fd_exog_data    = colnames(data_set)[4:6],
-  #                                       lags_fd_exog_data = 2,
-  #
-  #                                       confint           = 1.67,
-  #                                       hor               = 10),
-  #                          "You have to provide the panel data set.", fixed = TRUE)
-  # })
-  #
 # Estimate panel model
-results_panel <-  lp_lin_panel(data_set          = data_set,
+results_panel <-  suppressWarnings(
+                  lp_lin_panel(data_set          = data_set,
                                data_sample       = 'Full',
                                endog_data        = "y",
                                cumul_mult        = TRUE,
@@ -556,7 +498,7 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
                                lags_fd_exog_data = 2,
 
                                confint           = 1.67,
-                               hor               = 10)
+                               hor               = 10))
 
   lp_lin_panel_results <- results_panel$reg_summaries[[1]]
   yx_data              <- results_panel$xy_data_sets[[1]]
