@@ -1,12 +1,18 @@
 Package: lpirfs
 Type: Package
 Title: Local Projections Impulse Response Functions
-Version: 0.1.4
+Version: 0.1.4.9000
 Authors@R: c(
             person("Philipp", "Adämmer", 
                     email   = "adaemmer@hsu-hh.de", 
                     role    = c("aut", "cre"),
                     comment = c(ORCID = "0000-0003-3770-0097")),
+            person("Regis", "Barnichon", 
+                    email   = "regis.barnichon@sf.frb.org", 
+                    role    = c("ctb")),
+            person("Christian", "Brownless", 
+                    email   = "christian.brownlees@upf.edu", 
+                    role    = c("ctb")),        
             person("James P.", "LeSage", 
                     email   = "jlesage@spatial-econometrics.com", 
                     role    = c("ctb")),
@@ -28,8 +34,10 @@ Imports:
     foreach(>= 1.4.3),
     ggplot2(>= 2.2.1),
     lmtest (>= 0.9-36), 
+    Matrix(>= 1.2-15),
     plm(>= 1.6-6),
     sandwich(>= 2.5-0),
+    splines(>= 3.5.2),
     Rcpp(>= 0.12.17)
 RoxygenNote: 6.1.1
 LinkingTo: Rcpp, RcppArmadillo
