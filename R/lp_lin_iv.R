@@ -5,7 +5,7 @@
 #' @param shock A one column \link{data.frame}, including the variable to shock with. The row length has to be the same as \emph{endog_data}.
 #' When \emph{use_twosls = TRUE}, this variable will be approximated/regressed on the instrument variable(s) given in \emph{instrum}.
 #' @param instr Deprecated input name. Use \emph{shock} instead. See \emph{shock} for details.
-#' @param use_twosls Use two stage least squares? TRUE or FALSE.
+#' @param use_twosls Boolean. Use two stage least squares? TRUE or FALSE.
 #' @param instrum A \link{data.frame}, containing the instrument(s) to use for 2SLS. This instrument will be used for the
 #'  variable in \emph{shock}.
 #' @param lags_endog_lin NaN or integer. NaN if lags are chosen by a lag length criterion. Integer for number of lags for \emph{endog_data}.
@@ -343,9 +343,9 @@ lp_lin_iv <- function(endog_data,
   z_lin    <- data_lin[[3]]
 
 # Save endogenous and lagged exogenous data in specs
-  specs$y_lin        <- y_lin
-  specs$x_lin        <- x_lin
-  specs$z_lin        <- z_lin
+  specs$y_lin  <- y_lin
+  specs$x_lin  <- x_lin
+  specs$z_lin  <- z_lin
 
 
 
@@ -480,8 +480,6 @@ if(is.nan(specs$lags_criterion) == TRUE){
 
                                 # Estimate coefficients and newey west std.err
                                 nw_results     <- lpirfs::newey_west(yy, xx, h)
-                            #    b              <- nw_results[[1]]
-                            #    std_err        <- sqrt(diag(nw_results[[2]]))*specs$confint
 
                                         } else {
 
