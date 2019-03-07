@@ -36,7 +36,7 @@ plot_lin <- function(results_lin){
       tbl_lin_low  <- as.matrix(t(irf_lin_low[,  1:specs$hor , ss]))[, rr]
       tbl_lin_up   <- as.matrix(t(irf_lin_up[,   1:specs$hor , ss]))[, rr]
 
-      tbl_lin      <- tibble(x   = 1:(specs$hor),  mean = tbl_lin_mean,
+      tbl_lin      <- tibble(x     = seq_along(tbl_lin_mean),  mean = tbl_lin_mean,
                              low   = tbl_lin_low, up = tbl_lin_up)
 
       gg_lin[[plot_num]] <- ggplot()+
@@ -72,7 +72,7 @@ plot_lin <- function(results_lin){
           tbl_lin_low  <- irf_lin_low[rr, ]
           tbl_lin_up   <- irf_lin_up[rr, ]
 
-          tbl_lin      <- tibble(x     = 1:(specs$hor),  mean = tbl_lin_mean,
+          tbl_lin      <- tibble(x     = seq_along(tbl_lin_mean),  mean = tbl_lin_mean,     # 1:(specs$hor)
                                  low   = tbl_lin_low,    up   = tbl_lin_up)
 
           gg_lin[[rr]] <- ggplot()+
