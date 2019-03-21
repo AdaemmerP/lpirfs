@@ -1,6 +1,8 @@
 # lpirfs 0.1.4.9000
 
-* New checks for *lp_nl()*
+* New input-checks for *lp_nl()*
+* New option in lp_lin_panel() to choose correct impulse response and check
+  whether shock variable has been dropped during estimation. 
 
 # lpirfs 0.1.4
 

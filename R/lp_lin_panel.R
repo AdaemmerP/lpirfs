@@ -61,6 +61,7 @@
 #' @importFrom lmtest coeftest
 #' @importFrom foreach foreach
 #' @importFrom sandwich vcovHC
+#' @importFrom stats variable.names
 #' @export
 #'
 #' @references
@@ -557,19 +558,40 @@ lp_lin_panel <- function(
 
       }
 
+
+      # Extract the position of the parameters of the shock variable
+        shock_position <- which(stats::variable.names(t(reg_results)) == specs$shock)
+
+      # If shock variable could not be found, stop estimation and give message
+      if(is.integer(shock_position) && length(shock_position) == 0){
+        stop("The shock variable has been dropped during the estimation. The
+                 impulse responses can not be estimated.")
+      }
+
+
+
       # Estimate irfs and confidence bands
-      irf_panel_mean[[1, ii]]   <- reg_results[1, 1]
-      irf_panel_up[[1,   ii]]   <- reg_results[1, 1] + specs$confint*reg_results[1,2]
-      irf_panel_low[[1,  ii]]   <- reg_results[1, 1] - specs$confint*reg_results[1,2]
+      irf_panel_mean[[1, ii]]   <- reg_results[shock_position, 1]
+      irf_panel_up[[1,   ii]]   <- reg_results[shock_position, 1] + specs$confint*reg_results[shock_position, 2]
+      irf_panel_low[[1,  ii]]   <- reg_results[shock_position, 1] - specs$confint*reg_results[shock_position, 2]
 
                              }      else      {
 
       reg_results <- summary(panel_results)
 
+      # Extract the position of the parameters of the shock variable
+      shock_position <- which(stats::variable.names(t(reg_results$coef)) == specs$shock)
+
+      # If shock variable could not be found, stop estimation and give message
+      if(is.integer(shock_position) && length(shock_position) == 0){
+        stop("The shock variable has been dropped during the estimation. The
+                 impulse responses can not be estimated.")
+      }
+
       # Estimate irfs and confidence bands
-      irf_panel_mean[[1, ii]]   <- reg_results$coefficients[1, 1]
-      irf_panel_up[[1,   ii]]   <- reg_results$coefficients[1, 1] + specs$confint*reg_results$coefficients[1,2]
-      irf_panel_low[[1,  ii]]   <- reg_results$coefficients[1, 1] - specs$confint*reg_results$coefficients[1,2]
+      irf_panel_mean[[1, ii]]   <- reg_results$coefficients[shock_position, 1]
+      irf_panel_up[[1,   ii]]   <- reg_results$coefficients[shock_position, 1] + specs$confint*reg_results$coefficients[shock_position, 2]
+      irf_panel_low[[1,  ii]]   <- reg_results$coefficients[shock_position, 1] - specs$confint*reg_results$coefficients[shock_position, 2]
 
     }
 
