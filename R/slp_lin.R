@@ -22,6 +22,8 @@
 #' @param lambda Numeric. A numeric number or numeric vector (if use_cv = TRUE) for shrinkage value(s).
 #' @param type Character. Type of estimation. Default is "smooth" for smooth local projections. "reg" estimates regular impulse responses.
 #'
+#' @importFrom dplyr if_else
+#'
 #' @return A list with all values.
 #' @export
 #'
@@ -143,10 +145,19 @@ slp_lin <- function(endog_data,
     obj$conf_bands <- conf_bands
     obj$specs      <- specs
 
+    # Build matrices of impulse respones
+    irf_lin_mean <- t(as.matrix(obj$ir.opt))
+    irf_lin_low  <- t(conf_bands$irc[, 1])
+    irf_lin_up   <- t(conf_bands$irc[, 2])
+
+    # Replace NAs with 0 in upper and lower confidence bands matrices
+    irf_lin_low  <- t(as.matrix(dplyr::if_else(is.na(irf_lin_low), 0, irf_lin_low)))
+    irf_lin_up   <- t(as.matrix(dplyr::if_else(is.na(irf_lin_up), 0,  irf_lin_up)))
+
     # Return estimates and specs list
-    return(list(irf_lin_mean = t(as.matrix(obj$ir.opt)),
-                irf_lin_low  = t(as.matrix(conf_bands$irc[, 1])),
-                irf_lin_up   = t(as.matrix(conf_bands$irc[, 2])),
+    return(list(irf_lin_mean = irf_lin_mean,
+                irf_lin_low  = irf_lin_low,
+                irf_lin_up   = irf_lin_up,
                 obj          = obj,
                 specs        = specs))
 
