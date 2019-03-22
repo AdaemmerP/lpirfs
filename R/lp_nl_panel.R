@@ -358,6 +358,13 @@ lp_nl_panel <- function(
     stop('Please verify that each column name is unique.')
   }
 
+  # Check whether the name of the variable is shock
+  if(shock == "shock"){
+    stop('Please use another name for your shock variable".
+         Your current name would lead to a naming problem during estimation.')
+  }
+
+
 
 
   # Rename first two column names of data.frame
@@ -526,30 +533,56 @@ lp_nl_panel <- function(
 
         reg_results <-  lmtest::coeftest(panel_results,  vcov = se_hc_panel_cluster(specs$robust_cov))
 
+                                                }
+
+
+      # Extract the position of the parameters of the shock variable
+      shock_position_s1 <- which(stats::variable.names(t(reg_results)) == "shock_s1")
+      shock_position_s2 <- which(stats::variable.names(t(reg_results)) == "shock_s2")
+
+      # If shock variable could not be found, stop estimation and give message
+      if((is.integer(shock_position_s1) && length(shock_position_s1) == 0)|
+         (is.integer(shock_position_s2) && length(shock_position_s2) == 0)){
+        stop("On of the nonlinear shock variable has been dropped during the estimation. The
+                 impulse responses can not be estimated.")
       }
 
-      # Estimate irfs and confidence bands
-      irf_s1_mean[1, ii]   <- reg_results[1, 1]
-      irf_s1_up[1,   ii]   <- reg_results[1, 1] + specs$confint*reg_results[1,2]
-      irf_s1_low[1,  ii]   <- reg_results[1, 1] - specs$confint*reg_results[1,2]
 
-      irf_s2_mean[1, ii]   <- reg_results[2, 1]
-      irf_s2_up[1,   ii]   <- reg_results[2, 1] + specs$confint*reg_results[2,2]
-      irf_s2_low[1,  ii]   <- reg_results[2, 1] - specs$confint*reg_results[2,2]
+      # Estimate irfs and confidence bands
+      irf_s1_mean[1, ii]   <- reg_results[shock_position_s1, 1]
+      irf_s1_up[1,   ii]   <- reg_results[shock_position_s1, 1] + specs$confint*reg_results[shock_position_s1, 2]
+      irf_s1_low[1,  ii]   <- reg_results[shock_position_s1, 1] - specs$confint*reg_results[shock_position_s1, 2]
+
+      irf_s2_mean[1, ii]   <- reg_results[shock_position_s2, 1]
+      irf_s2_up[1,   ii]   <- reg_results[shock_position_s2, 1] + specs$confint*reg_results[shock_position_s2,2]
+      irf_s2_low[1,  ii]   <- reg_results[shock_position_s2, 1] - specs$confint*reg_results[shock_position_s2,2]
 
       # Estimate model without robust standard errors
                                }      else      {
 
       reg_results <- summary(panel_results)
 
-      # Estimate irfs and confidence bands
-      irf_s1_mean[1, ii]   <- reg_results$coefficients[1, 1]
-      irf_s1_up[1,   ii]   <- reg_results$coefficients[1, 1] + specs$confint*reg_results$coefficients[1,2]
-      irf_s1_low[1,  ii]   <- reg_results$coefficients[1, 1] - specs$confint*reg_results$coefficients[1,2]
 
-      irf_s2_mean[1, ii]   <- reg_results$coefficients[2, 1]
-      irf_s2_up[1,   ii]   <- reg_results$coefficients[2, 1] + specs$confint*reg_results$coefficients[2,2]
-      irf_s2_low[1,  ii]   <- reg_results$coefficients[2, 1] - specs$confint*reg_results$coefficients[2,2]
+      # Extract the position of the parameters of the shock variable
+      shock_position_s1 <- which(stats::variable.names(t(reg_results$coef)) == "shock_s1")
+      shock_position_s2 <- which(stats::variable.names(t(reg_results$coef)) == "shock_s2")
+
+      # If shock variable could not be found, stop estimation and give message
+      # if((is.integer(shock_position_s1) && length(shock_position_s1) == 0)|
+      #    (is.integer(shock_position_s2) && length(shock_position_s2) == 0)){
+      #   stop("On of the nonlinear shock variable has been dropped during the estimation. The
+      #            impulse responses can not be estimated.")
+      # }
+
+
+      # Estimate irfs and confidence bands
+      irf_s1_mean[1, ii]   <- reg_results$coefficients[shock_position_s1, 1]
+      irf_s1_up[1,   ii]   <- reg_results$coefficients[shock_position_s1, 1] + specs$confint*reg_results$coefficients[shock_position_s1, 2]
+      irf_s1_low[1,  ii]   <- reg_results$coefficients[shock_position_s1, 1] - specs$confint*reg_results$coefficients[shock_position_s1, 2]
+
+      irf_s2_mean[1, ii]   <- reg_results$coefficients[shock_position_s2, 1]
+      irf_s2_up[1,   ii]   <- reg_results$coefficients[shock_position_s2, 1] + specs$confint*reg_results$coefficients[shock_position_s2, 2]
+      irf_s2_low[1,  ii]   <- reg_results$coefficients[shock_position_s2, 1] - specs$confint*reg_results$coefficients[shock_position_s2, 2]
 
     }
 

@@ -701,6 +701,43 @@ set.seed(123)
   })
 
 
+  test_that("Test that shock name is correct", {
+
+
+    testthat::expect_error(lp_nl_panel(data_set          = data_set,
+                                       data_sample       = 'Full',
+                                       endog_data        = "y",
+                                       cumul_mult        = T,
+
+                                       shock             = "shock",
+                                       diff_shock        = F,
+                                       panel_model       = "within",
+                                       panel_effect      = "individual",
+                                       robust_cov        = "Vcx",
+
+                                       switching         = "x_1",
+                                       lag_switching     = T,
+                                       use_logistic      = T,
+                                       use_hp            = T,
+                                       lambda            = 3,
+                                       gamma             = 3,
+
+                                       use_gmm           = F,
+
+                                       c_exog_data       = colnames(data_set)[4:6],
+                                       l_exog_data       = colnames(data_set)[4:6],
+                                       lags_exog_data    = 2,
+                                       c_fd_exog_data    = colnames(data_set)[4:6],
+                                       l_fd_exog_data    = colnames(data_set)[4:6],
+                                       lags_fd_exog_data = 2,
+
+                                       confint           = 1,
+                                       hor               = 2),
+                           'Please use another name for your shock variable".
+         Your current name would lead to a naming problem during estimation.', fixed = TRUE)
+  })
+
+
 test_that("Test whether output coefficients from 'lp_nl_panel_results' coincide
             with coefficients estimated by using the matrix prepared in 'lp_nl_panel'", {
               suppressWarnings(
