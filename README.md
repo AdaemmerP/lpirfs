@@ -64,12 +64,6 @@ via *devtools::install\_github(“AdaemmerP/lpirfs”)*
 Examples can be found
 [here.](https://adaemmerp.github.io/lpirfs/README_docs.html)
 
-## Development
-
-I am currently working on extending the package with the smooth local
-projection (SLP) approach by [Barnichon and Brownless
-(2017)](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2892508).
-
 ## Acknowledgements
 
 I am thankful to Òscar
@@ -79,11 +73,13 @@ comments and helpful suggestions. I am also indebted to Sarah
 Matlab code before the publication of their
 [paper](https://www.journals.uchicago.edu/doi/10.1086/696277).
 
-I greatly benefit from the profound *R*, *Rcpp* and *GitHub* knowledge
-of Philipp [Wittenberg](https://github.com/wittenberg) and Detlef
-(overflow) [Steuer](https://github.com/dsteuer). Last but not least, I
-am grateful to Philipp Dybowski for his comments and without whom I
-would have never started this project.
+I greatly benefit from the helpful and critical remarks by Jon
+[Danielsson](http://www.systemicrisk.ac.uk/people/jon-danielsson) and
+from the profound *R*, *Rcpp* and *GitHub* knowledge of Philipp
+[Wittenberg](https://github.com/wittenberg) and Detlef (overflow)
+[Steuer](https://github.com/dsteuer). Last but not least, I am grateful
+to Philipp Dybowski for his comments and without whom I would have never
+started this project.
 
 All remaining errors are obviously mine.
 
