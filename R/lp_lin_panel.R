@@ -584,8 +584,8 @@ lp_lin_panel <- function(
 
       # If shock variable could not be found, stop estimation and give message
       if(is.integer(shock_position) && length(shock_position) == 0){
-        stop("The shock variable has been dropped during the estimation. The
-                 impulse responses can not be estimated.")
+        stop("The shock variable was dropped during the estimation, perhaps because of co-linearity or identification issues.
+               As a consequence, the  impulse responses can not be estimated.")
       }
 
       # Estimate irfs and confidence bands

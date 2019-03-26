@@ -543,8 +543,8 @@ lp_nl_panel <- function(
       # If shock variable could not be found, stop estimation and give message
       if((is.integer(shock_position_s1) && length(shock_position_s1) == 0)|
          (is.integer(shock_position_s2) && length(shock_position_s2) == 0)){
-        stop("On of the nonlinear shock variable has been dropped during the estimation. The
-                 impulse responses can not be estimated.")
+        stop("One or both of the nonlinear shock variables was dropped during the estimation, perhaps because of co-linearity or identification issues.
+               As a consequence, the impulse responses can not be estimated.")
       }
 
 
