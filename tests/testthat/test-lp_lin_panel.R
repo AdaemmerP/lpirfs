@@ -656,6 +656,6 @@ results_panel <-  suppressWarnings(
                                                   lags_fd_exog_data = NULL,
 
                                                   confint           = 1.67,
-                                                  hor               = 5),
+                                                  hor               = 3),
                                      NA)
             })

@@ -935,7 +935,7 @@ test_that("Test gmm model", {
                                                   lags_fd_exog_data = NULL,
 
                                                   confint           = 1.67,
-                                                  hor               = 10),
+                                                  hor               = 3),
                                       NA)
             })
 
