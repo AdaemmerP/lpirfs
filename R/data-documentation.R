@@ -77,23 +77,3 @@
 "monetary_var_data"
 
 
-#' @title Data to estimate the effects of a monetary shock
-#'
-#' @description A data.frame, containing quarterly data to estimate the effects of a monetary shock.
-#' The data is used by Barnichon and Brownless (2018)
-#'
-#' @format A \link{tibble} with 494 monthly observations (rows) and 6 variables (columns):
-#' \describe{
-#'   \item{yg}{GDP growth.}
-#'   \item{pi}{Inflation rate.}
-#'   \item{ir}{Interest rate.}
-#'   }
-#' Sample: 1959:01 - 2007:02.
-#'
-#' @references
-#'
-#' Barnichon, R., Brwonless, C. (2018), "Impulse Response Estimation By Smooth Local Projections",
-#' \emph{The Review of Economics and Statistics}, Forthcoming.
-#'
-#' @source \url{https://github.com/ctbrownlees/R-Package-lproj}
-"us_macro"

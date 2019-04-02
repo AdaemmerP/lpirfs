@@ -1,8 +1,11 @@
-# lpirfs 0.1.4.9000
+# lpirfs 0.1.5
 
 * New input-checks for *lp_nl()*
-* New option in lp_lin_panel() to choose correct impulse response and check
-  whether shock variable has been dropped during estimation. 
+
+* Fixed an error in *lp_lin_panel()* and *lp_nl_panel()* when a pooling model is specified.
+
+* New checks in *lp_lin_panel()* and *lp_nl_panel()* to see whether shock variable has been dropped during estimation, 
+  potentially because of co-linearity or identification issues. 
 
 # lpirfs 0.1.4
 

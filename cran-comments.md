@@ -1,20 +1,13 @@
 # Submission notes
 
 ## Purpose
-* Added two functions to estimate linear and nonlinear irfs for panel data.
 
-* Added an option to choose whether to use lagged values of the switching variable in 
-  nonlinear models. 
-  
-* Added an option to use a dummy approach for all nonlinear models. 
+* New input-checks for *lp_nl()*
 
-* Deleted messages about how models are estimated (e.g. with or without exogenous data).
+* Fixed an error in *lp_lin_panel()* and *lp_nl_panel()* when a pooling model is specified.
 
-* Changed input name in `lp_lin_iv()` for consistency:
-
-function | old input name | new input name
-:--------|:-------------  |:------------- 
-`lp_lin_iv()` | `twosls`     | `use_twosls`
+* New checks in *lp_lin_panel()* and *lp_nl_panel()* to see whether shock variable has been dropped during estimation, 
+  potentially because of co-linearity or identification issues. 
 
 
 ## Test environments
@@ -32,7 +25,7 @@ function | old input name | new input name
 checking installed package size ... NOTE
   installed size is  6.1Mb
   sub-directories of 1Mb or more:
-    libs   5.4Mb
+    libs   5.3Mb
  [8s/20s]
   
 This is compiled code in the libs/ directory.  
