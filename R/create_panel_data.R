@@ -48,6 +48,7 @@ create_panel_data <- function(specs, data_set){
       # Create cumulative endogenous vector
       y_data[[ii + 1]]     <-  data_set %>%
                                 dplyr::select(cross_id, date_id, specs$endog_data) %>%
+                                dplyr::group_by(cross_id)                          %>%
                                 dplyr::mutate_at(vars(specs$endog_data),
                                        funs(cumul_function(., ii)))                %>%
                                 dplyr::ungroup()
@@ -62,8 +63,10 @@ create_panel_data <- function(specs, data_set){
       # Create lead endogenous vectors
       y_data[[ii + 1]]     <-  data_set %>%
                                 dplyr::select(cross_id, date_id, specs$endog_data)  %>%
+                                dplyr::group_by(cross_id)                  %>%
                                 dplyr::mutate_at(vars(specs$endog_data ),
-                                                 funs(dplyr::lead(., ii)))
+                                                 funs(dplyr::lead(., ii))) %>%
+                                dplyr::ungroup()
     }
 
   }
@@ -77,9 +80,11 @@ create_panel_data <- function(specs, data_set){
   # Take first differences of shock variable?
   if(isTRUE(specs$diff_shock)){
 
-    x_reg_data    <- x_reg_data %>%
-                      dplyr::mutate_at(vars(specs$shock), diff_function) %>%
-                      dplyr::rename_at(vars(specs$shock), funs(paste0("d",.)))
+    x_reg_data    <- x_reg_data                                               %>%
+                      dplyr::group_by(cross_id)                                %>%
+                      dplyr::mutate_at(vars(specs$shock), diff_function)       %>%
+                      dplyr::rename_at(vars(specs$shock), funs(paste0("d",.))) %>%
+                      dplyr::ungroup()
 
     # Rename shock variable
     specs$shock   <- colnames(x_reg_data)[which(!(colnames(x_reg_data) %in% c("cross_id", "date_id")))]
