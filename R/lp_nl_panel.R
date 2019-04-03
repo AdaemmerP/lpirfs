@@ -39,7 +39,7 @@
 #'
 #'\item{specs}{A list with data properties for e.g. the plot function.}
 #'
-#' @importFrom dplyr lead lag filter
+#' @importFrom dplyr lead lag filter arrange
 #' @importFrom plm plm
 #' @importFrom lmtest coeftest
 #' @export
@@ -575,13 +575,6 @@ lp_nl_panel <- function(
       # Extract the position of the parameters of the shock variable
       shock_position_s1 <- which(stats::variable.names(t(reg_results$coef)) == "shock_s1")
       shock_position_s2 <- which(stats::variable.names(t(reg_results$coef)) == "shock_s2")
-
-      # If shock variable could not be found, stop estimation and give message
-      # if((is.integer(shock_position_s1) && length(shock_position_s1) == 0)|
-      #    (is.integer(shock_position_s2) && length(shock_position_s2) == 0)){
-      #   stop("On of the nonlinear shock variable has been dropped during the estimation. The
-      #            impulse responses can not be estimated.")
-      # }
 
 
       # Estimate irfs and confidence bands
