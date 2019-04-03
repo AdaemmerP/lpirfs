@@ -374,6 +374,12 @@ lp_lin_panel <- function(
     stop('Please verify that each column name is unique.')
   }
 
+  # Verify that column names do not include the string pattern "lag_"
+  if(length(grep("lag_", colnames(data_set))) >= 1){
+    stop('Please do not use column names that include the string "lag_" in the name.
+         This cause later naming problems')
+  }
+
 
   # Rename first two column of data.frame
   colnames(data_set)[1]     <- "cross_id"
