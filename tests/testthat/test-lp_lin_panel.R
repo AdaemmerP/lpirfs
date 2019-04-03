@@ -51,6 +51,38 @@ library(dplyr)
          Please rename them.", fixed = TRUE)
     })
 
+
+
+  test_that("Test that column names are correct", {
+    names(data_set)[3] <- "Test_lag_name"
+
+    testthat::expect_error(lp_lin_panel(data_set          = data_set,
+                                        data_sample       = 'Full',
+                                        endog_data        = "y",
+                                        cumul_mult        = TRUE,
+
+                                        shock             = "x_1",
+                                        diff_shock        = FALSE,
+                                        iv_reg            = FALSE,
+                                        instrum           = NULL,
+                                        panel_model       = "within",
+                                        panel_effect      = "individual",
+                                        robust_cov        = NULL,
+
+                                        c_exog_data       = colnames(data_set)[4:6],
+                                        l_exog_data       = colnames(data_set)[4:6],
+                                        lags_exog_data    = 2,
+                                        c_fd_exog_data    = colnames(data_set)[4:6],
+                                        l_fd_exog_data    = colnames(data_set)[4:6],
+                                        lags_fd_exog_data = 2,
+
+                                        confint           = 1.67,
+                                        hor               = 10),
+                           'Please do not use column names that include the string "lag_" in the name.
+         This cause later naming problems', fixed = TRUE)
+  })
+
+
   test_that("Test that data frame is given", {
 
     testthat::expect_error(lp_lin_panel(data_set          = NULL,
