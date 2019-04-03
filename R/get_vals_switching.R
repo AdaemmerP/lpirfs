@@ -3,7 +3,7 @@
 #' @description Computes transition values by using a smooth transition function as
 #' used in Auerbach and Gorodnichenko (2012). The time series used in the transition function
 #' can be detrended via the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013).
-#' @param switching_data A numeric vector or a panel data set, depending on the model to estimate.
+#' @param data_set A numeric vector or a panel data set, depending on the model to estimate.
 #' @param specs A \link{list} with inputs as in \link{lp_nl}().
 #' @return \item{fz}{A numeric vector with values from the smooth transition function \eqn{F(z_{t-1})}.}
 #' @keywords internal
@@ -19,20 +19,29 @@
 
 
 
-get_vals_switching <- function(switching_data, specs){
+get_vals_switching <- function(data_set, specs){
+
+
+  # Function which creates lags to be consistent with dplyr
+  lag_function  <- function(data, lag_nr){
+
+    lag_data  <- dplyr::lag(data, lag_nr)
+
+  }
+
 
  # Use switching variable for non-panel data
  if(specs$model_type == 0 | specs$model_type == 1){
 
   # Convert switching data to tibble
-   switching_data        <- as_tibble(switching_data)
-   names(switching_data) <- "switch_name"
+   data_set        <- as_tibble(data_set)
+   names(data_set) <- "switch_name"
 
   # Decide whether to use HP filter.
     if(specs$use_hp == TRUE){
 
     # Use HP-filter to decompose switching variable.
-     filter_results  <-   hp_filter(as.matrix(switching_data), specs$lambda)
+     filter_results  <-   hp_filter(as.matrix(data_set), specs$lambda)
      gamma_fz        <-   specs$gamma
      z_0             <-   as.numeric(scale(filter_results[[1]], center = TRUE))
      fz              <-   exp((-1)*gamma_fz*z_0)/(1 + exp((-1)*gamma_fz*z_0))
@@ -47,10 +56,11 @@ get_vals_switching <- function(switching_data, specs){
 
                           }  else  {
 
-      fz              <-  exp((-1)*specs$gamma*switching_data$switch_name)/(1 + exp((-1)*specs$gamma*switching_data$switch_name))
+      fz              <-  exp((-1)*specs$gamma*data_set$switch_name)/(1 + exp((-1)*specs$gamma*data_set$switch_name))
 
       # Use first lag of value from switching function?
       if(isTRUE(specs$lag_switching)){
+
 
         fz            <-    dplyr::lag(fz, 1)
 
@@ -78,7 +88,7 @@ get_vals_switching <- function(switching_data, specs){
          return(hp_values[[1]])
     }
 
-    switching_tbl <- switching_data                                         %>%
+    switching_tbl <- data_set                                         %>%
                       dplyr::select(cross_id, date_id, specs$switching)     %>%
                       dplyr::group_by(cross_id)                             %>%
                       dplyr::mutate_at(vars(specs$switching), funs(use_hp_dplyr(., specs$lambda))) %>%
@@ -93,7 +103,16 @@ get_vals_switching <- function(switching_data, specs){
     # Use first lag of value from switching function?
     if(isTRUE(specs$lag_switching)){
 
-      fz            <-  dplyr::lag(fz, 1)
+
+      fz_df <- tibble(cross_id = data_set$cross_id, date_id = data_set$date_id,
+                      fz = fz)
+
+      fz_df <- fz_df %>%
+                dplyr::group_by(cross_id)                              %>%
+                dplyr::mutate_at(vars(fz), funs(lag_function(., 1)))   %>%
+                dplyr::ungroup()
+
+      fz    <- fz_df$fz
 
     }
 
@@ -102,13 +121,25 @@ get_vals_switching <- function(switching_data, specs){
                              }  else  {
 
 
-    fz              <-   exp((-1)*specs$gamma*switching_data[specs$switching])/
-                         (1 + exp((-1)*specs$gamma*switching_data[specs$switching]))
+    fz              <-   exp((-1)*specs$gamma*data_set[specs$switching])/
+                         (1 + exp((-1)*specs$gamma*data_set[specs$switching]))
+
+    fz              <- as.numeric(fz[, 1])
 
     # Use first lag of value from switching function?
     if(isTRUE(specs$lag_switching)){
 
-      fz            <-    dplyr::lag(fz, 1)
+
+      fz_df <- tibble(cross_id = data_set$cross_id, date_id = data_set$date_id,
+                      fz = fz)
+
+      fz_df <- fz_df %>%
+                dplyr::group_by(cross_id)                              %>%
+                dplyr::mutate_at(vars(fz), funs(lag_function(., 1)))   %>%
+                dplyr::ungroup()
+
+      fz    <- fz_df$fz
+
 
      }
    }
