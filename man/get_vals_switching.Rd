@@ -4,10 +4,10 @@
 \alias{get_vals_switching}
 \title{Compute values of transition function to separate regimes}
 \usage{
-get_vals_switching(switching_data, specs)
+get_vals_switching(data_set, specs)
 }
 \arguments{
-\item{switching_data}{A numeric vector or a panel data set, depending on the model to estimate.}
+\item{data_set}{A numeric vector or a panel data set, depending on the model to estimate.}
 
 \item{specs}{A \link{list} with inputs as in \link{lp_nl}().}
 }
