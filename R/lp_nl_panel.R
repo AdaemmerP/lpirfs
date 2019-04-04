@@ -595,6 +595,9 @@ lp_nl_panel <- function(
 
   }
 
+  # Make matrix with switching variable for later comparability
+  fz  <- tibble(cross_id = data_set$cross_id, date_id = data_set$date_id, switching_variable = data_set[specs$switching], fz = fz)
+
   # List to return
   return(list(irf_s1_mean    = irf_s1_mean,
               irf_s1_up      = irf_s1_up,
