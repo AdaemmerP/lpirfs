@@ -940,3 +940,289 @@ test_that("Test gmm model", {
             })
 
 
+
+test_that("Check output of switching variable", {
+
+  set.seed(123)
+
+  # Simulate panel data with large cross dimension
+  N  <- 300
+  TS <- 8
+
+  cross_section <- sort(rep(seq(1,N, 1), TS))
+  time_section  <- rep(seq(1,TS, 1), N)
+
+  data_set    <- tibble(cross_section, time_section) %>%
+                  group_by(cross_section) %>%
+                  mutate(x_1 = rnorm(TS)) %>%
+                  mutate(x_2 = rnorm(TS)) %>%
+                  mutate(x_3 = rnorm(TS)) %>%
+                  mutate(x_4 = rnorm(TS)) %>%
+                  mutate(y   = 0.3*x_1 + 0.4*x_2 + 0.5*x_3 + 0.6*x_4 + rnorm(TS)) %>%
+                  ungroup() %>%
+                  dplyr::arrange(cross_section, time_section)
+
+  # Estimate panel model
+  results_nl <- lp_nl_panel(data_set                   = data_set,
+                                     data_sample       = 'Full',
+                                     endog_data        = "y",
+                                     cumul_mult        = TRUE,
+
+                                     shock             = "x_1",
+                                     diff_shock        = FALSE,
+                                     panel_model       = "within",
+                                     panel_effect      = "individual",
+                                     robust_cov        = NULL,
+
+                                     switching         = "x_1",
+                                     lag_switching     = FALSE,
+                                     use_logistic      = FALSE,
+                                     use_hp            = FALSE,
+                                     lambda            = 3,
+                                     gamma             = 3,
+
+                                     use_gmm           = T,
+
+                                     c_exog_data       = NULL,
+                                     l_exog_data       = "y",
+                                     lags_exog_data    = 1,
+                                     c_fd_exog_data    = NULL,
+                                     l_fd_exog_data    = NULL,
+                                     lags_fd_exog_data = NULL,
+
+                                     confint           = 1.67,
+                                     hor               = 3)
+
+  testthat::expect_equal(results_nl$fz$fz[, 1], data_set$x_1)
+
+})
+
+
+
+test_that("Check output of switching variable", {
+
+  set.seed(123)
+
+  # Simulate panel data with large cross dimension
+  N  <- 300
+  TS <- 8
+
+  cross_section <- sort(rep(seq(1,N, 1), TS))
+  time_section  <- rep(seq(1,TS, 1), N)
+
+  data_set    <- tibble(cross_section, time_section) %>%
+                  group_by(cross_section) %>%
+                  mutate(x_1 = rnorm(TS)) %>%
+                  mutate(x_2 = rnorm(TS)) %>%
+                  mutate(x_3 = rnorm(TS)) %>%
+                  mutate(x_4 = rnorm(TS)) %>%
+                  mutate(y   = 0.3*x_1 + 0.4*x_2 + 0.5*x_3 + 0.6*x_4 + rnorm(TS)) %>%
+                  ungroup() %>%
+                  dplyr::arrange(cross_section, time_section)
+
+  # Estimate panel model
+  results_nl <- lp_nl_panel(data_set                   = data_set,
+                            data_sample       = 'Full',
+                            endog_data        = "y",
+                            cumul_mult        = TRUE,
+
+                            shock             = "x_1",
+                            diff_shock        = FALSE,
+                            panel_model       = "within",
+                            panel_effect      = "individual",
+                            robust_cov        = NULL,
+
+                            switching         = "x_1",
+                            lag_switching     = TRUE,
+                            use_logistic      = FALSE,
+                            use_hp            = FALSE,
+                            lambda            = 3,
+                            gamma             = 3,
+
+                            use_gmm           = T,
+
+                            c_exog_data       = NULL,
+                            l_exog_data       = "y",
+                            lags_exog_data    = 1,
+                            c_fd_exog_data    = NULL,
+                            l_fd_exog_data    = NULL,
+                            lags_fd_exog_data = NULL,
+
+                            confint           = 1.67,
+                            hor               = 3)
+
+  lag_dplyr  <- data_set %>%
+                group_by(cross_section) %>%
+                           mutate_at(vars(x_1), funs(dplyr::lag(.,1))) %>%
+                           ungroup() %>%
+                           select(x_1)  %>%
+                           as.matrix()  %>%
+                           as.numeric()
+
+  fz_output  <- results_nl$fz$fz
+
+
+  testthat::expect_equal(lag_dplyr, fz_output)
+
+})
+
+
+
+
+
+test_that("Check output of switching variable", {
+
+  set.seed(123)
+
+  # Simulate panel data with large cross dimension
+  N  <- 300
+  TS <- 8
+
+  cross_section <- sort(rep(seq(1,N, 1), TS))
+  time_section  <- rep(seq(1,TS, 1), N)
+
+  data_set      <- tibble(cross_section, time_section) %>%
+                    group_by(cross_section) %>%
+                    mutate(x_1 = rnorm(TS)) %>%
+                    mutate(x_2 = rnorm(TS)) %>%
+                    mutate(x_3 = rnorm(TS)) %>%
+                    mutate(x_4 = rnorm(TS)) %>%
+                    mutate(y   = 0.3*x_1 + 0.4*x_2 + 0.5*x_3 + 0.6*x_4 + rnorm(TS)) %>%
+                    ungroup() %>%
+                    dplyr::arrange(cross_section, time_section)
+
+  # Estimate panel model
+  results_nl <- lp_nl_panel(data_set                   = data_set,
+                            data_sample       = 'Full',
+                            endog_data        = "y",
+                            cumul_mult        = TRUE,
+
+                            shock             = "x_1",
+                            diff_shock        = FALSE,
+                            panel_model       = "within",
+                            panel_effect      = "individual",
+                            robust_cov        = NULL,
+
+                            switching         = "x_1",
+                            lag_switching     = F,
+                            use_logistic      = T,
+                            use_hp            = FALSE,
+                            lambda            = 3,
+                            gamma             = 3,
+
+                            use_gmm           = T,
+
+                            c_exog_data       = NULL,
+                            l_exog_data       = "y",
+                            lags_exog_data    = 1,
+                            c_fd_exog_data    = NULL,
+                            l_fd_exog_data    = NULL,
+                            lags_fd_exog_data = NULL,
+
+                            confint           = 1.67,
+                            hor               = 3)
+
+  # Use logistic function
+  logistic_function <- function(z_0){
+
+    switching_val <- exp(-3*z_0)/
+                    (1 + exp(-3*z_0))
+
+  }
+
+
+  lag_dplyr  <- data_set %>%
+                group_by(cross_section) %>%
+                mutate_at(vars(x_1), funs(logistic_function(.))) %>%
+                ungroup() %>%
+                select(x_1)  %>%
+                as.matrix()  %>%
+                as.numeric()
+
+  fz_output  <- results_nl$fz$fz
+
+
+  testthat::expect_equal(lag_dplyr, fz_output)
+
+})
+
+
+
+
+test_that("Check output of switching variable", {
+
+  set.seed(123)
+
+  # Simulate panel data with large cross dimension
+  N  <- 300
+  TS <- 8
+
+  cross_section <- sort(rep(seq(1,N, 1), TS))
+  time_section  <- rep(seq(1,TS, 1), N)
+
+  data_set      <- tibble(cross_section, time_section) %>%
+    group_by(cross_section) %>%
+    mutate(x_1 = rnorm(TS)) %>%
+    mutate(x_2 = rnorm(TS)) %>%
+    mutate(x_3 = rnorm(TS)) %>%
+    mutate(x_4 = rnorm(TS)) %>%
+    mutate(y   = 0.3*x_1 + 0.4*x_2 + 0.5*x_3 + 0.6*x_4 + rnorm(TS)) %>%
+    ungroup() %>%
+    dplyr::arrange(cross_section, time_section)
+
+  # Estimate panel model
+  results_nl <- lp_nl_panel(data_set                   = data_set,
+                            data_sample       = 'Full',
+                            endog_data        = "y",
+                            cumul_mult        = TRUE,
+
+                            shock             = "x_1",
+                            diff_shock        = FALSE,
+                            panel_model       = "within",
+                            panel_effect      = "individual",
+                            robust_cov        = NULL,
+
+                            switching         = "x_1",
+                            lag_switching     = T,
+                            use_logistic      = T,
+                            use_hp            = FALSE,
+                            lambda            = 3,
+                            gamma             = 3,
+
+                            use_gmm           = T,
+
+                            c_exog_data       = NULL,
+                            l_exog_data       = "y",
+                            lags_exog_data    = 1,
+                            c_fd_exog_data    = NULL,
+                            l_fd_exog_data    = NULL,
+                            lags_fd_exog_data = NULL,
+
+                            confint           = 1.67,
+                            hor               = 3)
+
+  # Use logistic function
+  logistic_function <- function(z_0){
+
+    switching_val <- exp(-3*z_0)/
+      (1 + exp(-3*z_0))
+
+  }
+
+
+  lag_dplyr  <- data_set %>%
+                group_by(cross_section) %>%
+                mutate_at(vars(x_1), funs(logistic_function(.))) %>%
+                mutate_at(vars(x_1), funs(dplyr::lag(., 1)))     %>%
+                ungroup() %>%
+                select(x_1)  %>%
+                as.matrix()  %>%
+                as.numeric()
+
+  fz_output  <- results_nl$fz$fz
+
+
+  testthat::expect_equal(lag_dplyr, fz_output)
+
+})
+
