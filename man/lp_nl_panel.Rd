@@ -205,7 +205,7 @@ results_panel <-  lp_nl_panel(data_set           = data_set,
  library(dplyr)
 
  data_set \%>\%
-    mutate(fz = results_panel$fz) \%>\%
+    mutate(fz = results_panel$fz$fz) \%>\%
     select(country, year, fz)     \%>\%
     filter(country == "USA" & year > 1950  & year <= 2016) \%>\%
     ggplot()+
