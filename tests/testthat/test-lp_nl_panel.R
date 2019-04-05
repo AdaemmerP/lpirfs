@@ -941,25 +941,25 @@ test_that("Test gmm model", {
 
 
 
-test_that("Check output of switching variable", {
+test_that("Check output of switching variable I", {
 
   set.seed(123)
 
   # Simulate panel data with large cross dimension
-  N  <- 300
-  TS <- 8
+  N  <- 10
+  TS <- 30
 
   cross_section <- sort(rep(seq(1,N, 1), TS))
   time_section  <- rep(seq(1,TS, 1), N)
 
   data_set    <- tibble(cross_section, time_section) %>%
                   group_by(cross_section) %>%
-                  mutate(x_1 = rnorm(TS)) %>%
                   mutate(x_2 = rnorm(TS)) %>%
+                  mutate(x_1 = rnorm(TS)) %>%
                   mutate(x_3 = rnorm(TS)) %>%
                   mutate(x_4 = rnorm(TS)) %>%
                   mutate(y   = 0.3*x_1 + 0.4*x_2 + 0.5*x_3 + 0.6*x_4 + rnorm(TS)) %>%
-                  ungroup() %>%
+                  ungroup()               %>%
                   dplyr::arrange(cross_section, time_section)
 
   # Estimate panel model
@@ -972,7 +972,7 @@ test_that("Check output of switching variable", {
                                      diff_shock        = FALSE,
                                      panel_model       = "within",
                                      panel_effect      = "individual",
-                                     robust_cov        = NULL,
+                                     robust_cov        = "vcovSCC",
 
                                      switching         = "x_1",
                                      lag_switching     = FALSE,
@@ -981,7 +981,7 @@ test_that("Check output of switching variable", {
                                      lambda            = 3,
                                      gamma             = 3,
 
-                                     use_gmm           = T,
+                                     use_gmm           = F,
 
                                      c_exog_data       = NULL,
                                      l_exog_data       = "y",
@@ -993,19 +993,47 @@ test_that("Check output of switching variable", {
                                      confint           = 1.67,
                                      hor               = 3)
 
+  # Test whether shock variable is correct
   testthat::expect_equal(results_nl$fz$fz[, 1], data_set$x_1)
+
+
+
+  # States from output
+  shock_s1 <- results_nl$xy_data_sets[[1]]$shock_s1
+  shock_s2 <- results_nl$xy_data_sets[[1]]$shock_s2
+
+  # Make lagged tibble based on data set
+  data_set_lag <- data_set %>%
+                  arrange(cross_section, time_section) %>%
+                  group_by(cross_section)              %>%
+                  mutate_at(vars(y), funs(dplyr::lag(., 1))) %>%
+                  ungroup()
+
+  lag_indicator <-  !is.na(data_set_lag$y)
+
+  # Manual states
+  shock_s1_manual <- data_set$x_1*(1  - data_set$x_1)
+  shock_s1_manual <- shock_s1_manual[lag_indicator]
+
+  shock_s2_manual <- data_set$x_1*(data_set$x_1)
+  shock_s2_manual <- shock_s2_manual[lag_indicator]
+
+  # Test whether states of shock variable are correctly estimated
+  testthat::expect_equal(as.numeric(shock_s1), shock_s1_manual)
+  testthat::expect_equal(as.numeric(shock_s2), shock_s2_manual)
+
 
 })
 
 
 
-test_that("Check output of switching variable", {
+test_that("Check output of switching variable II", {
 
   set.seed(123)
 
   # Simulate panel data with large cross dimension
-  N  <- 300
-  TS <- 8
+  N  <- 10
+  TS <- 30
 
   cross_section <- sort(rep(seq(1,N, 1), TS))
   time_section  <- rep(seq(1,TS, 1), N)
@@ -1030,7 +1058,7 @@ test_that("Check output of switching variable", {
                             diff_shock        = FALSE,
                             panel_model       = "within",
                             panel_effect      = "individual",
-                            robust_cov        = NULL,
+                            robust_cov        = "vcovSCC",
 
                             switching         = "x_1",
                             lag_switching     = TRUE,
@@ -1039,7 +1067,7 @@ test_that("Check output of switching variable", {
                             lambda            = 3,
                             gamma             = 3,
 
-                            use_gmm           = T,
+                            use_gmm           = F,
 
                             c_exog_data       = NULL,
                             l_exog_data       = "y",
@@ -1061,8 +1089,24 @@ test_that("Check output of switching variable", {
 
   fz_output  <- results_nl$fz$fz
 
-
+  # Test whether switching variable is correctly specified
   testthat::expect_equal(lag_dplyr, fz_output)
+
+
+  # Test whether states of shock variable are correctly estimated
+  # States from output
+  shock_s1 <- results_nl$xy_data_sets[[1]]$shock_s1
+  shock_s2 <- results_nl$xy_data_sets[[1]]$shock_s2
+
+
+  # Manual states
+  shock_s1_manual <- as.numeric(na.omit(data_set$x_1*(1  - lag_dplyr)))
+  shock_s2_manual <- as.numeric(na.omit(data_set$x_1*lag_dplyr))
+
+  # Test whether states of shock variable are correctly specified
+  testthat::expect_equal(as.numeric(shock_s1), shock_s1_manual)
+  testthat::expect_equal(as.numeric(shock_s2), shock_s2_manual)
+
 
 })
 
@@ -1070,13 +1114,13 @@ test_that("Check output of switching variable", {
 
 
 
-test_that("Check output of switching variable", {
+test_that("Check output of switching variable III", {
 
   set.seed(123)
 
   # Simulate panel data with large cross dimension
-  N  <- 300
-  TS <- 8
+  N  <- 10
+  TS <- 30
 
   cross_section <- sort(rep(seq(1,N, 1), TS))
   time_section  <- rep(seq(1,TS, 1), N)
@@ -1101,16 +1145,16 @@ test_that("Check output of switching variable", {
                             diff_shock        = FALSE,
                             panel_model       = "within",
                             panel_effect      = "individual",
-                            robust_cov        = NULL,
+                            robust_cov        = "vcovSCC",
 
                             switching         = "x_1",
-                            lag_switching     = F,
-                            use_logistic      = T,
+                            lag_switching     = FALSE,
+                            use_logistic      = TRUE,
                             use_hp            = FALSE,
                             lambda            = 3,
                             gamma             = 3,
 
-                            use_gmm           = T,
+                            use_gmm           = F,
 
                             c_exog_data       = NULL,
                             l_exog_data       = "y",
@@ -1131,44 +1175,71 @@ test_that("Check output of switching variable", {
   }
 
 
-  lag_dplyr  <- data_set %>%
-                group_by(cross_section) %>%
-                mutate_at(vars(x_1), funs(logistic_function(.))) %>%
-                ungroup() %>%
-                select(x_1)  %>%
-                as.matrix()  %>%
-                as.numeric()
+  # Compute manual values of switching variable
+  logistic_dplyr  <- data_set %>%
+                    group_by(cross_section) %>%
+                    mutate_at(vars(x_1), funs(logistic_function(.))) %>%
+                    ungroup() %>%
+                    select(x_1)  %>%
+                    as.matrix()  %>%
+                    as.numeric()
 
   fz_output  <- results_nl$fz$fz
 
+  # Test whether switching variable from function and manual values are identical
+  testthat::expect_equal(logistic_dplyr, fz_output)
 
-  testthat::expect_equal(lag_dplyr, fz_output)
+
+  # States from output
+  shock_s1 <- results_nl$xy_data_sets[[1]]$shock_s1
+  shock_s2 <- results_nl$xy_data_sets[[1]]$shock_s2
+
+  # Make lagged tibble based on data set
+  data_set_lag <- data_set %>%
+                  arrange(cross_section, time_section) %>%
+                  group_by(cross_section)              %>%
+                  mutate_at(vars(y), funs(dplyr::lag(., 1))) %>%
+                  ungroup()
+
+  lag_indicator <-  !is.na(data_set_lag$y)
+
+  # Manual states
+  shock_s1_manual <- data_set$x_1*(1  - logistic_dplyr)
+  shock_s1_manual <- shock_s1_manual[lag_indicator]
+
+  shock_s2_manual <- data_set$x_1*(logistic_dplyr)
+  shock_s2_manual <- shock_s2_manual[lag_indicator]
+
+  # Test whether states of shock variable are correctly estimated
+  testthat::expect_equal(as.numeric(shock_s1), shock_s1_manual)
+  testthat::expect_equal(as.numeric(shock_s2), shock_s2_manual)
+
 
 })
 
 
 
 
-test_that("Check output of switching variable", {
+test_that("Check output of switching variable IV", {
 
   set.seed(123)
 
   # Simulate panel data with large cross dimension
-  N  <- 300
-  TS <- 8
+  N  <- 10
+  TS <- 30
 
   cross_section <- sort(rep(seq(1,N, 1), TS))
   time_section  <- rep(seq(1,TS, 1), N)
 
   data_set      <- tibble(cross_section, time_section) %>%
-    group_by(cross_section) %>%
-    mutate(x_1 = rnorm(TS)) %>%
-    mutate(x_2 = rnorm(TS)) %>%
-    mutate(x_3 = rnorm(TS)) %>%
-    mutate(x_4 = rnorm(TS)) %>%
-    mutate(y   = 0.3*x_1 + 0.4*x_2 + 0.5*x_3 + 0.6*x_4 + rnorm(TS)) %>%
-    ungroup() %>%
-    dplyr::arrange(cross_section, time_section)
+                    group_by(cross_section) %>%
+                    mutate(x_1 = rnorm(TS)) %>%
+                    mutate(x_2 = rnorm(TS)) %>%
+                    mutate(x_3 = rnorm(TS)) %>%
+                    mutate(x_4 = rnorm(TS)) %>%
+                    mutate(y   = 0.3*x_1 + 0.4*x_2 + 0.5*x_3 + 0.6*x_4 + rnorm(TS)) %>%
+                    ungroup() %>%
+                    dplyr::arrange(cross_section, time_section)
 
   # Estimate panel model
   results_nl <- lp_nl_panel(data_set                   = data_set,
@@ -1180,16 +1251,16 @@ test_that("Check output of switching variable", {
                             diff_shock        = FALSE,
                             panel_model       = "within",
                             panel_effect      = "individual",
-                            robust_cov        = NULL,
+                            robust_cov        = "vcovSCC",
 
                             switching         = "x_1",
-                            lag_switching     = T,
-                            use_logistic      = T,
+                            lag_switching     = TRUE,
+                            use_logistic      = TRUE,
                             use_hp            = FALSE,
                             lambda            = 3,
                             gamma             = 3,
 
-                            use_gmm           = T,
+                            use_gmm           = F,
 
                             c_exog_data       = NULL,
                             l_exog_data       = "y",
@@ -1201,7 +1272,7 @@ test_that("Check output of switching variable", {
                             confint           = 1.67,
                             hor               = 3)
 
-  # Use logistic function
+  # Logistic function
   logistic_function <- function(z_0){
 
     switching_val <- exp(-3*z_0)/
@@ -1210,7 +1281,8 @@ test_that("Check output of switching variable", {
   }
 
 
-  lag_dplyr  <- data_set %>%
+  # Compute manual switching values based on logistic function
+  fz_dplyr  <- data_set %>%
                 group_by(cross_section) %>%
                 mutate_at(vars(x_1), funs(logistic_function(.))) %>%
                 mutate_at(vars(x_1), funs(dplyr::lag(., 1)))     %>%
@@ -1219,10 +1291,38 @@ test_that("Check output of switching variable", {
                 as.matrix()  %>%
                 as.numeric()
 
+  # Switching values from output
   fz_output  <- results_nl$fz$fz
 
+  # Test whether switching variable from output and manual are identical
+  testthat::expect_equal(fz_dplyr, fz_output)
 
-  testthat::expect_equal(lag_dplyr, fz_output)
+
+  # States from output
+  shock_s1 <- results_nl$xy_data_sets[[1]]$shock_s1
+  shock_s2 <- results_nl$xy_data_sets[[1]]$shock_s2
+
+  # Make lagged tibble based on data set
+  data_set_lag <- data_set %>%
+                  arrange(cross_section, time_section) %>%
+                  group_by(cross_section)              %>%
+                  mutate_at(vars(y), funs(dplyr::lag(., 1))) %>%
+                  ungroup()
+
+  lag_indicator <-  !is.na(data_set_lag$y)
+
+  # Manual states
+  shock_s1_manual <- data_set$x_1*(1  - fz_dplyr)
+  shock_s1_manual <- shock_s1_manual[lag_indicator]
+
+  shock_s2_manual <- data_set$x_1*(fz_dplyr)
+  shock_s2_manual <- shock_s2_manual[lag_indicator]
+
+  # Test whether states of shock variable are correctly estimated
+  testthat::expect_equal(as.numeric(shock_s1), shock_s1_manual)
+  testthat::expect_equal(as.numeric(shock_s2), shock_s2_manual)
+
+
 
 })
 
