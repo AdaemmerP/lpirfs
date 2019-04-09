@@ -943,24 +943,6 @@ test_that("Test gmm model", {
 
 test_that("Check output of switching variable I", {
 
-  set.seed(123)
-
-  # Simulate panel data with large cross dimension
-  N  <- 10
-  TS <- 30
-
-  cross_section <- sort(rep(seq(1,N, 1), TS))
-  time_section  <- rep(seq(1,TS, 1), N)
-
-  data_set    <- tibble(cross_section, time_section) %>%
-                  group_by(cross_section) %>%
-                  mutate(x_2 = rnorm(TS)) %>%
-                  mutate(x_1 = rnorm(TS)) %>%
-                  mutate(x_3 = rnorm(TS)) %>%
-                  mutate(x_4 = rnorm(TS)) %>%
-                  mutate(y   = 0.3*x_1 + 0.4*x_2 + 0.5*x_3 + 0.6*x_4 + rnorm(TS)) %>%
-                  ungroup()               %>%
-                  dplyr::arrange(cross_section, time_section)
 
   # Estimate panel model
   results_nl <- lp_nl_panel(data_set                   = data_set,
@@ -1029,24 +1011,7 @@ test_that("Check output of switching variable I", {
 
 test_that("Check output of switching variable II", {
 
-  set.seed(123)
 
-  # Simulate panel data with large cross dimension
-  N  <- 10
-  TS <- 30
-
-  cross_section <- sort(rep(seq(1,N, 1), TS))
-  time_section  <- rep(seq(1,TS, 1), N)
-
-  data_set    <- tibble(cross_section, time_section) %>%
-                  group_by(cross_section) %>%
-                  mutate(x_1 = rnorm(TS)) %>%
-                  mutate(x_2 = rnorm(TS)) %>%
-                  mutate(x_3 = rnorm(TS)) %>%
-                  mutate(x_4 = rnorm(TS)) %>%
-                  mutate(y   = 0.3*x_1 + 0.4*x_2 + 0.5*x_3 + 0.6*x_4 + rnorm(TS)) %>%
-                  ungroup() %>%
-                  dplyr::arrange(cross_section, time_section)
 
   # Estimate panel model
   results_nl <- lp_nl_panel(data_set                   = data_set,
@@ -1115,25 +1080,6 @@ test_that("Check output of switching variable II", {
 
 
 test_that("Check output of switching variable III", {
-
-  set.seed(123)
-
-  # Simulate panel data with large cross dimension
-  N  <- 10
-  TS <- 30
-
-  cross_section <- sort(rep(seq(1,N, 1), TS))
-  time_section  <- rep(seq(1,TS, 1), N)
-
-  data_set      <- tibble(cross_section, time_section) %>%
-                    group_by(cross_section) %>%
-                    mutate(x_1 = rnorm(TS)) %>%
-                    mutate(x_2 = rnorm(TS)) %>%
-                    mutate(x_3 = rnorm(TS)) %>%
-                    mutate(x_4 = rnorm(TS)) %>%
-                    mutate(y   = 0.3*x_1 + 0.4*x_2 + 0.5*x_3 + 0.6*x_4 + rnorm(TS)) %>%
-                    ungroup() %>%
-                    dplyr::arrange(cross_section, time_section)
 
   # Estimate panel model
   results_nl <- lp_nl_panel(data_set                   = data_set,
@@ -1222,24 +1168,6 @@ test_that("Check output of switching variable III", {
 
 test_that("Check output of switching variable IV", {
 
-  set.seed(123)
-
-  # Simulate panel data with large cross dimension
-  N  <- 10
-  TS <- 30
-
-  cross_section <- sort(rep(seq(1,N, 1), TS))
-  time_section  <- rep(seq(1,TS, 1), N)
-
-  data_set      <- tibble(cross_section, time_section) %>%
-                    group_by(cross_section) %>%
-                    mutate(x_1 = rnorm(TS)) %>%
-                    mutate(x_2 = rnorm(TS)) %>%
-                    mutate(x_3 = rnorm(TS)) %>%
-                    mutate(x_4 = rnorm(TS)) %>%
-                    mutate(y   = 0.3*x_1 + 0.4*x_2 + 0.5*x_3 + 0.6*x_4 + rnorm(TS)) %>%
-                    ungroup() %>%
-                    dplyr::arrange(cross_section, time_section)
 
   # Estimate panel model
   results_nl <- lp_nl_panel(data_set                   = data_set,

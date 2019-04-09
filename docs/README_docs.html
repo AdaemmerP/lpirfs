@@ -681,11 +681,11 @@ results_nl_iv  &lt;- list(irf_s1_mean   = irf_s1_mean,
  url_jst &lt;-&quot;http://www.macrohistory.net/JST/JSTdatasetR3.xlsx&quot;
  GET(url_jst, write_disk(jst_link &lt;- tempfile(fileext = &quot;.xlsx&quot;)))
 #&gt; Response [http://www.macrohistory.net/JST/JSTdatasetR3.xlsx]
-#&gt;   Date: 2019-04-04 08:24
+#&gt;   Date: 2019-04-05 10:21
 #&gt;   Status: 200
 #&gt;   Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
 #&gt;   Size: 635 kB
-#&gt; &lt;ON DISK&gt;  /tmp/RtmpOQZQ60/file1fa660f9a738.xlsx
+#&gt; &lt;ON DISK&gt;  /tmp/RtmpmH6UdU/file276412774c1d.xlsx
  jst_data &lt;- read_excel(jst_link, 2L)
 
 # Swap the first two columns so that 'country' is the first (cross section) and 'year' the

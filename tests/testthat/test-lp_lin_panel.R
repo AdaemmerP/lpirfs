@@ -14,8 +14,8 @@ library(dplyr)
 
   data_set    <- tibble(cross_section, time_section) %>%
                     group_by(cross_section) %>%
-                    mutate(x_1 = rnorm(TS)) %>%
                     mutate(x_2 = rnorm(TS)) %>%
+                    mutate(x_1 = rnorm(TS)) %>%
                     mutate(x_3 = rnorm(TS)) %>%
                     mutate(x_4 = rnorm(TS)) %>%
                     mutate(y   = 0.3*x_1 + 0.4*x_2 + 0.5*x_3 + 0.6*x_4 + rnorm(TS)) %>%
@@ -586,14 +586,14 @@ results_panel <-  suppressWarnings(
                                                   NA)
             })
 
-  test_that("Test that model works when shock = endog_data", {
+  test_that("Test that data is correctly computed.", {
     # Estimate panel model
-    testthat::expect_error(lp_lin_panel(data_set          = data_set,
+    results_lin_panel <- lp_lin_panel(data_set          = data_set,
                                         data_sample       = 'Full',
                                         endog_data        = "y",
                                         cumul_mult        = FALSE,
 
-                                        shock             = "y",
+                                        shock             = "x_1",
                                         diff_shock        = TRUE,
                                         iv_reg            = FALSE,
                                         instrum           = NULL,
@@ -601,16 +601,135 @@ results_panel <-  suppressWarnings(
                                         panel_effect      = "individual",
                                         robust_cov        = "Vcx",
 
-                                        c_exog_data       = colnames(data_set)[4:6],
-                                        l_exog_data       = colnames(data_set)[4:6],
+                                        c_exog_data       = c("x_2", "x_3", "x_4"), #colnames(data_set)[4:6],
+                                        l_exog_data       = c("x_2", "x_3", "x_4"),
                                         lags_exog_data    = 2,
-                                        c_fd_exog_data    = colnames(data_set)[4:6],
-                                        l_fd_exog_data    = colnames(data_set)[4:6],
+                                        c_fd_exog_data    = c("x_2", "x_3", "x_4"),
+                                        l_fd_exog_data    = c("x_2", "x_3", "x_4"),
                                         lags_fd_exog_data = 2,
 
                                         confint           = 1.67,
-                                        hor               = 10),
-                           NA)
+                                        hor               = 10)
+
+
+    # Save data set for h = 0
+    data_output <- results_lin_panel$xy_data_sets[[1]]
+
+
+    # Save contemporaneous output data, h = 0
+    c_exog_data_output <-  results_lin_panel$xy_data_sets[[1]][, c("x_2", "x_3", "x_4")]
+
+    # Save lagged exogenous data, h = 0
+    lag_names_1        <- paste(c("x_2", "x_3", "x_4"), c("lag_1"), sep = "_")
+    lag_names_2        <- paste(c("x_2", "x_3", "x_4"), c("lag_2"), sep = "_")
+    lag_names          <- c(lag_names_1, lag_names_2)
+    l_exog_data_output <- data_output[, which(names(data_output) %in% lag_names)]
+
+    # Saved lagged data of first differences, h = 0
+    dlag_names_1        <- paste(c("dx_2", "dx_3", "dx_4"), c("lag_1"), sep = "_")
+    dlag_names_2        <- paste(c("dx_2", "dx_3", "dx_4"), c("lag_2"), sep = "_")
+    dlag_names          <- c(dlag_names_1, dlag_names_2)
+    dl_exog_data_output <- data_output[, which(names(data_output) %in% dlag_names)]
+
+
+    # Compute manually contemporaneous data
+    # Use lead = 3, because lag length = 2 AND lags of first differences = 2.
+    c_exog_data_manual <- data_set %>%
+                          dplyr::group_by(cross_section) %>%
+                          dplyr::mutate_at(vars(x_2, x_3, x_4), funs(dplyr::lead(., 3))) %>%
+                          dplyr::ungroup()               %>%
+                          na.omit()                      %>%
+                          dplyr::select(-x_1, -y, -cross_section, -time_section)
+
+    # Compare contemporaneous data
+    testthat::expect_equal(c_exog_data_manual, c_exog_data_output)
+
+
+    # Function which takes first differences and sets the first value to NA
+    # to be consistent with dplyr
+    diff_function <- function(data){
+
+      return(c(NA, diff(data)))
+
+    }
+
+
+
+    # Compute manually lagged exogenous data
+    # First lag
+    l_1_exog_data_manual <- data_set %>%
+                          dplyr::group_by(cross_section) %>%
+                          dplyr::mutate_at(vars(y), funs(diff_function(.)))  %>% # This constructs first differences
+                          dplyr::mutate_at(vars(y), funs(dplyr::lag(., 2)))  %>% # This accounts for the lag = 2 of first differences
+                          dplyr::mutate_at(vars(x_2, x_3, x_4), funs(dplyr::lag(., 1))) %>%
+                          dplyr::ungroup()                %>%
+                          na.omit()                       %>%
+                          dplyr::select(-x_1, -y, -cross_section, -time_section) %>%
+                          dplyr::rename(x_2_lag_1 = x_2,
+                                        x_3_lag_1 = x_3,
+                                        x_4_lag_1 = x_4)
+
+    # Second lag
+    l_2_exog_data_manual <- data_set %>%
+                            dplyr::group_by(cross_section) %>%
+                            dplyr::mutate_at(vars(y), funs(diff_function(.)))  %>% # This constructs first differences
+                            dplyr::mutate_at(vars(y), funs(dplyr::lag(., 2)))  %>% # This accounts for the lag = 2 of first differences
+                            dplyr::mutate_at(vars(x_2, x_3, x_4), funs(dplyr::lag(., 2))) %>%
+                            dplyr::ungroup()                                               %>%
+                            na.omit()                                                      %>%
+                            dplyr::select(-x_1, -y, -cross_section, -time_section)         %>%
+                            dplyr::rename(x_2_lag_2 = x_2,
+                                          x_3_lag_2 = x_3,
+                                          x_4_lag_2 = x_4)
+
+
+    l_exog_data_manual   <- cbind(l_1_exog_data_manual, l_2_exog_data_manual)
+
+
+
+    # Compare contemporaneous data
+    testthat::expect_equal(l_exog_data_output, l_exog_data_manual)
+
+
+    # Compute lagged exogenous data
+    # First lag
+    dl_1_exog_data_manual <- data_set %>%
+                            dplyr::group_by(cross_section) %>%
+                            dplyr::mutate_at(vars(x_2, x_3, x_4), funs(diff_function(.)))  %>% # This constructs first differences
+                            dplyr::mutate_at(vars(x_2, x_3, x_4), funs(dplyr::lag(., 1)))  %>% # Take first lag of first differences
+                            dplyr::ungroup()                %>%
+                            dplyr::select(-x_1, -y, -cross_section, -time_section) %>%
+                            dplyr::rename(dx_2_lag_1 = x_2,
+                                          dx_3_lag_1 = x_3,
+                                          dx_4_lag_1 = x_4)
+
+    # Second lag
+    dl_2_exog_data_manual <- data_set %>%
+                            dplyr::group_by(cross_section) %>%
+                            dplyr::mutate_at(vars(x_2, x_3, x_4), funs(diff_function(.)))  %>% # This constructs first differences
+                            dplyr::mutate_at(vars(x_2, x_3, x_4), funs(dplyr::lag(., 2)))  %>% # Take second lag of first differences
+                            dplyr::ungroup()                                               %>%
+                            dplyr::select(-x_1, -y, -cross_section, -time_section)         %>%
+                            dplyr::rename(dx_2_lag_2 = x_2,
+                                          dx_3_lag_2 = x_3,
+                                          dx_4_lag_2 = x_4)
+
+
+    dl_exog_data_manual   <- na.omit(cbind(dl_1_exog_data_manual, dl_2_exog_data_manual))
+
+
+
+    # Compare lagged exogenous data of first differences
+    testthat::expect_equal(dl_exog_data_manual, dl_exog_data_manual)
+
+
+
+
+
+
+
+
+
   })
 
 
