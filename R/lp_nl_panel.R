@@ -79,6 +79,7 @@
 #'# Swap the first two columns so that 'country' is the first (cross section) and 'year' the
 #'# second (time section) column
 #'  jst_data <- jst_data %>%
+#'              dplyr::filter(year <= 2013) %>%
 #'              dplyr::select(country, year, everything())
 #'
 #'# Prepare variables. This is based on the 'data.do' file
@@ -110,8 +111,7 @@
 #'# Use data_sample from 1870 to 2013 and exclude observations from WWI and WWII
 #'   data_sample <-   seq(1870, 2016)[which(!(seq(1870, 2016) %in%
 #'                               c(seq(1914, 1918),
-#'                                 seq(1939, 1947),
-#'                                 seq(2014, 2016))))]
+#'                                 seq(1939, 1947))))]
 #'
 #'# Estimate panel model
 #' results_panel <-  lp_nl_panel(data_set           = data_set,
