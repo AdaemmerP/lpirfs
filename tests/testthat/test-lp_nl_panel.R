@@ -981,8 +981,8 @@ test_that("Check output of switching variable I", {
 
 
   # States from output
-  shock_s1 <- results_nl$xy_data_sets[[1]]$shock_s1
-  shock_s2 <- results_nl$xy_data_sets[[1]]$shock_s2
+  shock_s1_output <- results_nl$xy_data_sets[[1]]$shock_s1
+  shock_s2_output <- results_nl$xy_data_sets[[1]]$shock_s2
 
   # Make lagged tibble based on data set
   data_set_lag <- data_set %>%
@@ -1001,8 +1001,8 @@ test_that("Check output of switching variable I", {
   shock_s2_manual <- shock_s2_manual[lag_indicator]
 
   # Test whether states of shock variable are correctly estimated
-  testthat::expect_equal(as.numeric(shock_s1), shock_s1_manual)
-  testthat::expect_equal(as.numeric(shock_s2), shock_s2_manual)
+  testthat::expect_equal(as.numeric(shock_s1_output), shock_s1_manual)
+  testthat::expect_equal(as.numeric(shock_s2_output), shock_s2_manual)
 
 
 })
@@ -1014,7 +1014,7 @@ test_that("Check output of switching variable II", {
 
 
   # Estimate panel model
-  results_nl <- lp_nl_panel(data_set                   = data_set,
+  results_nl <- lp_nl_panel(data_set          = data_set,
                             data_sample       = 'Full',
                             endog_data        = "y",
                             cumul_mult        = TRUE,
@@ -1060,8 +1060,8 @@ test_that("Check output of switching variable II", {
 
   # Test whether states of shock variable are correctly estimated
   # States from output
-  shock_s1 <- results_nl$xy_data_sets[[1]]$shock_s1
-  shock_s2 <- results_nl$xy_data_sets[[1]]$shock_s2
+  shock_s1_output <- results_nl$xy_data_sets[[1]]$shock_s1
+  shock_s2_output <- results_nl$xy_data_sets[[1]]$shock_s2
 
 
   # Manual states
@@ -1069,8 +1069,8 @@ test_that("Check output of switching variable II", {
   shock_s2_manual <- as.numeric(na.omit(data_set$x_1*lag_dplyr))
 
   # Test whether states of shock variable are correctly specified
-  testthat::expect_equal(as.numeric(shock_s1), shock_s1_manual)
-  testthat::expect_equal(as.numeric(shock_s2), shock_s2_manual)
+  testthat::expect_equal(as.numeric(shock_s1_output), shock_s1_manual)
+  testthat::expect_equal(as.numeric(shock_s2_output), shock_s2_manual)
 
 
 })
@@ -1137,8 +1137,8 @@ test_that("Check output of switching variable III", {
 
 
   # States from output
-  shock_s1 <- results_nl$xy_data_sets[[1]]$shock_s1
-  shock_s2 <- results_nl$xy_data_sets[[1]]$shock_s2
+  shock_s1_output <- results_nl$xy_data_sets[[1]]$shock_s1
+  shock_s2_output <- results_nl$xy_data_sets[[1]]$shock_s2
 
   # Make lagged tibble based on data set
   data_set_lag <- data_set %>%
@@ -1157,8 +1157,8 @@ test_that("Check output of switching variable III", {
   shock_s2_manual <- shock_s2_manual[lag_indicator]
 
   # Test whether states of shock variable are correctly estimated
-  testthat::expect_equal(as.numeric(shock_s1), shock_s1_manual)
-  testthat::expect_equal(as.numeric(shock_s2), shock_s2_manual)
+  testthat::expect_equal(as.numeric(shock_s1_output), shock_s1_manual)
+  testthat::expect_equal(as.numeric(shock_s2_output), shock_s2_manual)
 
 
 })
@@ -1227,8 +1227,8 @@ test_that("Check output of switching variable IV", {
 
 
   # States from output
-  shock_s1 <- results_nl$xy_data_sets[[1]]$shock_s1
-  shock_s2 <- results_nl$xy_data_sets[[1]]$shock_s2
+  shock_s1_output <- results_nl$xy_data_sets[[1]]$shock_s1
+  shock_s2_output <- results_nl$xy_data_sets[[1]]$shock_s2
 
   # Make lagged tibble based on data set
   data_set_lag <- data_set %>%
@@ -1247,8 +1247,8 @@ test_that("Check output of switching variable IV", {
   shock_s2_manual <- shock_s2_manual[lag_indicator]
 
   # Test whether states of shock variable are correctly estimated
-  testthat::expect_equal(as.numeric(shock_s1), shock_s1_manual)
-  testthat::expect_equal(as.numeric(shock_s2), shock_s2_manual)
+  testthat::expect_equal(as.numeric(shock_s1_output), shock_s1_manual)
+  testthat::expect_equal(as.numeric(shock_s2_output), shock_s2_manual)
 
 
 

@@ -661,7 +661,7 @@ results_panel <-  suppressWarnings(
                           dplyr::group_by(cross_section) %>%
                           dplyr::mutate_at(vars(y), funs(diff_function(.)))  %>% # This constructs first differences
                           dplyr::mutate_at(vars(y), funs(dplyr::lag(., 2)))  %>% # This accounts for the lag = 2 of first differences
-                          dplyr::mutate_at(vars(x_2, x_3, x_4), funs(dplyr::lag(., 1))) %>%
+                          dplyr::mutate_at(vars(x_2, x_3, x_4), funs(dplyr::lag(., 1))) %>% # This is the first lag of exogenous data
                           dplyr::ungroup()                %>%
                           na.omit()                       %>%
                           dplyr::select(-x_1, -y, -cross_section, -time_section) %>%
@@ -674,7 +674,7 @@ results_panel <-  suppressWarnings(
                             dplyr::group_by(cross_section) %>%
                             dplyr::mutate_at(vars(y), funs(diff_function(.)))  %>% # This constructs first differences
                             dplyr::mutate_at(vars(y), funs(dplyr::lag(., 2)))  %>% # This accounts for the lag = 2 of first differences
-                            dplyr::mutate_at(vars(x_2, x_3, x_4), funs(dplyr::lag(., 2))) %>%
+                            dplyr::mutate_at(vars(x_2, x_3, x_4), funs(dplyr::lag(., 2))) %>%  # This is the second lag of exogenous data
                             dplyr::ungroup()                                               %>%
                             na.omit()                                                      %>%
                             dplyr::select(-x_1, -y, -cross_section, -time_section)         %>%
@@ -691,7 +691,7 @@ results_panel <-  suppressWarnings(
     testthat::expect_equal(l_exog_data_output, l_exog_data_manual)
 
 
-    # Compute lagged exogenous data
+    # Compute lagged exogenous data of first differences
     # First lag
     dl_1_exog_data_manual <- data_set %>%
                             dplyr::group_by(cross_section) %>%
@@ -715,20 +715,13 @@ results_panel <-  suppressWarnings(
                                           dx_4_lag_2 = x_4)
 
 
-    dl_exog_data_manual   <- na.omit(cbind(dl_1_exog_data_manual, dl_2_exog_data_manual))
+    dl_exog_data_manual   <- na.omit(cbind(dl_1_exog_data_manual, dl_2_exog_data_manual)) %>%
+                             as_tibble()
 
 
 
     # Compare lagged exogenous data of first differences
-    testthat::expect_equal(dl_exog_data_manual, dl_exog_data_manual)
-
-
-
-
-
-
-
-
+    testthat::expect_equal(dl_exog_data_manual, dl_exog_data_output)
 
   })
 
