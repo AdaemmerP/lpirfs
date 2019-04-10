@@ -439,6 +439,7 @@ The variable $shock$ can also be estimated by an instrument variable approach.
 # Swap the first two columns so that 'country' is the first (cross section) and 'year' the
 # second (time section) column
  jst_data <- jst_data %>%
+             dplyr::filter(year <= 2013) %>%
              dplyr::select(country, year, everything())
 
 # Prepare variables. This is based on the 'data.do' file
@@ -470,8 +471,7 @@ The variable $shock$ can also be estimated by an instrument variable approach.
 # Use data_sample from 1870 to 2013 and exclude WWI and WWII
   data_sample <-   seq(1870, 2016)[which(!(seq(1870, 2016) %in%
                               c(seq(1914, 1918),
-                                seq(1939, 1947),
-                                seq(2014, 2016))))]
+                                seq(1939, 1947))))]
 
 # Estimate panel model
 results_panel <-  lp_lin_panel(data_set          = data_set,
@@ -491,7 +491,7 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
                                lags_fd_exog_data = 2,
 
                                confint           = 1.67,
-                               hor               = 10)
+                               hor               = 5)
 ```
 
 ```{r, fig.height = 2.5, fig.width = 3, fig.align = "center", message = FALSE }
@@ -530,7 +530,7 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
                                lags_fd_exog_data = 2,
 
                                confint           = 1.67,
-                               hor               = 10)
+                               hor               = 5)
 ```
 
 ```{r, fig.height = 2.5, fig.width = 3, fig.align = "center", message = FALSE }
@@ -566,7 +566,7 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
                               lags_fd_exog_data  = 1,
 
                               confint            = 1.67,
-                              hor                = 10)
+                              hor                = 5)
 
 
 ```
@@ -583,8 +583,7 @@ plot(plot_lin_panel[[1]])
 # Use data_sample from 1870 to 2013 and exclude WWI and WWII
 data_sample <-   seq(1870, 2016)[which(!(seq(1870, 2016) %in%
                                            c(seq(1914, 1918),
-                                             seq(1939, 1947),
-                                             seq(2014, 2016))))]
+                                             seq(1939, 1947))))]
 
 # Estimate panel model
 results_panel <-  lp_nl_panel(data_set           = data_set,
@@ -610,7 +609,7 @@ results_panel <-  lp_nl_panel(data_set           = data_set,
                                lags_fd_exog_data = 2,
 
                                confint           = 1.67,
-                               hor               = 10)
+                               hor               = 5)
 ```
 
 ```{r, fig.height = 2.5, fig.width = 6, fig.align = "center", message = FALSE }
