@@ -78,8 +78,8 @@ I greatly benefit from the helpful and critical remarks by Jon
 from the profound *R*, *Rcpp* and *GitHub* knowledge of Philipp
 [Wittenberg](https://github.com/wittenberg) and Detlef (overflow)
 [Steuer](https://github.com/dsteuer). Last but not least, I am grateful
-to Philipp Dybowski for his comments and without whom I would have never
-started this project.
+to Philipp Dybowski without whom I would have never started this
+project.
 
 All remaining errors are obviously mine.
 
