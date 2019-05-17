@@ -73,9 +73,9 @@ comments and helpful suggestions. I am also indebted to Sarah
 Matlab code before the publication of their
 [paper](https://www.journals.uchicago.edu/doi/10.1086/696277).
 
-I greatly benefit from the helpful and critical remarks by Jon
+I greatly benefit from the helpful remarks by Jon
 [Danielsson](http://www.systemicrisk.ac.uk/people/jon-danielsson) and
-from the profound *R*, *Rcpp* and *GitHub* knowledge of Philipp
+the profound *R*, *Rcpp* and *GitHub* knowledge of Philipp
 [Wittenberg](https://github.com/wittenberg) and Detlef (overflow)
 [Steuer](https://github.com/dsteuer). Last but not least, I am grateful
 to Philipp Dybowski without whom I would have never started this
