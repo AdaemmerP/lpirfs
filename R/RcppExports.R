@@ -82,8 +82,8 @@ hp_filter <- function(x, lambda) {
 #' @param y Numeric vector.
 #' @param x Numeric matrix.
 #' @param h Integer.
-#' @return A list. The first element contains the estimated OLS parameters and the second element
-#' the covariance matrix of the parameters.
+#' @return A list. The first element contains the estimated OLS parameters, the second element
+#' the Newey West covariance matrix, the third element the normal OLS covariance matrix and the fourth element the R^2.
 #' @keywords internal
 #' @references
 #' Newey, W.K., and West, K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
