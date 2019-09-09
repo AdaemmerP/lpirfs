@@ -75,7 +75,11 @@
 #'                              confint        = 1.96,
 #'                              hor            = 12)
 #'
-#'# Make plots
+#'# Make plots base on generic S3 plot() function
+#'# Compare with Figure 5 in Jordà (2005)
+#'  plot(results_lin)
+#'
+#'# Make individual plots
 #'  linear_plots <- plot_lin(results_lin)
 #'
 #'# Show single plots
@@ -89,11 +93,8 @@
 #'   linear_plots[[2]]
 #'
 #'# Show all plots by using 'ggpubr' and 'gridExtra'
-#'# lpirfs does not depend on those packages so they have to be installed
-#'  library(ggpubr)
-#'  library(gridExtra)
 #'
-#'# Compare with Figure 5 in Jordà (2005)
+#'# Compare with plot(results_lin)
 #'  lin_plots_all <- sapply(linear_plots, ggplotGrob)
 #'  marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
 #'
@@ -122,16 +123,8 @@
 #'                                lags_exog      = 4,
 #'                                contemp_data   = contemp_data)
 #'
-#'# Make plots
-#'  linear_plots <- plot_lin(results_lin)
-#'
-#'# Show all plots
-#'  library(ggpubr)
-#'  library(gridExtra)
-#'
-#'  lin_plots_all <- sapply(linear_plots, ggplotGrob)
-#'  marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
-#'
+#'# Show all impulse responses
+#'  plot(results_lin)
 #'
 #'  }
 lp_lin <- function(endog_data,
@@ -146,6 +139,7 @@ lp_lin <- function(endog_data,
                         lags_exog      = NULL,
                         contemp_data   = NULL,
                         num_cores      = NULL){
+
 
   # Create list to store inputs
     specs <- list()
@@ -164,9 +158,10 @@ lp_lin <- function(endog_data,
   # Set 2SLS option to FALSE
     specs$use_twosls <- FALSE
 
-    # Add 'contempranoeus' as NULL for data construction
+  # Add 'contempranoeus' as NULL for data construction
     specs$contemp_data   <- contemp_data
-    # Set model type for lag construction
+
+  # Set model type for plot function
     specs$model_type     <- 0
 
   # Check whether data is a data.frame()
@@ -328,12 +323,12 @@ lp_lin <- function(endog_data,
       # Estimate coefficients and newey west std.err
        nw_results     <- lpirfs::newey_west(yy[, k], xx, h)
        b              <- nw_results[[1]]
-       std_err        <- sqrt(diag(nw_results[[2]]))*specs$confint
+       std_err_nw     <- sqrt(diag(nw_results[[2]]))*specs$confint
 
       # Fill coefficient matrix
        b1[k, ]        <-   b[2:(specs$endog + 1)]
-       b1_low[k, ]    <-   b[2:(specs$endog + 1)] - std_err[2:(specs$endog + 1)]
-       b1_up[k, ]     <-   b[2:(specs$endog + 1)] + std_err[2:(specs$endog + 1)]
+       b1_low[k, ]    <-   b[2:(specs$endog + 1)] - std_err_nw[2:(specs$endog + 1)]
+       b1_up[k, ]     <-   b[2:(specs$endog + 1)] + std_err_nw[2:(specs$endog + 1)]
      }
 
       # Fill matrices with local projections
@@ -397,12 +392,12 @@ lp_lin <- function(endog_data,
         # Estimate coefficients and newey west std.err
          nw_results   <- lpirfs::newey_west(yy, xx, h)
          b            <- nw_results[[1]]
-         std_err      <- sqrt(diag(nw_results[[2]]))*specs$confint
+         std_err_nw   <- sqrt(diag(nw_results[[2]]))*specs$confint
 
         # Fill coefficient matrix
          b1[k, ]      <-   b[2:(specs$endog + 1)]
-         b1_low[k, ]  <-   b[2:(specs$endog + 1)] - std_err[2:(specs$endog + 1)]
-         b1_up[k, ]   <-   b[2:(specs$endog + 1)] + std_err[2:(specs$endog + 1)]
+         b1_low[k, ]  <-   b[2:(specs$endog + 1)] - std_err_nw[2:(specs$endog + 1)]
+         b1_up[k, ]   <-   b[2:(specs$endog + 1)] + std_err_nw[2:(specs$endog + 1)]
       }
 
         # Fill matrices with local projections
@@ -437,7 +432,11 @@ lp_lin <- function(endog_data,
   # Close cluster
   parallel::stopCluster(cl)
 
-  list(irf_lin_mean = irf_lin_mean, irf_lin_low = irf_lin_low,
-       irf_lin_up   = irf_lin_up, specs = specs)
+  result <-  list(irf_lin_mean = irf_lin_mean, irf_lin_low = irf_lin_low,
+             irf_lin_up   = irf_lin_up, specs = specs)
+
+  # Give object S3 name
+  class(result) <- "lpirfs_lin_obj"
+  return(result)
 
 }
