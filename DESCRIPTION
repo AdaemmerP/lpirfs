@@ -27,10 +27,12 @@ Imports:
     dplyr(>= 0.7.4),
     foreach(>= 1.4.3),
     ggplot2(>= 2.2.1),
+    ggpubr(>= 0.2.3), 
+    gridExtra(>= 2.3),
     lmtest (>= 0.9-36), 
     plm(>= 1.6-6),
     sandwich(>= 2.5-0),
     Rcpp(>= 0.12.17)
 RoxygenNote: 6.1.1
 LinkingTo: Rcpp, RcppArmadillo
-Suggests: testthat, ggpubr, gridExtra, httr, readxl
+Suggests: testthat, httr, readxl
