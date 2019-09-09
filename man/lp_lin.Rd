@@ -79,7 +79,11 @@ Compute linear impulse responses with local projections by Jordà (2005).
                              confint        = 1.96,
                              hor            = 12)
 
-# Make plots
+# Make plots base on generic S3 plot() function
+# Compare with Figure 5 in Jordà (2005)
+ plot(results_lin)
+
+# Make individual plots
  linear_plots <- plot_lin(results_lin)
 
 # Show single plots
@@ -93,11 +97,8 @@ Compute linear impulse responses with local projections by Jordà (2005).
   linear_plots[[2]]
 
 # Show all plots by using 'ggpubr' and 'gridExtra'
-# lpirfs does not depend on those packages so they have to be installed
- library(ggpubr)
- library(gridExtra)
 
-# Compare with Figure 5 in Jordà (2005)
+# Compare with plot(results_lin)
  lin_plots_all <- sapply(linear_plots, ggplotGrob)
  marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
 
@@ -126,16 +127,8 @@ Compute linear impulse responses with local projections by Jordà (2005).
                                lags_exog      = 4,
                                contemp_data   = contemp_data)
 
-# Make plots
- linear_plots <- plot_lin(results_lin)
-
-# Show all plots
- library(ggpubr)
- library(gridExtra)
-
- lin_plots_all <- sapply(linear_plots, ggplotGrob)
- marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
-
+# Show all impulse responses
+ plot(results_lin)
 
  }
 }

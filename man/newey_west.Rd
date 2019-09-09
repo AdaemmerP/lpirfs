@@ -14,8 +14,8 @@ newey_west(y, x, h)
 \item{h}{Integer.}
 }
 \value{
-A list. The first element contains the estimated OLS parameters and the second element
-the covariance matrix of the parameters.
+A list. The first element contains the estimated OLS parameters, the second element
+the Newey West covariance matrix, the third element the normal OLS covariance matrix and the fourth element the R^2.
 }
 \description{
 Compute OLS parameters and robust standard errors based on Newey and West (1987).
