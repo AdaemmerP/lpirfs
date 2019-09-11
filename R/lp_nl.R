@@ -15,6 +15,7 @@
 #' @param trend Integer. Include no trend =  0 , include trend = 1, include trend and quadratic trend = 2.
 #' @param shock_type Integer. Standard deviation shock = 0, unit shock = 1.
 #' @param confint Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.
+#' @param use_nw Boolean. Use Newey-West (1987) standard errors for impulse responses? TRUE (default) or FALSE.
 #' @param hor Integer. Number of horizons for impulse responses.
 #' @param switching Numeric vector. A column vector with the same length as \emph{endog_data}. If 'use_logistic = TRUE', this series can either
 #'               be decomposed via the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013) or
@@ -208,6 +209,7 @@ lp_nl <- function(endog_data,
                                trend          = NULL,
                                shock_type     = NULL,
                                confint        = NULL,
+                               use_nw         = TRUE,
                                hor            = NULL,
                                switching      = NULL,
                                lag_switching  = TRUE,

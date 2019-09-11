@@ -399,9 +399,12 @@ if(is.nan(specs$lags_criterion) == TRUE){
                               # Estimate OLS betas and newey west std.err
                                 if(specs$endog == 1 ){
                                   nw_results   <- lpirfs::newey_west(yy, xx, h)
+
                                              } else {
+
                                   nw_results   <- lpirfs::newey_west(yy[, k], xx, h)
                                 }
+
                                       }   else   {
 
                                # Extract instrument matrix and save as matrix

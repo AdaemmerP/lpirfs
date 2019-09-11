@@ -83,7 +83,7 @@ hp_filter <- function(x, lambda) {
 #' @param x Numeric matrix.
 #' @param h Integer.
 #' @return A list. The first element contains the estimated OLS parameters, the second element
-#' the Newey West covariance matrix, the third element the normal OLS covariance matrix and the fourth element the R^2.
+#' the Newey West covariance matrix.
 #' @keywords internal
 #' @references
 #' Newey, W.K., and West, K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
@@ -109,5 +109,22 @@ newey_west <- function(y, x, h) {
 #' Wooldridge, J.M. (2002), Econometric Analysis of Cross Section and Panel Data, The MIT Press.
 newey_west_tsls <- function(y, x, z, h) {
     .Call(`_lpirfs_newey_west_tsls`, y, x, z, h)
+}
+
+#' @name ols_diagnost
+#' @title Compute diagnostics for OLS models
+#' @description  Compute OLS diagnostics such as R^2, adjusted R^2, AIC, etc.
+#' @param y Numeric vector.
+#' @param x Numeric matrix.
+#' @return A list. The first element contains...
+#' @keywords internal
+#' @references
+#' Akaike, H. (1974). "A new look at the statistical model identification", \emph{IEEE Transactions on Automatic Control}, 19 (6): 716–723.
+#' Hurvich, C. M., and Tsai, C.-L. (1989). "Regression and time series model selection
+#' in small samples", Biometrika, 76(2): 297–307,
+#'
+#' Schwarz, Gideon E. (1978). "Estimating the dimension of a model", \emph{Annals of Statistics}, 6 (2): 461–464.
+ols_diagnost <- function(y, x) {
+    .Call(`_lpirfs_ols_diagnost`, y, x)
 }
 

@@ -8,7 +8,7 @@ using namespace Rcpp;
 //' @param x Numeric matrix.
 //' @param h Integer.
 //' @return A list. The first element contains the estimated OLS parameters, the second element
-//' the Newey West covariance matrix, the third element the normal OLS covariance matrix and the fourth element the R^2.
+//' the Newey West covariance matrix.
 //' @keywords internal
 //' @references
 //' Newey, W.K., and West, K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
@@ -20,7 +20,7 @@ List newey_west(NumericVector y, NumericMatrix x, int h){
   arma::vec w1, beta, resids, resids_mean;
   int nrow_hhat, a, nobs, num_exog, nlag;
   double sigma_hat, y_hat, ssr, ssm, r_sq ;
-  List ret(4);
+  List ret(2);
 
 
   // OLS
@@ -35,24 +35,6 @@ List newey_west(NumericVector y, NumericMatrix x, int h){
   xpxi     = inv(xx.t()*xx);
   beta     = xpxi*xx.t()*yy;
   resids   = yy - xx*beta;
-
-  y_hat       = mean(y);
-  resids_mean = y - y_hat;
-
-  // Estimate sum of squared residuals
-  ssr       = std::inner_product(resids.begin(),
-                                 resids.end(), resids.begin(), 0.0);
-
-  // Estimate sum of squared deviations from endogenous mean
-  ssm       = std::inner_product(resids_mean.begin(),
-                                 resids_mean.end(), resids_mean.begin(), 0.0);
-
-  // Estimate R^2 of OLS model
-  r_sq      = 1 - ssr/ssm;
-
-  // Estimate normal Cov matrix of estimators
-  sigma_hat = ssr/double(nobs - num_exog);
-  beta_hat = sigma_hat*xpxi;
 
 
   // Start Newey-West
@@ -98,8 +80,6 @@ List newey_west(NumericVector y, NumericMatrix x, int h){
 
   ret[0]  = beta;
   ret[1]  = V;
-  ret[2]  = beta_hat;
-  ret[3]  = r_sq;
   return (ret);
 
 }

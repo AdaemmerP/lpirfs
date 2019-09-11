@@ -62,12 +62,25 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// ols_diagnost
+List ols_diagnost(NumericVector y, NumericMatrix x);
+RcppExport SEXP _lpirfs_ols_diagnost(SEXP ySEXP, SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type y(ySEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(ols_diagnost(y, x));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_lpirfs_get_vals_lagcrit", (DL_FUNC) &_lpirfs_get_vals_lagcrit, 7},
     {"_lpirfs_hp_filter", (DL_FUNC) &_lpirfs_hp_filter, 2},
     {"_lpirfs_newey_west", (DL_FUNC) &_lpirfs_newey_west, 3},
     {"_lpirfs_newey_west_tsls", (DL_FUNC) &_lpirfs_newey_west_tsls, 4},
+    {"_lpirfs_ols_diagnost", (DL_FUNC) &_lpirfs_ols_diagnost, 2},
     {NULL, NULL, 0}
 };
 
