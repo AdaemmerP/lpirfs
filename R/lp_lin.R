@@ -11,6 +11,9 @@
 #' @param trend Integer. No trend =  0 , include trend = 1, include trend and quadratic trend = 2.
 #' @param shock_type Integer. Standard deviation shock = 0, unit shock = 1.
 #' @param confint Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.
+#' @param use_nw Boolean. Use Newey-West (1987) standard errors for impulse responses? TRUE (default) or FALSE.
+#' @param nw_lag Integer. Specifies the maximum lag with positive weight for the Newey-West estimator. If set to NULL (default), the lag increases with
+#'               with the number of horizon, as commonly done in the literature.
 #' @param hor Integer. Number of horizons for impulse responses.
 #' @param exog_data A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
 #'                 Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.
@@ -134,6 +137,8 @@ lp_lin <- function(endog_data,
                         trend          = NULL,
                         shock_type     = NULL,
                         confint        = NULL,
+                        use_nw         = TRUE,
+                        nw_lag         = NULL,
                         hor            = NULL,
                         exog_data      = NULL,
                         lags_exog      = NULL,
@@ -297,6 +302,9 @@ lp_lin <- function(endog_data,
   irf_lin_low   <-  irf_lin_mean
   irf_lin_up    <-  irf_lin_mean
 
+ # Matrix to store diagnostics of OLS models
+  diagnostics_ols <- list()
+
   # Make cluster
   if(is.null(num_cores)){
     num_cores    <- min(specs$endog, parallel::detectCores() - 1)
@@ -318,18 +326,46 @@ lp_lin <- function(endog_data,
      yy  <-   y_lin[h : dim(y_lin)[1], ]
      xx  <-   x_lin[1 : (dim(x_lin)[1] - h + 1), ]
 
+     # Set lag number for Newey-West (1987)
+     if(is.null(nw_lag)){
+
+          lag_nw <- h
+
+               } else {
+
+          lag_nw <- nw_lag
+
+     }
+
      for (k in 1:specs$endog){ # Accounts for the reactions of the endogenous variables
 
       # Estimate coefficients and newey west std.err
-       nw_results     <- lpirfs::newey_west(yy[, k], xx, h)
-       b              <- nw_results[[1]]
-       std_err_nw     <- sqrt(diag(nw_results[[2]]))*specs$confint
+       nw_results        <- lpirfs::newey_west(yy[, k], xx, lag_nw)
+       b                 <- nw_results[[1]]
 
-      # Fill coefficient matrix
-       b1[k, ]        <-   b[2:(specs$endog + 1)]
-       b1_low[k, ]    <-   b[2:(specs$endog + 1)] - std_err_nw[2:(specs$endog + 1)]
-       b1_up[k, ]     <-   b[2:(specs$endog + 1)] + std_err_nw[2:(specs$endog + 1)]
-     }
+
+      # Check whether standard errors are going to bestimated by Newy West
+        if(isTRUE(use_nw)){
+
+          # Get NW standard errors
+          std_err_nw      <- sqrt(diag(nw_results[[2]]))*specs$confint
+          # Fill coefficient matrix
+           b1[k, ]        <-   b[2:(specs$endog + 1)]
+           b1_low[k, ]    <-   b[2:(specs$endog + 1)] - std_err_nw[2:(specs$endog + 1)]
+           b1_up[k, ]     <-   b[2:(specs$endog + 1)] + std_err_nw[2:(specs$endog + 1)]
+
+                           } else {
+
+          # Get normal standard errors
+            std_err           <- sqrt(diag(lpirfs::ols_diagnost(yy[, k], xx)[[2]]))
+          # Fill coefficient matrix
+           b1[k, ]        <-   b[2:(specs$endog + 1)]
+           b1_low[k, ]    <-   b[2:(specs$endog + 1)] - std_err[2:(specs$endog + 1)]
+           b1_up[k, ]     <-   b[2:(specs$endog + 1)] + std_err[2:(specs$endog + 1)]
+
+        }
+
+      }
 
       # Fill matrices with local projections
        irf_mean[, h + 1] <- t(b1     %*% d[ , s])
@@ -337,8 +373,8 @@ lp_lin <- function(endog_data,
        irf_up[,   h + 1] <- t(b1_up  %*% d[ , s])
       }
 
-             # Return irfs
-            return(list(irf_mean,  irf_low,  irf_up))
+        # Return irfs and diagnostics
+          return(list(irf_mean,  irf_low,  irf_up))
 }
 
  # Fill arrays with irfs
@@ -389,15 +425,43 @@ lp_lin <- function(endog_data,
          xx            <- x_lin[[lag_choice]]
          xx            <- xx[1:(dim(xx)[1] - h + 1),]
 
-        # Estimate coefficients and newey west std.err
-         nw_results   <- lpirfs::newey_west(yy, xx, h)
-         b            <- nw_results[[1]]
-         std_err_nw   <- sqrt(diag(nw_results[[2]]))*specs$confint
 
-        # Fill coefficient matrix
-         b1[k, ]      <-   b[2:(specs$endog + 1)]
-         b1_low[k, ]  <-   b[2:(specs$endog + 1)] - std_err_nw[2:(specs$endog + 1)]
-         b1_up[k, ]   <-   b[2:(specs$endog + 1)] + std_err_nw[2:(specs$endog + 1)]
+         # Set lag number for Newey-West (1987)
+         if(is.null(nw_lag)){
+
+           lag_nw <- h
+
+         } else {
+
+           lag_nw <- nw_lag
+
+         }
+
+        # Estimate coefficients and newey west std.err
+         nw_results   <- lpirfs::newey_west(yy, xx, lag_nw)
+         b            <- nw_results[[1]]
+
+
+         # Check whether standard errors are going to bestimated by Newy West
+         if(isTRUE(use_nw)){
+
+           # Get NW standard errors
+            std_err_nw        <- sqrt(diag(nw_results[[2]]))*specs$confint
+           # Fill coefficient matrix
+            b1[k, ]        <-   b[2:(specs$endog + 1)]
+            b1_low[k, ]    <-   b[2:(specs$endog + 1)] - std_err_nw[2:(specs$endog + 1)]
+            b1_up[k, ]     <-   b[2:(specs$endog + 1)] + std_err_nw[2:(specs$endog + 1)]
+
+                      } else {
+
+           # Get normal standard errors
+            std_err           <- sqrt(diag(lpirfs::ols_diagnost(yy[, k], xx)[[2]]))
+           # Fill coefficient matrix
+             b1[k, ]        <-   b[2:(specs$endog + 1)]
+             b1_low[k, ]    <-   b[2:(specs$endog + 1)] - std_err[2:(specs$endog + 1)]
+             b1_up[k, ]     <-   b[2:(specs$endog + 1)] + std_err[2:(specs$endog + 1)]
+
+         }
       }
 
         # Fill matrices with local projections
@@ -432,8 +496,10 @@ lp_lin <- function(endog_data,
   # Close cluster
   parallel::stopCluster(cl)
 
-  result <-  list(irf_lin_mean = irf_lin_mean, irf_lin_low = irf_lin_low,
-             irf_lin_up   = irf_lin_up, specs = specs)
+  result <-  list(irf_lin_mean      = irf_lin_mean,
+                  irf_lin_low       = irf_lin_low,
+                  irf_lin_up        = irf_lin_up,
+                  specs             = specs)
 
   # Give object S3 name
   class(result) <- "lpirfs_lin_obj"

@@ -6,8 +6,8 @@
 \usage{
 lp_lin(endog_data, lags_endog_lin = NULL, lags_criterion = NaN,
   max_lags = NaN, trend = NULL, shock_type = NULL, confint = NULL,
-  hor = NULL, exog_data = NULL, lags_exog = NULL,
-  contemp_data = NULL, num_cores = NULL)
+  use_nw = TRUE, nw_lag = NULL, hor = NULL, exog_data = NULL,
+  lags_exog = NULL, contemp_data = NULL, num_cores = NULL)
 }
 \arguments{
 \item{endog_data}{A \link{data.frame}, containing the endogenous variables for the VAR. The Cholesky decomposition is based on the
@@ -25,6 +25,11 @@ has to be given at \emph{lags_endog_lin}. The character specifies the lag length
 \item{shock_type}{Integer. Standard deviation shock = 0, unit shock = 1.}
 
 \item{confint}{Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.}
+
+\item{use_nw}{Boolean. Use Newey-West (1987) standard errors for impulse responses? TRUE (default) or FALSE.}
+
+\item{nw_lag}{Integer. Specifies the maximum lag with positive weight for the Newey-West estimator. If set to NULL (default), the lag increases with
+with the number of horizon, as commonly done in the literature.}
 
 \item{hor}{Integer. Number of horizons for impulse responses.}
 

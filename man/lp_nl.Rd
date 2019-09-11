@@ -6,10 +6,10 @@
 \usage{
 lp_nl(endog_data, lags_endog_lin = NULL, lags_endog_nl = NULL,
   lags_criterion = NaN, max_lags = NaN, trend = NULL,
-  shock_type = NULL, confint = NULL, hor = NULL, switching = NULL,
-  lag_switching = TRUE, use_logistic = TRUE, use_hp = NULL,
-  lambda = NULL, gamma = NULL, exog_data = NULL, lags_exog = NULL,
-  contemp_data = NULL, num_cores = NULL)
+  shock_type = NULL, confint = NULL, use_nw = TRUE, hor = NULL,
+  switching = NULL, lag_switching = TRUE, use_logistic = TRUE,
+  use_hp = NULL, lambda = NULL, gamma = NULL, exog_data = NULL,
+  lags_exog = NULL, contemp_data = NULL, num_cores = NULL)
 }
 \arguments{
 \item{endog_data}{A \link{data.frame}, containing all endogenous variables for the VAR. The Cholesky decomposition is based on the
@@ -30,6 +30,8 @@ will be given at \emph{lags_endog_nl} and \emph{lags_endog_lin}. The lag length 
 \item{shock_type}{Integer. Standard deviation shock = 0, unit shock = 1.}
 
 \item{confint}{Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.}
+
+\item{use_nw}{Boolean. Use Newey-West (1987) standard errors for impulse responses? TRUE (default) or FALSE.}
 
 \item{hor}{Integer. Number of horizons for impulse responses.}
 
