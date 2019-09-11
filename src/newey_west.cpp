@@ -16,11 +16,10 @@ using namespace Rcpp;
 // [[Rcpp::export]]
 List newey_west(NumericVector y, NumericMatrix x, int h){
   NumericMatrix V;
-  arma::mat G, M, xx, xx_one, yy, M1, M2, ga, g1, w, za, xpxi, emat, hhat, beta_hat;
+  arma::mat G, M, xx, xx_one, yy, M1, M2, ga, g1, w, za, xpxi, emat, hhat;
   arma::vec w1, beta, resids, resids_mean;
   int nrow_hhat, a, nobs, num_exog, nlag;
-  double sigma_hat, y_hat, ssr, ssm, r_sq ;
-  List ret(3);
+  List ret(4);
 
 
   // OLS
@@ -81,6 +80,7 @@ List newey_west(NumericVector y, NumericMatrix x, int h){
   ret[0]  = beta;
   ret[1]  = V;
   ret[2]  = wrap(hhat.t());
+  ret[3]  = wrap(xpxi);
   return (ret);
 
 }
