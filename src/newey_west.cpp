@@ -19,7 +19,7 @@ List newey_west(NumericVector y, NumericMatrix x, int h){
   arma::mat G, M, xx, xx_one, yy, M1, M2, ga, g1, w, za, xpxi, emat, hhat;
   arma::vec w1, beta, resids, resids_mean;
   int nrow_hhat, a, nobs, num_exog, nlag;
-  List ret(4);
+  List ret(5);
 
 
   // OLS
@@ -81,6 +81,7 @@ List newey_west(NumericVector y, NumericMatrix x, int h){
   ret[1]  = V;
   ret[2]  = wrap(hhat.t());
   ret[3]  = wrap(xpxi);
+  ret[4]  = wrap(G);
   return (ret);
 
 }
