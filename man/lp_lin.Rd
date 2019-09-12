@@ -6,7 +6,8 @@
 \usage{
 lp_lin(endog_data, lags_endog_lin = NULL, lags_criterion = NaN,
   max_lags = NaN, trend = NULL, shock_type = NULL, confint = NULL,
-  use_nw = TRUE, nw_lag = NULL, hor = NULL, exog_data = NULL,
+  use_nw = TRUE, nw_lag = NULL, nw_prewhite = FALSE,
+  adjust_se = FALSE, hor = NULL, exog_data = NULL,
   lags_exog = NULL, contemp_data = NULL, num_cores = NULL)
 }
 \arguments{
@@ -30,6 +31,10 @@ has to be given at \emph{lags_endog_lin}. The character specifies the lag length
 
 \item{nw_lag}{Integer. Specifies the maximum lag with positive weight for the Newey-West estimator. If set to NULL (default), the lag increases with
 with the number of horizon, as commonly done in the literature.}
+
+\item{nw_prewhite}{Boolean. Should the estimators be pre-whitened? TRUE of FALSE (default).}
+
+\item{adjust_se}{Boolen. Should a finite sample adjsutment be made to the covariance matrix estimators? TRUE or FALSE (default).}
 
 \item{hor}{Integer. Number of horizons for impulse responses.}
 
