@@ -5,14 +5,36 @@ using namespace Rcpp;
 //' @description  Compute OLS diagnostics such as R^2, adjusted R^2, AIC, etc.
 //' @param y Numeric vector.
 //' @param x Numeric matrix.
-//' @return A list. The first element contains...
+//' @return A list:
+//'
+//'\item{beta}{Point estimates of OLS regression.}
+//'
+//'\item{beta_cov}{Covariance matrix of point estimates.}
+//'
+//'\item{R^2}{The R^2 statistic from OLS regression. }
+//'
+//'\item{Adj.R^2}{The adjusted R^2 staistic from OLS regression.}
+//'
+//'\item{F-stat}{The computed F-statistic.}
+//'
+//'\item{df1}{First degress of freedom for F-statistic.}
+//'
+//'\item{df2}{Second degrees of freedom for F-staitisc.}
+//'
+//'\item{AIC_c}{The AIC_c criterion by Hurvich and Tsai (1989)}
+//'
+//'\item{AIC}{The AIC criterion by Akaike (1974)}
+//'
+//'\item{BIC}{The BIC criterion by Schwarz and Gideon (1978)}
+//'
 //' @keywords internal
 //' @references
 //' Akaike, H. (1974). "A new look at the statistical model identification", \emph{IEEE Transactions on Automatic Control}, 19 (6): 716–723.
+//'
 //' Hurvich, C. M., and Tsai, C.-L. (1989). "Regression and time series model selection
 //' in small samples", Biometrika, 76(2): 297–307,
 //'
-//' Schwarz, Gideon E. (1978). "Estimating the dimension of a model", \emph{Annals of Statistics}, 6 (2): 461–464.
+//' Schwarz, G.(1978). "Estimating the dimension of a model", \emph{Annals of Statistics}, 6 (2): 461–464.
 // [[Rcpp::export]]
 List ols_diagnost(NumericVector y, NumericMatrix x){
   arma::mat xx, xx_one, yy, xpxi, xpxi_00, beta_cov;
