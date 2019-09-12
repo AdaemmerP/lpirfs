@@ -14,6 +14,8 @@
 #' @param use_nw Boolean. Use Newey-West (1987) standard errors for impulse responses? TRUE (default) or FALSE.
 #' @param nw_lag Integer. Specifies the maximum lag with positive weight for the Newey-West estimator. If set to NULL (default), the lag increases with
 #'               with the number of horizon, as commonly done in the literature.
+#' @param nw_prewhite Boolean. Should the estimators be pre-whitened? TRUE of FALSE (default).
+#' @param adjust_se Boolen. Should a finite sample adjsutment be made to the covariance matrix estimators? TRUE or FALSE (default).
 #' @param hor Integer. Number of horizons for impulse responses.
 #' @param exog_data A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
 #'                 Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.
@@ -139,6 +141,8 @@ lp_lin <- function(endog_data,
                         confint        = NULL,
                         use_nw         = TRUE,
                         nw_lag         = NULL,
+                        nw_prewhite    = FALSE,
+                        adjust_se      = FALSE,
                         hor            = NULL,
                         exog_data      = NULL,
                         lags_exog      = NULL,
@@ -339,16 +343,47 @@ lp_lin <- function(endog_data,
 
      for (k in 1:specs$endog){ # Accounts for the reactions of the endogenous variables
 
-      # Estimate coefficients and newey west std.err
-       nw_results        <- lpirfs::newey_west(yy[, k], xx, lag_nw)
-       b                 <- nw_results[[1]]
+
+       # Check whether standard errors are going to be estimated by Newey West
+         if(isTRUE(use_nw)){
+
+           # Check whether prewhitening shall be applied
+             if(isTRUE(nw_prewhite)) {
+
+             # Estimate coefficients
+             nw_results        <- lpirfs::newey_west(yy[, k], xx, lag_nw)
+             b                 <- nw_results[[1]]
+
+             nw_results_pre     <- newey_west(yy[, k], xx, lag_nw)
+             x_u                <- nw_results_pre[[3]]
+             xpxi               <- nw_results_pre[[4]]
+
+             resid_pw        <- var_one(x_u)[[2]]
+             D_mat           <- var_one(x_u)[[3]]
+
+             nw_results      <- newey_west_pw(resid_pw, xpxi, D_mat, 1)[[1]]
+
+             # Make finite sample adjustment?
+             if(isTRUE(adjust_se)) nw_results  <- newey_west_pw(resid_pw, xpxi, D_mat, 1)[[1]]*nrow(yy)/(nrow(yy) - ncol(xx) - 1)
+
+             # Get standard errors
+             std_err_nw        <- sqrt(diag(nw_results))*specs$confint
 
 
-      # Check whether standard errors are going to bestimated by Newy West
-        if(isTRUE(use_nw)){
+                           }    else    {
 
-          # Get NW standard errors
-          std_err_nw      <- sqrt(diag(nw_results[[2]]))*specs$confint
+          # Estimate coefficients
+           nw_results        <- lpirfs::newey_west(yy[, k], xx, lag_nw)
+           b                 <- nw_results[[1]]
+
+           # Get NW standard errors
+           std_err_nw        <- sqrt(diag(nw_results[[2]]))*specs$confint
+
+           # Make finite sample adjustment
+           if(isTRUE(adjust_se)) std_err_nw  <- newey_west_pw(resid_pw, xpxi, D_mat, 1)[[1]]*nrow(yy)/(nrow(yy) - ncol(xx) - 1)
+
+         }
+
           # Fill coefficient matrix
            b1[k, ]        <-   b[2:(specs$endog + 1)]
            b1_low[k, ]    <-   b[2:(specs$endog + 1)] - std_err_nw[2:(specs$endog + 1)]
@@ -357,7 +392,14 @@ lp_lin <- function(endog_data,
                            } else {
 
           # Get normal standard errors
-            std_err           <- sqrt(diag(lpirfs::ols_diagnost(yy[, k], xx)[[2]]))
+            beta_cov           <- lpirfs::ols_diagnost(yy[, k], xx)[[2]]
+
+          # Finite sample adjustment?
+            if(isTRUE(adjust_se)) beta_cov <- beta_cov*nrow(yy)/(nrow(yy) - ncol(xx) - 1)
+
+            std_err           <- sqrt(diag(beta_cov))
+
+
           # Fill coefficient matrix
            b1[k, ]        <-   b[2:(specs$endog + 1)]
            b1_low[k, ]    <-   b[2:(specs$endog + 1)] - std_err[2:(specs$endog + 1)]
@@ -431,38 +473,69 @@ lp_lin <- function(endog_data,
 
            lag_nw <- h
 
-         } else {
+                      } else {
 
            lag_nw <- nw_lag
 
          }
 
-        # Estimate coefficients and newey west std.err
-         nw_results   <- lpirfs::newey_west(yy, xx, lag_nw)
-         b            <- nw_results[[1]]
-
-
-         # Check whether standard errors are going to bestimated by Newy West
+         # Check whether standard errors are going to be estimated by Newey West
          if(isTRUE(use_nw)){
 
-           # Get NW standard errors
-            std_err_nw        <- sqrt(diag(nw_results[[2]]))*specs$confint
-           # Fill coefficient matrix
-            b1[k, ]        <-   b[2:(specs$endog + 1)]
-            b1_low[k, ]    <-   b[2:(specs$endog + 1)] - std_err_nw[2:(specs$endog + 1)]
-            b1_up[k, ]     <-   b[2:(specs$endog + 1)] + std_err_nw[2:(specs$endog + 1)]
+           # Check whether prewhitening shall be applied
+           if(isTRUE(nw_prewhite)) {
 
-                      } else {
+             # Estimate coefficients
+             nw_results        <- lpirfs::newey_west(yy, xx, lag_nw)
+             b                 <- nw_results[[1]]
+
+             nw_results_pre     <- newey_west(yy, xx, lag_nw)
+             x_u                <- nw_results_pre[[3]]
+             xpxi               <- nw_results_pre[[4]]
+
+             resid_pw        <- var_one(x_u)[[2]]
+             D_mat           <- var_one(x_u)[[3]]
+
+             nw_results      <- newey_west_pw(resid_pw, xpxi, D_mat, 1)[[1]]
+
+             # Make finite sample adjustment?
+             if(isTRUE(adjust_se)) nw_results  <- newey_west_pw(resid_pw, xpxi, D_mat, 1)[[1]]*nrow(yy)/(nrow(yy) - ncol(xx) - 1)
+
+             # Get standard errors
+             std_err_nw        <- sqrt(diag(nw_results))*specs$confint
+
+                           }    else    {
+
+             # Estimate coefficients
+             nw_results        <- lpirfs::newey_west(yy, xx, lag_nw)
+             b                 <- nw_results[[1]]
+
+             # Get NW standard errors
+             std_err_nw        <- sqrt(diag(nw_results[[2]]))*specs$confint
+
+             # Make finite sample adjustment
+             if(isTRUE(adjust_se)) std_err_nw  <- newey_west_pw(resid_pw, xpxi, D_mat, 1)[[1]]*nrow(yy)/(nrow(yy) - ncol(xx) - 1)
+           }
+                                } else {
 
            # Get normal standard errors
-            std_err           <- sqrt(diag(lpirfs::ols_diagnost(yy[, k], xx)[[2]]))
+           beta_cov           <- lpirfs::ols_diagnost(yy, xx)[[2]]
+
+           # Finite sample adjustment?
+           if(isTRUE(adjust_se)) beta_cov <- beta_cov*nrow(yy)/(nrow(yy) - ncol(xx) - 1)
+
+           std_err           <- sqrt(diag(beta_cov))
+
+
            # Fill coefficient matrix
-             b1[k, ]        <-   b[2:(specs$endog + 1)]
-             b1_low[k, ]    <-   b[2:(specs$endog + 1)] - std_err[2:(specs$endog + 1)]
-             b1_up[k, ]     <-   b[2:(specs$endog + 1)] + std_err[2:(specs$endog + 1)]
+           b1[k, ]        <-   b[2:(specs$endog + 1)]
+           b1_low[k, ]    <-   b[2:(specs$endog + 1)] - std_err[2:(specs$endog + 1)]
+           b1_up[k, ]     <-   b[2:(specs$endog + 1)] + std_err[2:(specs$endog + 1)]
 
          }
-      }
+
+       }
+
 
         # Fill matrices with local projections
          irf_mean[, h + 1] <- t(b1     %*% d[ , s])
