@@ -48,7 +48,7 @@ List newey_west(NumericVector y, NumericMatrix x, int h){
   a        = 0;
 
 
-  for (int i = 0; i < nlag; ++i){
+  for (int i = 0; i < nlag + 1; ++i){
 
     ga                 = arma::zeros<arma::mat>(num_exog, num_exog);
     w(nlag + a)        = (nlag + 1 - a)/double(nlag + 1);
