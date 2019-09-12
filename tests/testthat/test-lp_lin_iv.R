@@ -301,7 +301,7 @@ context("lp_lin_iv")
     # Estimate linear model
     results_lin_iv <- lp_lin_iv(endog_data,
                                 shock          = instrument,
-                                lags_endog_lin       = 4,
+                                lags_endog_lin = 4,
                                 exog_data      = NULL,
                                 lags_exog      = NULL,
                                 contemp_data   = NULL,
