@@ -48,6 +48,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// newey_west_pw
+List newey_west_pw(NumericMatrix hhat_mat, NumericMatrix xpxi_mat, NumericMatrix D_mat, int h);
+RcppExport SEXP _lpirfs_newey_west_pw(SEXP hhat_matSEXP, SEXP xpxi_matSEXP, SEXP D_matSEXP, SEXP hSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type hhat_mat(hhat_matSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type xpxi_mat(xpxi_matSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type D_mat(D_matSEXP);
+    Rcpp::traits::input_parameter< int >::type h(hSEXP);
+    rcpp_result_gen = Rcpp::wrap(newey_west_pw(hhat_mat, xpxi_mat, D_mat, h));
+    return rcpp_result_gen;
+END_RCPP
+}
 // newey_west_tsls
 List newey_west_tsls(NumericVector y, NumericMatrix x, NumericMatrix z, int h);
 RcppExport SEXP _lpirfs_newey_west_tsls(SEXP ySEXP, SEXP xSEXP, SEXP zSEXP, SEXP hSEXP) {
@@ -74,13 +88,26 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// var_one
+List var_one(NumericMatrix VAR_Data);
+RcppExport SEXP _lpirfs_var_one(SEXP VAR_DataSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type VAR_Data(VAR_DataSEXP);
+    rcpp_result_gen = Rcpp::wrap(var_one(VAR_Data));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_lpirfs_get_vals_lagcrit", (DL_FUNC) &_lpirfs_get_vals_lagcrit, 7},
     {"_lpirfs_hp_filter", (DL_FUNC) &_lpirfs_hp_filter, 2},
     {"_lpirfs_newey_west", (DL_FUNC) &_lpirfs_newey_west, 3},
+    {"_lpirfs_newey_west_pw", (DL_FUNC) &_lpirfs_newey_west_pw, 4},
     {"_lpirfs_newey_west_tsls", (DL_FUNC) &_lpirfs_newey_west_tsls, 4},
     {"_lpirfs_ols_diagnost", (DL_FUNC) &_lpirfs_ols_diagnost, 2},
+    {"_lpirfs_var_one", (DL_FUNC) &_lpirfs_var_one, 1},
     {NULL, NULL, 0}
 };
 

@@ -92,6 +92,30 @@ newey_west <- function(y, x, h) {
     .Call(`_lpirfs_newey_west`, y, x, h)
 }
 
+#' @name newey_west_pw
+#' @title Compute Newey-West estimator with prewhitened estimation functions
+#' @description  Compute Newey-West estimator with prewhitened estimation functions.
+#' The function is based on the Matlab code by James P. LeSage.
+#' @param hhat_mat Matrix.
+#' @param xpxi_mat Matrix.
+#' @param D_mat Matrix.
+#' @param h integer.
+#' @return A list. The first element contains the estimated OLS parameters, the second element
+#' the Newey West covariance matrix.
+#' @keywords internal
+#' @references
+#'
+#' Andrews, D.W. and Monahan, J.C. (1992). An improved heteroskedasticity and
+#' autocorrelation consistent covariance matrix estimator. \emph{Econometrica}, pp.953-966.
+#'
+#' Newey, W.K., and West, K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
+#' Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–708.
+#'
+#'
+newey_west_pw <- function(hhat_mat, xpxi_mat, D_mat, h) {
+    .Call(`_lpirfs_newey_west_pw`, hhat_mat, xpxi_mat, D_mat, h)
+}
+
 #' @name newey_west_tsls
 #' @title Compute 2SLS parameters and robust standard errors based on Newey-West
 #' @description  Compute 2SLS parameters and robust standard errors based on Newey and West (1987).
@@ -116,15 +140,57 @@ newey_west_tsls <- function(y, x, z, h) {
 #' @description  Compute OLS diagnostics such as R^2, adjusted R^2, AIC, etc.
 #' @param y Numeric vector.
 #' @param x Numeric matrix.
-#' @return A list. The first element contains...
+#' @return A list:
+#'
+#'\item{beta}{Point estimates of OLS regression.}
+#'
+#'\item{beta_cov}{Covariance matrix of point estimates.}
+#'
+#'\item{R^2}{The R^2 statistic from OLS regression. }
+#'
+#'\item{Adj.R^2}{The adjusted R^2 staistic from OLS regression.}
+#'
+#'\item{F-stat}{The computed F-statistic.}
+#'
+#'\item{df1}{First degress of freedom for F-statistic.}
+#'
+#'\item{df2}{Second degrees of freedom for F-staitisc.}
+#'
+#'\item{AIC_c}{The AIC_c criterion by Hurvich and Tsai (1989)}
+#'
+#'\item{AIC}{The AIC criterion by Akaike (1974)}
+#'
+#'\item{BIC}{The BIC criterion by Schwarz and Gideon (1978)}
+#'
 #' @keywords internal
 #' @references
 #' Akaike, H. (1974). "A new look at the statistical model identification", \emph{IEEE Transactions on Automatic Control}, 19 (6): 716–723.
+#'
 #' Hurvich, C. M., and Tsai, C.-L. (1989). "Regression and time series model selection
 #' in small samples", Biometrika, 76(2): 297–307,
 #'
-#' Schwarz, Gideon E. (1978). "Estimating the dimension of a model", \emph{Annals of Statistics}, 6 (2): 461–464.
+#' Schwarz, G.(1978). "Estimating the dimension of a model", \emph{Annals of Statistics}, 6 (2): 461–464.
 ols_diagnost <- function(y, x) {
     .Call(`_lpirfs_ols_diagnost`, y, x)
+}
+
+#' @name var_one
+#' @title Compute VAR to prewhite estimating functions for Newey West estimator.
+#' @description  Compute Newey-West estimator with prewhitened estimation functions.
+#' @param VAR_Data Matrix.
+#' @return A list. The first element contains the slope parameters of the VAR(1), the sedond element contains
+#' the residuals and the third element the inverted slope parameter matrix.
+#' @keywords internal
+#' @references
+#'
+#' Andrews, D.W. and Monahan, J.C. (1992). An improved heteroskedasticity and
+#' autocorrelation consistent covariance matrix estimator. \emph{Econometrica}, pp.953-966.
+#'
+#' Newey, W.K., and West, K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
+#' Autocorrelation Consistent Covariance Matrix.” \emph{Econometrica}, 55, 703–708.
+#'
+#'
+var_one <- function(VAR_Data) {
+    .Call(`_lpirfs_var_one`, VAR_Data)
 }
 
