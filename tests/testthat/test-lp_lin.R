@@ -306,4 +306,99 @@ test_that("Test whether results from lp_lin are in region of results from Jordà
   expect_equal(results_mean_2, jorda_results_mean_2, tolerance =5e-2)
 } )
 
+test_that("Test that prewhitening runs without error", {
+
+
+  testthat::expect_error(lp_lin(data_set_df,
+                                lags_endog_lin = 4L,
+                                lags_criterion = NaN,
+                                max_lags       = NaN,
+                                trend          = 0L,
+                                shock_type     = 0L,
+                                confint        = 1.96,
+                                hor            = 24L,
+                                nw_prewhite    = T,
+                                num_cores      = 1),
+                         NA)
+} )
+
+
+
+test_that("Test that adjustment to covariance runs without error", {
+
+
+  testthat::expect_error(lp_lin(data_set_df,
+                                lags_endog_lin = 4L,
+                                lags_criterion = NaN,
+                                max_lags       = NaN,
+                                trend          = 0L,
+                                shock_type     = 0L,
+                                confint        = 1.96,
+                                hor            = 24L,
+                                nw_prewhite    = T,
+                                adjust_se      = T,
+                                num_cores      = 1),
+                         NA)
+} )
+
+
+
+
+test_that("Test that estimating non-robust standard errors runs without error", {
+
+
+  testthat::expect_error(lp_lin(data_set_df,
+                                lags_endog_lin = 4L,
+                                lags_criterion = NaN,
+                                max_lags       = NaN,
+                                trend          = 0L,
+                                shock_type     = 0L,
+                                confint        = 1.96,
+                                hor            = 24L,
+                                nw_prewhite    = T,
+                                adjust_se      = T,
+                                num_cores      = 1),
+                         NA)
+} )
+
+
+test_that("Test that running with AIC returns no error", {
+
+
+  testthat::expect_error(lp_lin(data_set_df,
+                                lags_endog_lin = NaN,
+                                lags_criterion = 'AIC',
+                                max_lags       = 2L,
+                                trend          = 0L,
+                                shock_type     = 0L,
+                                confint        = 1.96,
+                                use_nw = F,
+                                hor            = 24L,
+                                nw_prewhite    = T,
+                                adjust_se      = T,
+                                num_cores      = 1),
+                         NA)
+} )
+
+
+test_that("Test that plot() runs without error on object", {
+
+
+  results_lin     <-           lp_lin(data_set_df,
+                                lags_endog_lin = NaN,
+                                lags_criterion = 'AIC',
+                                max_lags       = 2L,
+                                trend          = 0L,
+                                shock_type     = 0L,
+                                confint        = 1.96,
+                                use_nw = F,
+                                hor            = 24L,
+                                nw_prewhite    = T,
+                                adjust_se      = T,
+                                num_cores      = 1)
+
+  testthat::expect_error(results_lin,
+                         NA)
+} )
+
 
