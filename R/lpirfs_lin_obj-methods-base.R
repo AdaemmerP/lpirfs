@@ -73,3 +73,19 @@ plot.lpirfs_nl_obj <- function(x, ...){
 
 
 }
+
+#' @name summary.lpirfs_nl_obj
+#' @title Summary for nonlinear lpirfs object
+#' @export
+#' @param object An object of type 'lpirfs_nl_obj'
+#' @param ... Additional arguments to be consistent with S3 print() function
+#' @importFrom gridExtra marrangeGrob
+#' @importFrom ggplot2 ggplotGrob
+#' @method summary lpirfs_nl_obj
+summary.lpirfs_nl_obj <- function(object, ...){
+
+  object[[9]]
+
+
+}
+
