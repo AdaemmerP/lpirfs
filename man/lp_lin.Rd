@@ -65,6 +65,9 @@ A list containing:
 \item{irf_lin_up}{A three 3D \link{array} containing all upper confidence bands of the responses,
                    based on robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_lin_mean}.}
 
+\item{diagnostic_list}{A list OLS diagnostics. To see everything you can simply use summary() or results$diagnostic_list. The first entry
+the shock variable. The rows of each shown matrix then denotes the endogenous variable that reacts to the shock.}
+
 \item{specs}{A list with properties of \emph{endog_data} for the plot function. It also contains
             lagged data (y_lin and x_lin) used for the irf estimations.}
 }
