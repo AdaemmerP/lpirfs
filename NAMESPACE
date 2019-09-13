@@ -3,6 +3,7 @@
 S3method(plot,lpirfs_lin_obj)
 S3method(plot,lpirfs_nl_obj)
 S3method(summary,lpirfs_lin_obj)
+S3method(summary,lpirfs_nl_obj)
 export(lp_lin)
 export(lp_lin_iv)
 export(lp_lin_panel)
