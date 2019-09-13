@@ -632,8 +632,15 @@ lp_nl <- function(endog_data,
 # Close cluster
   parallel::stopCluster(cl)
 
-  list(irf_s1_mean = irf_s1_mean, irf_s1_low = irf_s1_low, irf_s1_up = irf_s1_up,
-       irf_s2_mean = irf_s2_mean, irf_s2_low = irf_s2_low, irf_s2_up = irf_s2_up,
-       fz          = fz, specs = specs)
+ result         <-  list(irf_s1_mean = irf_s1_mean, irf_s1_low = irf_s1_low, irf_s1_up = irf_s1_up,
+                  irf_s2_mean = irf_s2_mean, irf_s2_low = irf_s2_low, irf_s2_up = irf_s2_up,
+                  fz          = fz, specs = specs)
+
+ # Give object S3 name
+ class(result) <- "lpirfs_nl_obj"
+
+ return(result)
+
+
 
 }
