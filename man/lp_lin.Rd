@@ -143,6 +143,9 @@ Compute linear impulse responses with local projections by Jordà (2005).
 # Show all impulse responses
  plot(results_lin)
 
+# Show OLS diagnostics. Each list element corresponds to the shock variable
+ summary(results_lin)
+
  }
 }
 \references{
