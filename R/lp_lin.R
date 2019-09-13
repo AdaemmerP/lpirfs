@@ -42,6 +42,9 @@
 #'\item{irf_lin_up}{A three 3D \link{array} containing all upper confidence bands of the responses,
 #'                    based on robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_lin_mean}.}
 #'
+#'\item{diagnostic_list}{A list OLS diagnostics. To see everything you can simply use summary() or results$diagnostic_list. The first entry
+#' the shock variable. The rows of each shown matrix then denotes the endogenous variable that reacts to the shock.}
+#'
 #'\item{specs}{A list with properties of \emph{endog_data} for the plot function. It also contains
 #'             lagged data (y_lin and x_lin) used for the irf estimations.}
 #'
@@ -306,8 +309,13 @@ lp_lin <- function(endog_data,
   irf_lin_low   <-  irf_lin_mean
   irf_lin_up    <-  irf_lin_mean
 
- # Matrix to store diagnostics of OLS models
-  diagnostics_ols <- list()
+ # Make list to store OLS diagnostics for each horizon
+  diagnost_ols_each_h <- list()
+
+ # Make matrix to store OLS diagnostics for each endogenous variable k
+  diagnost_each_k           <- matrix(NaN, specs$endog,  4)
+  rownames(diagnost_each_k) <- specs$column_names
+  colnames(diagnost_each_k) <- c("R-sqrd.", "Adj. R-sqrd.", "F-stat", " p-value")
 
   # Make cluster
   if(is.null(num_cores)){
@@ -367,7 +375,7 @@ lp_lin <- function(endog_data,
              if(isTRUE(adjust_se)) nw_results  <- newey_west_pw(resid_pw, xpxi, D_mat, 1)[[1]]*nrow(yy)/(nrow(yy) - ncol(xx) - 1)
 
              # Get standard errors
-             std_err_nw        <- sqrt(diag(nw_results))*specs$confint
+             std_err        <- sqrt(diag(nw_results))*specs$confint
 
 
                            }    else    {
@@ -377,18 +385,14 @@ lp_lin <- function(endog_data,
            b                 <- nw_results[[1]]
 
            # Get NW standard errors
-           std_err_nw        <- sqrt(diag(nw_results[[2]]))*specs$confint
+           std_err        <- sqrt(diag(nw_results[[2]]))*specs$confint
 
            # Make finite sample adjustment
-           if(isTRUE(adjust_se)) std_err_nw  <- newey_west_pw(resid_pw, xpxi, D_mat, 1)[[1]]*nrow(yy)/(nrow(yy) - ncol(xx) - 1)
+           if(isTRUE(adjust_se)) std_err  <- newey_west_pw(resid_pw, xpxi, D_mat, 1)[[1]]*nrow(yy)/(nrow(yy) - ncol(xx) - 1)
 
          }
 
-          # Fill coefficient matrix
-           b1[k, ]        <-   b[2:(specs$endog + 1)]
-           b1_low[k, ]    <-   b[2:(specs$endog + 1)] - std_err_nw[2:(specs$endog + 1)]
-           b1_up[k, ]     <-   b[2:(specs$endog + 1)] + std_err_nw[2:(specs$endog + 1)]
-
+       # If 'use_nw = FALSE', estimate non-robust standard errors
                            } else {
 
           # Get normal standard errors
@@ -399,13 +403,21 @@ lp_lin <- function(endog_data,
 
             std_err           <- sqrt(diag(beta_cov))
 
+      }
 
-          # Fill coefficient matrix
-           b1[k, ]        <-   b[2:(specs$endog + 1)]
-           b1_low[k, ]    <-   b[2:(specs$endog + 1)] - std_err[2:(specs$endog + 1)]
-           b1_up[k, ]     <-   b[2:(specs$endog + 1)] + std_err[2:(specs$endog + 1)]
 
-        }
+       # Fill coefficient matrix
+       b1[k, ]        <-   b[2:(specs$endog + 1)]
+       b1_low[k, ]    <-   b[2:(specs$endog + 1)] - std_err[2:(specs$endog + 1)]
+       b1_up[k, ]     <-   b[2:(specs$endog + 1)] + std_err[2:(specs$endog + 1)]
+
+       # Get diagnostocs for summary
+       get_diagnost              <- lpirfs::ols_diagnost(yy[, k], xx)
+       diagnost_each_k[k, 1]     <- get_diagnost[[3]]
+       diagnost_each_k[k, 2]     <- get_diagnost[[4]]
+       diagnost_each_k[k, 3]     <- get_diagnost[[5]]
+       diagnost_each_k[k, 4]     <- stats::pf(diagnost_each_k[k, 3], get_diagnost[[6]], get_diagnost[[7]])
+
 
       }
 
@@ -413,11 +425,19 @@ lp_lin <- function(endog_data,
        irf_mean[, h + 1] <- t(b1     %*% d[ , s])
        irf_low[,  h + 1] <- t(b1_low %*% d[ , s])
        irf_up[,   h + 1] <- t(b1_up  %*% d[ , s])
+
+      # Save full summary matrix in list for each horizon
+       diagnost_ols_each_h[[h]]             <- diagnost_each_k
+
       }
 
-        # Return irfs and diagnostics
-          return(list(irf_mean,  irf_low,  irf_up))
+       # Return irfs and diagnostics
+         return(list(irf_mean,  irf_low,  irf_up, diagnost_ols_each_h))
 }
+
+
+  # List to save diagnostics
+  diagnostic_list <- list()
 
  # Fill arrays with irfs
   for(i in 1:specs$endog){
@@ -431,6 +451,10 @@ lp_lin <- function(endog_data,
     irf_lin_mean[, 1, i]   <- t(d[, i])
     irf_lin_low[,  1, i]   <- irf_lin_mean[, 1, i]
     irf_lin_up[,   1, i]   <- irf_lin_mean[, 1, i]
+
+    # Fill list with all OLS diagnostics
+    diagnostic_list[[i]]        <- lin_irfs[[i]][4]
+    names(diagnostic_list[[i]]) <- paste("Shock:", specs$column_names[i], sep = " ")
 
   }
 
@@ -502,7 +526,7 @@ lp_lin <- function(endog_data,
              if(isTRUE(adjust_se)) nw_results  <- newey_west_pw(resid_pw, xpxi, D_mat, 1)[[1]]*nrow(yy)/(nrow(yy) - ncol(xx) - 1)
 
              # Get standard errors
-             std_err_nw        <- sqrt(diag(nw_results))*specs$confint
+             std_err        <- sqrt(diag(nw_results))*specs$confint
 
                            }    else    {
 
@@ -511,12 +535,18 @@ lp_lin <- function(endog_data,
              b                 <- nw_results[[1]]
 
              # Get NW standard errors
-             std_err_nw        <- sqrt(diag(nw_results[[2]]))*specs$confint
+             std_err        <- sqrt(diag(nw_results[[2]]))*specs$confint
 
              # Make finite sample adjustment
-             if(isTRUE(adjust_se)) std_err_nw  <- newey_west_pw(resid_pw, xpxi, D_mat, 1)[[1]]*nrow(yy)/(nrow(yy) - ncol(xx) - 1)
-           }
-                                } else {
+             if(isTRUE(adjust_se)) std_err  <- newey_west_pw(resid_pw, xpxi, D_mat, 1)[[1]]*nrow(yy)/(nrow(yy) - ncol(xx) - 1)
+                           }
+
+          } else {
+
+
+          # Estimate coefficients
+            nw_results        <- lpirfs::newey_west(yy, xx, lag_nw)
+            b                 <- nw_results[[1]]
 
            # Get normal standard errors
            beta_cov           <- lpirfs::ols_diagnost(yy, xx)[[2]]
@@ -526,13 +556,19 @@ lp_lin <- function(endog_data,
 
            std_err           <- sqrt(diag(beta_cov))
 
-
-           # Fill coefficient matrix
-           b1[k, ]        <-   b[2:(specs$endog + 1)]
-           b1_low[k, ]    <-   b[2:(specs$endog + 1)] - std_err[2:(specs$endog + 1)]
-           b1_up[k, ]     <-   b[2:(specs$endog + 1)] + std_err[2:(specs$endog + 1)]
-
          }
+
+         # Fill coefficient matrix
+         b1[k, ]        <-   b[2:(specs$endog + 1)]
+         b1_low[k, ]    <-   b[2:(specs$endog + 1)] - std_err[2:(specs$endog + 1)]
+         b1_up[k, ]     <-   b[2:(specs$endog + 1)] + std_err[2:(specs$endog + 1)]
+
+         # Get diagnostocs for summary
+         get_diagnost              <- lpirfs::ols_diagnost(yy, xx)
+         diagnost_each_k[k, 1]     <- get_diagnost[[3]]
+         diagnost_each_k[k, 2]     <- get_diagnost[[4]]
+         diagnost_each_k[k, 3]     <- get_diagnost[[5]]
+         diagnost_each_k[k, 4]     <- stats::pf(diagnost_each_k[k, 3], get_diagnost[[6]], get_diagnost[[7]])
 
        }
 
@@ -541,10 +577,17 @@ lp_lin <- function(endog_data,
          irf_mean[, h + 1] <- t(b1     %*% d[ , s])
          irf_low[,  h + 1] <- t(b1_low %*% d[ , s])
          irf_up[,   h + 1] <- t(b1_up  %*% d[ , s])
-        }
 
-        list(irf_mean,  irf_low,  irf_up)
+         # Save full summary matrix in list for each horizon
+         diagnost_ols_each_h[[h]]        <- diagnost_each_k
+
     }
+
+        return(list(irf_mean,  irf_low,  irf_up, diagnost_ols_each_h))
+    }
+
+
+    diagnostic_list      <- list()
 
     # Fill arrays with irfs
     for(i in 1:specs$endog){
@@ -559,10 +602,15 @@ lp_lin <- function(endog_data,
       irf_lin_low[,  1, i]   <- irf_lin_mean[, 1, i]
       irf_lin_up[,   1, i]   <- irf_lin_mean[, 1, i]
 
+      # Fill list with all OLS diagnostics
+      diagnostic_list[[i]]        <- lin_irfs[[i]][4]
+      names(diagnostic_list[[i]]) <- paste("Shock:", specs$column_names[i], sep = " ")
+
+
     }
 
 
-    ###################################################################################################
+###################################################################################################
 
   }
 
@@ -572,6 +620,7 @@ lp_lin <- function(endog_data,
   result <-  list(irf_lin_mean      = irf_lin_mean,
                   irf_lin_low       = irf_lin_low,
                   irf_lin_up        = irf_lin_up,
+                  diagnostic_list   = diagnostic_list,
                   specs             = specs)
 
   # Give object S3 name
