@@ -311,7 +311,7 @@ context("lp_lin_iv")
                                 confint        = 1.96,
                                 hor            = 20,
                                 num_cores      = 1)
-    head(results_lin_iv$specs$x_lin)
+
 
     lin_results <- round(results_lin_iv$irf_lin_mean[1,], 2)
 
@@ -358,3 +358,25 @@ context("lp_lin_iv")
                                       num_cores      = 1),
                            NA )
   })
+
+  test_that("Test that prewhitening works", {
+
+    # Estimate linear model
+    testthat::expect_error(lp_lin_iv(endog_data[, 1],
+                                shock          = instrument,
+                                lags_endog_lin = 4,
+                                exog_data      = NULL,
+                                lags_exog      = NULL,
+                                contemp_data   = NULL,
+                                lags_criterion = NaN,
+                                max_lags       = NaN,
+                                nw_prewhite    = T,
+                                trend          = 0,
+                                confint        = 1.96,
+                                hor            = 20,
+                                num_cores      = 1),
+                           NA)
+
+
+  })
+

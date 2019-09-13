@@ -2,7 +2,7 @@
 % Please edit documentation in R/lpirfs_lin_obj-methods-base.R
 \name{summary.lpirfs_nl_obj}
 \alias{summary.lpirfs_nl_obj}
-\title{Summary for linear lpirfs object}
+\title{Summary for nonlinear lpirfs object}
 \usage{
 \method{summary}{lpirfs_nl_obj}(object, ...)
 }
@@ -12,5 +12,5 @@
 \item{...}{Additional arguments to be consistent with S3 print() function}
 }
 \description{
-Summary for linear lpirfs object
+Summary for nonlinear lpirfs object
 }

@@ -7,8 +7,9 @@
 lp_lin_iv(endog_data, shock = NULL, instr = NULL, use_twosls = FALSE,
   instrum = NULL, lags_endog_lin = NULL, exog_data = NULL,
   lags_exog = NULL, contemp_data = NULL, lags_criterion = NaN,
-  max_lags = NaN, trend = NULL, confint = NULL, hor = NULL,
-  num_cores = NULL)
+  max_lags = NaN, trend = NULL, confint = NULL, use_nw = TRUE,
+  nw_lag = NULL, nw_prewhite = FALSE, adjust_se = FALSE,
+  hor = NULL, num_cores = NULL)
 }
 \arguments{
 \item{endog_data}{A \link{data.frame}, containing the values of the dependent variable(s).}
@@ -42,6 +43,15 @@ Note that when \emph{use_twosls = TRUE}, the lag lengths are chosen based on nor
 \item{trend}{Integer. No trend =  0 , include trend = 1, include trend and quadratic trend = 2.}
 
 \item{confint}{Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.}
+
+\item{use_nw}{Boolean. Use Newey-West (1987) standard errors for impulse responses? TRUE (default) or FALSE.}
+
+\item{nw_lag}{Integer. Specifies the maximum lag with positive weight for the Newey-West estimator. If set to NULL (default), the lag increases with
+with the number of horizon.}
+
+\item{nw_prewhite}{Boolean. Should the estimators be pre-whitened? TRUE of FALSE (default).}
+
+\item{adjust_se}{Boolen. Should a finite sample adjsutment be made to the covariance matrix estimators? TRUE or FALSE (default).}
 
 \item{hor}{Integer. Number of horizons for impulse responses.}
 

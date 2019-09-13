@@ -20,6 +20,11 @@
 #' @param max_lags NaN or integer. Maximum number of lags if \emph{lags_criterion} is a character denoting the lag length criterion. NaN otherwise.
 #' @param trend Integer. No trend =  0 , include trend = 1, include trend and quadratic trend = 2.
 #' @param confint Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.
+#' @param use_nw Boolean. Use Newey-West (1987) standard errors for impulse responses? TRUE (default) or FALSE.
+#' @param nw_lag Integer. Specifies the maximum lag with positive weight for the Newey-West estimator. If set to NULL (default), the lag increases with
+#'               with the number of horizon.
+#' @param nw_prewhite Boolean. Should the estimators be pre-whitened? TRUE of FALSE (default).
+#' @param adjust_se Boolen. Should a finite sample adjsutment be made to the covariance matrix estimators? TRUE or FALSE (default).
 #' @param hor Integer. Number of horizons for impulse responses.
 #' @param num_cores NULL or Integer. The number of cores to use for the estimation. If NULL, the function will
 #'                  use the maximum number of cores minus one.
@@ -208,6 +213,10 @@ lp_lin_iv <- function(endog_data,
                    max_lags       = NaN,
                    trend          = NULL,
                    confint        = NULL,
+                   use_nw         = TRUE,
+                   nw_lag         = NULL,
+                   nw_prewhite    = FALSE,
+                   adjust_se      = FALSE,
                    hor            = NULL,
                    num_cores      = NULL){
 
@@ -393,19 +402,20 @@ if(is.nan(specs$lags_criterion) == TRUE){
 
                           for (k in 1:specs$endog){ # Accounts for the reactions of the endogenous variables
 
+                            if(specs$endog == 1){
+                              yy_reg <- yy
+                                } else {
+                              yy_reg <- yy[, k]
+                            }
+
+
                             # Check whether use OLS or 2sls
                             if(specs$use_twosls == FALSE){
 
-                              # Estimate OLS betas and newey west std.err
-                                if(specs$endog == 1 ){
-                                  nw_results   <- lpirfs::newey_west(yy, xx, h)
+                                nw_results   <- lpirfs::newey_west(yy_reg, xx, h)
 
-                                             } else {
 
-                                  nw_results   <- lpirfs::newey_west(yy[, k], xx, h)
-                                }
-
-                                      }   else   {
+                              }   else   {
 
                                # Extract instrument matrix and save as matrix
                                 zz <- specs$z_lin[1 : (dim(z_lin)[1] - h + 1), ] %>%

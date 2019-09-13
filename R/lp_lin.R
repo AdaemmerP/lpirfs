@@ -359,7 +359,7 @@ lp_lin <- function(endog_data,
          if(isTRUE(use_nw)){
 
            # Check whether prewhitening shall be applied
-             if(isTRUE(nw_prewhite)) {
+             if(isTRUE(nw_prewhite)){
 
              # Estimate coefficients
              nw_results      <- lpirfs::newey_west(yy[, k], xx, lag_nw)
@@ -397,7 +397,7 @@ lp_lin <- function(endog_data,
 
          }
 
-                           } else {
+       }                         else        {
 
             ols_output         <- lpirfs::ols_diagnost(yy[, k], xx)
 

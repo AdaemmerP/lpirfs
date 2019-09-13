@@ -35,7 +35,7 @@ will be given at \emph{lags_endog_nl} and \emph{lags_endog_lin}. The lag length 
 \item{use_nw}{Boolean. Use Newey-West (1987) standard errors for impulse responses? TRUE (default) or FALSE.}
 
 \item{nw_lag}{Integer. Specifies the maximum lag with positive weight for the Newey-West estimator. If set to NULL (default), the lag increases with
-with the number of horizon, as commonly done in the literature.}
+with the number of horizon.}
 
 \item{nw_prewhite}{Boolean. Should the estimators be pre-whitened? TRUE of FALSE (default).}
 
