@@ -17,7 +17,7 @@
 #' @param confint Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.
 #' @param use_nw Boolean. Use Newey-West (1987) standard errors for impulse responses? TRUE (default) or FALSE.
 #' @param nw_lag Integer. Specifies the maximum lag with positive weight for the Newey-West estimator. If set to NULL (default), the lag increases with
-#'               with the number of horizon, as commonly done in the literature.
+#'               with the number of horizon.
 #' @param nw_prewhite Boolean. Should the estimators be pre-whitened? TRUE of FALSE (default).
 #' @param adjust_se Boolen. Should a finite sample adjsutment be made to the covariance matrix estimators? TRUE or FALSE (default).
 #' @param hor Integer. Number of horizons for impulse responses.
