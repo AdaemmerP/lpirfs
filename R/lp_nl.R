@@ -16,6 +16,10 @@
 #' @param shock_type Integer. Standard deviation shock = 0, unit shock = 1.
 #' @param confint Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.
 #' @param use_nw Boolean. Use Newey-West (1987) standard errors for impulse responses? TRUE (default) or FALSE.
+#' @param nw_lag Integer. Specifies the maximum lag with positive weight for the Newey-West estimator. If set to NULL (default), the lag increases with
+#'               with the number of horizon, as commonly done in the literature.
+#' @param nw_prewhite Boolean. Should the estimators be pre-whitened? TRUE of FALSE (default).
+#' @param adjust_se Boolen. Should a finite sample adjsutment be made to the covariance matrix estimators? TRUE or FALSE (default).
 #' @param hor Integer. Number of horizons for impulse responses.
 #' @param switching Numeric vector. A column vector with the same length as \emph{endog_data}. If 'use_logistic = TRUE', this series can either
 #'               be decomposed via the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013) or
@@ -132,11 +136,6 @@
 #'# Make and save all plots
 #'   nl_plots <- plot_nl(results_nl)
 #'
-#'# Show all impulse responses by using 'ggpubr' and 'gridExtra'
-#'# lpirfs does not depend on those packages so they have to be installed
-#'   library(ggpubr)
-#'   library(gridExtra)
-#'
 #'# Save plots based on states
 #'   s1_plots <- sapply(nl_plots$gg_s1, ggplotGrob)
 #'   s2_plots <- sapply(nl_plots$gg_s2, ggplotGrob)
@@ -146,8 +145,7 @@
 #'   plot(s2_plots[[1]])
 #'
 #'# Show all plots
-#'   marrangeGrob(s1_plots, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
-#'   marrangeGrob(s2_plots, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
+#'  plot(results_nl)
 #'
 #'
 #'                      ## Example with exogenous variables ##
@@ -185,16 +183,13 @@
 #'                           exog_data       = exog_data,
 #'                           lags_exog       = 3)
 #'
-#'# Make and save all plots
-#'   nl_plots <- plot_nl(results_nl)
-#'
-#'# Save plots based on states
-#'   s1_plots <- sapply(nl_plots$gg_s1, ggplotGrob)
-#'   s2_plots <- sapply(nl_plots$gg_s2, ggplotGrob)
 #'
 #'# Show all plots
-#'   marrangeGrob(s1_plots, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
-#'   marrangeGrob(s2_plots, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
+#'  plot(results_nl)
+#'
+#'
+#'# Show OLS diagnostics. Each list element corresponds to the shock variable
+#'  summary(results_nl)
 #'
 #'
 #'
@@ -210,6 +205,9 @@ lp_nl <- function(endog_data,
                                shock_type     = NULL,
                                confint        = NULL,
                                use_nw         = TRUE,
+                               nw_lag         = NULL,
+                               nw_prewhite    = FALSE,
+                               adjust_se      = FALSE,
                                hor            = NULL,
                                switching      = NULL,
                                lag_switching  = TRUE,
@@ -423,8 +421,6 @@ lp_nl <- function(endog_data,
   specs$y_lin <- y_lin
   specs$x_lin <- x_lin
 
-
-
   # Construct shock matrix
   d                 <- get_mat_chol(y_lin, x_lin, endog_data, specs)
 
@@ -460,6 +456,14 @@ lp_nl <- function(endog_data,
   end_nl_s1     <- specs$endog + 1
   samp_nl_s1    <- start_nl_s1:end_nl_s1
 
+  # Make list to store OLS diagnostics for each horizon
+  diagnost_ols_each_h <- list()
+
+  # Make matrix to store OLS diagnostics for each endogenous variable k
+  diagnost_each_k           <- matrix(NaN, specs$endog,  4)
+  rownames(diagnost_each_k) <- specs$column_names
+  colnames(diagnost_each_k) <- c("R-sqrd.", "Adj. R-sqrd.", "F-stat", " p-value")
+
 
   # Make cluster
   if(is.null(num_cores)){
@@ -486,12 +490,79 @@ lp_nl <- function(endog_data,
          yy  <-   y_nl[h:dim(y_nl)[1], ]
          xx  <-   x_nl[1:(dim(x_nl)[1] - h + 1), ]
 
+
+         # Set lag number for Newey-West (1987)
+           if(is.null(nw_lag)){
+
+             lag_nw <- h
+
+           } else {
+
+             lag_nw <- nw_lag
+
+           }
+
          for (k in 1:specs$endog){ # Accounts for the reactions of the endogenous variables
 
-           # Estimate coefficients and newey west std.err
-           nw_results       <- lpirfs::newey_west(yy[, k], xx, h)
-           b                <- nw_results[[1]]
-           std_err          <- sqrt(diag(nw_results[[2]]))*specs$confint
+
+           # Check whether standard errors are going to be estimated by Newey West
+           if(isTRUE(use_nw)){
+
+               # Check whether prewhitening shall be applied
+               if(isTRUE(nw_prewhite)) {
+
+                   # Estimate coefficients
+                   nw_results      <- lpirfs::newey_west(yy[, k], xx, lag_nw)
+                   b               <- nw_results[[1]]
+
+                   x_u             <- nw_results[[3]]
+                   xpxi            <- nw_results[[4]]
+
+                   resid_pw        <- var_one(x_u)[[2]]
+                   D_mat           <- var_one(x_u)[[3]]
+
+                   nw_results      <- newey_west_pw(resid_pw, xpxi, D_mat, 1)[[1]]
+
+                   # Make finite sample adjustment?
+                   if(isTRUE(adjust_se)) nw_results  <- nw_results*nrow(yy)/(nrow(yy) - ncol(xx) - 1)
+
+                   # Get standard errors
+                   std_err        <- sqrt(diag(nw_results))*specs$confint
+
+                                 } else {
+
+                 # Estimate coefficients
+                 nw_results        <- lpirfs::newey_west(yy[, k], xx, lag_nw)
+                 b                 <- nw_results[[1]]
+
+                 nw_results        <- nw_results[[2]]
+
+                 # Make finite sample adjustment
+                 if(isTRUE(adjust_se)) nw_results  <- nw_results*nrow(yy)/(nrow(yy) - ncol(xx) - 1)
+
+                 # Get NW standard errors
+                 std_err        <- sqrt(diag(nw_results))*specs$confint
+
+                                 }
+
+              }                     else   {
+
+
+               ols_output         <- lpirfs::ols_diagnost(yy[, k], xx)
+
+
+               # Get parameters and normal standard errors
+               b                  <- ols_output[[1]]
+               beta_cov           <- ols_output[[2]]
+
+
+               # Finite sample adjustment?
+               if(isTRUE(adjust_se)) beta_cov <- beta_cov*nrow(yy)/(nrow(yy) - ncol(xx) - 1)
+
+               std_err           <- sqrt(diag(beta_cov))
+
+
+           }
 
            # Extract coefficients
            b1_s1[k, ]       <-   b[samp_nl_s1]
@@ -501,6 +572,14 @@ lp_nl <- function(endog_data,
            b1_s2[k, ]       <-   b[samp_nl_s2]
            b1_low_s2[k, ]   <-   b[samp_nl_s2] - std_err[samp_nl_s2]
            b1_up_s2[k, ]    <-   b[samp_nl_s2] + std_err[samp_nl_s2]
+
+           # Get diagnostocs for summary
+           get_diagnost              <- lpirfs::ols_diagnost(yy[, k], xx)
+           diagnost_each_k[k, 1]     <- get_diagnost[[3]]
+           diagnost_each_k[k, 2]     <- get_diagnost[[4]]
+           diagnost_each_k[k, 3]     <- get_diagnost[[5]]
+           diagnost_each_k[k, 4]     <- stats::pf(diagnost_each_k[k, 3], get_diagnost[[6]], get_diagnost[[7]])
+
           }
 
           # Estimate local projections
@@ -511,12 +590,19 @@ lp_nl <- function(endog_data,
            irf_temp_s2_mean[, h + 1] <- t(b1_s2        %*%  d[ , s])
            irf_temp_s2_low[,  h + 1] <- t(b1_low_s2    %*%  d[ , s])
            irf_temp_s2_up[,   h + 1] <- t(b1_up_s2     %*%  d[ , s])
+
+           # Save full summary matrix in list for each horizon
+           diagnost_ols_each_h[[h]]             <- diagnost_each_k
    }
 
     list(irf_temp_s1_mean, irf_temp_s1_low, irf_temp_s1_up,
-         irf_temp_s2_mean, irf_temp_s2_low, irf_temp_s2_up)
+         irf_temp_s2_mean, irf_temp_s2_low, irf_temp_s2_up,
+         diagnost_ols_each_h)
 
 }
+
+  # List to save diagnostics
+  diagnostic_list <- list()
 
  # Fill arrays with irfs
  for(i in 1:specs$endog){
@@ -538,6 +624,12 @@ lp_nl <- function(endog_data,
    irf_s2_mean[, 1, i]   <- t(d[, i])
    irf_s2_low[,  1, i]   <- irf_s1_mean[, 1, i]
    irf_s2_up[,   1, i]   <- irf_s1_mean[, 1, i]
+
+   # Fill list with all OLS diagnostics
+   diagnostic_list[[i]]        <- nl_irfs[[i]][7]
+   names(diagnostic_list[[i]]) <- paste("Shock:", specs$column_names[i], sep = " ")
+
+
 }
 
 ################################################################################
@@ -570,10 +662,78 @@ lp_nl <- function(endog_data,
               xx              <- x_nl[[lag_choice]]
               xx              <- xx[1:(dim(xx)[1] - h + 1),]
 
-             # Estimate parameters and newey west standard errors
-              nw_results      <- lpirfs::newey_west(yy, xx, h)
-              b               <- nw_results[[1]]
-              std_err         <- sqrt(diag(nw_results[[2]]))
+
+              # Set lag number for Newey-West (1987)
+              if(is.null(nw_lag)){
+
+                  lag_nw <- h
+
+                   } else {
+
+                lag_nw <- nw_lag
+
+              }
+
+
+
+              # Check whether standard errors are going to be estimated by Newey West
+              if(isTRUE(use_nw)){
+
+                # Check whether prewhitening shall be applied
+                if(isTRUE(nw_prewhite)) {
+
+                  # Estimate coefficients
+                  nw_results      <- lpirfs::newey_west(yy, xx, lag_nw)
+                  b               <- nw_results[[1]]
+
+                  x_u             <- nw_results[[3]]
+                  xpxi            <- nw_results[[4]]
+
+                  resid_pw        <- var_one(x_u)[[2]]
+                  D_mat           <- var_one(x_u)[[3]]
+
+                  nw_results      <- newey_west_pw(resid_pw, xpxi, D_mat, 1)[[1]]
+
+                  # Make finite sample adjustment?
+                  if(isTRUE(adjust_se)) nw_results  <- nw_results*nrow(yy)/(nrow(yy) - ncol(xx) - 1)
+
+                  # Get standard errors
+                  std_err        <- sqrt(diag(nw_results))*specs$confint
+
+                        }        else     {
+
+                  # Estimate coefficients
+                  nw_results        <- lpirfs::newey_west(yy, xx, lag_nw)
+                  b                 <- nw_results[[1]]
+
+                  nw_results        <- nw_results[[2]]
+
+                  # Make finite sample adjustment
+                  if(isTRUE(adjust_se)) nw_results  <- nw_results*nrow(yy)/(nrow(yy) - ncol(xx) - 1)
+
+                  # Get NW standard errors
+                  std_err        <- sqrt(diag(nw_results))*specs$confint
+
+
+
+                }
+              }       else       {
+
+                ols_output         <- lpirfs::ols_diagnost(yy, xx)
+
+
+                # Get parameters and normal standard errors
+                b                  <- ols_output[[1]]
+                beta_cov           <- ols_output[[2]]
+
+
+                # Finite sample adjustment?
+                if(isTRUE(adjust_se)) beta_cov <- beta_cov*nrow(yy)/(nrow(yy) - ncol(xx) - 1)
+
+                std_err           <- sqrt(diag(beta_cov))
+
+
+              }
 
              # Set start and values of parameters for regime 2
               start_nl_s2     <- 2 + specs$endog*lag_choice
@@ -588,6 +748,17 @@ lp_nl <- function(endog_data,
               b1_s2[k, ]      <-   b[samp_nl_s2]
               b1_low_s2[k, ]  <-   b[samp_nl_s2] - std_err[samp_nl_s2]
               b1_up_s2[k, ]   <-   b[samp_nl_s2] + std_err[samp_nl_s2]
+
+
+
+              # Get diagnostocs for summary
+              get_diagnost              <- lpirfs::ols_diagnost(yy, xx)
+              diagnost_each_k[k, 1]     <- get_diagnost[[3]]
+              diagnost_each_k[k, 2]     <- get_diagnost[[4]]
+              diagnost_each_k[k, 3]     <- get_diagnost[[5]]
+              diagnost_each_k[k, 4]     <- stats::pf(diagnost_each_k[k, 3], get_diagnost[[6]], get_diagnost[[7]])
+
+
               }
 
              # Estimate local projections
@@ -601,8 +772,13 @@ lp_nl <- function(endog_data,
              }
 
           list(irf_temp_s1_mean, irf_temp_s1_low, irf_temp_s1_up,
-               irf_temp_s2_mean, irf_temp_s2_low, irf_temp_s2_up)
+               irf_temp_s2_mean, irf_temp_s2_low, irf_temp_s2_up,
+               diagnost_ols_each_h)
         }
+
+
+  # List to save diagnostics
+  diagnostic_list <- list()
 
 # Fill arrays with local projection irfs
   for(i in 1:specs$endog){
@@ -625,6 +801,11 @@ lp_nl <- function(endog_data,
    irf_s2_low[,  1, i]   <- irf_s2_mean[, 1, i]
    irf_s2_up[,   1, i]   <- irf_s2_mean[, 1, i]
 
+
+   # Fill list with all OLS diagnostics
+   diagnostic_list[[i]]        <- nl_irfs[[i]][7]
+   names(diagnostic_list[[i]]) <- paste("Shock:", specs$column_names[i], sep = " ")
+
     }
 
  }
@@ -632,9 +813,15 @@ lp_nl <- function(endog_data,
 # Close cluster
   parallel::stopCluster(cl)
 
- result         <-  list(irf_s1_mean = irf_s1_mean, irf_s1_low = irf_s1_low, irf_s1_up = irf_s1_up,
-                  irf_s2_mean = irf_s2_mean, irf_s2_low = irf_s2_low, irf_s2_up = irf_s2_up,
-                  fz          = fz, specs = specs)
+ result         <-  list(irf_s1_mean     = irf_s1_mean,
+                         irf_s1_low      = irf_s1_low,
+                         irf_s1_up       = irf_s1_up,
+                         irf_s2_mean     = irf_s2_mean,
+                         irf_s2_low      = irf_s2_low,
+                         irf_s2_up       = irf_s2_up,
+                         fz              = fz,
+                         specs           = specs,
+                         diagnostic_list = diagnostic_list)
 
  # Give object S3 name
  class(result) <- "lpirfs_nl_obj"

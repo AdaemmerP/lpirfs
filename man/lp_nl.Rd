@@ -6,7 +6,8 @@
 \usage{
 lp_nl(endog_data, lags_endog_lin = NULL, lags_endog_nl = NULL,
   lags_criterion = NaN, max_lags = NaN, trend = NULL,
-  shock_type = NULL, confint = NULL, use_nw = TRUE, hor = NULL,
+  shock_type = NULL, confint = NULL, use_nw = TRUE, nw_lag = NULL,
+  nw_prewhite = FALSE, adjust_se = FALSE, hor = NULL,
   switching = NULL, lag_switching = TRUE, use_logistic = TRUE,
   use_hp = NULL, lambda = NULL, gamma = NULL, exog_data = NULL,
   lags_exog = NULL, contemp_data = NULL, num_cores = NULL)
@@ -32,6 +33,13 @@ will be given at \emph{lags_endog_nl} and \emph{lags_endog_lin}. The lag length 
 \item{confint}{Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.}
 
 \item{use_nw}{Boolean. Use Newey-West (1987) standard errors for impulse responses? TRUE (default) or FALSE.}
+
+\item{nw_lag}{Integer. Specifies the maximum lag with positive weight for the Newey-West estimator. If set to NULL (default), the lag increases with
+with the number of horizon, as commonly done in the literature.}
+
+\item{nw_prewhite}{Boolean. Should the estimators be pre-whitened? TRUE of FALSE (default).}
+
+\item{adjust_se}{Boolen. Should a finite sample adjsutment be made to the covariance matrix estimators? TRUE or FALSE (default).}
 
 \item{hor}{Integer. Number of horizons for impulse responses.}
 
@@ -135,11 +143,6 @@ or by a simple dummy approach.
 # Make and save all plots
   nl_plots <- plot_nl(results_nl)
 
-# Show all impulse responses by using 'ggpubr' and 'gridExtra'
-# lpirfs does not depend on those packages so they have to be installed
-  library(ggpubr)
-  library(gridExtra)
-
 # Save plots based on states
   s1_plots <- sapply(nl_plots$gg_s1, ggplotGrob)
   s2_plots <- sapply(nl_plots$gg_s2, ggplotGrob)
@@ -149,8 +152,7 @@ or by a simple dummy approach.
   plot(s2_plots[[1]])
 
 # Show all plots
-  marrangeGrob(s1_plots, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
-  marrangeGrob(s2_plots, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
+ plot(results_nl)
 
 
                      ## Example with exogenous variables ##
@@ -188,16 +190,13 @@ or by a simple dummy approach.
                           exog_data       = exog_data,
                           lags_exog       = 3)
 
-# Make and save all plots
-  nl_plots <- plot_nl(results_nl)
-
-# Save plots based on states
-  s1_plots <- sapply(nl_plots$gg_s1, ggplotGrob)
-  s2_plots <- sapply(nl_plots$gg_s2, ggplotGrob)
 
 # Show all plots
-  marrangeGrob(s1_plots, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
-  marrangeGrob(s2_plots, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
+ plot(results_nl)
+
+
+# Show OLS diagnostics. Each list element corresponds to the shock variable
+ summary(results_nl)
 
 
 
