@@ -16,8 +16,7 @@ newey_west_pw(hhat_mat, xpxi_mat, D_mat, h)
 \item{h}{integer.}
 }
 \value{
-A list. The first element contains the estimated OLS parameters, the second element
-the Newey West covariance matrix.
+A list. The first element contains the pre-whitened Newey West covariance matrix.
 }
 \description{
 Compute Newey-West estimator with prewhitened estimation functions.

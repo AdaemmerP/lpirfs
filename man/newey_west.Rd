@@ -15,7 +15,8 @@ newey_west(y, x, h)
 }
 \value{
 A list. The first element contains the estimated OLS parameters, the second element
-the Newey West covariance matrix.
+the Newey West covariance matrix, the third element the estimated functions, the fourth element
+the unscaled covariance matrix and the last element the meat estimator.
 }
 \description{
 Compute OLS parameters and robust standard errors based on Newey and West (1987).
