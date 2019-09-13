@@ -8,7 +8,8 @@ using namespace Rcpp;
 //' @param x Numeric matrix.
 //' @param h Integer.
 //' @return A list. The first element contains the estimated OLS parameters, the second element
-//' the Newey West covariance matrix.
+//' the Newey West covariance matrix, the third element the estimated functions, the fourth element
+//' the unscaled covariance matrix and the last element the meat estimator.
 //' @keywords internal
 //' @references
 //' Newey, W.K., and West, K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and

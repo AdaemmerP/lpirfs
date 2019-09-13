@@ -8,8 +8,7 @@ using namespace Rcpp;
 //' @param xpxi_mat Matrix.
 //' @param D_mat Matrix.
 //' @param h integer.
-//' @return A list. The first element contains the estimated OLS parameters, the second element
-//' the Newey West covariance matrix.
+//' @return A list. The first element contains the pre-whitened Newey West covariance matrix.
 //' @keywords internal
 //' @references
 //'
