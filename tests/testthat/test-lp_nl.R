@@ -461,3 +461,90 @@ test_that("Test that model works when irfs are based on lag length criterion.", 
                      num_cores        = 1),
                NA)
 } )
+
+test_that("Test that model works when irfs are based on lag length criterion.", {
+
+
+  # Load (endogenous) data
+  endog_data <- interest_rules_var_data
+
+  # Choose data for switching variable (here Federal Funds Rate)
+  # Important: The switching variable does not have to be used within the VAR!
+  switching_data <-  endog_data$Infl
+
+  # Estimate model a
+  testthat::expect_error(lp_nl(endog_data,
+                         lags_endog_lin  = 4,
+                         lags_endog_nl   = 3,
+                         trend           = 0,
+                         shock_type      = 1,
+                         confint         = 1.96,
+                         hor             = 24,
+                         switching       = switching_data,
+                         use_nw           = T,
+                         nw_prewhite      = F,
+                         use_hp          = TRUE,
+                         lambda          = 1600,
+                         gamma           = 3,
+                         num_cores        = 1),
+                         NA)
+
+
+  # Estimate model and save results
+  testthat::expect_error(lp_nl(endog_data,
+                               lags_endog_lin  = 4,
+                               lags_endog_nl   = 3,
+                               trend           = 0,
+                               shock_type      = 1,
+                               confint         = 1.96,
+                               hor             = 24,
+                               switching       = switching_data,
+                               use_nw           = F,
+                               nw_prewhite      = F,
+                               use_hp          = TRUE,
+                               lambda          = 1600,
+                               gamma           = 3,
+                               num_cores        = 1),
+                         NA)
+
+  # Estimate model and save results
+  testthat::expect_error(lp_nl(endog_data,
+                               lags_endog_lin  = 4,
+                               lags_endog_nl   = 3,
+                               trend           = 0,
+                               shock_type      = 1,
+                               confint         = 1.96,
+                               hor             = 24,
+                               switching       = switching_data,
+                               use_nw           = T,
+                               nw_prewhite      = T,
+                               use_hp          = TRUE,
+                               lambda          = 1600,
+                               gamma           = 3,
+                               num_cores        = 1),
+                         NA)
+
+  # Estimate model and save results
+  testthat::expect_error(lp_nl(endog_data,
+                               lags_endog_lin  = 4,
+                               lags_endog_nl   = 3,
+                               trend           = 0,
+                               shock_type      = 1,
+                               confint         = 1.96,
+                               hor             = 24,
+                               switching       = switching_data,
+                               use_nw           = F,
+                               nw_prewhite      = T,
+                               use_hp          = TRUE,
+                               lambda          = 1600,
+                               gamma           = 3,
+                               num_cores        = 1),
+                         NA)
+
+
+
+
+
+
+
+} )

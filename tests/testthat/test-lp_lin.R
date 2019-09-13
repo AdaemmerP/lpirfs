@@ -362,6 +362,25 @@ test_that("Test that estimating non-robust standard errors runs without error", 
 } )
 
 
+test_that("Test that estimating non-robust standard errors runs without error", {
+
+
+  testthat::expect_error(lp_lin(data_set_df,
+                                lags_endog_lin = 4L,
+                                lags_criterion = NaN,
+                                max_lags       = NaN,
+                                trend          = 0L,
+                                shock_type     = 0L,
+                                confint        = 1.96,
+                                hor            = 24L,
+                                nw_prewhite    = F,
+                                adjust_se      = T,
+                                num_cores      = 1),
+                         NA)
+} )
+
+
+
 test_that("Test that running with AIC returns no error", {
 
 
