@@ -251,6 +251,10 @@ context("lp_lin_iv")
 
 
   test_that("Test that model works with automatic lag length selection", {
+
+
+
+
     testthat::expect_error(lp_lin_iv(endog_data,
                            shock          = instrument,
                            lags_endog_lin = NaN,
@@ -265,6 +269,61 @@ context("lp_lin_iv")
                            num_cores      = 1),
                                            NA)
   })
+
+  test_that("Test that model works with automatic lag length selection AND 2SLS", {
+
+    # Set seed
+    set.seed(007)
+
+    # Load data
+    ag_data       <- ag_data
+    sample_start  <- 7
+    sample_end    <- dim(ag_data)[1]
+
+    # Endogenous data
+    endog_data    <- ag_data[sample_start:sample_end,3:5]
+
+    # Variable to shock with (government spending)
+    shock         <- ag_data[sample_start:sample_end, 3]
+
+    # Generate instrument variable that is correlated with government spending
+    instrum       <- as.data.frame(0.9*shock$Gov + rnorm(length(shock$Gov), 0, 0.02) )
+
+    testthat::expect_error(lp_lin_iv(endog_data,
+                                     shock          = instrument,
+                                     instrum        = instrum,
+                                     lags_endog_lin = NaN,
+                                     exog_data      = as.data.frame(rnorm(length(instrument[, 1]))),
+                                     lags_exog      = 2,
+                                     use_twosls     = TRUE,
+                                     contemp_data   = NULL,
+                                     lags_criterion = 'AIC',
+                                     max_lags       = 4,
+                                     trend          = 2,
+                                     confint        = 1,
+                                     hor            = 12,
+                                     num_cores      = 1),
+                           NA)
+
+    # Estimate linear model
+    testthat::expect_error( lp_lin_iv(endog_data,
+                                      lags_endog_lin = 4,
+                                      shock          = shock,
+                                      instrum        = instrum,
+                                      use_twosls     = TRUE,
+                                      exog_data      = NULL,
+                                      lags_exog      = NULL,
+                                      contemp_data   = NULL,
+                                      lags_criterion = NaN,
+                                      max_lags       = NaN,
+                                      nw_prewhite    = T,
+                                      trend          = 0,
+                                      confint        = 1.96,
+                                      hor            = 20,
+                                      num_cores      = 1),
+                            NA )
+  })
+
 
 
 
@@ -378,5 +437,83 @@ context("lp_lin_iv")
                            NA)
 
 
+  })
+
+
+  test_that("Test that prewhitening and 2SLS works", {
+
+    # Set seed
+    set.seed(007)
+
+    # Load data
+    ag_data       <- ag_data
+    sample_start  <- 7
+    sample_end    <- dim(ag_data)[1]
+
+    # Endogenous data
+    endog_data    <- ag_data[sample_start:sample_end,3:5]
+
+    # Variable to shock with (government spending)
+    shock         <- ag_data[sample_start:sample_end, 3]
+
+    # Generate instrument variable that is correlated with government spending
+    instrum       <- as.data.frame(0.9*shock$Gov + rnorm(length(shock$Gov), 0, 0.02) )
+
+    # Estimate linear model
+    testthat::expect_error( lp_lin_iv(endog_data,
+                                      lags_endog_lin = 4,
+                                      shock          = shock,
+                                      instrum        = instrum,
+                                      use_twosls     = TRUE,
+                                      exog_data      = NULL,
+                                      lags_exog      = NULL,
+                                      contemp_data   = NULL,
+                                      lags_criterion = NaN,
+                                      max_lags       = NaN,
+                                      nw_prewhite    = T,
+                                      trend          = 0,
+                                      confint        = 1.96,
+                                      hor            = 20,
+                                      num_cores      = 1),
+                            NA )
+  })
+
+
+  test_that("Test that 2SLS works and normal standard errors work", {
+
+    # Set seed
+    set.seed(007)
+
+    # Load data
+    ag_data       <- ag_data
+    sample_start  <- 7
+    sample_end    <- dim(ag_data)[1]
+
+    # Endogenous data
+    endog_data    <- ag_data[sample_start:sample_end,3:5]
+
+    # Variable to shock with (government spending)
+    shock         <- ag_data[sample_start:sample_end, 3]
+
+    # Generate instrument variable that is correlated with government spending
+    instrum       <- as.data.frame(0.9*shock$Gov + rnorm(length(shock$Gov), 0, 0.02) )
+
+    # Estimate linear model
+    testthat::expect_error( lp_lin_iv(endog_data,
+                                      lags_endog_lin = 4,
+                                      shock          = shock,
+                                      instrum        = instrum,
+                                      use_twosls     = TRUE,
+                                      exog_data      = NULL,
+                                      lags_exog      = NULL,
+                                      contemp_data   = NULL,
+                                      lags_criterion = NaN,
+                                      max_lags       = NaN,
+                                      use_nw         = F,
+                                      trend          = 0,
+                                      confint        = 1.96,
+                                      hor            = 20,
+                                      num_cores      = 1),
+                            NA )
   })
 
