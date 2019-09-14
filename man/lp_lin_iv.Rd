@@ -19,7 +19,7 @@ When \emph{use_twosls = TRUE}, this variable will be approximated/regressed on t
 
 \item{instr}{Deprecated input name. Use \emph{shock} instead. See \emph{shock} for details.}
 
-\item{use_twosls}{Boolean. Use two stage least squares? TRUE or FALSE.}
+\item{use_twosls}{Boolean. Use two stage least squares? TRUE or FALSE (default).}
 
 \item{instrum}{A \link{data.frame}, containing the instrument(s) to use for 2SLS. This instrument will be used for the
 variable in \emph{shock}.}

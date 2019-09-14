@@ -125,7 +125,9 @@ newey_west_pw <- function(hhat_mat, xpxi_mat, D_mat, h) {
 #' @param z Numeric matrix.
 #' @param h Integer.
 #' @return A list. The first element contains the estimated 2SLS parameters and the second element
-#' the covariance matrix of these parameters.
+#' the 2SLS-Newey-West covariance matrix of these parameters.  The third element contains the estimated functions, the fourth element
+#' the unscaled covariance matrix, the fifth element the meat estimator and the last element the ordinary covariance matrix of the
+#' point estimates.
 #' @keywords internal
 #' @references
 #' Newey, W.K., and West, K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and

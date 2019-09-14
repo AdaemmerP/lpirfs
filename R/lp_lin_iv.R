@@ -5,7 +5,7 @@
 #' @param shock A one column \link{data.frame}, including the variable to shock with. The row length has to be the same as \emph{endog_data}.
 #' When \emph{use_twosls = TRUE}, this variable will be approximated/regressed on the instrument variable(s) given in \emph{instrum}.
 #' @param instr Deprecated input name. Use \emph{shock} instead. See \emph{shock} for details.
-#' @param use_twosls Boolean. Use two stage least squares? TRUE or FALSE.
+#' @param use_twosls Boolean. Use two stage least squares? TRUE or FALSE (default).
 #' @param instrum A \link{data.frame}, containing the instrument(s) to use for 2SLS. This instrument will be used for the
 #'  variable in \emph{shock}.
 #' @param lags_endog_lin NaN or integer. NaN if lags are chosen by a lag length criterion. Integer for number of lags for \emph{endog_data}.
@@ -332,6 +332,13 @@ lp_lin_iv <- function(endog_data,
   specs$trend              <- trend
   specs$confint            <- confint
   specs$hor                <- hor
+
+  specs$use_nw             <- use_nw
+  specs$nw_prewhite        <- nw_prewhite
+  specs$adjust_se          <- adjust_se
+  specs$nw_lag             <- nw_lag
+
+
   specs$model_type         <- 1
 
 
@@ -396,42 +403,58 @@ if(is.nan(specs$lags_criterion) == TRUE){
                           yy  <-   y_lin[h : dim(y_lin)[1], ]
                           xx  <-   x_lin[1 : (dim(x_lin)[1] - h + 1), ]
 
+                          # Check whether data are matrices to correctly extract values
                           if(!is.matrix(xx)){
-                          xx  <- as.matrix(xx)
+                             xx  <- as.matrix(xx)
+                          }
+
+                          if(!is.matrix(yy)){
+                             yy  <- matrix(yy)
+                          }
+
+                          # Set lag number for Newey-West (1987)
+                          if(is.null(nw_lag)){
+
+                            lag_nw <- h
+
+                             } else {
+
+                            lag_nw <- nw_lag
+
                           }
 
                           for (k in 1:specs$endog){ # Accounts for the reactions of the endogenous variables
-
-                            if(specs$endog == 1){
-                              yy_reg <- yy
-                                } else {
-                              yy_reg <- yy[, k]
-                            }
 
 
                             # Check whether use OLS or 2sls
                             if(specs$use_twosls == FALSE){
 
-                                nw_results   <- lpirfs::newey_west(yy_reg, xx, h)
+
+                              # Get standard errors and point estimates
+                              get_ols_vals <- lpirfs::get_std_err(yy, xx, lag_nw, k, specs)
+                              std_err      <- get_ols_vals[[1]]
+                              b            <- get_ols_vals[[2]]
 
 
-                              }   else   {
+                                         }   else   {
 
                                # Extract instrument matrix and save as matrix
                                 zz <- specs$z_lin[1 : (dim(z_lin)[1] - h + 1), ] %>%
                                       as.matrix()
 
-                                # Estimate 2SLS betas and newey west std.err
-                                if(specs$endog == 1 ){
-                                  nw_results   <- lpirfs::newey_west_tsls(yy, xx, zz, h)
-                                              }   else   {
-                                  nw_results   <- lpirfs::newey_west_tsls(yy[, k], xx, zz, h)
-                                }
+                             # nw_results     <- lpirfs::newey_west_tsls(yy[, k], xx, zz, h)
+
+                              get_tsls_vals  <-   get_std_err_tsls(yy, xx, lag_nw, k, zz,  specs)
+                              b              <-   get_tsls_vals[[2]]
+                              std_err        <-   get_tsls_vals[[1]]
+
+
+
 
                             }
 
-                            b              <- nw_results[[1]]
-                            std_err        <- sqrt(diag(nw_results[[2]]))*specs$confint
+                          #  b              <- nw_results[[1]]
+                           # std_err        <- sqrt(diag(nw_results[[2]]))*specs$confint
 
                             irf_mean[k, h]  <-  b[2]
                             irf_low[k,  h]  <-  b[2] - std_err[2]
@@ -471,11 +494,22 @@ if(is.nan(specs$lags_criterion) == TRUE){
 
                         for (h in 1:specs$hor){     # Accounts for the horizon
 
+                          # Set lag number for Newey-West (1987)
+                          if(is.null(nw_lag)){
+
+                            lag_nw <- h
+
+                          } else {
+
+                            lag_nw <- nw_lag
+
+                          }
+
                           for (k in 1:specs$endog){ # Accounts for endogenous reactions
 
                             # Find optimal lags
                             n_obs         <- nrow(y_lin[[1]]) - h + 1 # Number of observations for model with lag one
-                            val_criterion <- lpirfs::get_vals_lagcrit(y_lin, x_lin, lag_crit, h, k,
+                            val_criterion <- lpirfs::get_vals_lagcrit(y_lin, x_lin, lag_crit, lag_nw, k,
                                                                       specs$max_lags, n_obs)
 
                             # Set optimal lag length
@@ -491,8 +525,11 @@ if(is.nan(specs$lags_criterion) == TRUE){
                             # Check whether use OLS or 2sls
                             if(specs$use_twosls == FALSE){
 
-                                # Estimate coefficients and newey west std.err
-                                nw_results     <- lpirfs::newey_west(yy, xx, h)
+                              # Get standard errors and point estimates
+                              get_ols_vals <- lpirfs::get_std_err(yy, xx, lag_nw, 1, specs)
+                              std_err      <- get_ols_vals[[1]]
+                              b            <- get_ols_vals[[2]]
+
 
                                         } else {
 
@@ -500,12 +537,14 @@ if(is.nan(specs$lags_criterion) == TRUE){
                                 zz         <- z_lin[[lag_choice]]
                                 zz         <- zz[1:(dim(zz)[1] - h + 1),]
 
-                                # Estimate 2SLS betas and newey west std.err
-                                nw_results <- lpirfs::newey_west_tsls(yy, xx, zz, h)
+
+                                get_tsls_vals  <-   get_std_err_tsls(yy, xx, lag_nw, 1, zz,  specs)
+                                b              <-   get_tsls_vals[[2]]
+                                std_err        <-   get_tsls_vals[[1]]
                             }
 
-                            b              <- nw_results[[1]]
-                            std_err        <- sqrt(diag(nw_results[[2]]))*specs$confint
+                          #  b              <- nw_results[[1]]
+                          #  std_err        <- sqrt(diag(nw_results[[2]]))*specs$confint
 
                             irf_mean[k, h]  <-  b[2]
                             irf_low[k,  h]  <-  b[2] - std_err[2]
