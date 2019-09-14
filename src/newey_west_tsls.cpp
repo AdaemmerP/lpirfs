@@ -9,7 +9,9 @@ using namespace Rcpp;
 //' @param z Numeric matrix.
 //' @param h Integer.
 //' @return A list. The first element contains the estimated 2SLS parameters and the second element
-//' the covariance matrix of these parameters.
+//' the 2SLS-Newey-West covariance matrix of these parameters.  The third element contains the estimated functions, the fourth element
+//' the unscaled covariance matrix, the fifth element the meat estimator and the last element the ordinary covariance matrix of the
+//' point estimates.
 //' @keywords internal
 //' @references
 //' Newey, W.K., and West, K.D. (1987). “A Simple, Positive-Definite, Heteroskedasticity and
@@ -18,10 +20,11 @@ using namespace Rcpp;
 // [[Rcpp::export]]
 List newey_west_tsls(NumericVector y, NumericMatrix x, NumericMatrix z, int h){
   NumericMatrix V;
-  arma::mat G, M, xx, xx_one, yy, xx_hat, zz, M1, M2, ga, g1, w, za, xpxi, xpxi_iv, emat, hhat;
-  arma::vec w1, beta_iv, resids;
+  arma::mat G, M, xx, xx_one, yy, xx_hat, zz, M1, M2, ga, g1, w, za, xpxi, xpxi_iv, emat, hhat, cov_beta_iv;
+  arma::vec w1, beta_iv, resids, resids_sq_iv;
   int nrow_hhat, a, nobs, num_exog, nlag;
-  List ret(2);
+  double ssr_iv, sigma_hat_iv ;
+  List ret(6);
 
 
   // 2SLS
@@ -46,6 +49,13 @@ List newey_west_tsls(NumericVector y, NumericMatrix x, NumericMatrix z, int h){
 
   num_exog = xx.n_cols;
   nobs     = xx.n_rows;
+
+  // Estimate normal cov-matrix of iv_estimators
+  resids_sq_iv  = resids%resids;
+  ssr_iv        = sum(resids_sq_iv);
+  sigma_hat_iv  = ssr_iv/double(nobs - num_exog);
+
+  cov_beta_iv   = sigma_hat_iv*xpxi_iv;
 
 
 
@@ -94,6 +104,10 @@ List newey_west_tsls(NumericVector y, NumericMatrix x, NumericMatrix z, int h){
 
   ret[0]  = beta_iv;
   ret[1]  = V;
+  ret[2]  = wrap(hhat.t());
+  ret[3]  = wrap(xpxi_iv);
+  ret[4]  = wrap(G);
+  ret[5]  = wrap(cov_beta_iv);
   return (ret);
 
 }
