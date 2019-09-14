@@ -169,6 +169,11 @@ lp_lin <- function(endog_data,
     specs$hor            <- hor
     specs$exog_data      <- exog_data
     specs$lags_exog      <- lags_exog
+    specs$use_nw         <- use_nw
+    specs$nw_prewhite    <- nw_prewhite
+    specs$adjust_se      <- adjust_se
+    specs$nw_lag         <- nw_lag
+
 
   # Set 2SLS option to FALSE
     specs$use_twosls <- FALSE
@@ -355,65 +360,10 @@ lp_lin <- function(endog_data,
      for (k in 1:specs$endog){ # Accounts for the reactions of the endogenous variables
 
 
-       # Check whether standard errors are going to be estimated by Newey West
-         if(isTRUE(use_nw)){
-
-           # Check whether prewhitening shall be applied
-             if(isTRUE(nw_prewhite)){
-
-             # Estimate coefficients
-             nw_results      <- lpirfs::newey_west(yy[, k], xx, lag_nw)
-             b               <- nw_results[[1]]
-
-             x_u             <- nw_results[[3]]
-             xpxi            <- nw_results[[4]]
-
-             resid_pw        <- var_one(x_u)[[2]]
-             D_mat           <- var_one(x_u)[[3]]
-
-             nw_results      <- newey_west_pw(resid_pw, xpxi, D_mat, 1)[[1]]
-
-             # Make finite sample adjustment?
-             if(isTRUE(adjust_se)) nw_results  <- nw_results*nrow(yy)/(nrow(yy) - ncol(xx) - 1)
-
-             # Get standard errors
-             std_err        <- sqrt(diag(nw_results))*specs$confint
-
-
-                           }    else    {
-
-          # Estimate coefficients
-           nw_results        <- lpirfs::newey_west(yy[, k], xx, lag_nw)
-           b                 <- nw_results[[1]]
-
-           nw_results        <- nw_results[[2]]
-
-           # Make finite sample adjustment
-           if(isTRUE(adjust_se)) nw_results  <- nw_results*nrow(yy)/(nrow(yy) - ncol(xx) - 1)
-
-           # Get NW standard errors
-           std_err        <- sqrt(diag(nw_results))*specs$confint
-
-
-         }
-
-       }                         else        {
-
-            ols_output         <- lpirfs::ols_diagnost(yy[, k], xx)
-
-
-          # Get parameters and normal standard errors
-            b                  <- ols_output[[1]]
-            beta_cov           <- ols_output[[2]]
-
-
-          # Finite sample adjustment?
-            if(isTRUE(adjust_se)) beta_cov <- beta_cov*nrow(yy)/(nrow(yy) - ncol(xx) - 1)
-
-            std_err           <- sqrt(diag(beta_cov))
-
-      }
-
+       # Get standard errors and point estimates
+       get_ols_vals <- lpirfs::get_std_err(yy, xx, lag_nw, k, specs)
+       std_err <- get_ols_vals[[1]]
+       b       <- get_ols_vals[[2]]
 
        # Fill coefficient matrix
        b1[k, ]        <-   b[2:(specs$endog + 1)]
@@ -510,65 +460,13 @@ lp_lin <- function(endog_data,
 
            lag_nw <- nw_lag
 
-         }
-
-         # Check whether standard errors are going to be estimated by Newey West
-         if(isTRUE(use_nw)){
-
-           # Check whether prewhitening shall be applied
-           if(isTRUE(nw_prewhite)) {
-
-             # Estimate coefficients
-             nw_results        <- lpirfs::newey_west(yy, xx, lag_nw)
-             b                 <- nw_results[[1]]
-
-             x_u                <- nw_results[[3]]
-             xpxi               <- nw_results[[4]]
-
-             resid_pw        <- var_one(x_u)[[2]]
-             D_mat           <- var_one(x_u)[[3]]
-
-             nw_results      <- newey_west_pw(resid_pw, xpxi, D_mat, 1)[[1]]
-
-             # Make finite sample adjustment?
-             if(isTRUE(adjust_se)) nw_results  <- nw_results*nrow(yy)/(nrow(yy) - ncol(xx) - 1)
-
-             # Get standard errors
-             std_err        <- sqrt(diag(nw_results))*specs$confint
-
-                           }    else    {
-
-             # Estimate coefficients
-             nw_results        <- lpirfs::newey_west(yy, xx, lag_nw)
-             b                 <- nw_results[[1]]
-
-             nw_results        <- nw_results[[2]]
-
-             # Make finite sample adjustment
-             if(isTRUE(adjust_se)) nw_results  <- nw_results*nrow(yy)/(nrow(yy) - ncol(xx) - 1)
-
-             # Get NW standard errors
-             std_err        <- sqrt(diag(nw_results))*specs$confint
-
-                           }
-
-            }                  else      {
+                      }
 
 
-           ols_output         <- lpirfs::ols_diagnost(yy, xx)
-
-
-           # Get parameters and normal standard errors
-           b                  <- ols_output[[1]]
-           beta_cov           <- ols_output[[2]]
-
-
-           # Finite sample adjustment?
-           if(isTRUE(adjust_se)) beta_cov <- beta_cov*nrow(yy)/(nrow(yy) - ncol(xx) - 1)
-
-           std_err           <- sqrt(diag(beta_cov))
-
-         }
+         # Get standard errors and point estimates. Set k = 1 because endogenous variable is numeric vector
+         get_ols_vals <- lpirfs::get_std_err(yy, xx, lag_nw, 1, specs)
+         std_err <- get_ols_vals[[1]]
+         b       <- get_ols_vals[[2]]
 
          # Fill coefficient matrix
          b1[k, ]        <-   b[2:(specs$endog + 1)]
