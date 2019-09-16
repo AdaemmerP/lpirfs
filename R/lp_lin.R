@@ -375,7 +375,7 @@ lp_lin <- function(endog_data,
        diagnost_each_k[k, 1]     <- get_diagnost[[3]]
        diagnost_each_k[k, 2]     <- get_diagnost[[4]]
        diagnost_each_k[k, 3]     <- get_diagnost[[5]]
-       diagnost_each_k[k, 4]     <- stats::pf(diagnost_each_k[k, 3], get_diagnost[[6]], get_diagnost[[7]])
+       diagnost_each_k[k, 4]     <- stats::pf(diagnost_each_k[k, 3], get_diagnost[[6]], get_diagnost[[7]], lower.tail = F)
 
 
       }
@@ -478,7 +478,7 @@ lp_lin <- function(endog_data,
          diagnost_each_k[k, 1]     <- get_diagnost[[3]]
          diagnost_each_k[k, 2]     <- get_diagnost[[4]]
          diagnost_each_k[k, 3]     <- get_diagnost[[5]]
-         diagnost_each_k[k, 4]     <- stats::pf(diagnost_each_k[k, 3], get_diagnost[[6]], get_diagnost[[7]])
+         diagnost_each_k[k, 4]     <- stats::pf(diagnost_each_k[k, 3], get_diagnost[[6]], get_diagnost[[7]], lower.tail = F)
 
        }
 
