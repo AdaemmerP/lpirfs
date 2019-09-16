@@ -7,9 +7,10 @@
 lp_nl_iv(endog_data, lags_endog_nl = NULL, shock = NULL,
   instr = NULL, exog_data = NULL, lags_exog = NULL,
   contemp_data = NULL, lags_criterion = NaN, max_lags = NaN,
-  trend = NULL, confint = NULL, hor = NULL, switching = NULL,
-  lag_switching = TRUE, use_logistic = TRUE, use_hp = NULL,
-  lambda = NULL, gamma = NULL, num_cores = NULL)
+  trend = NULL, confint = NULL, use_nw = TRUE, nw_lag = NULL,
+  nw_prewhite = FALSE, adjust_se = FALSE, hor = NULL,
+  switching = NULL, lag_switching = TRUE, use_logistic = TRUE,
+  use_hp = NULL, lambda = NULL, gamma = NULL, num_cores = NULL)
 }
 \arguments{
 \item{endog_data}{A \link{data.frame}, containing all endogenous variables for the VAR.}
@@ -37,6 +38,15 @@ will be given at \emph{lags_endog_nl}. Possible lag length criteria are 'AICc', 
 \item{trend}{Integer. Include no trend =  0 , include trend = 1, include trend and quadratic trend = 2.}
 
 \item{confint}{Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.}
+
+\item{use_nw}{Boolean. Use Newey-West (1987) standard errors for impulse responses? TRUE (default) or FALSE.}
+
+\item{nw_lag}{Integer. Specifies the maximum lag with positive weight for the Newey-West estimator. If set to NULL (default), the lag increases with
+with the number of horizon.}
+
+\item{nw_prewhite}{Boolean. Should the estimators be pre-whitened? TRUE of FALSE (default).}
+
+\item{adjust_se}{Boolen. Should a finite sample adjsutment be made to the covariance matrix estimators? TRUE or FALSE (default).}
 
 \item{hor}{Integer. Number of horizons for impulse responses.}
 
