@@ -12,6 +12,9 @@ Authors@R: c(
                     role    = c("ctb")),
             person("Mehmet", "Balcilar", 
                     email   = "mbalcilar@yahoo.com", 
+                    role    = c("ctb")),
+            person("Jon", "Danielsson", 
+                    email   = "j.danielsson@lse.ac.uk", 
                     role    = c("ctb"))) 
 Maintainer: Philipp Adämmer <adaemmer@hsu-hh.de>
 BugReports: https://github.com/adaemmerp/lpirfs/issues
