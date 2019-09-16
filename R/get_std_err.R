@@ -49,7 +49,7 @@ get_std_err <- function(yy, xx, lag_nw, k,  specs){
       # Estimate coefficients
       nw_results        <- lpirfs::newey_west(yy[, k], xx, lag_nw)
       b                 <- nw_results[[1]]
-      cov_nw        <- nw_results[[2]]
+      cov_nw            <- nw_results[[2]]
 
       # Make finite sample adjustment
       if(isTRUE(specs$adjust_se)) cov_nw  <- cov_nw*nrow(yy)/(nrow(yy) - ncol(xx) - 1)
@@ -74,7 +74,7 @@ get_std_err <- function(yy, xx, lag_nw, k,  specs){
     # Finite sample adjustment?
     if(isTRUE(specs$adjust_se)) beta_cov <- beta_cov*nrow(yy)/(nrow(yy) - ncol(xx) - 1)
 
-    std_err           <- sqrt(diag(beta_cov))
+    std_err           <- sqrt(diag(beta_cov))*specs$confint
 
   }
 
