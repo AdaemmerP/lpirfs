@@ -18,6 +18,11 @@
 #' @param max_lags NaN or integer. Maximum number of lags (if \emph{lags_criterion} = 'AICc', 'AIC', 'BIC'). NaN otherwise.
 #' @param trend Integer. Include no trend =  0 , include trend = 1, include trend and quadratic trend = 2.
 #' @param confint Double. Width of confidence bands. 68\% = 1; 90\% = 1.65; 95\% = 1.96.
+#' @param use_nw Boolean. Use Newey-West (1987) standard errors for impulse responses? TRUE (default) or FALSE.
+#' @param nw_lag Integer. Specifies the maximum lag with positive weight for the Newey-West estimator. If set to NULL (default), the lag increases with
+#'               with the number of horizon.
+#' @param nw_prewhite Boolean. Should the estimators be pre-whitened? TRUE of FALSE (default).
+#' @param adjust_se Boolen. Should a finite sample adjsutment be made to the covariance matrix estimators? TRUE or FALSE (default).
 #' @param hor Integer. Number of horizons for impulse responses.
 #' @param switching Numeric vector. A column vector with the same length as \emph{endog_data}. This series can either
 #'               be decomposed via the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013) or
@@ -178,6 +183,10 @@ lp_nl_iv <- function(endog_data,
                             max_lags          = NaN,
                             trend             = NULL,
                             confint           = NULL,
+                            use_nw            = TRUE,
+                            nw_lag            = NULL,
+                            nw_prewhite       = FALSE,
+                            adjust_se         = FALSE,
                             hor               = NULL,
                             switching         = NULL,
                             lag_switching     = TRUE,
@@ -319,6 +328,11 @@ lp_nl_iv <- function(endog_data,
     specs$lambda         <- lambda
     specs$gamma          <- gamma
 
+    specs$use_nw             <- use_nw
+    specs$nw_prewhite        <- nw_prewhite
+    specs$adjust_se          <- adjust_se
+    specs$nw_lag             <- nw_lag
+
     specs$model_type     <- 1
 
 
@@ -392,17 +406,35 @@ lp_nl_iv <- function(endog_data,
                             yy  <-   y_nl[h:dim(y_nl)[1], ]
                             xx  <-   x_nl[1:(dim(x_nl)[1] - h + 1), ]
 
+                            # Check whether data are matrices to correctly extract values
+                            if(!is.matrix(xx)){
+                              xx  <- as.matrix(xx)
+                            }
+
+                            if(!is.matrix(yy)){
+                              yy  <- matrix(yy)
+                            }
+
+                            # Set lag number for Newey-West (1987)
+                            if(is.null(nw_lag)){
+
+                              lag_nw <- h
+
+                            } else {
+
+                              lag_nw <- nw_lag
+
+                            }
+
+
                             for (k in 1:specs$endog){ # Accounts for the reactions of the endogenous variables
 
-                              # Estimate coefficients and newey west std.err
-                              if(specs$endog == 1 ){
-                                nw_results   <- lpirfs::newey_west(yy, xx, h)
-                                                  } else {
-                                nw_results   <- lpirfs::newey_west(yy[, k], xx, h)
-                                                  }
 
-                              b                <- nw_results[[1]]
-                              std_err          <- sqrt(diag(nw_results[[2]]))*specs$confint
+                              # Get standard errors and point estimates
+                              get_ols_vals <- lpirfs::get_std_err(yy, xx, lag_nw, k, specs)
+                              std_err      <- get_ols_vals[[1]]
+                              b            <- get_ols_vals[[2]]
+
 
                               irf_temp_s1_mean[k, h] <- b[2]
                               irf_temp_s1_low[k,  h] <- b[2] - std_err[2]
@@ -443,6 +475,18 @@ lp_nl_iv <- function(endog_data,
                        .packages = 'lpirfs') %dopar% { # Accounts for shocks
 
                          for (h in 1:specs$hor){      # Accounts for the horizons
+
+                           # Set lag number for Newey-West (1987)
+                           if(is.null(nw_lag)){
+
+                             lag_nw <- h
+
+                           } else {
+
+                             lag_nw <- nw_lag
+
+                           }
+
                            for (k in 1:specs$endog){ # Accounts for the reactions of the endogenous variables
 
                              # Find optimal lag length
@@ -458,10 +502,11 @@ lp_nl_iv <- function(endog_data,
                              xx              <- x_nl[[lag_choice]]
                              xx              <- xx[1:(dim(xx)[1] - h + 1),]
 
-                             nw_results      <- lpirfs::newey_west(yy, xx, h)
+                             # Get standard errors and point estimates
+                             get_ols_vals <- lpirfs::get_std_err(yy, xx, lag_nw, 1, specs)
+                             std_err      <- get_ols_vals[[1]]
+                             b            <- get_ols_vals[[2]]
 
-                             b               <- nw_results[[1]]
-                             std_err         <- sqrt(diag(nw_results[[2]]))*specs$confint
 
                              irf_temp_s1_mean[k, h] <- b[2]
                              irf_temp_s1_low[k,  h] <- b[2] - std_err[2]
