@@ -1,4 +1,4 @@
-context("Test whether Newey West coincides with sandwich package")
+context("Test newey west function")
 
 
 
