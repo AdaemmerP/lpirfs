@@ -462,7 +462,7 @@ test_that("Test that model works when irfs are based on lag length criterion.", 
                NA)
 } )
 
-test_that("Test that model works when irfs are based on lag length criterion.", {
+test_that("Test that model works wfor different newey west options.", {
 
 
   # Load (endogenous) data
