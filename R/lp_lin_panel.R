@@ -612,15 +612,18 @@ lp_lin_panel <- function(
   }
 
 
-  return(list(irf_panel_mean   = irf_panel_mean,
-              irf_panel_low    = irf_panel_low,
-              irf_panel_up     = irf_panel_up,
-              reg_summaries    = reg_summaries,
-              xy_data_sets     = xy_data_sets,
-              y_data           = y_data,
-              specs            = specs
-              ))
+  result <- list(irf_panel_mean            = irf_panel_mean,
+                          irf_panel_low    = irf_panel_low,
+                          irf_panel_up     = irf_panel_up,
+                          reg_summaries    = reg_summaries,
+                          xy_data_sets     = xy_data_sets,
+                          y_data           = y_data,
+                          specs            = specs
+                          )
 
+  # Give object S3 name
+  class(result) <- "lpirfs_lin_panel_obj"
+  return(result)
 
 
 

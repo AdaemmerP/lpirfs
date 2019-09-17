@@ -133,6 +133,9 @@
 #'                                 lambda          = 1600,
 #'                                 gamma           = 3)
 #'
+#'# Show all plots
+#'  plot(results_nl)
+#'
 #'# Make and save all plots
 #'   nl_plots <- plot_nl(results_nl)
 #'
@@ -144,8 +147,8 @@
 #'   plot(s1_plots[[1]])
 #'   plot(s2_plots[[1]])
 #'
-#'# Show all plots
-#'  plot(results_nl)
+#'# Show diagnostics. The first element correponds to the first shock variable.
+#'  summary(results_nl)
 #'
 #'
 #'                      ## Example with exogenous variables ##
@@ -188,7 +191,7 @@
 #'  plot(results_nl)
 #'
 #'
-#'# Show OLS diagnostics. Each list element corresponds to the shock variable
+#'# Show diagnostics. The first element correponds to the first shock variable.
 #'  summary(results_nl)
 #'
 #'
@@ -539,7 +542,11 @@ lp_nl <- function(endog_data,
 
            # Save full summary matrix in list for each horizon
            diagnost_ols_each_h[[h]]             <- diagnost_each_k
-   }
+        }
+
+
+  # Give names to horizon
+    names(diagnost_ols_each_h)    <- paste("h", 1:specs$hor, sep = " ")
 
     list(irf_temp_s1_mean, irf_temp_s1_low, irf_temp_s1_up,
          irf_temp_s2_mean, irf_temp_s2_low, irf_temp_s2_up,
@@ -573,10 +580,12 @@ lp_nl <- function(endog_data,
 
    # Fill list with all OLS diagnostics
    diagnostic_list[[i]]        <- nl_irfs[[i]][7]
-   names(diagnostic_list[[i]]) <- paste("Shock:", specs$column_names[i], sep = " ")
 
 
-}
+ }
+
+  # Give names to diagnostic List
+  names(diagnostic_list) <- paste("Shock:", specs$column_names, sep = " ")
 
 ################################################################################
                              } else {
@@ -659,7 +668,12 @@ lp_nl <- function(endog_data,
               irf_temp_s2_mean[, h + 1] <- t(b1_s2        %*%  d[ , s])
               irf_temp_s2_low[,  h + 1] <- t(b1_low_s2    %*%  d[ , s])
               irf_temp_s2_up[,   h + 1] <- t(b1_up_s2     %*%  d[ , s])
-             }
+
+              # Save full summary matrix in list for each horizon
+              diagnost_ols_each_h[[h]]             <- diagnost_each_k
+         }
+
+
 
           list(irf_temp_s1_mean, irf_temp_s1_low, irf_temp_s1_up,
                irf_temp_s2_mean, irf_temp_s2_low, irf_temp_s2_up,
@@ -694,9 +708,11 @@ lp_nl <- function(endog_data,
 
    # Fill list with all OLS diagnostics
    diagnostic_list[[i]]        <- nl_irfs[[i]][7]
-   names(diagnostic_list[[i]]) <- paste("Shock:", specs$column_names[i], sep = " ")
 
-    }
+  }
+
+  # Give names to diagnostic List
+  names(diagnostic_list) <- paste("Shock:", specs$column_names, sep = " ")
 
  }
 

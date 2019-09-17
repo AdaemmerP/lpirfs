@@ -140,6 +140,9 @@ or by a simple dummy approach.
                                 lambda          = 1600,
                                 gamma           = 3)
 
+# Show all plots
+ plot(results_nl)
+
 # Make and save all plots
   nl_plots <- plot_nl(results_nl)
 
@@ -151,8 +154,8 @@ or by a simple dummy approach.
   plot(s1_plots[[1]])
   plot(s2_plots[[1]])
 
-# Show all plots
- plot(results_nl)
+# Show diagnostics. The first element correponds to the first shock variable.
+ summary(results_nl)
 
 
                      ## Example with exogenous variables ##
@@ -195,7 +198,7 @@ or by a simple dummy approach.
  plot(results_nl)
 
 
-# Show OLS diagnostics. Each list element corresponds to the shock variable
+# Show diagnostics. The first element correponds to the first shock variable.
  summary(results_nl)
 
 

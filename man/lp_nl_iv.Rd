@@ -145,7 +145,10 @@ or by a simple dummy approach.
                            use_hp            = FALSE,
                            gamma             = 3)
 
-# Make and save plots
+# Show all impulse responses
+plot(results_nl_iv)
+
+# Make and save individual plots
  plots_nl_iv <- plot_nl(results_nl_iv)
 
 # Show single impulse responses
@@ -154,19 +157,8 @@ or by a simple dummy approach.
 # Compare with blue line of left plot (lower panel) in Figure 12 in Supplementary Appendix of RZ-18.
  plot(plots_nl_iv$gg_s2[[1]])
 
-# Show all impulse responses by using 'ggpubr' and 'gridExtra'
-# lpirfs does not depend on those packages so they have to be installed
- library(ggpubr)
- library(gridExtra)
-
- s1_plots <- sapply(plots_nl_iv$gg_s1, ggplotGrob)
- s2_plots <- sapply(plots_nl_iv$gg_s2, ggplotGrob)
-
-# Show all responses of state 1
- marrangeGrob(s1_plots, nrow = ncol(endog_data), ncol = 1, top = NULL)
-
-# Show all responses of state 2
- marrangeGrob(s2_plots, nrow = ncol(endog_data), ncol = 1, top = NULL)
+# Show diagnostics. The first element shows the reaction of the first endogenous variable.
+summary(results_nl_iv)
 
 }
 }

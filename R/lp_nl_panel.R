@@ -599,21 +599,23 @@ lp_nl_panel <- function(
   fz  <- tibble(cross_id = data_set$cross_id, date_id = data_set$date_id, switching_variable = data_set[specs$switching], fz = fz)
 
   # List to return
-  return(list(irf_s1_mean    = irf_s1_mean,
-              irf_s1_up      = irf_s1_up,
-              irf_s1_low     = irf_s1_low,
+  result <- list(irf_s1_mean        = irf_s1_mean,
+                      irf_s1_up      = irf_s1_up,
+                      irf_s1_low     = irf_s1_low,
 
-              irf_s2_mean    = irf_s2_mean,
-              irf_s2_up      = irf_s2_up,
-              irf_s2_low     = irf_s2_low,
+                      irf_s2_mean    = irf_s2_mean,
+                      irf_s2_up      = irf_s2_up,
+                      irf_s2_low     = irf_s2_low,
 
-              fz             = fz,
+                      fz             = fz,
 
-              reg_summaries  = reg_summaries,
-              xy_data_sets   = xy_data_sets,
-              specs          = specs))
+                      reg_summaries  = reg_summaries,
+                      xy_data_sets   = xy_data_sets,
+                      specs          = specs)
 
-
+  # Give object S3 name
+  class(result) <- "lpirfs_nl_panel_obj"
+  return(result)
 
 
   }

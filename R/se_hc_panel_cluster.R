@@ -11,11 +11,14 @@
 #' 	10.18637/jss.v082.i03 (URL: \url{https://www.jstatsoft.org/article/view/v082i03}).
 #'
 se_hc_panel_cluster <- function(func_name){
+
                         Vw    <- function(x) vcovHC(x, method  = "white1")
                         Vcx   <- function(x) vcovHC(x, cluster = "group", method = "arellano")
                         Vct   <- function(x) vcovHC(x, cluster = "time",  method = "arellano")
                         Vcxt  <- function(x) Vcx(x) + Vct(x) - Vw(x)
+
                         return(get(func_name))
+
 }
 
 

@@ -107,6 +107,8 @@ Compute linear impulse responses with identified shock and/or with 2SLS.
                                confint        = 1.96,
                                hor            = 20)
 
+# Show all impulse responses
+ plot(results_lin_iv)
 
 # Make and save plots
  iv_lin_plots    <- plot_lin(results_lin_iv)
@@ -121,13 +123,9 @@ Compute linear impulse responses with identified shock and/or with 2SLS.
 # Supplementary Appendix by RZ-18.
  iv_lin_plots[[1]]
 
-# Show all impulse responses by using 'ggpubr' and 'gridExtra'
-# lpirfs does not depend on those packages so they have to be installed
- library(ggpubr)
- library(gridExtra)
 
- lin_plots_all <- sapply(iv_lin_plots, ggplotGrob)
- marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = 1, top = NULL)
+# Show diagnostics. The first element shows the reaction of the first given endogenous variable.
+ summary(results_lin_iv)
 
 
 ## Add lags of the identified shock ##
@@ -152,10 +150,11 @@ Compute linear impulse responses with identified shock and/or with 2SLS.
                                hor            = 20)
 
 
-# Make and save plots
- iv_lin_plots    <- plot_lin(results_lin_iv)
- lin_plots_all   <- sapply(iv_lin_plots, ggplotGrob)
- marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = 1, top = NULL)
+# Show all responses
+ plot(results_lin_iv)
+
+# Show diagnostics. The first element shows the reaction of the first endogenous variable.
+ summary(results_lin_iv)
 
 
 ##############################################################################
@@ -189,12 +188,9 @@ Compute linear impulse responses with identified shock and/or with 2SLS.
                             confint        = 1.96,
                             hor            = 20)
 
-# Create all plots
- iv_lin_plots    <- plot_lin(results_lin_iv)
+# Show all responses
+ plot(results_lin_iv)
 
-
-# Show response of GDP
- iv_lin_plots[[3]]
 }
 
 

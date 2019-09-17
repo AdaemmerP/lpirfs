@@ -83,7 +83,7 @@
 #'                              confint        = 1.96,
 #'                              hor            = 12)
 #'
-#'# Make plots base on generic S3 plot() function
+#'# Show all impule responses
 #'# Compare with Figure 5 in Jordà (2005)
 #'  plot(results_lin)
 #'
@@ -100,11 +100,9 @@
 #'   linear_plots[[1]]
 #'   linear_plots[[2]]
 #'
-#'# Show all plots by using 'ggpubr' and 'gridExtra'
 #'
-#'# Compare with plot(results_lin)
-#'  lin_plots_all <- sapply(linear_plots, ggplotGrob)
-#'  marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
+#'# Show diagnostics. The first element correponds to the first shock variable.
+#'  summary(results_lin)
 #'
 #'
 #'                       ## Example with exogenous variables ##
@@ -134,7 +132,7 @@
 #'# Show all impulse responses
 #'  plot(results_lin)
 #'
-#'# Show OLS diagnostics. Each list element corresponds to the shock variable
+#'# Show diagnostics. The first element correponds to the first shock variable.
 #'  summary(results_lin)
 #'
 #'  }
@@ -325,7 +323,7 @@ lp_lin <- function(endog_data,
   rownames(diagnost_each_k) <- specs$column_names
   colnames(diagnost_each_k) <- c("R-sqrd.", "Adj. R-sqrd.", "F-stat", " p-value")
 
-  # Make cluster
+  # Make cluster?
   if(is.null(num_cores)){
     num_cores    <- min(specs$endog, parallel::detectCores() - 1)
   }
@@ -388,10 +386,13 @@ lp_lin <- function(endog_data,
       # Save full summary matrix in list for each horizon
        diagnost_ols_each_h[[h]]             <- diagnost_each_k
 
-      }
+   }
+
+       # Give names to horizon
+       names(diagnost_ols_each_h)    <- paste("h", 1:specs$hor, sep = " ")
 
        # Return irfs and diagnostics
-         return(list(irf_mean,  irf_low,  irf_up, diagnost_ols_each_h))
+       return(list(irf_mean,  irf_low,  irf_up, diagnost_ols_each_h))
 }
 
 
@@ -413,9 +414,11 @@ lp_lin <- function(endog_data,
 
     # Fill list with all OLS diagnostics
     diagnostic_list[[i]]        <- lin_irfs[[i]][4]
-    names(diagnostic_list[[i]]) <- paste("Shock:", specs$column_names[i], sep = " ")
 
   }
+
+  # Give names to diagnostic List
+  names(diagnostic_list) <- paste("Shock:", specs$column_names, sep = " ")
 
 ################################################################################
                                } else {
@@ -493,6 +496,9 @@ lp_lin <- function(endog_data,
 
     }
 
+     # Give names to horizon
+       names(diagnost_ols_each_h)    <- paste("h", 1:specs$hor, sep = " ")
+
         return(list(irf_mean,  irf_low,  irf_up, diagnost_ols_each_h))
     }
 
@@ -514,10 +520,11 @@ lp_lin <- function(endog_data,
 
       # Fill list with all OLS diagnostics
       diagnostic_list[[i]]        <- lin_irfs[[i]][4]
-      names(diagnostic_list[[i]]) <- paste("Shock:", specs$column_names[i], sep = " ")
-
 
     }
+
+    # Give names to diagnostic List
+    names(diagnostic_list) <- paste("Shock:", specs$column_names, sep = " ")
 
 
 ###################################################################################################

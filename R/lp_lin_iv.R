@@ -109,6 +109,8 @@
 #'                                confint        = 1.96,
 #'                                hor            = 20)
 #'
+#'# Show all impulse responses
+#'  plot(results_lin_iv)
 #'
 #'# Make and save plots
 #'  iv_lin_plots    <- plot_lin(results_lin_iv)
@@ -123,13 +125,9 @@
 #'# Supplementary Appendix by RZ-18.
 #'  iv_lin_plots[[1]]
 #'
-#'# Show all impulse responses by using 'ggpubr' and 'gridExtra'
-#'# lpirfs does not depend on those packages so they have to be installed
-#'  library(ggpubr)
-#'  library(gridExtra)
 #'
-#'  lin_plots_all <- sapply(iv_lin_plots, ggplotGrob)
-#'  marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = 1, top = NULL)
+#'# Show diagnostics. The first element shows the reaction of the first given endogenous variable.
+#'  summary(results_lin_iv)
 #'
 #'
 #'## Add lags of the identified shock ##
@@ -154,10 +152,11 @@
 #'                                hor            = 20)
 #'
 #'
-#'# Make and save plots
-#'  iv_lin_plots    <- plot_lin(results_lin_iv)
-#'  lin_plots_all   <- sapply(iv_lin_plots, ggplotGrob)
-#'  marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = 1, top = NULL)
+#'# Show all responses
+#'  plot(results_lin_iv)
+#'
+#'# Show diagnostics. The first element shows the reaction of the first endogenous variable.
+#'  summary(results_lin_iv)
 #'
 #'
 #'##############################################################################
@@ -191,12 +190,9 @@
 #'                             confint        = 1.96,
 #'                             hor            = 20)
 #'
-#'# Create all plots
-#'  iv_lin_plots    <- plot_lin(results_lin_iv)
+#'# Show all responses
+#'  plot(results_lin_iv)
 #'
-#'
-#'# Show response of GDP
-#'  iv_lin_plots[[3]]
 #' }
 #'
 #'
@@ -475,7 +471,7 @@ if(is.nan(specs$lags_criterion) == TRUE){
 
 
 
-  # Fill list with all OLS diagnostics
+  # List for OLS diagnostics
   diagnostic_list             <- list()
 
   # Fill arrays with irfs
@@ -609,10 +605,16 @@ if(is.nan(specs$lags_criterion) == TRUE){
 # Close cluster
 parallel::stopCluster(cl)
 
-list(irf_lin_mean      = irf_lin_mean,
-     irf_lin_low       = irf_lin_low,
-     irf_lin_up        = irf_lin_up,
-     diagnostic_list   = diagnostic_list,
-     specs             = specs)
+result <- list(irf_lin_mean      = irf_lin_mean,
+               irf_lin_low       = irf_lin_low,
+               irf_lin_up        = irf_lin_up,
+               diagnostic_list   = diagnostic_list,
+               specs             = specs)
+
+# Give object S3 name
+class(result) <- "lpirfs_lin_iv_obj"
+return(result)
+
+
 }
 

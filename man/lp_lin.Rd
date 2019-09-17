@@ -92,7 +92,7 @@ Compute linear impulse responses with local projections by Jordà (2005).
                              confint        = 1.96,
                              hor            = 12)
 
-# Make plots base on generic S3 plot() function
+# Show all impule responses
 # Compare with Figure 5 in Jordà (2005)
  plot(results_lin)
 
@@ -109,11 +109,9 @@ Compute linear impulse responses with local projections by Jordà (2005).
   linear_plots[[1]]
   linear_plots[[2]]
 
-# Show all plots by using 'ggpubr' and 'gridExtra'
 
-# Compare with plot(results_lin)
- lin_plots_all <- sapply(linear_plots, ggplotGrob)
- marrangeGrob(lin_plots_all, nrow = ncol(endog_data), ncol = ncol(endog_data), top = NULL)
+# Show diagnostics. The first element correponds to the first shock variable.
+ summary(results_lin)
 
 
                       ## Example with exogenous variables ##
@@ -143,7 +141,7 @@ Compute linear impulse responses with local projections by Jordà (2005).
 # Show all impulse responses
  plot(results_lin)
 
-# Show OLS diagnostics. Each list element corresponds to the shock variable
+# Show diagnostics. The first element correponds to the first shock variable.
  summary(results_lin)
 
  }
