@@ -8,10 +8,11 @@ lp_lin_panel(data_set = NULL, data_sample = "Full",
   endog_data = NULL, cumul_mult = TRUE, shock = NULL,
   diff_shock = TRUE, iv_reg = FALSE, instrum = NULL,
   panel_model = "within", panel_effect = "individual",
-  robust_cov = NULL, use_gmm = FALSE, gmm_model = "onestep",
-  gmm_effect = "twoways", gmm_transformation = "d",
-  c_exog_data = NULL, l_exog_data = NULL, lags_exog_data = NaN,
-  c_fd_exog_data = NULL, l_fd_exog_data = NULL,
+  robust_cov = NULL, robust_method = NULL, robust_type = NULL,
+  robust_cluster = NULL, robust_maxlag = NULL, use_gmm = FALSE,
+  gmm_model = "onestep", gmm_effect = "twoways",
+  gmm_transformation = "d", c_exog_data = NULL, l_exog_data = NULL,
+  lags_exog_data = NaN, c_fd_exog_data = NULL, l_fd_exog_data = NULL,
   lags_fd_exog_data = NaN, confint = NULL, hor = NULL)
 }
 \arguments{
@@ -41,10 +42,17 @@ are estimated via: \deqn{y_(t+h) - y_(t-1),} where h = 0,..., H-1.}
 \item{panel_effect}{Character. The effects introduced in the model. Options are "individual" (default), "time", "twoways",
 or "nested". See the vignette of the plm-package for details.}
 
-\item{robust_cov}{NULL or Character. The character specifies the method how to estimate robust standard errors: Options are "Vw" (white), "Vcx" (clustered by group
-and arrellano method), "Vcx" (clustered by time and arrellano method), "Vctx" (clustered by group and time). For details see Miller (2017).
- The other options are "vcovBK", "vcovDC", "vcovG", "vcovHC", "vcovNW", "vcovSCC". For these options see vignette of plm package.
- If "use_gmm = TRUE", this option has to be NULL.}
+\item{robust_cov}{NULL or Character. The character specifies the method how to estimate robust standard errors: Options are "vcovBK", "vcovDC",
+"vcovG", "vcovHC", "vcovNW", "vcovSCC". For these options see vignette of plm package. Another option is "Vcxt". For details see Miller (2017)
+                   If "use_gmm = TRUE", this option has to be NULL.}
+
+\item{robust_method}{NULL (default) or Character. The character is an option when robust_cov = "vcovHC". See vignette of the plm package for details.}
+
+\item{robust_type}{NULL (default) or Character. The character is an option when robust_cov  = "vcovBK", "vcovDC", "vcovHC", "vcovNW" or "vcovSCC". See vignette of the plm package for details.}
+
+\item{robust_cluster}{NULL (default) or Character. The character is an option when robust_cov = "vcovBK", "vcovG" or "vcovHC". See vignette of the plm package for details.}
+
+\item{robust_maxlag}{NULL (default) or Character. The character is an option when robust_cov  = "vcovNW" or "vcovSCC". See vignette of the plm package for details.}
 
 \item{use_gmm}{Boolean. Use GMM for estimation? TRUE or FALSE (default). See vignette of plm package for details.
 If TRUE, the option "robust_cov" has to be set to NULL.}

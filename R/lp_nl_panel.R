@@ -215,6 +215,11 @@ lp_nl_panel <- function(
                       panel_effect       = "individual",
                       robust_cov         = NULL,
 
+                      robust_method     = NULL,
+                      robust_type       = NULL,
+                      robust_cluster    = NULL,
+                      robust_maxlag     = NULL,
+
                       use_gmm            = FALSE,
                       gmm_model          = "onestep",
                       gmm_effect         = "twoways",
@@ -277,9 +282,9 @@ lp_nl_panel <- function(
 
   # Check whether robust covariance estimator is correctly specified
   if(!is.null(robust_cov)){
-    if(!robust_cov %in% c("Vw", "Vcx", "Vct", "Vcxt", "vcovBK", "vcovDC", "vcovG", "vcovHC", "vcovNW", "vcovSCC")){
-      stop("The choices for robust covariance estimation are 'Vw', 'Vcx', 'Vct', 'Vcxt', 'vcovBK', 'vcovDC', 'vcovG', 'vcovHC', 'vcovNW', 'vcovSCC'.
-         See the vignette of the plm package for details." )
+    if(!robust_cov %in% c("Vcxt", "vcovBK", "vcovDC", "vcovHC", "vcovNW", "vcovSCC")){
+      stop("The choices for robust covariance estimation are 'vcovBK', 'vcovDC', 'vcovHC', 'vcovNW', 'vcovSCC' and 'Vcxt'.
+         For details, see the vignette of the plm package and Miller (2017)." )
     }
   }
 
@@ -534,13 +539,14 @@ lp_nl_panel <- function(
     if(is.character(specs$robust_cov)){
 
       # Estimate robust covariance matrices
-      if(specs$robust_cov %in% c("vcovBK", "vcovDC", "vcovG", "vcovHC", "vcovNW", "vcovSCC")){
+      if(specs$robust_cov %in% c("vcovBK", "vcovDC", "vcovHC", "vcovNW", "vcovSCC")){
 
-        reg_results <-  lmtest::coeftest(panel_results, vcov. = get(specs$robust_cov, envir = environment(plm)))
+
+        reg_results <- get_robust_cov_panel(panel_results, specs)
 
                                                 } else {
 
-        reg_results <-  lmtest::coeftest(panel_results,  vcov = se_hc_panel_cluster(specs$robust_cov))
+        reg_results <-  lmtest::coeftest(panel_results,  vcov = get_robust_vcxt_panel(specs$robust_cov))
 
                                                 }
 

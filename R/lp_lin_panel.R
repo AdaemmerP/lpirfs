@@ -18,10 +18,13 @@
 #'                    "between", "pooling" or "fd". See vignette of the plm package for details.
 #' @param panel_effect Character. The effects introduced in the model. Options are "individual" (default), "time", "twoways",
 #' or "nested". See the vignette of the plm-package for details.
-#' @param robust_cov NULL or Character. The character specifies the method how to estimate robust standard errors: Options are "Vw" (white), "Vcx" (clustered by group
-#'                   and arrellano method), "Vcx" (clustered by time and arrellano method), "Vctx" (clustered by group and time). For details see Miller (2017).
-#'                    The other options are "vcovBK", "vcovDC", "vcovG", "vcovHC", "vcovNW", "vcovSCC". For these options see vignette of plm package.
+#' @param robust_cov NULL or Character. The character specifies the method how to estimate robust standard errors: Options are "vcovBK", "vcovDC",
+#' "vcovG", "vcovHC", "vcovNW", "vcovSCC". For these options see vignette of plm package. Another option is "Vcxt". For details see Miller (2017)
 #'                    If "use_gmm = TRUE", this option has to be NULL.
+#' @param robust_method  NULL (default) or Character. The character is an option when robust_cov = "vcovHC". See vignette of the plm package for details.
+#' @param robust_type    NULL (default) or Character. The character is an option when robust_cov  = "vcovBK", "vcovDC", "vcovHC", "vcovNW" or "vcovSCC". See vignette of the plm package for details.
+#' @param robust_cluster NULL (default) or Character. The character is an option when robust_cov = "vcovBK", "vcovG" or "vcovHC". See vignette of the plm package for details.
+#' @param robust_maxlag  NULL (default) or Character. The character is an option when robust_cov  = "vcovNW" or "vcovSCC". See vignette of the plm package for details.
 #' @param use_gmm  Boolean. Use GMM for estimation? TRUE or FALSE (default). See vignette of plm package for details.
 #'                 If TRUE, the option "robust_cov" has to be set to NULL.
 #' @param gmm_effect Character. The effects introduced in the model: "twoways" (default) or "individual". See vignette of the plm-package for details.
@@ -251,6 +254,11 @@ lp_lin_panel <- function(
                     panel_effect      = "individual",
                     robust_cov        = NULL,
 
+                    robust_method     = NULL,
+                    robust_type       = NULL,
+                    robust_cluster    = NULL,
+                    robust_maxlag     = NULL,
+
                     use_gmm            = FALSE,
                     gmm_model          = "onestep",
                     gmm_effect         = "twoways",
@@ -313,9 +321,9 @@ lp_lin_panel <- function(
 
   # Check whether robust covariance estimator is correctly specified
   if(!is.null(robust_cov)){
-    if(!robust_cov %in% c("Vw", "Vcx", "Vct", "Vcxt", "vcovBK", "vcovDC", "vcovG", "vcovHC", "vcovNW", "vcovSCC")){
-    stop("The choices for robust covariance estimation are 'Vw', 'Vcx', 'Vct', 'Vcxt', 'vcovBK', 'vcovDC', 'vcovG', 'vcovHC', 'vcovNW', 'vcovSCC'.
-         See the vignette of the plm package for details." )
+    if(!robust_cov %in% c("Vcxt", "vcovBK", "vcovDC", "vcovHC", "vcovNW", "vcovSCC")){
+    stop("The choices for robust covariance estimation are 'vcovBK', 'vcovDC', 'vcovHC', 'vcovNW', 'vcovSCC' and 'Vcxt'.
+         For details, see the vignette of the plm package and Miller (2017)." )
   }
 }
 
@@ -425,6 +433,12 @@ lp_lin_panel <- function(
   specs$gmm_transformation  <- gmm_transformation
 
   specs$robust_cov          <- robust_cov
+  specs$robust_method       <- robust_method
+  specs$robust_type         <- robust_type
+  specs$robust_cluster      <- robust_cluster
+  specs$robust_maxlag       <- robust_maxlag
+
+
   specs$exog_data           <- colnames(data_set)[which(!colnames(data_set) %in%
                                                          c("cross_id", "date_id"))]
   specs$c_exog_data         <- c_exog_data
@@ -558,15 +572,17 @@ lp_lin_panel <- function(
     if(is.character(specs$robust_cov)){
 
       # Estimate robust covariance matrices
-      if(specs$robust_cov %in% c("vcovBK", "vcovDC", "vcovG", "vcovHC", "vcovNW", "vcovSCC")){
+      if(specs$robust_cov %in% c("vcovBK", "vcovDC", "vcovHC", "vcovNW", "vcovSCC")){
 
-      reg_results <-  lmtest::coeftest(panel_results, vcov. = get(specs$robust_cov, envir = environment(plm)))
+
+      reg_results <- get_robust_cov_panel(panel_results, specs)
 
                                    } else {
 
-      reg_results <-  lmtest::coeftest(panel_results,  vcov = se_hc_panel_cluster(specs$robust_cov))
+      reg_results <-  lmtest::coeftest(panel_results,  vcov = get_robust_vcxt_panel(specs$robust_cov))
 
-      }
+                                   }
+
 
 
       # Extract the position of the parameters of the shock variable
