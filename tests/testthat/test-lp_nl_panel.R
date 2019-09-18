@@ -33,7 +33,7 @@ set.seed(123)
                                                   diff_shock        = FALSE,
                                                   panel_model       = "within",
                                                   panel_effect      = "individual",
-                                                  robust_cov        = "Vcx",
+                                                  robust_cov        = "vcovSCC",
 
                                                   switching         = "x_1",
                                                   lag_switching     = TRUE,
@@ -67,7 +67,7 @@ set.seed(123)
                                         diff_shock        = FALSE,
                                         panel_model       = "within",
                                         panel_effect      = "individual",
-                                        robust_cov        = "Vcx",
+                                        robust_cov        = "vcovSCC",
 
                                         switching         = "x_1",
                                         lag_switching     = TRUE,
@@ -101,7 +101,7 @@ set.seed(123)
                                         diff_shock        = FALSE,
                                         panel_model       = "within",
                                         panel_effect      = "individual",
-                                        robust_cov        = "Vcx",
+                                        robust_cov        = "vcovSCC",
 
                                         switching         = "x_1",
                                         lag_switching     = TRUE,
@@ -135,7 +135,7 @@ set.seed(123)
                                        diff_shock        = FALSE,
                                        panel_model       = "within",
                                        panel_effect      = "individual",
-                                       robust_cov        = "Vcx",
+                                       robust_cov        = "vcovSCC",
 
                                        switching         = "x_1",
                                        lag_switching     = TRUE,
@@ -169,7 +169,7 @@ set.seed(123)
                                        diff_shock        = FALSE,
                                        panel_model       = "within",
                                        panel_effect      = "individual",
-                                       robust_cov        = "Vcx",
+                                       robust_cov        = "vcovSCC",
 
                                        switching         = "x_1",
                                        lag_switching     = TRUE,
@@ -202,7 +202,7 @@ set.seed(123)
                                        diff_shock        = FALSE,
                                        panel_model       = "soso",
                                        panel_effect      = "individual",
-                                       robust_cov        = "Vcx",
+                                       robust_cov        = "vcovSCC",
 
                                        switching         = "x_1",
                                        lag_switching     = TRUE,
@@ -237,7 +237,7 @@ set.seed(123)
                                        diff_shock        = FALSE,
                                        panel_model       = "within",
                                        panel_effect      = "soso",
-                                       robust_cov        = "Vcx",
+                                       robust_cov        = "vcovSCC",
 
                                        switching         = "x_1",
                                        lag_switching     = TRUE,
@@ -287,8 +287,8 @@ set.seed(123)
                                        lags_fd_exog_data = 2,
 
                                        confint           = 1.67),
-         "The choices for robust covariance estimation are 'Vw', 'Vcx', 'Vct', 'Vcxt', 'vcovBK', 'vcovDC', 'vcovG', 'vcovHC', 'vcovNW', 'vcovSCC'.
-         See the vignette of the plm package for details." , fixed = TRUE)
+         "The choices for robust covariance estimation are 'vcovBK', 'vcovDC', 'vcovHC', 'vcovNW', 'vcovSCC' and 'Vcxt'.
+         For details, see the vignette of the plm package and Miller (2017)." , fixed = TRUE)
   })
 
 
@@ -303,7 +303,7 @@ set.seed(123)
                                        diff_shock        = FALSE,
                                        panel_model       = "within",
                                        panel_effect      = "individual",
-                                       robust_cov        = "Vcx",
+                                       robust_cov        = "vcovSCC",
 
                                        switching         = "x_1",
                                        lag_switching     = TRUE,
@@ -335,7 +335,7 @@ set.seed(123)
                                        diff_shock        = FALSE,
                                        panel_model       = "within",
                                        panel_effect      = "individual",
-                                       robust_cov        = "Vcx",
+                                       robust_cov        = "vcovSCC",
 
                                        switching         = "x_1",
                                        lag_switching     = TRUE,
@@ -367,7 +367,7 @@ set.seed(123)
                                        diff_shock        = FALSE,
                                        panel_model       = "within",
                                        panel_effect      = "individual",
-                                       robust_cov        = "Vcx",
+                                       robust_cov        = "vcovSCC",
 
                                        switching         = "x_1",
                                        lag_switching     = TRUE,
@@ -398,7 +398,7 @@ set.seed(123)
                                        diff_shock        = FALSE,
                                        panel_model       = "within",
                                        panel_effect      = "individual",
-                                       robust_cov        = "Vcx",
+                                       robust_cov        = "vcovSCC",
 
                                        switching         = "x_1",
                                        lag_switching     = TRUE,
@@ -432,7 +432,7 @@ set.seed(123)
                                        diff_shock        = FALSE,
                                        panel_model       = "within",
                                        panel_effect      = "individual",
-                                       robust_cov        = "Vcx",
+                                       robust_cov        = "vcovSCC",
 
                                        switching         = "x_1",
                                        lag_switching     = TRUE,
@@ -466,7 +466,7 @@ set.seed(123)
                                        diff_shock        = FALSE,
                                        panel_model       = "within",
                                        panel_effect      = "individual",
-                                       robust_cov        = "Vcx",
+                                       robust_cov        = "vcovSCC",
 
                                        switching         = NULL,
                                        lag_switching     = TRUE,
@@ -500,7 +500,7 @@ set.seed(123)
                                        diff_shock        = FALSE,
                                        panel_model       = "within",
                                        panel_effect      = "individual",
-                                       robust_cov        = "Vcx",
+                                       robust_cov        = "vcovSCC",
 
                                        switching         = "x_1",
                                        lag_switching     = TRUE,
@@ -534,7 +534,7 @@ set.seed(123)
                                        diff_shock        = F,
                                        panel_model       = "within",
                                        panel_effect      = "individual",
-                                       robust_cov        = "Vcx",
+                                       robust_cov        = "vcovSCC",
 
                                        switching         = "x_1",
                                        lag_switching     = T,
@@ -568,7 +568,7 @@ set.seed(123)
                                        diff_shock        = F,
                                        panel_model       = "within",
                                        panel_effect      = "individual",
-                                       robust_cov        = "Vcx",
+                                       robust_cov        = "vcovSCC",
 
                                        switching         = "x_1",
                                        lag_switching     = T,
@@ -602,7 +602,7 @@ set.seed(123)
                                        diff_shock        = F,
                                        panel_model       = "within",
                                        panel_effect      = "individual",
-                                       robust_cov        = "Vcx",
+                                       robust_cov        = "vcovSCC",
 
                                        switching         = "x_1",
                                        lag_switching     = T,
@@ -638,7 +638,7 @@ set.seed(123)
                                        diff_shock        = F,
                                        panel_model       = "within",
                                        panel_effect      = "individual",
-                                       robust_cov        = "Vcx",
+                                       robust_cov        = "vcovSCC",
 
                                        switching         = "x_1",
                                        lag_switching     = T,
@@ -675,7 +675,7 @@ set.seed(123)
                                        diff_shock        = F,
                                        panel_model       = "within",
                                        panel_effect      = "individual",
-                                       robust_cov        = "Vcx",
+                                       robust_cov        = "vcovSCC",
 
                                        switching         = "x_1",
                                        lag_switching     = T,
@@ -713,7 +713,7 @@ set.seed(123)
                                        diff_shock        = F,
                                        panel_model       = "within",
                                        panel_effect      = "individual",
-                                       robust_cov        = "Vcx",
+                                       robust_cov        = "vcovSCC",
 
                                        switching         = "x_1",
                                        lag_switching     = T,
@@ -800,7 +800,7 @@ test_that("Test that model throws no error when estimating robust
                                                   diff_shock        = FALSE,
                                                   panel_model       = "within",
                                                   panel_effect      = "individual",
-                                                  robust_cov        = "Vcx",
+                                                  robust_cov        = "vcovSCC",
 
                                                   switching         = "x_1",
                                                   lag_switching     = FALSE,
@@ -832,7 +832,7 @@ test_that("Test that model works when shock = endog_data", {
                                                   diff_shock        = FALSE,
                                                   panel_model       = "within",
                                                   panel_effect      = "individual",
-                                                  robust_cov        = "Vcx",
+                                                  robust_cov        = "vcovSCC",
 
                                                   switching         = "x_1",
                                                   lag_switching     = FALSE,
@@ -863,7 +863,7 @@ test_that("Test that 'robust_cov = NULL' when using gmm.", {
                                                   diff_shock        = FALSE,
                                                   panel_model       = "within",
                                                   panel_effect      = "individual",
-                                                  robust_cov        = "Vcx",
+                                                  robust_cov        = "vcovSCC",
 
                                                   switching         = "x_1",
                                                   lag_switching     = FALSE,

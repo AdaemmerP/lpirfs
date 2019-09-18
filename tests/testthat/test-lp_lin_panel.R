@@ -356,6 +356,34 @@ library(dplyr)
                            'The width of the confidence bands has to be >=0.', fixed = TRUE)
   })
 
+  test_that("Test that robust covariance matrix is correctly given", {
+
+    testthat::expect_error(lp_lin_panel(data_set          = data_set,
+                                        data_sample       = 'Full',
+                                        endog_data        = "y",
+                                        cumul_mult        = TRUE,
+
+                                        shock             = "x_1",
+                                        diff_shock        = FALSE,
+                                        iv_reg            = FALSE,
+                                        instrum           = NULL,
+                                        panel_model       = "within",
+                                        panel_effect      = "individual",
+                                        robust_cov        = "soso",
+
+                                        c_exog_data       = colnames(data_set)[4:6],
+                                        l_exog_data       = colnames(data_set)[4:6],
+                                        lags_exog_data    = 1,
+                                        c_fd_exog_data    = colnames(data_set)[4:6],
+                                        l_fd_exog_data    = colnames(data_set)[4:6],
+                                        lags_fd_exog_data = 2,
+
+                                        confint           = 1,
+                                        hor               = 10),
+                           "The choices for robust covariance estimation are 'vcovBK', 'vcovDC', 'vcovHC', 'vcovNW', 'vcovSCC' and 'Vcxt'.
+         For details, see the vignette of the plm package and Miller (2017).", fixed = TRUE)
+  })
+
 
   test_that("Test that horizon integer is correctly specified", {
 
@@ -460,7 +488,7 @@ library(dplyr)
                                         instrum           = NULL,
                                         panel_model       = "within",
                                         panel_effect      = "individual",
-                                        robust_cov        = "Vcx",
+                                        robust_cov        = "vcovSCC",
 
                                         use_gmm           = TRUE,
 
@@ -559,7 +587,11 @@ results_panel <-  suppressWarnings(
 
   test_that("Test that model throws no error when estimating robust
             covariance matrix", {
-              cov_mat <- c('Vw', 'Vcx', 'Vct', 'Vcxt', 'vcovBK', 'vcovDC', 'vcovG', 'vcovHC', 'vcovNW', 'vcovSCC')
+
+              # All robust cov matrices except of 'vcovDC'
+              cov_mat <- c('vcovBK', 'vcovHC', 'vcovNW', 'vcovSCC')
+
+              for (ii in seq_along(cov_mat)){
               # Estimate panel model
               testthat::expect_error(lp_lin_panel(data_set          = data_set,
                                                   data_sample       = 'Full',
@@ -572,7 +604,7 @@ results_panel <-  suppressWarnings(
                                                   instrum           = NULL,
                                                   panel_model       = "within",
                                                   panel_effect      = "individual",
-                                                  robust_cov        = sample(cov_mat, 1),
+                                                  robust_cov        = cov_mat[ii],
 
                                                   c_exog_data       = colnames(data_set)[4:6],
                                                   l_exog_data       = colnames(data_set)[4:6],
@@ -582,9 +614,69 @@ results_panel <-  suppressWarnings(
                                                   lags_fd_exog_data = 2,
 
                                                   confint           = 1.67,
-                                                  hor               = 10),
+                                                  hor               = 2),
                                                   NA)
-            })
+            }
+
+
+              # Estimate panel model with 'vcovDC'
+              testthat::expect_error(lp_lin_panel(data_set          = data_set,
+                                                  data_sample       = 'Full',
+                                                  endog_data        = "y",
+                                                  cumul_mult        = TRUE,
+
+                                                  shock             = "x_1",
+                                                  diff_shock        = FALSE,
+                                                  iv_reg            = FALSE,
+                                                  instrum           = NULL,
+                                                  panel_model       = "within",
+                                                  panel_effect      = "twoways",
+                                                  robust_cov        = 'vcovDC',
+
+                                                  c_exog_data       = colnames(data_set)[4:6],
+                                                  l_exog_data       = colnames(data_set)[4:6],
+                                                  lags_exog_data    = 2,
+                                                  c_fd_exog_data    = colnames(data_set)[4:6],
+                                                  l_fd_exog_data    = colnames(data_set)[4:6],
+                                                  lags_fd_exog_data = 2,
+
+                                                  confint           = 1.67,
+                                                  hor               = 2),
+                                     NA)
+
+
+              # Test 'vcovSCC' with different type
+              testthat::expect_error(lp_lin_panel(data_set          = data_set,
+                                                  data_sample       = 'Full',
+                                                  endog_data        = "y",
+                                                  cumul_mult        = TRUE,
+
+                                                  shock             = "x_1",
+                                                  diff_shock        = FALSE,
+                                                  iv_reg            = FALSE,
+                                                  instrum           = NULL,
+                                                  panel_model       = "within",
+                                                  panel_effect      = "individual",
+                                                  robust_cov        = 'vcovSCC',
+
+                                                  robust_type       = "HC1",
+
+                                                  c_exog_data       = colnames(data_set)[4:6],
+                                                  l_exog_data       = colnames(data_set)[4:6],
+                                                  lags_exog_data    = 2,
+                                                  c_fd_exog_data    = colnames(data_set)[4:6],
+                                                  l_fd_exog_data    = colnames(data_set)[4:6],
+                                                  lags_fd_exog_data = 2,
+
+                                                  confint           = 1.67,
+                                                  hor               = 2),
+                                     NA)
+
+
+
+
+
+              })
 
   test_that("Test that data is correctly computed.", {
     # Estimate panel model
@@ -599,7 +691,7 @@ results_panel <-  suppressWarnings(
                                         instrum           = NULL,
                                         panel_model       = "within",
                                         panel_effect      = "individual",
-                                        robust_cov        = "Vcx",
+                                        robust_cov        = "vcovSCC",
 
                                         c_exog_data       = c("x_2", "x_3", "x_4"), #colnames(data_set)[4:6],
                                         l_exog_data       = c("x_2", "x_3", "x_4"),
@@ -741,7 +833,7 @@ results_panel <-  suppressWarnings(
                                                   instrum           = NULL,
                                                   panel_model       = "within",
                                                   panel_effect      = "individual",
-                                                  robust_cov        = "Vcx",
+                                                  robust_cov        = "vcovSCC",
 
                                                   c_exog_data       = colnames(data_set)[4:6],
                                                   l_exog_data       = colnames(data_set)[4:6],
