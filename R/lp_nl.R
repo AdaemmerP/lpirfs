@@ -244,6 +244,12 @@ lp_nl <- function(endog_data,
     specs$exog_data      <- exog_data
     specs$lags_exog      <- lags_exog
 
+    specs$use_nw         <- use_nw
+    specs$nw_prewhite    <- nw_prewhite
+    specs$adjust_se      <- adjust_se
+    specs$nw_lag         <- nw_lag
+
+
     # Add 'contempranoeus' as NULL for data construction
     specs$contemp_data   <- NULL
     # Set model type for lag construction
