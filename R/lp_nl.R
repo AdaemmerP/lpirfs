@@ -221,7 +221,7 @@ lp_nl <- function(endog_data,
                                exog_data      = NULL,
                                lags_exog      = NULL,
                                contemp_data   = NULL,
-                               num_cores      = NULL){
+                               num_cores      = 1){
 
   # Create list to store inputs
     specs <- list()

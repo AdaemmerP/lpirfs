@@ -214,7 +214,7 @@ lp_lin_iv <- function(endog_data,
                    nw_prewhite    = FALSE,
                    adjust_se      = FALSE,
                    hor            = NULL,
-                   num_cores      = NULL){
+                   num_cores      = 1){
 
   # Give warning if 'instr' is used as input name
   if(!is.null(instr)){

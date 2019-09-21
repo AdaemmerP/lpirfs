@@ -151,7 +151,7 @@ lp_lin <- function(endog_data,
                         exog_data      = NULL,
                         lags_exog      = NULL,
                         contemp_data   = NULL,
-                        num_cores      = NULL){
+                        num_cores      = 1){
 
 
   # Create list to store inputs
@@ -383,13 +383,16 @@ lp_lin <- function(endog_data,
        irf_low[,  h + 1] <- t(b1_low %*% d[ , s])
        irf_up[,   h + 1] <- t(b1_up  %*% d[ , s])
 
+       # Give rownames
+       rownames(diagnost_each_k) <- paste("h", h, ":", specs$column_names, sep ="")
+
       # Save full summary matrix in list for each horizon
        diagnost_ols_each_h[[h]]             <- diagnost_each_k
 
    }
 
        # Give names to horizon
-       names(diagnost_ols_each_h)    <- paste("h", 1:specs$hor, sep = " ")
+      # names(diagnost_ols_each_h)    <- paste("h", 1:specs$hor, sep = " ")
 
        # Return irfs and diagnostics
        return(list(irf_mean,  irf_low,  irf_up, diagnost_ols_each_h))

@@ -186,7 +186,7 @@ lp_nl_iv <- function(endog_data,
                             use_hp            = NULL,
                             lambda            = NULL,
                             gamma             = NULL,
-                            num_cores         = NULL){
+                            num_cores         = 1){
 
   # Give warning if 'instr' is used as input name
   if(!is.null(instr)){
