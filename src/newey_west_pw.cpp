@@ -24,9 +24,10 @@ List newey_west_pw(NumericMatrix hhat_mat, NumericMatrix xpxi_mat, NumericMatrix
 
   // Define classes
   NumericMatrix V;
-  arma::mat G, M, M1, M2, ga, g1, w, za, hhat, D, xpxi, utu;
+  arma::mat G, M, M1, M2, ga, g1, za, hhat, D, xpxi, utu;
   arma::vec w1;
   int nrow_hhat, a, nobs, num_exog, nlag;
+  double w;
   List ret(1);
 
 
@@ -38,7 +39,6 @@ List newey_west_pw(NumericMatrix hhat_mat, NumericMatrix xpxi_mat, NumericMatrix
   hhat      = hhat.t();
 
   nlag     = h;
-  w        = arma::zeros<arma::vec>(2*nlag + 1);
   G        = arma::zeros<arma::mat>(num_exog, num_exog);
   a        = 0;
 
@@ -47,7 +47,7 @@ List newey_west_pw(NumericMatrix hhat_mat, NumericMatrix xpxi_mat, NumericMatrix
   for (int i = 0; i < nlag + 1; ++i){
 
       ga                 = arma::zeros<arma::mat>(num_exog, num_exog);
-      w(nlag + a)        = (nlag + 1 - a)/double(nlag + 1);
+      w                  = 1 - i/double(nlag + 1);
       M                  = hhat;
       nrow_hhat          = M.n_rows;
       M1                 = M(arma::span(0, nrow_hhat - 1), arma::span(a, nobs - 1));
@@ -65,7 +65,7 @@ List newey_west_pw(NumericMatrix hhat_mat, NumericMatrix xpxi_mat, NumericMatrix
 
               }
 
-    G  = G +  w(nlag + a , 0)*ga;
+    G  = G +  w*ga;
 
     a = a + 1;
 

@@ -20,10 +20,10 @@ using namespace Rcpp;
 // [[Rcpp::export]]
 List newey_west_tsls(NumericVector y, NumericMatrix x, NumericMatrix z, int h){
   NumericMatrix V;
-  arma::mat G, M, xx, xx_one, yy, xx_hat, zz, M1, M2, ga, g1, w, za, xpxi, xpxi_iv, emat, hhat, cov_beta_iv;
+  arma::mat G, M, xx, xx_one, yy, xx_hat, zz, M1, M2, ga, g1, za, xpxi, xpxi_iv, emat, hhat, cov_beta_iv;
   arma::vec w1, beta_iv, resids, resids_sq_iv;
   int nrow_hhat, a, nobs, num_exog, nlag;
-  double ssr_iv, sigma_hat_iv ;
+  double ssr_iv, sigma_hat_iv, w ;
   List ret(6);
 
 
@@ -68,7 +68,6 @@ List newey_west_tsls(NumericVector y, NumericMatrix x, NumericMatrix z, int h){
   emat     = emat.t();
   hhat     = emat%xx.t();
 
-  w        = arma::zeros<arma::vec>(2*nlag + 1);
   G        = arma::zeros<arma::mat>(num_exog, num_exog);
   a        = 0;
 
@@ -76,7 +75,7 @@ List newey_west_tsls(NumericVector y, NumericMatrix x, NumericMatrix z, int h){
   for (int i = 0; i < nlag + 1; ++i){
 
     ga                 = arma::zeros<arma::mat>(num_exog, num_exog);
-    w(nlag + a)        = (nlag + 1 - a)/double(nlag + 1);
+    w                  = 1 - i/double(nlag + 1);
     M                  = hhat;
     nrow_hhat          = M.n_rows;
     M1                 = M(arma::span(0, nrow_hhat - 1), arma::span(a, nobs - 1));
@@ -94,7 +93,7 @@ List newey_west_tsls(NumericVector y, NumericMatrix x, NumericMatrix z, int h){
 
     }
 
-    G  = G +  w(nlag + a , 0)*ga;
+    G  = G +  w*ga;
 
     a = a + 1;
 
