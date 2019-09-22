@@ -10,7 +10,7 @@ lp_nl(endog_data, lags_endog_lin = NULL, lags_endog_nl = NULL,
   nw_prewhite = FALSE, adjust_se = FALSE, hor = NULL,
   switching = NULL, lag_switching = TRUE, use_logistic = TRUE,
   use_hp = NULL, lambda = NULL, gamma = NULL, exog_data = NULL,
-  lags_exog = NULL, contemp_data = NULL, num_cores = NULL)
+  lags_exog = NULL, contemp_data = NULL, num_cores = 1)
 }
 \arguments{
 \item{endog_data}{A \link{data.frame}, containing all endogenous variables for the VAR. The Cholesky decomposition is based on the

@@ -8,7 +8,7 @@ lp_lin(endog_data, lags_endog_lin = NULL, lags_criterion = NaN,
   max_lags = NaN, trend = NULL, shock_type = NULL, confint = NULL,
   use_nw = TRUE, nw_lag = NULL, nw_prewhite = FALSE,
   adjust_se = FALSE, hor = NULL, exog_data = NULL,
-  lags_exog = NULL, contemp_data = NULL, num_cores = NULL)
+  lags_exog = NULL, contemp_data = NULL, num_cores = 1)
 }
 \arguments{
 \item{endog_data}{A \link{data.frame}, containing the endogenous variables for the VAR. The Cholesky decomposition is based on the
