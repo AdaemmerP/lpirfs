@@ -546,13 +546,16 @@ lp_nl <- function(endog_data,
            irf_temp_s2_low[,  h + 1] <- t(b1_low_s2    %*%  d[ , s])
            irf_temp_s2_up[,   h + 1] <- t(b1_up_s2     %*%  d[ , s])
 
+           # Give rownames
+           rownames(diagnost_each_k) <- paste("h", h, ":", specs$column_names, sep ="")
+
            # Save full summary matrix in list for each horizon
            diagnost_ols_each_h[[h]]             <- diagnost_each_k
         }
 
 
   # Give names to horizon
-    names(diagnost_ols_each_h)    <- paste("h", 1:specs$hor, sep = " ")
+ #   names(diagnost_ols_each_h)    <- paste("h", 1:specs$hor, sep = " ")
 
     list(irf_temp_s1_mean, irf_temp_s1_low, irf_temp_s1_up,
          irf_temp_s2_mean, irf_temp_s2_low, irf_temp_s2_up,
@@ -585,7 +588,7 @@ lp_nl <- function(endog_data,
    irf_s2_up[,   1, i]   <- irf_s1_mean[, 1, i]
 
    # Fill list with all OLS diagnostics
-   diagnostic_list[[i]]        <- nl_irfs[[i]][7]
+   diagnostic_list[[i]]        <- nl_irfs[[i]][[7]]
 
 
  }
@@ -713,7 +716,7 @@ lp_nl <- function(endog_data,
 
 
    # Fill list with all OLS diagnostics
-   diagnostic_list[[i]]        <- nl_irfs[[i]][7]
+   diagnostic_list[[i]]        <- nl_irfs[[i]][[7]]
 
   }
 

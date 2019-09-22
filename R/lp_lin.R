@@ -391,8 +391,6 @@ lp_lin <- function(endog_data,
 
    }
 
-       # Give names to horizon
-      # names(diagnost_ols_each_h)    <- paste("h", 1:specs$hor, sep = " ")
 
        # Return irfs and diagnostics
        return(list(irf_mean,  irf_low,  irf_up, diagnost_ols_each_h))
@@ -416,7 +414,7 @@ lp_lin <- function(endog_data,
     irf_lin_up[,   1, i]   <- irf_lin_mean[, 1, i]
 
     # Fill list with all OLS diagnostics
-    diagnostic_list[[i]]        <- lin_irfs[[i]][4]
+    diagnostic_list[[i]]        <- lin_irfs[[i]][[4]]
 
   }
 
@@ -502,7 +500,7 @@ lp_lin <- function(endog_data,
      # Give names to horizon
        names(diagnost_ols_each_h)    <- paste("h", 1:specs$hor, sep = " ")
 
-        return(list(irf_mean,  irf_low,  irf_up, diagnost_ols_each_h))
+      return(list(irf_mean,  irf_low,  irf_up, diagnost_ols_each_h))
     }
 
 
