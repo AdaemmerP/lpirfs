@@ -38,4 +38,13 @@ Imports:
     Rcpp(>= 0.12.17)
 RoxygenNote: 6.1.1
 LinkingTo: Rcpp, RcppArmadillo
-Suggests: testthat, httr, readxl
+Suggests: 
+    testthat,
+    httr,
+    readxl,
+    knitr,
+    rmarkdown,
+    quantmod,
+    zoo,
+    vars
+VignetteBuilder: knitr
