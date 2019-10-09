@@ -179,9 +179,8 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
                                confint           = 1.67,
                                hor               = 5)
 
-# Create and plot irfs
- plot_lin_panel <- plot_lin(results_panel)
- plot(plot_lin_panel[[1]])
+# Plot irfs
+ plot(results_panel)
 
 
 # Simulate and add instrument to data_set
@@ -217,8 +216,7 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
                                hor               = 5)
 
 # Create and plot irfs
- plot_lin_panel <- plot_lin(results_panel)
- plot(plot_lin_panel[[1]])
+ plot(results_panel)
 
 
 ##############################################################################
@@ -255,8 +253,7 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
                               hor                = 5)
 
 # Create and plot irfs
-plot_lin_panel <- plot_lin(results_panel)
-plot(plot_lin_panel[[1]])
+plot(results_panel)
 
 
 
