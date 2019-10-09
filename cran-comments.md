@@ -3,22 +3,14 @@
 ## Purpose
 
 
-* Fixed a bug for *lp_lin_panel()* and *lp_nl_panel()* regarding the construction of the 
-  endogenous and exogenous variables.
+* New S3 methods, *summary* and *plot*, for all main functions
 
-* Fixed a bug for *lp_nl_panel()* when using the switching variable. 
+* More flexible options for the HAC estimators, such as pre-whitening, sample 
+  size adjustment, etc. 
 
-* Fixed a bug for *lp_lin_panel()* and *lp_nl_panel()* when a pooling model is specified.
+* New vignette
 
-* New checks for *lp_lin_panel()* and *lp_nl_panel()* to see whether shock variable has been dropped during estimation, 
-  potentially because of co-linearity or identification issues.
-  
-* *lp_nl_panel()* now returns the (transformed) switching variable as a *tibble* along with the original data
-  for comparabaility.
-  
-* Updated documentation.  
-
-* Updated examples.
+* Updated documentation
   
 
 ## Test environments
