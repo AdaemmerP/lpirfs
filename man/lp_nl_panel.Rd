@@ -202,11 +202,9 @@ results_panel <-  lp_nl_panel(data_set           = data_set,
                                confint           = 1.67,
                                hor               = 5)
 
-# Create and plot irfs
- nl_plots <- plot_nl(results_panel)
+# Plot irfs
+ plot(results_panel)
 
- plot(nl_plots$gg_s1[[1]])
- plot(nl_plots$gg_s2[[1]])
 
 # Plot values of the transition function for USA between 1950 and 2016
  library(ggplot2)
@@ -258,11 +256,8 @@ results_panel <-  lp_nl_panel(data_set           = data_set,
                                confint           = 1.67,
                                hor               = 5)
 
-# Create and plot irfs
- nl_plots <- plot_nl(results_panel)
-
- plot(nl_plots$gg_s1[[1]])
- plot(nl_plots$gg_s2[[1]])
+# # Create and plot irfs
+ plot(results_panel)
 
 }
 

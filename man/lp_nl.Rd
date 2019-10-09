@@ -119,6 +119,8 @@ or by a simple dummy approach.
 
 # Load package
   library(lpirfs)
+  library(ggpubr)
+  library(gridExtra)
 
 # Load (endogenous) data
   endog_data <- interest_rules_var_data
