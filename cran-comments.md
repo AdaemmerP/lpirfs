@@ -3,7 +3,7 @@
 ## Purpose
 
 
-* New S3 methods, *summary* and *plot*, for all main functions
+* New S3 methods for all main functions to use *summary()* and *plot()* 
 
 * More flexible options for the HAC estimators, such as pre-whitening, sample 
   size adjustment, etc. 
@@ -14,7 +14,7 @@
   
 
 ## Test environments
-* local x86_64-pc-linux-gnu (64-bit), R version 3.5.2
+* local x86_64-pc-linux-gnu (64-bit), R version 3.6.1
 
 * ubuntu 14.04.5 (on travis-ci),      R version 3.4.4, R-oldrel, R-devel.
 
