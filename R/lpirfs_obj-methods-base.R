@@ -1,5 +1,5 @@
 #' Base methods for lpirfs_obj objects
-#' @name lpirfs_obj-class
+#' @name lpirfs_obj-methods-base
 
 NULL
 
