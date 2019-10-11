@@ -65,7 +65,7 @@ Examples can be found [here.](https://adaemmerp.github.io/lpirfs/README_docs.htm
 I am thankful to Òscar [Jordà](https://sites.google.com/site/oscarjorda/) for encouraging comments and helpful suggestions. I am also indebted to Sarah [Zubairy](https://sites.google.com/site/sarahzubairy/) for providing the Matlab code before the publication of their 
 [paper](https://www.journals.uchicago.edu/doi/10.1086/696277). 
 
-I greatly benefit from the helpful remarks by Jon [Danielsson](http://www.systemicrisk.ac.uk/people/jon-danielsson) and the profound *R*, *Rcpp* and *GitHub* knowledge of Philipp [Wittenberg](https://github.com/wittenberg) and Detlef (overflow) [Steuer](https://github.com/dsteuer).
+I greatly benefitted from the helpful remarks by Jon [Danielsson](http://www.systemicrisk.ac.uk/people/jon-danielsson) and the profound *R*, *Rcpp* and *GitHub* knowledge of Philipp [Wittenberg](https://github.com/wittenberg) and Detlef (overflow) [Steuer](https://github.com/dsteuer).
 Last but not least, I am grateful to Philipp Dybowski without whom I would have never started this project.
 
 All remaining errors are obviously mine. 
