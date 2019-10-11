@@ -1,6 +1,6 @@
 # lpirfs 0.1.6
 
-* New S3 methods, *summary* and *plot*, for all main functions
+* New S3 methods to use *summary()* and *plot()*, for all main functions
 
 * More flexible options for the HAC estimators, such as pre-whitening, sample 
   size adjustment, etc. 
