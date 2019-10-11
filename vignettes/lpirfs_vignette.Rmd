@@ -63,7 +63,7 @@ This vignette shows how to use *lpirfs* by replicating all figures of the paper
  library(ggpubr)
 
 
- # Choose data for switching variable (here Federal Funds Rate)
+ # Choose data for switching variable (here federal funds rate)
  switching_data <-  if_else(dplyr::lag(endog_data$Infl, 3) > 4.75, 1, 0)
 
 
