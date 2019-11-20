@@ -1,7 +1,7 @@
 Package: lpirfs
 Type: Package
 Title: Local Projections Impulse Response Functions
-Version: 0.1.5.9000
+Version: 0.1.6.9000
 Authors@R: c(
             person("Philipp", "Adämmer", 
                     email   = "adaemmer@hsu-hh.de", 
@@ -30,7 +30,6 @@ Imports:
     dplyr(>= 0.7.4),
     foreach(>= 1.4.3),
     ggplot2(>= 2.2.1),
-    ggpubr(>= 0.2.3), 
     gridExtra(>= 2.3),
     lmtest (>= 0.9-36), 
     plm(>= 1.6-6),
@@ -41,6 +40,7 @@ LinkingTo: Rcpp, RcppArmadillo
 Suggests: 
     testthat,
     httr,
+    ggpubr,
     readxl,
     knitr,
     rmarkdown,
