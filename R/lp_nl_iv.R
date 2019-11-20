@@ -109,7 +109,7 @@
 #'
 #' Schwarz, Gideon E. (1978). "Estimating the dimension of a model", \emph{Annals of Statistics}, 6 (2): 461–464.
 #'
-#' @import foreach
+#' @importFrom foreach foreach
 #' @examples
 #'\donttest{
 #'
