@@ -37,10 +37,10 @@ using namespace Rcpp;
 //' Schwarz, G.(1978). "Estimating the dimension of a model", \emph{Annals of Statistics}, 6 (2): 461–464.
 // [[Rcpp::export]]
 List ols_diagnost(NumericVector y, NumericMatrix x){
-  arma::mat xx, xx_one, yy, xpxi, xpxi_00, beta_cov;
-  arma::vec w1, beta, beta_00, resids, resids_mean, resids_00, resids_sq, resids_mean_sq, resids_sq_00;
-  int nobs, num_exog, num_restr, df_1, df_2 ;
-  double sigma_hat, y_bar, ssr, ssr_00, ssm, r_sq, r_sq_adj, var_eps, tp, ll, aic_c, aic, bic, f_stat;
+  arma::mat xx, xx_one, yy, xpxi, beta_cov;
+  arma::vec beta, resids, resids_mean, resids_sq, resids_mean_sq;
+  int num_exog, num_restr, df_1, df_2 ;
+  double nobs, sigma_hat, y_bar, ssr, ssm, r_sq, r_sq_adj, var_eps, tp, ll, aic_c, aic, bic, f_stat;
   double pi = 3.141593;
   List ret(10);
 

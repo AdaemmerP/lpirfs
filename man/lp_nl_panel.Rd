@@ -141,7 +141,7 @@ This function estimates nonlinear impulse responses by using local projections f
 
 # Swap the first two columns so that 'country' is the first (cross section) and 'year' the
 # second (time section) column
- jst_data <- jst_data \%>\%
+ jst_data <- jst_data                    \%>\%
              dplyr::filter(year <= 2013) \%>\%
              dplyr::select(country, year, everything())
 
@@ -166,15 +166,14 @@ This function estimates nonlinear impulse responses by using local projections f
                mutate(cay      = 100*(ca/gdp))                 \%>\%
                mutate(tnmort   = tloans - tmort)               \%>\%
                mutate(nmortgdp = 100*(tnmort/gdp))             \%>\%
-
                dplyr::select(country, year, mortgdp, stir, ltrate, lhpy,
                              lrgdp, lcpi, lriy, cay, nmortgdp)
 
 
 # Use data_sample from 1870 to 2013 and exclude observations from WWI and WWII
-  data_sample <-   seq(1870, 2016)[which(!(seq(1870, 2016) \%in\%
-                              c(seq(1914, 1918),
-                                seq(1939, 1947))))]
+  data_sample <-   seq(1870, 2016)[!(seq(1870, 2016) \%in\%
+                                  c(seq(1914, 1918),
+                                  seq(1939, 1947)))]
 
 # Estimate panel model
 results_panel <-  lp_nl_panel(data_set           = data_set,
@@ -256,11 +255,10 @@ results_panel <-  lp_nl_panel(data_set           = data_set,
                                confint           = 1.67,
                                hor               = 5)
 
-# # Create and plot irfs
+# Create and plot irfs
  plot(results_panel)
 
 }
-
 }
 \references{
 Croissant, Y., Millo, G. (2008). “Panel Data Econometrics in R: The plm Package.” \emph{Journal of Statistical Software}, 27(2), 1-43. doi:

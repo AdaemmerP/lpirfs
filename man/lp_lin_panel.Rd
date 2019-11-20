@@ -123,8 +123,8 @@ This function estimates impulse responses with local projections for panel data,
 
 # Swap the first two columns so that 'country' is the first (cross section) and 'year' the
 # second (time section) column
- jst_data <- jst_data \%>\%
-             dplyr::filter(year <= 2013) \%>\%
+ jst_data <- jst_data                     \%>\%
+             dplyr::filter(year <= 2013)  \%>\%
              dplyr::select(country, year, everything())
 
 # Prepare variables. This is based on the 'data.do' file
@@ -152,10 +152,9 @@ This function estimates impulse responses with local projections for panel data,
                              lhpy, lrgdp, lcpi, lriy, cay, nmortgdp)
 
 
-# Use data_sample from 1870 to 2013 and exclude observations during WWI and WWII
-  data_sample <-   seq(1870, 2013)[which(!(seq(1870, 2016) \%in\%
-                              c(seq(1914, 1918),
-                                seq(1939, 1947))))]
+# Use data from 1870 to 2013 and exclude observations during WWI and WWII
+ data_sample <-   seq(1870, 2013)[!(seq(1870, 2016) \%in\%
+                                  c(seq(1914, 1918), seq(1939, 1947)))]
 
 # Estimate panel model
 results_panel <-  lp_lin_panel(data_set          = data_set,
@@ -255,9 +254,8 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
 # Create and plot irfs
 plot(results_panel)
 
-
-
 }
+
 
 }
 \references{
