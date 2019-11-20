@@ -82,7 +82,7 @@
 #' Schwarz, Gideon E. (1978). "Estimating the dimension of a model", \emph{Annals of Statistics}, 6 (2): 461–464.
 #'
 #'@author Philipp Adämmer
-#'@importFrom foreach foreach
+#'@import foreach
 #'@examples
 #'\donttest{
 #'

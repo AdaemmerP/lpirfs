@@ -105,7 +105,7 @@
 #' Ravn, M.O., Uhlig, H. (2002). "On Adjusting the Hodrick-Prescott Filter for the Frequency of Observations."
 #' \emph{Review of Economics and Statistics}, 84(2), 371-376.
 #'
-#' @importFrom foreach foreach
+#' @import foreach
 #' @examples
 #'\donttest{
 #'                   ## Example without exogenous variables ##
