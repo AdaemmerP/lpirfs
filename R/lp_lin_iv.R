@@ -499,6 +499,12 @@ if(is.nan(specs$lags_criterion) == TRUE){
                          'AIC' = 2,
                          'BIC' = 3)
 
+  # Make list to store chosen lags
+  chosen_lags               <- list()
+
+  # Make matrix to store selected lags
+  chosen_lags_h             <- matrix(NaN, specs$hor,  1)
+
   # Loops to estimate local projections.
   lin_irfs <- foreach(s          = 1:specs$endog,
                       .packages   = 'lpirfs')  %dopar% { # Accounts for the reaction of the endogenous variable
@@ -546,6 +552,7 @@ if(is.nan(specs$lags_criterion) == TRUE){
                               diagnost_ols_each_h[h, 3]     <- get_diagnost[[5]]
                               diagnost_ols_each_h[h, 4]     <- stats::pf(get_diagnost[[5]], get_diagnost[[6]], get_diagnost[[7]], lower.tail = F)
 
+                              chosen_lags_h[h, 1]           <- lag_choice
 
                                         } else {
 
@@ -565,7 +572,7 @@ if(is.nan(specs$lags_criterion) == TRUE){
                                 diagnost_ols_each_h[h, 3]     <- get_diagnost[[5]]
                                 diagnost_ols_each_h[h, 4]     <- stats::pf(get_diagnost[[5]], get_diagnost[[6]], get_diagnost[[7]], lower.tail = F)
 
-
+                                chosen_lags_h[h, 1]           <- lag_choice
 
 
                             }
@@ -577,7 +584,9 @@ if(is.nan(specs$lags_criterion) == TRUE){
 
                         }
 
-                        return(list(irf_mean,  irf_low,  irf_up, diagnost_ols_each_h))
+                        return(list(irf_mean,  irf_low,  irf_up,
+                                    diagnost_ols_each_h,
+                                    chosen_lags_h))
                       }
 
   # Fill list with all OLS diagnostics
@@ -594,11 +603,16 @@ if(is.nan(specs$lags_criterion) == TRUE){
 
 
     diagnostic_list[[i]] <-  lin_irfs[[i]][[4]]
+    chosen_lags[[i]]     <-  lin_irfs[[i]][[5]]
 
   }
 
   # Name the list of diagnostics
   names(diagnostic_list)  <- paste("Endog. Variable:", specs$column_names , sep = " ")
+  names(chosen_lags)      <- paste("Endog. Variable:", specs$column_names , sep = " ")
+
+  specs$chosen_lags       <- chosen_lags
+
 
 }
 

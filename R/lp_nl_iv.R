@@ -486,6 +486,12 @@ lp_nl_iv <- function(endog_data,
                            'AIC' = 2,
                            'BIC' = 3)
 
+    # Make list to store chosen lags
+    chosen_lags               <- list()
+
+    # Make matrix to store selected lags
+    chosen_lags_h             <- matrix(NaN, specs$hor,  1)
+
     # --- Loops to estimate local projections.
     nl_irfs <- foreach(s         = 1:specs$endog,
                        .packages = 'lpirfs') %dopar% { # Accounts for shocks
@@ -529,6 +535,7 @@ lp_nl_iv <- function(endog_data,
                              diagnost_ols_each_h[h, 3]     <- get_diagnost[[5]]
                              diagnost_ols_each_h[h, 4]     <- stats::pf(get_diagnost[[5]], get_diagnost[[6]], get_diagnost[[7]], lower.tail = F)
 
+                             chosen_lags_h[h, 1]           <- lag_choice
 
                              irf_temp_s1_mean[1, h] <- b[2]
                              irf_temp_s1_low[1,  h] <- b[2] - std_err[2]
@@ -542,7 +549,8 @@ lp_nl_iv <- function(endog_data,
 
                          list(irf_temp_s1_mean, irf_temp_s1_low, irf_temp_s1_up,
                               irf_temp_s2_mean, irf_temp_s2_low, irf_temp_s2_up,
-                              diagnost_ols_each_h)
+                              diagnost_ols_each_h,
+                              chosen_lags_h)
                        }
 
     # List for OLS diagnostics
@@ -560,9 +568,15 @@ lp_nl_iv <- function(endog_data,
         irf_s2_up[i , ]    <- as.matrix(do.call(rbind, nl_irfs[[i]][6]))
 
         diagnostic_list[[i]] <-  nl_irfs[[i]][[7]]
-
+        chosen_lags[[i]]     <-  nl_irfs[[i]][[8]]
 
       }
+
+    # Name the list of diagnostics
+    names(diagnostic_list)  <- paste("Endog. Variable:", specs$column_names , sep = " ")
+    names(chosen_lags)      <- paste("Endog. Variable:", specs$column_names , sep = " ")
+
+    specs$chosen_lags       <- chosen_lags
 
   }
 

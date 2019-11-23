@@ -608,6 +608,13 @@ lp_nl <- function(endog_data,
                                      'AIC' = 2,
                                      'BIC' = 3)
 
+  # Make list to store chosen lags
+  chosen_lags <- list()
+
+  # Make matrix to store selected lags
+  chosen_lags_k             <- matrix(NaN, specs$endog,  1)
+  names(diagnost_each_k)    <- specs$column_names
+
  # --- Loops to estimate local projections.
   nl_irfs <- foreach(s         = 1:specs$endog,
                      .packages = 'lpirfs') %dopar% { # Accounts for shocks
@@ -668,6 +675,8 @@ lp_nl <- function(endog_data,
               diagnost_each_k[k, 3]     <- get_diagnost[[5]]
               diagnost_each_k[k, 4]     <- stats::pf(diagnost_each_k[k, 3], get_diagnost[[6]], get_diagnost[[7]], lower.tail = F)
 
+              # Save chosen lag length
+              chosen_lags_k[k] <- lag_choice
 
               }
 
@@ -682,18 +691,22 @@ lp_nl <- function(endog_data,
 
               # Save full summary matrix in list for each horizon
               diagnost_ols_each_h[[h]]             <- diagnost_each_k
+              chosen_lags[[h]]                <- chosen_lags_k
          }
 
-
+         # Give names to horizon
+           names(diagnost_ols_each_h)    <- paste("h", 1:specs$hor, sep = " ")
+           names(chosen_lags)            <- paste("h", 1:specs$hor, sep = " ")
 
           list(irf_temp_s1_mean, irf_temp_s1_low, irf_temp_s1_up,
                irf_temp_s2_mean, irf_temp_s2_low, irf_temp_s2_up,
-               diagnost_ols_each_h)
+               diagnost_ols_each_h, chosen_lags)
         }
 
 
   # List to save diagnostics
-  diagnostic_list <- list()
+  diagnostic_list  <- list()
+  chosen_lags_list <- list()
 
 # Fill arrays with local projection irfs
   for(i in 1:specs$endog){
@@ -718,12 +731,15 @@ lp_nl <- function(endog_data,
 
 
    # Fill list with all OLS diagnostics
-   diagnostic_list[[i]]        <- nl_irfs[[i]][[7]]
+   diagnostic_list[[i]]        <- nl_irfs[[i]][7]
+   chosen_lags_list[[i]]       <- nl_irfs[[i]][8]
 
   }
 
   # Give names to diagnostic List
-  names(diagnostic_list) <- paste("Shock:", specs$column_names, sep = " ")
+  names(diagnostic_list) <-  paste("Shock:", specs$column_names, sep = " ")
+  names(chosen_lags_list) <- paste("Shock:", specs$column_names, sep = " ")
+  specs$chosen_lags       <- chosen_lags_list
 
  }
 
