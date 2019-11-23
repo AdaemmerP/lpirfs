@@ -58,7 +58,7 @@ Having installed the compilers, you need to open a terminal and start R via 'PAT
 Yo can then install the package via *devtools::install_github("AdaemmerP/lpirfs")*
 
 ## How to use 
-Examples can be found [here.](https://adaemmerp.github.io/lpirfs/README_docs.html)
+My paper about the package can be found [here.](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3489976)
 
 
 ## Acknowledgements

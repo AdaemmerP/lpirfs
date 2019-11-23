@@ -61,8 +61,8 @@ via *devtools::install\_github(“AdaemmerP/lpirfs”)*
 
 ## How to use
 
-Examples can be found
-[here.](https://adaemmerp.github.io/lpirfs/README_docs.html)
+My paper about the package can be found
+[here.](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3489976)
 
 ## Acknowledgements
 
