@@ -1,3 +1,13 @@
+
+# lpirfs 0.1.6.9000
+
+
+* An integer/double issue with an Rcpp function has been resolved so that the package can also be installed on Oracle Solaris. 
+* Added the option to show how many lags are chosen when a lag length criterion is selected
+  
+
+
+
 # lpirfs 0.1.6
 
 

@@ -3,14 +3,11 @@
 ## Purpose
 
 
-* New S3 methods for all main functions to use *summary()* and *plot()* 
+* Resolved an integer/double issue with an Rcpp function so that the package can also be installed on Oracle Solaris. 
 
-* More flexible options for the HAC estimators, such as pre-whitening, sample 
-  size adjustment, etc. 
+* Added the option to show how many lags are chosen when a lag length criterion is selected
+  
 
-* New vignette
-
-* Updated documentation
   
 
 ## Test environments
