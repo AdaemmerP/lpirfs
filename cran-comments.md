@@ -2,10 +2,9 @@
 
 ## Purpose
 
-
 * Resolved an integer/double issue with an Rcpp function so that the package can also be installed on Oracle Solaris. 
 
-* Added the option to show how many lags are chosen when a lag length criterion is selected
+* Added an option to show how many lags were chosen when an information criterion has been used.
   
 
   
@@ -20,10 +19,9 @@
 ## Check results
 0 errors ✔ | 0 warnings ✔ | 1 note 
 
-checking installed package size ... NOTE
-  installed size is  6.1Mb
-  sub-directories of 1Mb or more:
-    libs   5.3Mb
- [8s/20s]
-  
-This is compiled code in the libs/ directory.  
+❯ checking installed package size ... NOTE
+    installed size is  9.7Mb
+    sub-directories of 1Mb or more:
+      libs   8.2Mb
+
+

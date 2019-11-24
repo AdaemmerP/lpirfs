@@ -76,7 +76,7 @@ A list containing:
                    Properties are equal to \emph{irf_lin_mean}.}
 
 \item{specs}{A list with properties of \emph{endog_data} for the plot function. It also contains
-            lagged data (y_lin and x_lin) used for the estimations of the impulse responses.}
+            lagged data (y_lin and x_lin) used for the estimations of the impulse responses, and the selected lag lengths when an information criterion has been used.}
 }
 \description{
 Compute linear impulse responses with identified shock and/or with 2SLS.

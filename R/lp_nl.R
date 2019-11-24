@@ -75,7 +75,7 @@
 #'                    robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s2_mean}.}
 #'
 #'\item{specs}{A list with properties of \emph{endog_data} for the plot function. It also contains
-#'             lagged data (y_nl and x_nl) used for the irf estimations.}
+#'             lagged data (y_nl and x_nl) used for the irf estimations, and the selected lag lengths when an information criterion has been used.}
 #'
 #'\item{fz}{A vector containing the values of the transition function F(z_{t-1}).}
 #'

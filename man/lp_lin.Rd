@@ -69,7 +69,7 @@ A list containing:
 the shock variable. The rows of each shown matrix then denotes the endogenous variable that reacts to the shock.}
 
 \item{specs}{A list with properties of \emph{endog_data} for the plot function. It also contains
-            lagged data (y_lin and x_lin) used for the irf estimations.}
+            lagged data (y_lin and x_lin) used for the irf estimations, and the selected lag lengths when an information criterion has been used.}
 }
 \description{
 Compute linear impulse responses with local projections by Jordà (2005).
