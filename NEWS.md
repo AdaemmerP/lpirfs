@@ -1,3 +1,5 @@
+# lpirfs 0.1.7.9000
+* Fixed an issue to correctly show summary statistics
 
 # lpirfs 0.1.7
 
