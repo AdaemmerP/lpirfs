@@ -436,7 +436,7 @@ lp_lin <- function(endog_data,
 
   # Make matrix to store selected lags
   chosen_lags_k             <- matrix(NaN, specs$endog,  1)
-  names(diagnost_each_k)    <- specs$column_names
+  # names(diagnost_each_k)    <- specs$column_names
 
 
  # Loops to estimate local projections.
@@ -504,6 +504,9 @@ lp_lin <- function(endog_data,
          irf_low[,  h + 1] <- t(b1_low %*% d[ , s])
          irf_up[,   h + 1] <- t(b1_up  %*% d[ , s])
 
+         # Give rownames
+          rownames(diagnost_each_k) <- paste("h", h, ":", specs$column_names, sep ="")
+
          # Save full summary matrix in list for each horizon
          diagnost_ols_each_h[[h]]        <- diagnost_each_k
          chosen_lags[[h]]                <- chosen_lags_k
@@ -511,8 +514,8 @@ lp_lin <- function(endog_data,
     }
 
      # Give names to horizon
-       names(diagnost_ols_each_h)    <- paste("h", 1:specs$hor, sep = " ")
-       names(chosen_lags)            <- paste("h", 1:specs$hor, sep = " ")
+     #  names(diagnost_ols_each_h)    <- paste("h", 1:specs$hor, sep = " ")
+     #  names(chosen_lags)            <- paste("h", 1:specs$hor, sep = " ")
 
        return(list(irf_mean,  irf_low,  irf_up, diagnost_ols_each_h, chosen_lags))
     }
@@ -535,8 +538,8 @@ lp_lin <- function(endog_data,
       irf_lin_up[,   1, i]   <- irf_lin_mean[, 1, i]
 
       # Fill list with all OLS diagnostics
-      diagnostic_list[[i]]        <- lin_irfs[[i]][4]
-      chosen_lags_list[[i]]       <- lin_irfs[[i]][5]
+      diagnostic_list[[i]]        <- lin_irfs[[i]][[4]]
+      chosen_lags_list[[i]]       <- lin_irfs[[i]][[5]]
 
     }
 
