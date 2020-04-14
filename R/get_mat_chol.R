@@ -42,7 +42,7 @@ get_mat_chol  <- function(y_lin, x_lin, endog_data, specs){
 
 
     # Build data based on 'optimal lag length
-    y_data      <- as.list(dplyr::as_tibble(y_lin[[specs$lags_endog_lin]]))
+    y_data      <- as.list(as.data.frame(y_lin[[specs$lags_endog_lin]]))
     x_data      <- x_lin[[specs$lags_endog_lin]]
 
     # Estimate OLS model and calculate residuals
