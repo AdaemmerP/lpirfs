@@ -243,8 +243,10 @@ lp_nl_iv <- function(endog_data,
   }
 
   # Check whether gamma is positive
-  if((gamma < 0)){
-    stop('Gamma has to be a positive number.')
+  if(isTRUE(use_logistic)){
+    if(gamma < 0){
+      stop('Gamma has to be a positive number.')
+    }
   }
 
   # Check whether 'confint' is given
