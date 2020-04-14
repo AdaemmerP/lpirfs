@@ -34,7 +34,7 @@ get_vals_switching <- function(data_set, specs){
  if(specs$model_type == 0 | specs$model_type == 1){
 
   # Convert switching data to tibble
-   data_set        <- as_tibble(data_set)
+   data_set        <- as.data.frame(data_set)
    names(data_set) <- "switch_name"
 
   # Decide whether to use HP filter.
@@ -91,7 +91,7 @@ get_vals_switching <- function(data_set, specs){
     switching_tbl <- data_set                                         %>%
                       dplyr::select(cross_id, date_id, specs$switching)     %>%
                       dplyr::group_by(cross_id)                             %>%
-                      dplyr::mutate_at(vars(specs$switching), funs(use_hp_dplyr(., specs$lambda))) %>%
+                      dplyr::mutate_at(vars(specs$switching), list(~use_hp_dplyr(., specs$lambda))) %>%
                       dplyr::rename(switching = specs$switching)            %>%
                       dplyr::ungroup()
 
@@ -109,7 +109,7 @@ get_vals_switching <- function(data_set, specs){
 
       fz_df <- fz_df %>%
                 dplyr::group_by(cross_id)                              %>%
-                dplyr::mutate_at(vars(fz), funs(lag_function(., 1)))   %>%
+                dplyr::mutate_at(vars(fz), list(~lag_function(., 1)))   %>%
                 dplyr::ungroup()
 
       fz    <- fz_df$fz
@@ -135,7 +135,7 @@ get_vals_switching <- function(data_set, specs){
 
       fz_df <- fz_df %>%
                 dplyr::group_by(cross_id)                              %>%
-                dplyr::mutate_at(vars(fz), funs(lag_function(., 1)))   %>%
+                dplyr::mutate_at(vars(fz), list(~lag_function(., 1)))   %>%
                 dplyr::ungroup()
 
       fz    <- fz_df$fz
