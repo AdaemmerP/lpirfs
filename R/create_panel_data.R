@@ -50,7 +50,7 @@ create_panel_data <- function(specs, data_set){
                                 dplyr::select(cross_id, date_id, specs$endog_data) %>%
                                 dplyr::group_by(cross_id)                          %>%
                                 dplyr::mutate_at(vars(specs$endog_data),
-                                       funs(cumul_function(., ii)))                %>%
+                                       list(~cumul_function(., ii)))                %>%
                                 dplyr::ungroup()
     }
 
@@ -65,7 +65,7 @@ create_panel_data <- function(specs, data_set){
                                 dplyr::select(cross_id, date_id, specs$endog_data)  %>%
                                 dplyr::group_by(cross_id)                  %>%
                                 dplyr::mutate_at(vars(specs$endog_data ),
-                                                 funs(dplyr::lead(., ii))) %>%
+                                                 list(~dplyr::lead(., ii))) %>%
                                 dplyr::ungroup()
     }
 
@@ -84,7 +84,7 @@ create_panel_data <- function(specs, data_set){
     x_reg_data    <- x_reg_data                                               %>%
                       dplyr::group_by(cross_id)                                %>%
                       dplyr::mutate_at(vars(specs$shock), diff_function)       %>%
-                      dplyr::rename_at(vars(specs$shock), funs(paste0("d",.))) %>%
+                      dplyr::rename_at(vars(specs$shock), list(~paste0("d",.))) %>%
                       dplyr::ungroup()
 
     # Rename shock variable
@@ -106,7 +106,7 @@ create_panel_data <- function(specs, data_set){
     x_instrument   <- x_instrument %>%
                           dplyr::group_by(cross_id)                                  %>%
                           dplyr::mutate_at(vars(specs$instrum), diff_function)       %>%
-                          dplyr::rename_at(vars(specs$instrum), funs(paste0("d",.))) %>%
+                          dplyr::rename_at(vars(specs$instrum), list(~paste0("d",.))) %>%
                           dplyr::ungroup()
 
     # Rename instrument
@@ -167,7 +167,7 @@ create_panel_data <- function(specs, data_set){
                         dplyr::group_by(cross_id)                                      %>%
                         dplyr::mutate_at(vars(-cross_id, -date_id), diff_function)     %>%
                         dplyr::ungroup()                                               %>%
-                        dplyr::rename_at(vars(-cross_id, -date_id), funs(paste0("d",.)))
+                        dplyr::rename_at(vars(-cross_id, -date_id), list(~paste0("d",.)))
 
   }
 
@@ -241,7 +241,7 @@ create_panel_data <- function(specs, data_set){
 
           fz_df <- fz_df %>%
                    dplyr::group_by(cross_id)                              %>%
-                   dplyr::mutate_at(vars(fz), funs(lag_function(., 1)))   %>%
+                   dplyr::mutate_at(vars(fz), list(~lag_function(., 1)))   %>%
                    dplyr::ungroup()
 
           fz    <- fz_df$fz
@@ -273,11 +273,11 @@ create_panel_data <- function(specs, data_set){
 
     # Make states of shock variable
     shock_s1        <- shock %>%
-                        dplyr::mutate_at(vars(-cross_id, -date_id), funs(shock_s1 = .*(1 - fz)))  %>%
+                        dplyr::mutate_at(vars(-cross_id, -date_id), list(shock_s1 = ~.*(1 - fz)))  %>%
                         dplyr::select(-shock)
 
     shock_s2        <- shock %>%
-                        dplyr::mutate_at(vars(-cross_id, -date_id), funs(shock_s2 = .*fz))        %>%
+                        dplyr::mutate_at(vars(-cross_id, -date_id), list(shock_s2 = ~.*fz))        %>%
                         dplyr::select(-shock)
 
     # Exclude shock variable from 'x_reg_data'
@@ -288,11 +288,11 @@ create_panel_data <- function(specs, data_set){
     x_linear_names  <- colnames(x_reg_data)[!colnames(x_reg_data) %in% c("cross_id", "date_id")]
 
     x_nl_s1         <- x_reg_data %>%
-                        dplyr::mutate_at(vars(-cross_id, -date_id), funs(s1 = .*(1 - fz))) %>%
+                        dplyr::mutate_at(vars(-cross_id, -date_id), list(s1 = ~.*(1 - fz))) %>%
                         dplyr::select(-one_of(x_linear_names))
 
     x_nl_s2         <- x_reg_data %>%
-                        dplyr::mutate_at(vars(-cross_id, -date_id), funs(s2 = .*fz))  %>%
+                        dplyr::mutate_at(vars(-cross_id, -date_id), list(s2 = ~.*fz))  %>%
                         dplyr::select(-one_of(x_linear_names))
 
     x_reg_data      <-  suppressMessages(dplyr::left_join(shock_s1, shock_s2) %>%
