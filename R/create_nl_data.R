@@ -48,11 +48,11 @@ create_nl_data <- function(specs, endog_data){
 
     # Create tibbles with exogenous regime data and combine them to one data set
     x_nl_s1      <- x_nl %>%
-                        dplyr::mutate_all(funs(s1 = .*(1 - fz)))  %>%
+                        dplyr::mutate_all(list(s1 = ~.*(1 - fz)))  %>%
                         dplyr::select(-one_of(linear_names))
 
     x_nl_s2      <- x_nl %>%
-                        dplyr::mutate_all(funs(s2 = .*fz))  %>%
+                        dplyr::mutate_all(list(s2 = ~.*fz))  %>%
                         dplyr::select(-one_of(linear_names))
 
     x_nl         <- cbind(x_nl_s1, x_nl_s2)
@@ -70,11 +70,11 @@ create_nl_data <- function(specs, endog_data){
     # Make states of shock
 
     shock_s1        <- shock %>%
-                          dplyr::mutate_all(funs(shock_s1 = .*(1 - fz)))  %>%
+                          dplyr::mutate_all(list(shock_s1 = ~.*(1 - fz)))  %>%
                           dplyr::select(-one_of(shock_name))
 
     shock_s2        <- shock %>%
-                          dplyr::mutate_all(funs(shock_s2 = .*fz))        %>%
+                          dplyr::mutate_all(list(shock_s2 = ~.*fz))        %>%
                           dplyr::select(-one_of(shock_name))
 
     # Add shock variable
@@ -187,11 +187,11 @@ create_nl_data <- function(specs, endog_data){
       linear_names   <- names(x_nl_temp)
 
       x_nl_s1        <- x_nl_temp %>%
-                        dplyr::mutate_all(funs(s1 = .*(1 - fz))) %>%
+                        dplyr::mutate_all(list(s1 = ~.*(1 - fz))) %>%
                         dplyr::select(-one_of(linear_names))
 
       x_nl_s2        <- x_nl_temp %>%
-                        dplyr::mutate_all(funs(s2 = .*fz))        %>%
+                        dplyr::mutate_all(list(s2 = ~.*fz))        %>%
                         dplyr::select(-one_of(linear_names))
 
       x_nl            <- cbind(x_nl_s1, x_nl_s2)
@@ -200,11 +200,11 @@ create_nl_data <- function(specs, endog_data){
   # Prepare states of instrument
       if(specs$model_type == 1){
       shock_s1      <- shock %>%
-                         dplyr::mutate_all(funs(shock_s1 = .*(1 - fz)))  %>%
+                         dplyr::mutate_all(list(shock_s1 = ~.*(1 - fz)))  %>%
                          dplyr::select(-one_of(shock_name))
 
       shock_s2      <- shock %>%
-                         dplyr::mutate_all(funs(shock_s2 = .*fz))        %>%
+                         dplyr::mutate_all(list(shock_s2 = ~.*fz))        %>%
                          dplyr::select(-one_of(shock_name))
 
   # Add state instruments
