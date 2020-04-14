@@ -292,11 +292,6 @@ lp_nl <- function(endog_data,
     stop('Please specify lambda for the HP-filter.')
   }
 
-  # Check whether 'gamma' is given
-  if(isTRUE(specs$use_logistic) & is.null(specs$gamma)){
-    stop('Please specify gamma for the transition function.')
-  }
-
   # Check whether 'confint' is given
   if(is.null(specs$confint)){
     stop('Please specify a value for the width of the confidence bands.')

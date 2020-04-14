@@ -27,7 +27,7 @@ LazyData: true
 NeedsCompilation: yes
 Imports: 
     doParallel(>= 1.0.11),
-    dplyr(>= 0.7.4),
+    dplyr(>= 0.8.0),
     foreach(>= 1.4.3),
     ggplot2(>= 2.2.1),
     gridExtra(>= 2.3),
