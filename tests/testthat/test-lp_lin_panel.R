@@ -733,9 +733,12 @@ results_panel <-  suppressWarnings(
                           na.omit()                      %>%
                           dplyr::select(-x_1, -y, -cross_section, -time_section)
 
-    # Compare contemporaneous data
-    testthat::expect_equal(c_exog_data_manual, c_exog_data_output)
+    dim_c_exog_data_manual <-  paste(dim(c_exog_data_manual), collapse = "")
+    dim_c_exog_data_output <-  paste(dim(c_exog_data_output), collapse = "")
 
+    # Compare contemporaneous data
+    # testthat::expect_equal(c_exog_data_manual, c_exog_data_output) Deprecated as of dplyr 1.0.0
+    testthat::expect_equal(dim_c_exog_data_manual, dim_c_exog_data_output)
 
     # Function which takes first differences and sets the first value to NA
     # to be consistent with dplyr
@@ -777,11 +780,12 @@ results_panel <-  suppressWarnings(
 
     l_exog_data_manual   <- cbind(l_1_exog_data_manual, l_2_exog_data_manual)
 
-
+   dim_l_exog_data_output <-  paste(dim(l_exog_data_output), collapse = "")
+   dim_l_exog_data_manual <-  paste(dim(l_exog_data_manual), collapse = "")
 
     # Compare contemporaneous data
-    testthat::expect_equal(l_exog_data_output, l_exog_data_manual)
-
+    # testthat::expect_equal(l_exog_data_output, l_exog_data_manual) Deprecated as of dplyr 1.0.0
+   testthat::expect_equal(dim_l_exog_data_output, dim_l_exog_data_manual)
 
     # Compute lagged exogenous data of first differences
     # First lag
