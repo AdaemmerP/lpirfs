@@ -728,7 +728,7 @@ results_panel <-  suppressWarnings(
     # Use lead = 3, because lag length = 2 AND lags of first differences = 2.
     c_exog_data_manual <- data_set %>%
                           dplyr::group_by(cross_section) %>%
-                          dplyr::mutate_at(vars(x_2, x_3, x_4), funs(dplyr::lead(., 3))) %>%
+                          dplyr::mutate_at(vars(x_2, x_3, x_4), list(~dplyr::lead(., 3))) %>%
                           dplyr::ungroup()               %>%
                           na.omit()                      %>%
                           dplyr::select(-x_1, -y, -cross_section, -time_section)
@@ -754,9 +754,9 @@ results_panel <-  suppressWarnings(
     # First lag
     l_1_exog_data_manual <- data_set %>%
                           dplyr::group_by(cross_section) %>%
-                          dplyr::mutate_at(vars(y), funs(diff_function(.)))  %>% # This constructs first differences
-                          dplyr::mutate_at(vars(y), funs(dplyr::lag(., 2)))  %>% # This accounts for the lag = 2 of first differences
-                          dplyr::mutate_at(vars(x_2, x_3, x_4), funs(dplyr::lag(., 1))) %>% # This is the first lag of exogenous data
+                          dplyr::mutate_at(vars(y), list(~diff_function(.)))  %>% # This constructs first differences
+                          dplyr::mutate_at(vars(y), list(~dplyr::lag(., 2)))  %>% # This accounts for the lag = 2 of first differences
+                          dplyr::mutate_at(vars(x_2, x_3, x_4), list(~dplyr::lag(., 1))) %>% # This is the first lag of exogenous data
                           dplyr::ungroup()                %>%
                           na.omit()                       %>%
                           dplyr::select(-x_1, -y, -cross_section, -time_section) %>%
@@ -767,9 +767,9 @@ results_panel <-  suppressWarnings(
     # Second lag
     l_2_exog_data_manual <- data_set %>%
                             dplyr::group_by(cross_section) %>%
-                            dplyr::mutate_at(vars(y), funs(diff_function(.)))  %>% # This constructs first differences
-                            dplyr::mutate_at(vars(y), funs(dplyr::lag(., 2)))  %>% # This accounts for the lag = 2 of first differences
-                            dplyr::mutate_at(vars(x_2, x_3, x_4), funs(dplyr::lag(., 2))) %>%  # This is the second lag of exogenous data
+                            dplyr::mutate_at(vars(y), list(~diff_function(.)))  %>% # This constructs first differences
+                            dplyr::mutate_at(vars(y), list(~dplyr::lag(., 2)))  %>% # This accounts for the lag = 2 of first differences
+                            dplyr::mutate_at(vars(x_2, x_3, x_4), list(~dplyr::lag(., 2))) %>%  # This is the second lag of exogenous data
                             dplyr::ungroup()                                               %>%
                             na.omit()                                                      %>%
                             dplyr::select(-x_1, -y, -cross_section, -time_section)         %>%
@@ -791,8 +791,8 @@ results_panel <-  suppressWarnings(
     # First lag
     dl_1_exog_data_manual <- data_set %>%
                             dplyr::group_by(cross_section) %>%
-                            dplyr::mutate_at(vars(x_2, x_3, x_4), funs(diff_function(.)))  %>% # This constructs first differences
-                            dplyr::mutate_at(vars(x_2, x_3, x_4), funs(dplyr::lag(., 1)))  %>% # Take first lag of first differences
+                            dplyr::mutate_at(vars(x_2, x_3, x_4), list(~diff_function(.)))  %>% # This constructs first differences
+                            dplyr::mutate_at(vars(x_2, x_3, x_4), list(~dplyr::lag(., 1)))  %>% # Take first lag of first differences
                             dplyr::ungroup()                %>%
                             dplyr::select(-x_1, -y, -cross_section, -time_section) %>%
                             dplyr::rename(dx_2_lag_1 = x_2,
@@ -802,8 +802,8 @@ results_panel <-  suppressWarnings(
     # Second lag
     dl_2_exog_data_manual <- data_set %>%
                             dplyr::group_by(cross_section) %>%
-                            dplyr::mutate_at(vars(x_2, x_3, x_4), funs(diff_function(.)))  %>% # This constructs first differences
-                            dplyr::mutate_at(vars(x_2, x_3, x_4), funs(dplyr::lag(., 2)))  %>% # Take second lag of first differences
+                            dplyr::mutate_at(vars(x_2, x_3, x_4), list(~diff_function(.)))  %>% # This constructs first differences
+                            dplyr::mutate_at(vars(x_2, x_3, x_4), list(~dplyr::lag(., 2)))  %>% # Take second lag of first differences
                             dplyr::ungroup()                                               %>%
                             dplyr::select(-x_1, -y, -cross_section, -time_section)         %>%
                             dplyr::rename(dx_2_lag_2 = x_2,
@@ -864,13 +864,13 @@ results_panel <-  suppressWarnings(
      time_section  <- rep(seq(1,TS, 1), N)
 
      data_set    <- tibble(cross_section, time_section) %>%
-       group_by(cross_section) %>%
-       mutate(x_1 = rnorm(TS)) %>%
-       mutate(x_2 = rnorm(TS)) %>%
-       mutate(x_3 = rnorm(TS)) %>%
-       mutate(x_4 = rnorm(TS)) %>%
-       mutate(y   = 0.3*x_1 + 0.4*x_2 + 0.5*x_3 + 0.6*x_4 + rnorm(TS)) %>%
-       ungroup()
+                     group_by(cross_section) %>%
+                     mutate(x_1 = rnorm(TS)) %>%
+                     mutate(x_2 = rnorm(TS)) %>%
+                     mutate(x_3 = rnorm(TS)) %>%
+                     mutate(x_4 = rnorm(TS)) %>%
+                     mutate(y   = 0.3*x_1 + 0.4*x_2 + 0.5*x_3 + 0.6*x_4 + rnorm(TS)) %>%
+                     ungroup()
 
               # Estimate panel model
               testthat::expect_error(lp_lin_panel(data_set          = data_set,
