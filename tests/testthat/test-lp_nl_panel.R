@@ -976,7 +976,7 @@ test_that("Check output of switching variable I", {
                                      hor               = 3)
 
   # Test whether shock variable is correct
-  testthat::expect_equal(results_nl$fz$fz[, 1], data_set$x_1)
+  testthat::expect_equal(results_nl$fz$fz, data_set$x_1)
 
 
 
@@ -988,7 +988,7 @@ test_that("Check output of switching variable I", {
   data_set_lag <- data_set %>%
                   arrange(cross_section, time_section) %>%
                   group_by(cross_section)              %>%
-                  mutate_at(vars(y), funs(dplyr::lag(., 1))) %>%
+                  mutate_at(vars(y), list(~dplyr::lag(., 1))) %>%
                   ungroup()
 
   lag_indicator <-  !is.na(data_set_lag$y)
@@ -1026,7 +1026,7 @@ test_that("Check output of switching variable II", {
                             robust_cov        = "vcovSCC",
 
                             switching         = "x_1",
-                            lag_switching     = TRUE,
+                            lag_switching     = T,
                             use_logistic      = FALSE,
                             use_hp            = FALSE,
                             lambda            = 3,
@@ -1046,7 +1046,7 @@ test_that("Check output of switching variable II", {
 
   lag_dplyr  <- data_set %>%
                 group_by(cross_section) %>%
-                           mutate_at(vars(x_1), funs(dplyr::lag(.,1))) %>%
+                           mutate_at(vars(x_1), list(~dplyr::lag(.,1))) %>%
                            ungroup() %>%
                            select(x_1)  %>%
                            as.matrix()  %>%
@@ -1124,7 +1124,7 @@ test_that("Check output of switching variable III", {
   # Compute manual values of switching variable
   logistic_dplyr  <- data_set %>%
                     group_by(cross_section) %>%
-                    mutate_at(vars(x_1), funs(logistic_function(.))) %>%
+                    mutate_at(vars(x_1), list(~logistic_function(.))) %>%
                     ungroup() %>%
                     select(x_1)  %>%
                     as.matrix()  %>%
@@ -1144,7 +1144,7 @@ test_that("Check output of switching variable III", {
   data_set_lag <- data_set %>%
                   arrange(cross_section, time_section) %>%
                   group_by(cross_section)              %>%
-                  mutate_at(vars(y), funs(dplyr::lag(., 1))) %>%
+                  mutate_at(vars(y), list(~dplyr::lag(., 1))) %>%
                   ungroup()
 
   lag_indicator <-  !is.na(data_set_lag$y)
@@ -1212,8 +1212,8 @@ test_that("Check output of switching variable IV", {
   # Compute manual switching values based on logistic function
   fz_dplyr  <- data_set %>%
                 group_by(cross_section) %>%
-                mutate_at(vars(x_1), funs(logistic_function(.))) %>%
-                mutate_at(vars(x_1), funs(dplyr::lag(., 1)))     %>%
+                mutate_at(vars(x_1), list(~logistic_function(.))) %>%
+                mutate_at(vars(x_1), list(~dplyr::lag(., 1)))     %>%
                 ungroup() %>%
                 select(x_1)  %>%
                 as.matrix()  %>%
@@ -1234,7 +1234,7 @@ test_that("Check output of switching variable IV", {
   data_set_lag <- data_set %>%
                   arrange(cross_section, time_section) %>%
                   group_by(cross_section)              %>%
-                  mutate_at(vars(y), funs(dplyr::lag(., 1))) %>%
+                  mutate_at(vars(y), list(~dplyr::lag(., 1))) %>%
                   ungroup()
 
   lag_indicator <-  !is.na(data_set_lag$y)
