@@ -130,7 +130,7 @@ create_panel_data <- function(specs, data_set){
   # Create lagged exogenous data
   if(!is.null(specs$l_exog_data)){
 
-    # Make lag sequence
+    ## Make lag sequence
     lags_exog     <- seq(specs$lags_exog_data)
     lag_names     <- paste("lag", lags_exog,  sep = "_")
 
@@ -145,15 +145,22 @@ create_panel_data <- function(specs, data_set){
                       dplyr::select(-specs$l_exog_data)#  cross_id, date_id, contains("lag_"))
 
 
-
-    # lag_functions <- lapply(lags_exog, function(x) function(col) dplyr::lag(col, x))
+    # Make lag sequence
+    # lags_exog      <- seq(specs$lags_exog_data)
     #
-    # l_x_data      <-  x_data %>%
+    # # Lag function
+    # lag_functions  <- lapply(lags_exog, function(x) function(col) dplyr::lag(col, x))
+    #
+    # # Make labels for lagged variables
+    # col_lag_labels <- paste(unlist(lapply(specs$l_exog_data, rep, max(lags_exog))), "_lag_", lags_exog, sep = "")
+    #
+    # # Make and get lagged data
+    # l_x_data       <- x_data %>%
     #                   dplyr::select(cross_id, date_id, specs$l_exog_data) %>%
     #                   dplyr::group_by(cross_id)                           %>%
-    #                   dplyr::mutate(across(specs$l_exog_data, lag_functions, .names = "{col}_lag_{lags_exog}")) %>%
+    #                   dplyr::mutate(across(specs$l_exog_data, lag_functions, .names = "{col_lag_labels}")) %>% #
     #                   dplyr::ungroup()                                    %>%
-    #                   dplyr::select(cross_id, date_id, contains("lag_"))
+    #                   dplyr::select(-specs$l_exog_data)
 
 
 
