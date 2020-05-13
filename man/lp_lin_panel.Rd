@@ -227,32 +227,33 @@ results_panel <-  lp_lin_panel(data_set          = data_set,
 data_sample <-   seq(2000, 2012)
 
 # Estimate panel model with gmm
-# This example gives a warning at each iteration. The data set is not well suited for
-# GMM as GMM is based on N-asymptotics and the data set only contains 27 countries
-
-results_panel <-  lp_lin_panel(data_set          = data_set,
-                              data_sample        = data_sample,
-                              endog_data         = "mortgdp",
-                              cumul_mult         = TRUE,
-
-                              shock              = "stir",
-                              diff_shock         = TRUE,
-
-                              use_gmm            = TRUE,
-                              gmm_model          = "onestep",
-                              gmm_effect         = "twoways",
-                              gmm_transformation = "ld",
-
-                              l_exog_data        = "mortgdp",
-                              lags_exog_data     = 2,
-                              l_fd_exog_data     = colnames(data_set)[c(4, 6)],
-                              lags_fd_exog_data  = 1,
-
-                              confint            = 1.67,
-                              hor                = 5)
-
+# This example (please uncomment) gives a warning at each iteration.
+# The data set is not well suited for GMM as GMM is based on N-asymptotics
+# and the data set only contains 27 countries
+#
+# results_panel <-  lp_lin_panel(data_set          = data_set,
+#                              data_sample        = data_sample,
+#                              endog_data         = "mortgdp",
+#                              cumul_mult         = TRUE,
+#
+#                              shock              = "stir",
+#                              diff_shock         = TRUE,
+#
+#                              use_gmm            = TRUE,
+#                              gmm_model          = "onestep",
+#                              gmm_effect         = "twoways",
+#                              gmm_transformation = "ld",
+#
+#                              l_exog_data        = "mortgdp",
+#                              lags_exog_data     = 2,
+#                              l_fd_exog_data     = colnames(data_set)[c(4, 6)],
+#                              lags_fd_exog_data  = 1,
+#
+#                              confint            = 1.67,
+#                              hor                = 5)
+#
 # Create and plot irfs
-plot(results_panel)
+# plot(results_panel)
 
 }
 

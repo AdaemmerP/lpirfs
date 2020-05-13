@@ -165,36 +165,37 @@
 #'
 #'
 #' # Estimate panel model with gmm
-#' # This example gives a warning at each iteration. The data set is not well suited for
+#' # This example (please uncomment) gives a warning at each iteration.
+#' # The data set is not well suited for
 #' # GMM as GMM is based on N-asymptotics and the data set only contains 27 countries
 #'
-#' results_panel <-  lp_nl_panel(data_set           = data_set,
-#'                                data_sample       = data_sample,
-#'                                endog_data        = "mortgdp",
-#'                                cumul_mult        = TRUE,
+#' # results_panel <-  lp_nl_panel(data_set           = data_set,
+#' #                               data_sample       = data_sample,
+#' #                               endog_data        = "mortgdp",
+#' #                               cumul_mult        = TRUE,
+#' #
+#' #                               shock             = "stir",
+#' #                               diff_shock        = TRUE,
+#' #
+#' #                               use_gmm            = TRUE,
+#' #                               gmm_model          = "onestep",
+#' #                               gmm_effect         = "twoways",
+#' #                               gmm_transformation = "ld",
+#' #
+#' #                               switching         = "lrgdp",
+#' #                               lag_switching     = TRUE,
+#' #                               use_hp            = TRUE,
+#' #                               lambda            = 6.25,
+#' #                               gamma             = 10,
+#' #
+#' #                               l_exog_data       = "mortgdp",
+#' #                               lags_exog_data    = 1,
+#' #
+#' #                               confint           = 1.67,
+#' #                               hor               = 5)
 #'
-#'                                shock             = "stir",
-#'                                diff_shock        = TRUE,
-#'
-#'                                use_gmm            = TRUE,
-#'                                gmm_model          = "onestep",
-#'                                gmm_effect         = "twoways",
-#'                                gmm_transformation = "ld",
-#'
-#'                                switching         = "lrgdp",
-#'                                lag_switching     = TRUE,
-#'                                use_hp            = TRUE,
-#'                                lambda            = 6.25,
-#'                                gamma             = 10,
-#'
-#'                                l_exog_data       = "mortgdp",
-#'                                lags_exog_data    = 1,
-#'
-#'                                confint           = 1.67,
-#'                                hor               = 5)
-#'
-#'# Create and plot irfs
-#'  plot(results_panel)
+#' # Create and plot irfs
+#' # plot(results_panel)
 #'
 #'}
 lp_nl_panel <- function(
