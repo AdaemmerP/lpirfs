@@ -130,39 +130,41 @@ create_panel_data <- function(specs, data_set){
   # Create lagged exogenous data
   if(!is.null(specs$l_exog_data)){
 
-    ## Make lag sequence
-    lags_exog     <- seq(specs$lags_exog_data)
-    lag_names     <- paste("lag", lags_exog,  sep = "_")
-
-    # Create lag function to use with dplyr
-    lag_functions <- stats::setNames(paste("dplyr::lag(., ", lags_exog, ")"), lag_names)
-
-    l_x_data      <-  x_data %>%
-                      dplyr::select(cross_id, date_id, specs$l_exog_data) %>%
-                      dplyr::group_by(cross_id)                           %>%
-                      dplyr::mutate_at(vars(specs$l_exog_data), funs_(lag_functions))  %>%
-                      dplyr::ungroup()                                    %>%
-                      dplyr::select(-specs$l_exog_data)#  cross_id, date_id, contains("lag_"))
-
-
-    # Make lag sequence
-    # lags_exog      <- seq(specs$lags_exog_data)
+    #--- Deprecated
+    # # Make lag sequence
+    # lags_exog     <- seq(specs$lags_exog_data)
+    # lag_names     <- paste("lag", lags_exog,  sep = "_")
     #
-    # # Lag function
-    # lag_functions  <- lapply(lags_exog, function(x) function(col) dplyr::lag(col, x))
+    # # Create lag function to use with dplyr
+    # lag_functions <- stats::setNames(paste("dplyr::lag(., ", lags_exog, ")"), lag_names)
     #
-    # # Make labels for lagged variables
-    # col_lag_labels <- paste(unlist(lapply(specs$l_exog_data, rep, max(lags_exog))), "_lag_", lags_exog, sep = "")
-    #
-    # # Make and get lagged data
-    # l_x_data       <- x_data %>%
+    # l_x_data      <-  x_data %>%
     #                   dplyr::select(cross_id, date_id, specs$l_exog_data) %>%
     #                   dplyr::group_by(cross_id)                           %>%
-    #                   dplyr::mutate(across(specs$l_exog_data, lag_functions, .names = "{col_lag_labels}")) %>% #
+    #                   dplyr::mutate_at(vars(specs$l_exog_data), funs_(lag_functions))  %>%
     #                   dplyr::ungroup()                                    %>%
-    #                   dplyr::select(-specs$l_exog_data)
+    #                   dplyr::select(-specs$l_exog_data) #cross_id, date_id, contains("lag_")) #
+    # ---
 
+    # Make lag sequence
+    lags_exog      <- seq(specs$lags_exog_data)
 
+    # Lag function
+    lag_functions  <- lapply(lags_exog, function(x) function(col) dplyr::lag(col, x))
+
+    # Make labels for lagged variables
+    col_lag_labels <- paste(unlist(lapply(specs$l_exog_data, rep, max(lags_exog))), "_lag_", lags_exog, sep = "")
+
+    # Make and get lagged data
+    l_x_data       <- x_data %>%
+                      dplyr::select(cross_id, date_id, specs$l_exog_data)     %>%
+                      dplyr::group_by(cross_id)                               %>%
+                      dplyr::mutate(across(specs$l_exog_data, lag_functions)) %>%
+                      dplyr::ungroup()                                        %>%
+                      dplyr::select(-specs$l_exog_data)
+
+    # Rename columns
+    colnames(l_x_data)[3:dim(l_x_data)[2]] <- col_lag_labels
 
 
     # Use lagged exogenous data as regressor
@@ -207,24 +209,49 @@ create_panel_data <- function(specs, data_set){
   # Create lagged exogenous data of first differences
   if(!is.null(specs$l_fd_exog_data)){
 
+    #--- Deprecated
+    # Specify column names to choose
+    # specs$l_fd_exog_data <- paste("d", specs$l_fd_exog_data, sep = "")
+
+    # # Make lag sequence
+    # lags_exog     <- seq(specs$lags_fd_exog_data)
+    # lag_names     <- paste("lag", lags_exog,  sep = "_")
+    #
+    # # Create lag function to use with dplyr
+    # lag_functions <- stats::setNames(paste("dplyr::lag(., ", lags_exog, ")"), lag_names)
+    #
+    # # Create data
+    # ld_x_data     <- d_x_data                                                            %>%
+    #                   dplyr::select(cross_id, date_id, specs$l_fd_exog_data )            %>%
+    #                   dplyr::group_by(cross_id)                                          %>%
+    #                   dplyr::mutate_at(vars(specs$l_fd_exog_data), funs_(lag_functions)) %>%
+    #                   dplyr::ungroup()                                                   %>%
+    #                   dplyr::select(-specs$l_fd_exog_data)# cross_id, date_id, contains("lag_")) #
+    # ---
+
     # Specify column names to choose
     specs$l_fd_exog_data <- paste("d", specs$l_fd_exog_data, sep = "")
 
     # Make lag sequence
-    lags_exog     <- seq(specs$lags_fd_exog_data)
-    lag_names     <- paste("lag", lags_exog,  sep = "_")
+    dlags_exog      <- seq(specs$lags_fd_exog_data)
 
-    # Create lag function to use with dplyr
-    lag_functions <- stats::setNames(paste("dplyr::lag(., ", lags_exog, ")"), lag_names)
+    # Lag function
+    lag_functions  <- lapply(dlags_exog, function(x) function(col) dplyr::lag(col, x))
 
-    # Create data
-    ld_x_data     <- d_x_data                                                            %>%
-                      dplyr::select(cross_id, date_id, specs$l_fd_exog_data )            %>%
-                      dplyr::group_by(cross_id)                                          %>%
-                      dplyr::mutate_at(vars(specs$l_fd_exog_data), funs_(lag_functions)) %>%
-                      dplyr::ungroup()                                                   %>%
-                      dplyr::select(-specs$l_fd_exog_datacontains) # cross_id, date_id, contains("lag_")) #
+    # Make labels for lagged variables
+    col_dlag_labels <- paste(unlist(lapply(specs$l_fd_exog_data, rep, max(dlags_exog))), "_lag_", dlags_exog, sep = "")
 
+    # Make and get lagged data
+    ld_x_data       <- d_x_data %>%
+                      dplyr::select(cross_id, date_id, specs$l_fd_exog_data) %>%
+                      dplyr::group_by(cross_id)                           %>%
+                      dplyr::mutate(across(specs$l_fd_exog_data, lag_functions)) %>% # , .names = "{col_lag_labels}")
+                      dplyr::ungroup()                                    %>%
+                      dplyr::select(-specs$l_fd_exog_data)
+
+
+    # Rename columns
+    colnames(ld_x_data)[3:dim(ld_x_data)[2]] <- col_dlag_labels
 
     # Use lags of first differences as regressors
     x_reg_data    <- suppressMessages(x_reg_data %>%
