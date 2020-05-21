@@ -119,8 +119,9 @@ or by a simple dummy approach.
 
 # Load package
   library(lpirfs)
-  library(ggpubr)
   library(gridExtra)
+  library(ggpubr)
+
 
 # Load (endogenous) data
   endog_data <- interest_rules_var_data
@@ -146,11 +147,11 @@ or by a simple dummy approach.
  plot(results_nl)
 
 # Make and save all plots
-  nl_plots <- plot_nl(results_nl)
+ nl_plots <- plot_nl(results_nl)
 
 # Save plots based on states
-  s1_plots <- sapply(nl_plots$gg_s1, ggplotGrob)
-  s2_plots <- sapply(nl_plots$gg_s2, ggplotGrob)
+ s1_plots <- sapply(nl_plots$gg_s1, ggplotGrob)
+ s2_plots <- sapply(nl_plots$gg_s2, ggplotGrob)
 
 # Show first irf of each state
   plot(s1_plots[[1]])
@@ -163,7 +164,7 @@ or by a simple dummy approach.
                      ## Example with exogenous variables ##
 
 # Load (endogenous) data
-  endog_data <- interest_rules_var_data
+ endog_data <- interest_rules_var_data
 
 # Choose data for switching variable (here Federal Funds Rate)
 # Important: The switching variable does not have to be used within the VAR!
