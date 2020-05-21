@@ -817,7 +817,8 @@ results_panel <-  suppressWarnings(
 
 
     # Compare lagged exogenous data of first differences
-    testthat::expect_equal(dl_exog_data_manual, dl_exog_data_output)
+    # Use rowSums due to different order of manual and output data
+    testthat::expect_equal(rowSums(dl_exog_data_manual), rowSums(dl_exog_data_output))
 
   })
 
