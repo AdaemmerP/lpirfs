@@ -27,7 +27,7 @@ LazyData: true
 NeedsCompilation: yes
 Imports: 
     doParallel(>= 1.0.11),
-    dplyr(>= 0.8.99.9002),
+    dplyr(>= 1.0.0),
     foreach(>= 1.4.3),
     ggplot2(>= 2.2.1),
     ggpubr(>= 0.2.3),
@@ -36,7 +36,7 @@ Imports:
     plm(>= 1.6-6),
     sandwich(>= 2.5-0),
     Rcpp(>= 0.12.17)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 LinkingTo: Rcpp, RcppArmadillo
 Suggests: 
     testthat,
