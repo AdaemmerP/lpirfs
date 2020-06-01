@@ -1,7 +1,7 @@
 # lpirfs 0.1.7.9000
 
-* Fixed compatibility issues with upcoming dplyr 1.0.0.
-* Fixed one issue to correctly show summary statistics
+* Fixed tests and deprecated functions to be compatible with new dplyr 1.0.0.
+* Fixed an issue to correctly show summary statistics
 
 
 # lpirfs 0.1.7
