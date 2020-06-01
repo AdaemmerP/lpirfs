@@ -4,7 +4,8 @@
 \name{ag_data}
 \alias{ag_data}
 \title{Data to estimate fiscal multipliers}
-\format{A \link{tibble} with 248 quarterly observations (rows) and 7 variables (columns):
+\format{
+A \link{tibble} with 248 quarterly observations (rows) and 7 variables (columns):
 \describe{
   \item{Year}{Year of observation.}
   \item{Quarter}{Quarter of observation.}
@@ -15,7 +16,8 @@
   \item{GDP_MA}{7-quarter moving average growth rate of GDP.}
   \item{Gov_shock_mean}{Identified government spending shock. For details see Supplementary Appendix of Ramey and Zubairy (2018).}
 }
-Sample: 1948:IV - 2008:IV}
+Sample: 1948:IV - 2008:IV
+}
 \source{
 \url{https://www.journals.uchicago.edu/doi/10.1086/696277}
 }

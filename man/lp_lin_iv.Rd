@@ -4,12 +4,27 @@
 \alias{lp_lin_iv}
 \title{Compute linear impulse responses with identified shock and/or with 2SLS}
 \usage{
-lp_lin_iv(endog_data, shock = NULL, instr = NULL, use_twosls = FALSE,
-  instrum = NULL, lags_endog_lin = NULL, exog_data = NULL,
-  lags_exog = NULL, contemp_data = NULL, lags_criterion = NaN,
-  max_lags = NaN, trend = NULL, confint = NULL, use_nw = TRUE,
-  nw_lag = NULL, nw_prewhite = FALSE, adjust_se = FALSE,
-  hor = NULL, num_cores = 1)
+lp_lin_iv(
+  endog_data,
+  shock = NULL,
+  instr = NULL,
+  use_twosls = FALSE,
+  instrum = NULL,
+  lags_endog_lin = NULL,
+  exog_data = NULL,
+  lags_exog = NULL,
+  contemp_data = NULL,
+  lags_criterion = NaN,
+  max_lags = NaN,
+  trend = NULL,
+  confint = NULL,
+  use_nw = TRUE,
+  nw_lag = NULL,
+  nw_prewhite = FALSE,
+  adjust_se = FALSE,
+  hor = NULL,
+  num_cores = 1
+)
 }
 \arguments{
 \item{endog_data}{A \link{data.frame}, containing the values of the dependent variable(s).}

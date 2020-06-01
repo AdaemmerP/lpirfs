@@ -4,16 +4,35 @@
 \alias{lp_lin_panel}
 \title{Compute linear impulse responses with local projections for panel data}
 \usage{
-lp_lin_panel(data_set = NULL, data_sample = "Full",
-  endog_data = NULL, cumul_mult = TRUE, shock = NULL,
-  diff_shock = TRUE, iv_reg = FALSE, instrum = NULL,
-  panel_model = "within", panel_effect = "individual",
-  robust_cov = NULL, robust_method = NULL, robust_type = NULL,
-  robust_cluster = NULL, robust_maxlag = NULL, use_gmm = FALSE,
-  gmm_model = "onestep", gmm_effect = "twoways",
-  gmm_transformation = "d", c_exog_data = NULL, l_exog_data = NULL,
-  lags_exog_data = NaN, c_fd_exog_data = NULL, l_fd_exog_data = NULL,
-  lags_fd_exog_data = NaN, confint = NULL, hor = NULL)
+lp_lin_panel(
+  data_set = NULL,
+  data_sample = "Full",
+  endog_data = NULL,
+  cumul_mult = TRUE,
+  shock = NULL,
+  diff_shock = TRUE,
+  iv_reg = FALSE,
+  instrum = NULL,
+  panel_model = "within",
+  panel_effect = "individual",
+  robust_cov = NULL,
+  robust_method = NULL,
+  robust_type = NULL,
+  robust_cluster = NULL,
+  robust_maxlag = NULL,
+  use_gmm = FALSE,
+  gmm_model = "onestep",
+  gmm_effect = "twoways",
+  gmm_transformation = "d",
+  c_exog_data = NULL,
+  l_exog_data = NULL,
+  lags_exog_data = NaN,
+  c_fd_exog_data = NULL,
+  l_fd_exog_data = NULL,
+  lags_fd_exog_data = NaN,
+  confint = NULL,
+  hor = NULL
+)
 }
 \arguments{
 \item{data_set}{A \link{data.frame}, containing the panel data set. The first column has to be the

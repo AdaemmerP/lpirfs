@@ -4,13 +4,15 @@
 \name{interest_rules_var_data}
 \alias{interest_rules_var_data}
 \title{Data to estimate the effects of interest rate rules for monetary policy}
-\format{A \link{tibble} with 193 quarterly observations (rows) and 3 variables (columns):
+\format{
+A \link{tibble} with 193 quarterly observations (rows) and 3 variables (columns):
 \describe{
   \item{GDP_gap}{Percentage difference between real GDP and potential GDP (Congressional Budget Office).}
   \item{Infl}{Inflation: Percentage change in the GDP, chain weighted price index at annual rate.}
   \item{FF}{Federal funds rate: quarterly average of daily rates.}
 }
-Sample: 1955:I - 2003:I}
+Sample: 1955:I - 2003:I
+}
 \source{
 \url{https://www.aeaweb.org/articles?id=10.1257/0002828053828518}
 }

@@ -4,13 +4,31 @@
 \alias{lp_nl}
 \title{Compute nonlinear impulse responses}
 \usage{
-lp_nl(endog_data, lags_endog_lin = NULL, lags_endog_nl = NULL,
-  lags_criterion = NaN, max_lags = NaN, trend = NULL,
-  shock_type = NULL, confint = NULL, use_nw = TRUE, nw_lag = NULL,
-  nw_prewhite = FALSE, adjust_se = FALSE, hor = NULL,
-  switching = NULL, lag_switching = TRUE, use_logistic = TRUE,
-  use_hp = NULL, lambda = NULL, gamma = NULL, exog_data = NULL,
-  lags_exog = NULL, contemp_data = NULL, num_cores = 1)
+lp_nl(
+  endog_data,
+  lags_endog_lin = NULL,
+  lags_endog_nl = NULL,
+  lags_criterion = NaN,
+  max_lags = NaN,
+  trend = NULL,
+  shock_type = NULL,
+  confint = NULL,
+  use_nw = TRUE,
+  nw_lag = NULL,
+  nw_prewhite = FALSE,
+  adjust_se = FALSE,
+  hor = NULL,
+  switching = NULL,
+  lag_switching = TRUE,
+  use_logistic = TRUE,
+  use_hp = NULL,
+  lambda = NULL,
+  gamma = NULL,
+  exog_data = NULL,
+  lags_exog = NULL,
+  contemp_data = NULL,
+  num_cores = 1
+)
 }
 \arguments{
 \item{endog_data}{A \link{data.frame}, containing all endogenous variables for the VAR. The Cholesky decomposition is based on the
