@@ -4,7 +4,7 @@
 #' @param results_lin A \link{list} created with \link{lp_lin}() or \link{lp_lin_iv}().
 #' @return A list with (gg-)plots for linear impulse responses.
 #' @export
-#' @import ggplot2
+#' @import ggplot2 ggpubr
 #' @author Philipp Adämmer
 #' @examples
 #'\donttest{
