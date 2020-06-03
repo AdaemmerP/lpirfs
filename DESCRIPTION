@@ -21,21 +21,21 @@ BugReports: https://github.com/adaemmerp/lpirfs/issues
 Description: Provides functions to estimate and plot linear as well as nonlinear impulse 
              responses based on local projections by Jordà (2005) <doi:10.1257/0002828053828518>.
 License: GPL (>= 2)
-Depends: R (>= 3.1.2)
+Depends: R (>= 4.0.0)
 Encoding: UTF-8
 LazyData: true
 NeedsCompilation: yes
 Imports: 
-    doParallel(>= 1.0.11),
+    doParallel(>= 1.0.15),
     dplyr(>= 1.0.0),
-    foreach(>= 1.4.3),
-    ggplot2(>= 2.2.1),
-    ggpubr(>= 0.2.3),
+    foreach(>= 1.5.0),
+    ggplot2(>= 3.3.0),
+    ggpubr(>= 0.3.0),
     gridExtra(>= 2.3),
-    lmtest (>= 0.9-36), 
-    plm(>= 1.6-6),
-    sandwich(>= 2.5-0),
-    Rcpp(>= 0.12.17)
+    lmtest(>= 0.9-36), 
+    plm(>= 2.2-3),
+    sandwich(>= 2.5-1),
+    Rcpp(>= 1.0.4.6)
 RoxygenNote: 7.1.0
 LinkingTo: Rcpp, RcppArmadillo
 Suggests: 
