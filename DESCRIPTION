@@ -21,7 +21,7 @@ BugReports: https://github.com/adaemmerp/lpirfs/issues
 Description: Provides functions to estimate and plot linear as well as nonlinear impulse 
              responses based on local projections by Jordà (2005) <doi:10.1257/0002828053828518>.
 License: GPL (>= 2)
-Depends: R (>= 4.0.0)
+Depends: R (>= 3.1.2)
 Encoding: UTF-8
 LazyData: true
 NeedsCompilation: yes
