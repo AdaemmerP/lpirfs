@@ -64,7 +64,7 @@ via *devtools::install\_github(“AdaemmerP/lpirfs”)*
 The paper about the package can be found
 [here.](https://journal.r-project.org/archive/2019/RJ-2019-052/index.html)
 The vignette of the package can be found
-[here.](https://cran.r-project.org/web/packages/lpirfs/vignettes/lpirfs_vignette.html)
+[here.](https://cran.r-project.org/package=lpirfs)
 
 ## Acknowledgements
 

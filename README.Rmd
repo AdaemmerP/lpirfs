@@ -59,7 +59,7 @@ Yo can then install the package via *devtools::install_github("AdaemmerP/lpirfs"
 
 ## How to use 
 The paper about the package can be found [here.](https://journal.r-project.org/archive/2019/RJ-2019-052/index.html)
-The vignette of the package can be found [here.](https://cran.r-project.org/web/packages/lpirfs/vignettes/lpirfs_vignette.html)
+The vignette of the package can be found [here.](https://cran.r-project.org/package=lpirfs)
 
 ## Acknowledgements
 I am thankful to Òscar [Jordà](https://sites.google.com/site/oscarjorda/) for encouraging comments and helpful suggestions. I am also indebted to Sarah [Zubairy](https://sites.google.com/site/sarahzubairy/) for providing the Matlab code before the publication of their 
