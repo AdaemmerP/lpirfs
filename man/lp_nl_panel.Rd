@@ -145,114 +145,120 @@ This function estimates nonlinear impulse responses by using local projections f
 \examples{
 \donttest{
 
-# This example is based on the STATA code 'LPs_basic_doall.do', provided on
+#--- Info
+# This example is based on a STATA code that has been provided on
 # Òscar Jordà's website (https://sites.google.com/site/oscarjorda/home/local-projections)
-# It estimates nonlinear impulse reponses of the ratio of (mortgage lending/GDP) to a
+# It estimates impulse reponses of the ratio of (mortgage lending/GDP) to a
 # +1\% change in the short term interest rate
 
-# Load libraries to download and read excel file from the website
- library(lpirfs)
- library(httr)
- library(readxl)
- library(dplyr)
-
-# Retrieve the JST Macrohistory Database
- url_jst <-"http://www.macrohistory.net/JST/JSTdatasetR3.xlsx"
- GET(url_jst, write_disk(jst_link <- tempfile(fileext = ".xlsx")))
- jst_data <- read_excel(jst_link, 2L)
-
-# Swap the first two columns so that 'country' is the first (cross section) and 'year' the
-# second (time section) column
- jst_data <- jst_data                    \%>\%
-             dplyr::filter(year <= 2013) \%>\%
-             dplyr::select(country, year, everything())
-
-# Prepare variables. This is based on the 'data.do' file
-  data_set <- jst_data \%>\%
-               mutate(stir     = stir)                         \%>\%
-               mutate(mortgdp  = 100*(tmort/gdp))              \%>\%
-               mutate(hpreal   = hpnom/cpi)                    \%>\%
-               group_by(country)                               \%>\%
-               mutate(hpreal   = hpreal/hpreal[year==1990][1]) \%>\%
-               mutate(lhpreal  = log(hpreal))                  \%>\%
-
-               mutate(lhpy     = lhpreal - log(rgdppc))        \%>\%
-               mutate(lhpy     = lhpy - lhpy[year == 1990][1]) \%>\%
-               mutate(lhpreal  = 100*lhpreal)                  \%>\%
-               mutate(lhpy     = 100*lhpy)                     \%>\%
-               ungroup()                                       \%>\%
-
-               mutate(lrgdp    = 100*log(rgdppc))              \%>\%
-               mutate(lcpi     = 100*log(cpi)) 		            \%>\%
-               mutate(lriy     = 100*log(iy*rgdppc))           \%>\%
-               mutate(cay      = 100*(ca/gdp))                 \%>\%
-               mutate(tnmort   = tloans - tmort)               \%>\%
-               mutate(nmortgdp = 100*(tnmort/gdp))             \%>\%
-               dplyr::select(country, year, mortgdp, stir, ltrate, lhpy,
-                             lrgdp, lcpi, lriy, cay, nmortgdp)
+#--- Get data
+# Go to the website of the 'The MacroFinance and MacroHistory Lab'
+# Download the Excel-Sheet of the 'Jordà-Schularick-Taylor Macrohistory Database':
+# URL: https://www.macrohistory.net/database/
+# Then uncomment and run the code below...
 
 
-# Use data_sample from 1870 to 2013 and exclude observations from WWI and WWII
-  data_sample <-   seq(1870, 2016)[!(seq(1870, 2016) \%in\%
-                                  c(seq(1914, 1918),
-                                  seq(1939, 1947)))]
+#--- Code
 
-# Estimate panel model
-results_panel <-  lp_nl_panel(data_set           = data_set,
-                               data_sample       = data_sample,
-                               endog_data        = "mortgdp",
-                               cumul_mult        = TRUE,
-
-                               shock             = "stir",
-                               diff_shock        = TRUE,
-                               panel_model       = "within",
-                               panel_effect      = "individual",
-                               robust_cov        = "vcovSCC",
-
-                               switching         = "lrgdp",
-                               lag_switching     = TRUE,
-                               use_hp            = TRUE,
-                               lambda            = 6.25,
-                               gamma             = 10,
-
-                               c_exog_data       = "cay",
-                               c_fd_exog_data    = colnames(data_set)[c(seq(4,9),11)],
-                               l_fd_exog_data    = colnames(data_set)[c(seq(3,9),11)],
-                               lags_fd_exog_data = 2,
-
-                               confint           = 1.67,
-                               hor               = 5)
-
-# Plot irfs
- plot(results_panel)
-
-
-# Plot values of the transition function for USA between 1950 and 2016
- library(ggplot2)
- library(dplyr)
-
- data_set \%>\%
-    mutate(fz = results_panel$fz$fz) \%>\%
-    select(country, year, fz)     \%>\%
-    filter(country == "USA" & year > 1950  & year <= 2016) \%>\%
-    ggplot()+
-    geom_line(aes(x = year, y = fz)) +
-    scale_x_continuous(breaks = seq(1950, 2016, 5))
-
-
+## Load libraries to download and read excel file from the website
+#  library(lpirfs)
+#  library(readxl)
+#  library(dplyr)
+#
+# Load JST Macrohistory Database
+#  jst_data <- read_excel("JSTdatasetR5.xlsx", sheet = "Data")
+#
+## Choose years <= 2013. Swap the first two columns so that 'country' is the
+## first (cross section) and 'year' the second (time section) column
+#  jst_data <- jst_data                    \%>\%
+#              dplyr::filter(year <= 2013) \%>\%
+#              dplyr::select(country, year, everything())
+#
+## Prepare variables. This is based on the 'data.do' file
+#   data_set <- jst_data \%>\%
+#                mutate(stir     = stir)                         \%>\%
+#                mutate(mortgdp  = 100*(tmort/gdp))              \%>\%
+#                mutate(hpreal   = hpnom/cpi)                    \%>\%
+#                group_by(country)                               \%>\%
+#                mutate(hpreal   = hpreal/hpreal[year==1990][1]) \%>\%
+#                mutate(lhpreal  = log(hpreal))                  \%>\%
+#
+#                mutate(lhpy     = lhpreal - log(rgdppc))        \%>\%
+#                mutate(lhpy     = lhpy - lhpy[year == 1990][1]) \%>\%
+#                mutate(lhpreal  = 100*lhpreal)                  \%>\%
+#                mutate(lhpy     = 100*lhpy)                     \%>\%
+#                ungroup()                                       \%>\%
+#
+#                mutate(lrgdp    = 100*log(rgdppc))              \%>\%
+#                mutate(lcpi     = 100*log(cpi)) 		            \%>\%
+#                mutate(lriy     = 100*log(iy*rgdppc))           \%>\%
+#                mutate(cay      = 100*(ca/gdp))                 \%>\%
+#                mutate(tnmort   = tloans - tmort)               \%>\%
+#                mutate(nmortgdp = 100*(tnmort/gdp))             \%>\%
+#                dplyr::select(country, year, mortgdp, stir, ltrate, lhpy,
+#                              lrgdp, lcpi, lriy, cay, nmortgdp)
+#
+#
+## Use data_sample from 1870 to 2013 and exclude observations from WWI and WWII
+#   data_sample <-   seq(1870, 2016)[!(seq(1870, 2016) \%in\%
+#                                   c(seq(1914, 1918),
+#                                   seq(1939, 1947)))]
+#
+## Estimate panel model
+# results_panel <-  lp_nl_panel(data_set           = data_set,
+#                                data_sample       = data_sample,
+#                                endog_data        = "mortgdp",
+#                                cumul_mult        = TRUE,
+#
+#                                shock             = "stir",
+#                                diff_shock        = TRUE,
+#                                panel_model       = "within",
+#                                panel_effect      = "individual",
+#                                robust_cov        = "vcovSCC",
+#
+#                                switching         = "lrgdp",
+#                                lag_switching     = TRUE,
+#                                use_hp            = TRUE,
+#                                lambda            = 6.25,
+#                                gamma             = 10,
+#
+#                                c_exog_data       = "cay",
+#                                c_fd_exog_data    = colnames(data_set)[c(seq(4,9),11)],
+#                                l_fd_exog_data    = colnames(data_set)[c(seq(3,9),11)],
+#                                lags_fd_exog_data = 2,
+#
+#                                confint           = 1.67,
+#                                hor               = 5)
+#
+## Plot irfs
+#  plot(results_panel)
+#
+#
+## Plot values of the transition function for USA between 1950 and 2016
+#  library(ggplot2)
+#
+#  data_set \%>\%
+#     mutate(fz = results_panel$fz$fz) \%>\%
+#     select(country, year, fz)     \%>\%
+#     filter(country == "USA" & year > 1950  & year <= 2016) \%>\%
+#     ggplot()+
+#     geom_line(aes(x = year, y = fz)) +
+#     scale_x_continuous(breaks = seq(1950, 2016, 5))
+#
+#
 ##############################################################################
 ###                           Use GMM                                      ###
 ##############################################################################
-
-# Use a much smaller sample to have fewer T than N
-data_sample <-   seq(2000, 2012)
-
-
-# Estimate panel model with gmm
-# This example (please uncomment) gives a warning at each iteration.
-# The data set is not well suited for
-# GMM as GMM is based on N-asymptotics and the data set only contains 27 countries
-
+#
+# # Use a much smaller sample to have fewer T than N
+# data_sample <-   seq(2000, 2012)
+#
+#
+## Estimate panel model with gmm
+## This example (please uncomment) gives a warning at each iteration.
+## The data set is not well suited for
+## GMM as GMM is based on N-asymptotics and the data set only contains 27 countries
+#
 # results_panel <-  lp_nl_panel(data_set           = data_set,
 #                               data_sample       = data_sample,
 #                               endog_data        = "mortgdp",
@@ -277,8 +283,8 @@ data_sample <-   seq(2000, 2012)
 #
 #                               confint           = 1.67,
 #                               hor               = 5)
-
-# Create and plot irfs
+#
+## Create and plot irfs
 # plot(results_panel)
 
 }

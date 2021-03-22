@@ -3,29 +3,39 @@ title: "Replications and applications with lpirfs"
 author: "Philipp Adämmer"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
+
 vignette: >
   %\VignetteIndexEntry{Replications and applications with lpirfs}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+
 ---
 
 ## Purpose
 
-This vignette shows how to use *lpirfs* by replicating all figures of the paper  
+This vignette shows how to use *lpirfs* by replicating the figures of the paper  
 "lpirfs: An R-Package to Estimate Impulse Response Functions by Local Projections"  
 
+## Code
 
 ```{r, message = FALSE, warning = FALSE}
+# Load packages
+  library(lpirfs)
+  library(dplyr)
+  library(gridExtra)
+  library(ggpubr)
+  library(readxl)
+  library(vars)
+  library(ggplot2)
+  library(zoo)
+```
 
+
+
+```{r, fig.height = 6, fig.width = 6.5, fig.align = "center", message = FALSE, warning = FALSE}
 #####################################################################################################
 #                            ---   Code for Figure 1  ---                                  
 #####################################################################################################
-
-
-# Load necessary libraries
-  library(lpirfs)
-  library(dplyr)
-
 
 # Load data from lpirfs package
  endog_data <- interest_rules_var_data
@@ -41,33 +51,22 @@ This vignette shows how to use *lpirfs* by replicating all figures of the paper
  # Show summary. Equals table 3 in the paper
    summary(results_lin)[[1]][1]
 
-```
-
-```{r, fig.height = 6, fig.width = 6.5, fig.align = "center", message = FALSE, warning = FALSE}  
-
- # Figure 1 in paper
+# Figure 1 in paper
  plot(results_lin)
 
 ```
 
 
-
-```{r, message = FALSE, warning = FALSE}
-
-
+```{r, fig.height = 6, fig.width = 5, fig.align = "center", message = FALSE }
 #####################################################################################################
 #                          ---  Code for Figure 2 ---
 #####################################################################################################
- # Load packages for creating plots
- library(gridExtra)
- library(ggpubr)
+
+# Choose data for switching variable (here federal funds rate)
+  switching_data <-  if_else(dplyr::lag(endog_data$Infl, 3) > 4.75, 1, 0)
 
 
- # Choose data for switching variable (here federal funds rate)
- switching_data <-  if_else(dplyr::lag(endog_data$Infl, 3) > 4.75, 1, 0)
-
-
- # Estimate model and save results
+# Estimate model and save results
  results_nl    <- lp_nl(endog_data,
                         lags_endog_lin  = 4,
                         lags_endog_nl   = 4,
@@ -80,23 +79,16 @@ This vignette shows how to use *lpirfs* by replicating all figures of the paper
                         use_logistic    = FALSE)
 
 
- # Use plot functions
+# Use plot functions
  nl_plots <- plot_nl(results_nl)
 
- # Combine plots by using 'ggpubr' and 'gridExtra'
+# Combine plots by using 'ggpubr' and 'gridExtra'
  single_plots      <- nl_plots$gg_s1[c(3, 6, 9)]
  single_plots[4:6] <- nl_plots$gg_s2[c(3, 6, 9)]
 
  all_plots <- sapply(single_plots, ggplotGrob)
-
-```
-
-
-
-```{r, fig.height = 6, fig.width = 5, fig.align = "center", message = FALSE }  
-
  
- # Show all plots
+# Show all plots
  nl_all_plots <- marrangeGrob(all_plots, nrow = 3, ncol = 2, top = NULL)
  nl_all_plots
 
@@ -104,12 +96,10 @@ This vignette shows how to use *lpirfs* by replicating all figures of the paper
 
 
 
-```{r, message = FALSE, warning = FALSE}
-
+```{r, fig.height = 4., fig.width = 6.5, fig.align = "center", message = FALSE, warning = FALSE}
 #####################################################################################################
 #                           ---  Code for Figure 3 ---
 #####################################################################################################
-
 
 # Load data
  ag_data       <- ag_data
@@ -187,150 +177,114 @@ This vignette shows how to use *lpirfs* by replicating all figures of the paper
  lin_plots_all     <- sapply(combine_plots, ggplotGrob)
  combine_plots_all <- marrangeGrob(lin_plots_all, nrow = 2, ncol = 3, top = NULL)
 
+
+# Show all plots
+  combine_plots_all
 ```
 
 
 
-```{r, fig.height = 4., fig.width = 6.5, fig.align = "center", message = FALSE, warning = FALSE}  
-
- 
- # Show all plots
-   combine_plots_all
-
-```
-
-
-
-
-
-```{r, message = FALSE, warning = FALSE}
-
+```{r, fig.height = 2.5, fig.width = 3, fig.align = "center",  message = FALSE, warning = FALSE}
 #####################################################################################################
 #                               ---  Code for Figure 4 ---
 #####################################################################################################
 
-# Load necessary libraries
-  library(httr)
-  library(readxl)
-  library(dplyr)
-
-# Retrieve the external JST Macrohistory Database
-  url_jst <-"http://www.macrohistory.net/JST/JSTdatasetR3.xlsx"
-  GET(url_jst, write_disk(jst_link <- tempfile(fileext = ".xlsx")))
-  jst_data <- read_excel(jst_link, 2L)
-
-# Swap the first two columns
-  jst_data <- jst_data                    %>%
-              dplyr::filter(year <= 2013) %>%
-              dplyr::select(country, year, everything())
-
-# Prepare variables
-  data_set <- jst_data %>%
-             mutate(stir    = stir)                         %>%
-             mutate(mortgdp = 100*(tmort/gdp))              %>%
-             mutate(hpreal  = hpnom/cpi)                    %>%
-             group_by(country)                              %>%
-             mutate(hpreal  = hpreal/hpreal[year==1990][1]) %>%
-             mutate(lhpreal = log(hpreal))                  %>%
-
-             mutate(lhpy    = lhpreal - log(rgdppc))        %>%
-             mutate(lhpy    = lhpy - lhpy[year == 1990][1]) %>%
-             mutate(lhpreal = 100*lhpreal)                  %>%
-             mutate(lhpy    = 100*lhpy)                     %>%
-             ungroup()                                      %>%
-
-             mutate(lrgdp   = 100*log(rgdppc))              %>%
-             mutate(lcpi    = 100*log(cpi))                 %>%
-             mutate(lriy    = 100*log(iy*rgdppc))           %>%
-             mutate(cay     = 100*(ca/gdp))                 %>%
-             mutate(tnmort  = tloans - tmort)               %>%
-             mutate(nmortgdp = 100*(tnmort/gdp))            %>%
-             dplyr::select(country, year, mortgdp, stir, ltrate,
-                                                    lhpy, lrgdp, lcpi, lriy, cay, nmortgdp)
+# Go to the website of the 'The MacroFinance and MacroHistory Lab'
+# Download the Excel-Sheet of the 'Jordà-Schularick-Taylor Macrohistory Database':
+  # URL: https://www.macrohistory.net/database/
+  # Then uncomment and run the code below...
 
 
-# Exclude observations from WWI and WWII
-  data_sample <- seq(1870, 2016)[which(!(seq(1870, 2016) %in%
-                                            c(seq(1914, 1918),
-                                            seq(1939, 1947))))]
-
-# Estimate linear panel model
-  results_panel <- lp_lin_panel(data_set  = data_set,  data_sample  = data_sample,
-                                endog_data        = "mortgdp", cumul_mult   = TRUE,
-                                shock             = "stir",    diff_shock   = TRUE,
-                                panel_model       = "within",  panel_effect = "individual",
-                                robust_cov        = "vcovSCC", c_exog_data  = "cay",
-                                c_fd_exog_data    = colnames(data_set)[c(seq(4,9),11)],
-                                l_fd_exog_data    = colnames(data_set)[c(seq(3,9),11)],
-                                lags_fd_exog_data = 2,      confint      = 1.67,
-                                hor               = 10)
-
-
-
+# # Load data set
+#   jst_data <- read_excel("JSTdatasetR5.xlsx", sheet = "Data")
+# 
+# 
+# # Swap the first two columns
+#   jst_data <- jst_data                    %>%
+#               dplyr::filter(year <= 2013) %>%
+#               dplyr::select(country, year, everything())
+# 
+# # Prepare variables
+#   data_set <- jst_data %>%
+#              mutate(stir    = stir)                         %>%
+#              mutate(mortgdp = 100*(tmort/gdp))              %>%
+#              mutate(hpreal  = hpnom/cpi)                    %>%
+#              group_by(country)                              %>%
+#              mutate(hpreal  = hpreal/hpreal[year==1990][1]) %>%
+#              mutate(lhpreal = log(hpreal))                  %>%
+# 
+#              mutate(lhpy    = lhpreal - log(rgdppc))        %>%
+#              mutate(lhpy    = lhpy - lhpy[year == 1990][1]) %>%
+#              mutate(lhpreal = 100*lhpreal)                  %>%
+#              mutate(lhpy    = 100*lhpy)                     %>%
+#              ungroup()                                      %>%
+# 
+#              mutate(lrgdp   = 100*log(rgdppc))              %>%
+#              mutate(lcpi    = 100*log(cpi))                 %>%
+#              mutate(lriy    = 100*log(iy*rgdppc))           %>%
+#              mutate(cay     = 100*(ca/gdp))                 %>%
+#              mutate(tnmort  = tloans - tmort)               %>%
+#              mutate(nmortgdp = 100*(tnmort/gdp))            %>%
+#              dplyr::select(country, year, mortgdp, stir, ltrate,
+#                                                     lhpy, lrgdp, lcpi, lriy, cay, nmortgdp)
+# 
+# 
+# # Exclude observations from WWI and WWII
+#   data_sample <- seq(1870, 2016)[which(!(seq(1870, 2016) %in%
+#                                             c(seq(1914, 1918),
+#                                             seq(1939, 1947))))]
+# 
+# # Estimate linear panel model
+#   results_panel <- lp_lin_panel(data_set  = data_set,  data_sample  = data_sample,
+#                                 endog_data        = "mortgdp", cumul_mult   = TRUE,
+#                                 shock             = "stir",    diff_shock   = TRUE,
+#                                 panel_model       = "within",  panel_effect = "individual",
+#                                 robust_cov        = "vcovSCC", c_exog_data  = "cay",
+#                                 c_fd_exog_data    = colnames(data_set)[c(seq(4,9),11)],
+#                                 l_fd_exog_data    = colnames(data_set)[c(seq(3,9),11)],
+#                                 lags_fd_exog_data = 2,      confint      = 1.67,
+#                                 hor               = 10)
+# 
+# 
+# # Plot irfs
+#   plot(results_panel)
 ```
 
 
 
-```{r, fig.height = 2.5, fig.width = 3, fig.align = "center", message = FALSE, warning = FALSE}
-
-
-# Plot irfs
-  plot(results_panel)
- 
-
-```
-
-
-
-```{r, message = FALSE, warning = FALSE}
-
+```{r, fig.height = 2.5, fig.width = 5, fig.align = "center",  message = FALSE, warning = FALSE}
 #####################################################################################################
 #                           ---  Code for Figure 5 ---
 #####################################################################################################
 
-
-# Estimate panel model
- results_panel <- lp_nl_panel(data_set          = data_set,
-                              data_sample       = data_sample,
-                              endog_data        = "mortgdp", cumul_mult     = TRUE,
-                              shock             = "stir",    diff_shock     = TRUE,
-                              panel_model       = "within",  panel_effect   = "individual",
-                              robust_cov        = "vcovSCC", switching      = "lrgdp",
-                              lag_switching     = TRUE,      use_hp         = TRUE,
-                              lambda            = 6.25,      gamma          = 10,
-                              c_exog_data       = "cay",
-                              c_fd_exog_data    = colnames(data_set)[c(seq(4,9),11)],
-                              l_fd_exog_data    = colnames(data_set)[c(seq(3,9),11)],
-                              lags_fd_exog_data = 2,
-                              confint           = 1.67,
-                              hor               = 10)
-
-
-
-
-```
-
-
-
-```{r, fig.height = 2.5, fig.width = 5, fig.align = "center", message = FALSE, warning = FALSE}
-
-
-# Show non-linear plots
-  plot(results_panel)
-
+# # Estimate panel model
+#  results_panel <- lp_nl_panel(data_set          = data_set,
+#                               data_sample       = data_sample,
+#                               endog_data        = "mortgdp", cumul_mult     = TRUE,
+#                               shock             = "stir",    diff_shock     = TRUE,
+#                               panel_model       = "within",  panel_effect   = "individual",
+#                               robust_cov        = "vcovSCC", switching      = "lrgdp",
+#                               lag_switching     = TRUE,      use_hp         = TRUE,
+#                               lambda            = 6.25,      gamma          = 10,
+#                               c_exog_data       = "cay",
+#                               c_fd_exog_data    = colnames(data_set)[c(seq(4,9),11)],
+#                               l_fd_exog_data    = colnames(data_set)[c(seq(3,9),11)],
+#                               lags_fd_exog_data = 2,
+#                               confint           = 1.67,
+#                               hor               = 10)
+# 
+# 
+# 
+# # Show non-linear plots
+#   plot(results_panel)
 ```
 
 
 
 ```{r, message = FALSE, warning = FALSE}
-
 #####################################################################################################
 #                        ---  Code for Figure 6 ---
 #####################################################################################################
-library(vars)
-library(lpirfs)
-library(dplyr)
-library(ggpubr)
 
 # Load data from lpirfs package
   endog_data <- interest_rules_var_data
@@ -486,38 +440,24 @@ a_2 <- annotate_figure(a_2, bottom = text_grob(paste("b.)", "p = ", p_lags[2], s
 
 a_3 <- ggarrange(gg_lin[[7]], gg_lin[[8]], gg_lin[[9]], ncol = 1, nrow = 3, common.legend = TRUE, legend = "bottom")
 a_3 <- annotate_figure(a_3, bottom = text_grob(paste("c.)", "p = ", p_lags[3], sep = " "), size = 7, hjust = -.1, vjust = 0.5))
-
-
-
 ```
 
 
 
 ```{r, fig.height = 6, fig.width = 6.5, fig.align = "center", message = FALSE, warning = FALSE}
-
-
 # Combine columns
 combine_plot <- ggarrange(a_1, a_2, a_3, ncol = 3)
 combine_plot
-
 ```
 
 
 
 
 
-```{r, message = FALSE, warning = FALSE}
-
-
+```{r, fig.height = 6, fig.width = 6.5, fig.align = "center", message = FALSE, warning = FALSE}
 #####################################################################################################
 #                         ---  Code for Figure 7 ---
 #####################################################################################################
-library(lpirfs)
-library(dplyr)
-library(ggplot2)
-library(gridExtra)
-library(ggpubr)
-library(zoo)
 
 # Recession dates
   start_rec <- c("1957 Q3", "1960 Q2", "1970 Q1", "1973 Q4", "1980 Q1", "1981 Q3", "1990 Q3", "2001 Q2")
@@ -560,40 +500,40 @@ library(zoo)
 for(ii in seq_along(gamma_vals)){
 
 # Estimate linear model with lpirfs function
-results_nl <- lp_nl(endog_data,
-                      lags_endog_lin  = 4,
-                      lags_endog_nl   = 4,
-                      trend          = 0,
-                      shock_type     = 0,
-                      switching      = switching_variable,
-                      use_hp         = TRUE,
-                      lambda         = 1600,
-                      gamma          = gamma_vals[ii],
-                      confint        = 1.96,
-                      hor            = 12,
-                      num_cores      = 1)
-
-results_s1_mean[ii, ]        <- results_nl$irf_s1_mean[1, , 3]
-results_s1_low[ii, ]         <- results_nl$irf_s1_low[1, , 3]
-results_s1_up[ii, ]          <- results_nl$irf_s1_up[1, , 3]
-
-results_s2_mean[ii, ]        <- results_nl$irf_s2_mean[1, , 3]
-results_s2_low[ii, ]         <- results_nl$irf_s2_low[1, , 3]
-results_s2_up[ii, ]          <- results_nl$irf_s2_up[1, , 3]
-
-fz_mat[ii, ]                 <- results_nl$fz
-
-}
+  results_nl <- lp_nl(endog_data,
+                        lags_endog_lin  = 4,
+                        lags_endog_nl   = 4,
+                        trend          = 0,
+                        shock_type     = 0,
+                        switching      = switching_variable,
+                        use_hp         = TRUE,
+                        lambda         = 1600,
+                        gamma          = gamma_vals[ii],
+                        confint        = 1.96,
+                        hor            = 12,
+                        num_cores      = 1)
+  
+  results_s1_mean[ii, ]        <- results_nl$irf_s1_mean[1, , 3]
+  results_s1_low[ii, ]         <- results_nl$irf_s1_low[1, , 3]
+  results_s1_up[ii, ]          <- results_nl$irf_s1_up[1, , 3]
+  
+  results_s2_mean[ii, ]        <- results_nl$irf_s2_mean[1, , 3]
+  results_s2_low[ii, ]         <- results_nl$irf_s2_low[1, , 3]
+  results_s2_up[ii, ]          <- results_nl$irf_s2_up[1, , 3]
+  
+  fz_mat[ii, ]                 <- results_nl$fz
+  
+  }
 
 
 # Make date sequence and store data in a data.frame for ggplot.
-dates   <- seq(as.Date("1955/12/1"), as.Date("2003/1/1"), by = "quarter")
+ dates   <- seq(as.Date("1955/12/1"), as.Date("2003/1/1"), by = "quarter")
 
-col_names <- names(endog_data)
+ col_names <- names(endog_data)
 
 # Colors to use
-col_regime_1 <- "#21618C"
-col_regime_2 <- "#D68910"
+  col_regime_1 <- "#21618C"
+  col_regime_2 <- "#D68910"
 
 
 irf_s1_plots <- list()
@@ -687,6 +627,9 @@ for (kk in 1:3){
   a_3 <- annotate_figure(a_3, bottom = text_grob(bquote(paste("c) Results for ", ~gamma == .(gamma_vals[3]))), face = "bold", size = 10, hjust = .3, vjust = .5))
 
 
+# Combine columns
+  combine_plot <- ggarrange(a_1, a_2, a_3, ncol = 3)
+  combine_plot
 
 
 ```
@@ -694,31 +637,10 @@ for (kk in 1:3){
 
 
 ```{r, fig.height = 6, fig.width = 6.5, fig.align = "center", message = FALSE, warning = FALSE}
-
-
-# Combine columns
-combine_plot <- ggarrange(a_1, a_2, a_3, ncol = 3)
-combine_plot
-
-```
-
-
-
-
-```{r, message = FALSE, warning = FALSE}
-
-
-
 #####################################################################################################
 #                            ---  Code for Figure 8 ---
 #####################################################################################################
 
-library(lpirfs)
-library(dplyr)
-library(ggplot2)
-library(gridExtra)
-library(ggpubr)
-library(zoo)
 
 # Recession dates
   start_rec <- c("1957 Q3", "1960 Q2", "1970 Q1", "1973 Q4", "1980 Q1", "1981 Q3", "1990 Q3", "2001 Q2")
@@ -887,38 +809,21 @@ col_names <- names(endog_data)
   a_3 <- ggarrange(fz_plots[[3]], irf_s1_plots[[3]], irf_s2_plots[[3]], ncol = 1, nrow = 3)
   a_3 <- annotate_figure(a_3, bottom = text_grob(bquote(paste("c) Results for ", ~lambda == "129 600")), face = "bold", size = 10, hjust = .4, vjust = .5))
 
+  
+# Combine columns
+  combine_plot <- ggarrange(a_1, a_2, a_3, ncol = 3)
+  combine_plot
+
+
 
 ```
 
 
 
 ```{r, fig.height = 6, fig.width = 6.5, fig.align = "center", message = FALSE, warning = FALSE}
-
-# Combine columns
-combine_plot <- ggarrange(a_1, a_2, a_3, ncol = 3)
-combine_plot
-
-
-```
-
-
-
-
-
-
-```{r, message = FALSE, warning = FALSE}
-
-
 #####################################################################################################
 #                   Comparing normal and Newey West standard errors
 #####################################################################################################
-
-library(lpirfs)
-library(dplyr)
-library(gridExtra)
-library(ggpubr)
-
-
 
 # Load data from lpirfs package
   endog_data <- interest_rules_var_data
@@ -1016,18 +921,13 @@ x_labs <- c("a.) Normal Std. Errors", "b.) Newy West (1987)", "c.) Pre-whitened 
 
   a_3 <- ggarrange(gg_lin[[7]], gg_lin[[8]], gg_lin[[9]], ncol = 1, nrow = 3, common.legend = TRUE)
   a_3 <- annotate_figure(a_3, bottom = text_grob(x_labs[3], size = 8, hjust = .3, vjust = -1))
-
-```
-
-
-
-```{r, fig.height = 6, fig.width = 6.5, fig.align = "center", message = FALSE, warning = FALSE}
-
+  
+  
 # Combine columns
   combine_plot <- ggarrange(a_1, a_2, a_3, ncol = 3)
   combine_plot
 
 
-```
 
+```
 

@@ -36,11 +36,10 @@ Imports:
     plm(>= 2.2-3),
     sandwich(>= 2.5-1),
     Rcpp(>= 1.0.4.6)
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 LinkingTo: Rcpp, RcppArmadillo
 Suggests: 
     testthat,
-    httr,
     readxl,
     knitr,
     rmarkdown,
