@@ -2,8 +2,7 @@
 
 ## Purpose
 
-* Fixed tests and deprecated functions to be compatible with new dplyr 1.0.0.
-* Fixed an issue to correctly show summary statistics
+* Removed a dependency in the vignette so that it can be build again. 
   
 
 ## Test environments

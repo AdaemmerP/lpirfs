@@ -1,7 +1,7 @@
 Package: lpirfs
 Type: Package
 Title: Local Projections Impulse Response Functions
-Version: 0.1.8.9000
+Version: 0.1.9.9000
 Authors@R: c(
             person("Philipp", "Adämmer", 
                     email   = "adaemmer@hsu-hh.de", 
@@ -44,7 +44,6 @@ Suggests:
     readxl,
     knitr,
     rmarkdown,
-    quantmod,
     zoo,
     vars
 VignetteBuilder: knitr

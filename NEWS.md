@@ -1,6 +1,12 @@
+# lpirfs 0.1.9
+
+* Removed a dependency in the vignette so that it can be build again. 
+
+
 # lpirfs 0.1.8
 
 * Fixed tests and deprecated functions to be compatible with new dplyr 1.0.0.
+
 * Fixed an issue to correctly show summary statistics
 
 
