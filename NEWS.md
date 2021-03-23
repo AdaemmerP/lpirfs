@@ -1,3 +1,11 @@
+
+# lpirfs 0.2.0
+
+* The dependency on the external JST data set has been removed by commenting out the examples for
+the panel functions. Now, the JST data set has to be downloaded by the user first, before running 
+the examples for the panel functions.
+
+
 # lpirfs 0.1.9
 
 * Removed a dependency in the vignette so that it can be build again. 
