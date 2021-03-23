@@ -253,9 +253,9 @@ This function estimates impulse responses with local projections for panel data,
 # data_sample <-   seq(2000, 2012)
 #
 ## Estimate panel model with gmm
-# This example (please uncomment) gives a warning at each iteration.
-# The data set is not well suited for GMM as GMM is based on N-asymptotics
-# and the data set only contains 27 countries
+## This example (please uncomment) gives a warning at each iteration.
+## The data set is not well suited for GMM as GMM is based on N-asymptotics
+## and the data set only contains 27 countries
 #
 # results_panel <-  lp_lin_panel(data_set          = data_set,
 #                              data_sample        = data_sample,
@@ -287,7 +287,7 @@ This function estimates impulse responses with local projections for panel data,
 }
 \references{
 Croissant, Y., Millo, G. (2008). "Panel Data Econometrics in R: The plm Package." \emph{Journal of Statistical Software}, 27(2), 1-43. doi:
-10.18637/jss.v027.i02 (URL: \url{http://doi.org/10.18637/jss.v027.i02}).
+10.18637/jss.v027.i02.
 
 Jordà, Ò. (2005). "Estimation and Inference of Impulse Responses by Local Projections."
 \emph{American Economic Review}, 95 (1): 161-182.
@@ -296,7 +296,7 @@ Jordà, Ò., Schualrick, M., Taylor, A.M. (2018). "Large and State-Dependent Eff
 \emph{NBER} working paper 23074, \emph{FRBSF} working paper 2017-02.
 
 Millo G (2017). “Robust Standard Error Estimators for Panel Models: A Unifying Approach.” \emph{Journal of Statistical Software}, 82(3), 1-27. doi:
-10.18637/jss.v082.i03 (URL: \url{http://doi.org/10.18637/jss.v082.i03}).
+10.18637/jss.v082.i03.
 }
 \author{
 Philipp Adämmer

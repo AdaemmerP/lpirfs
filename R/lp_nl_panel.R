@@ -47,7 +47,7 @@
 #' @references
 #'
 #' Croissant, Y., Millo, G. (2008). “Panel Data Econometrics in R: The plm Package.” \emph{Journal of Statistical Software}, 27(2), 1-43. doi:
-#' 10.18637/jss.v027.i02 (URL: \url{http://doi.org/10.18637/jss.v027.i02}).
+#' 10.18637/jss.v027.i02.
 #'
 #' Jordà, Ò. (2005). "Estimation and Inference of Impulse Responses by Local Projections."
 #' \emph{American Economic Review}, 95 (1): 161-182.
@@ -56,7 +56,7 @@
 #' \emph{NBER} working paper 23074, \emph{FRBSF} working paper 2017-02.
 #'
 #' Millo, G. (2017). “Robust Standard Error Estimators for Panel Models: A Unifying Approach.” \emph{Journal of Statistical Software}, 82(3), 1-27. doi:
-#' 10.18637/jss.v082.i03 (URL: \url{http://doi.org/10.18637/jss.v082.i03}).
+#' 10.18637/jss.v082.i03.
 #'
 #' @examples
 #'\donttest{
@@ -166,8 +166,8 @@
 #'###                           Use GMM                                      ###
 #'##############################################################################
 #'#
-#'# # Use a much smaller sample to have fewer T than N
-#'# data_sample <-   seq(2000, 2012)
+#'## Use a much smaller sample to have fewer T than N
+#'#  data_sample <-   seq(2000, 2012)
 #'#
 #'#
 #'## Estimate panel model with gmm

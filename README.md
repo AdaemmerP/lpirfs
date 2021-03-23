@@ -19,14 +19,14 @@ local projections by [Jordà
 
 ## Main features
 
-  - Estimates linear and nonlinear impulse responses with local
+-   Estimates linear and nonlinear impulse responses with local
     projections.
-  - Estimates linear and nonlinear impulse responses with identified
+-   Estimates linear and nonlinear impulse responses with identified
     shock and/or with 2SLS.
-  - Estimates linear and nonlinear impulse responses with local
+-   Estimates linear and nonlinear impulse responses with local
     projections for panel data.
-  - Functions to plot linear and nonlinear impulse responses.
-  - Functions are partly implemented in *Rcpp*/*RcppArmadillo* and
+-   Functions to plot linear and nonlinear impulse responses.
+-   Functions are partly implemented in *Rcpp*/*RcppArmadillo* and
     partly written for parallel computation to improve efficiency.
 
 ## Installation
@@ -76,7 +76,7 @@ Matlab code before the publication of their
 [paper](https://www.journals.uchicago.edu/doi/10.1086/696277).
 
 I greatly benefitted from the helpful remarks by Jon
-[Danielsson](http://www.systemicrisk.ac.uk/people/jon-danielsson) and
+[Danielsson](https://www.systemicrisk.ac.uk/people/jon-danielsson) and
 the profound *R*, *Rcpp* and *GitHub* knowledge of Philipp
 [Wittenberg](https://github.com/wittenberg) and Detlef (overflow)
 [Steuer](https://github.com/dsteuer). Last but not least, I am grateful
@@ -91,4 +91,4 @@ Philipp Adämmer
 
 ### License
 
-GPL (\>= 2)
+GPL (&gt;= 2)
