@@ -406,6 +406,7 @@ lp_nl_iv <- function(endog_data,
                             xx  <-   x_nl[1:(dim(x_nl)[1] - h + 1), ]
 
                             # This will be changed for cumul_mult
+                            # Using dplyr::lead() and lag() for it
 
                             # Check whether data are matrices to correctly extract values
                             if(!is.matrix(xx)){
