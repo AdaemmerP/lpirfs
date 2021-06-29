@@ -341,8 +341,8 @@ lp_lin <- function(endog_data,
    for (h in 1:(specs$hor)){   # Accounts for the horizons
 
     # Create data
-     yy  <-   y_lin[h : dim(y_lin)[1], ]
-     xx  <-   x_lin[1 : (dim(x_lin)[1] - h + 1), ]
+     yy  <-   y_lin[h:dim(y_lin)[1], ]
+     xx  <-   x_lin[1:(dim(x_lin)[1] - h + 1), ]
 
      # Set lag number for Newey-West (1987)
      if(is.null(nw_lag)){
