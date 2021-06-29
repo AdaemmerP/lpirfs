@@ -397,8 +397,8 @@ if(is.nan(specs$lags_criterion) == TRUE){
                         for (h in 1:(specs$hor)){   # Accounts for the horizons
 
                           # Create data
-                          yy  <-   y_lin[h : dim(y_lin)[1], ]
-                          xx  <-   x_lin[1 : (dim(x_lin)[1] - h + 1), ]
+                          yy  <-   y_lin[h:dim(y_lin)[1], ]
+                          xx  <-   x_lin[1:(dim(x_lin)[1] - h + 1), ]
 
                           # Check whether data are matrices to correctly extract values
                           if(!is.matrix(xx)){
@@ -532,7 +532,7 @@ if(is.nan(specs$lags_criterion) == TRUE){
 
                             # Extract matrices based on optimal lag length
                             yy <- y_lin[[lag_choice]][, s]
-                            yy <- yy[h: length(yy)]
+                            yy <- yy[h:length(yy)]
 
                             xx <- x_lin[[lag_choice]]
                             xx <- xx[1:(dim(xx)[1] - h + 1),]
