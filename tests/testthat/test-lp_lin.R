@@ -1,4 +1,3 @@
-context("lp_lin")
 
 # Load data
   data_set_df <- interest_rules_var_data

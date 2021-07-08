@@ -1,6 +1,3 @@
-context("Test newey west function")
-
-
 
 test_that("Test whether results from newey_west_cpp function coincide
           with NeweyWest from sandwich package", {
@@ -19,7 +16,7 @@ test_that("Test whether results from newey_west_cpp function coincide
           # Newey West from lpirfs
            nw_lpirfs   <- newey_west(y, x, nlag)[[2]]
 
-           testthat::expect_equal(nw_sandwich, nw_lpirfs, tolerance=1e-6, check.attributes = FALSE)
+           testthat::expect_equal(nw_sandwich, nw_lpirfs, tolerance=1e-6, ignore_attr = T)
 
             } )
 
@@ -47,6 +44,6 @@ test_that("Test whether prewhitening results coincide with results from sandwich
 
             nw_lpirfs       <- newey_west_pw(resid_pw, xpxi, D_mat, nlag)[[1]]
 
-            testthat::expect_equal(nw_sandwich, nw_lpirfs, tolerance=1e-6, check.attributes = FALSE)
+            testthat::expect_equal(nw_sandwich, nw_lpirfs, tolerance=1e-6, ignore_attr = T)
 
           } )

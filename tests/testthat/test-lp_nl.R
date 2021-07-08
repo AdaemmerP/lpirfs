@@ -1,4 +1,3 @@
-context("lp_nl")
 
 # Load data
   endog_data <- monetary_var_data

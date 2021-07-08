@@ -1,4 +1,3 @@
-context("get_var_lagcrit")
 
 # Adapted VARselect function from 'vars' package
 varSELECT     <- function (endog_data, lag.max = 2, type = c("const", "trend", "both",

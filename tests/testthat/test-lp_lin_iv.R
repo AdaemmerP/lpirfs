@@ -1,5 +1,3 @@
-context("lp_lin_iv")
-
 
 # Load package data
   ag_data         <- ag_data
@@ -516,4 +514,58 @@ context("lp_lin_iv")
                                       num_cores      = 1),
                             NA )
   })
+
+
+
+test_that("Test that cumul_multiplier work", {
+
+
+  # Load package data
+  ag_data         <- ag_data
+  sample_start    <- 7
+  sample_end      <- dim(ag_data)[1]
+
+  # Endogenous data
+  endog_data       <- ag_data[sample_start:sample_end,3:5]
+
+  # 'Instrument' variable
+  instrument       <- as.data.frame(ag_data$Gov[sample_start:sample_end])
+
+
+
+  testthat::expect_error(lp_lin_iv(endog_data,
+                                   shock          = instrument,
+                                   cumul_mult     = TRUE,
+                                   lags_endog_lin = 4,
+                                   exog_data      = as.data.frame(rnorm(length(instrument[, 1]))),
+                                   lags_exog      = 2,
+                                   contemp_data   = NULL,
+                                   lags_criterion = NaN,
+                                   max_lags       = 4,
+                                   trend          = 2,
+                                   confint        = 1,
+                                   hor            = 12,
+                                   num_cores      = 1),
+                         NA)
+})
+
+
+test_that("Test cumul_mult options", {
+  testthat::expect_error(lp_lin_iv(endog_data,
+                                   shock          = instrument,
+                                   cumul_mult     = TRUE,
+                                   lags_endog_lin = NaN,
+                                   exog_data      = NULL,
+                                   lags_exog      = NULL,
+                                   contemp_data   = NULL,
+                                   lags_criterion = "AIC",
+                                   max_lags       = 3,
+                                   trend          = 1,
+                                   confint        = 1,
+                                   hor            = 12,
+                                   num_cores      = 1),
+                         'The option cumul_mult = TRUE only works for a fixed number of lags.', fixed = TRUE)
+})
+
+
 

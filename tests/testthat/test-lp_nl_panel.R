@@ -1,5 +1,3 @@
-context("lp_nl_panel")
-
 
 library(dplyr)
 

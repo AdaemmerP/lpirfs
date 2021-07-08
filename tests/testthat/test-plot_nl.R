@@ -1,4 +1,3 @@
-context("plot_nl")
 
 # Endogenous data
   endog_data     <- interest_rules_var_data

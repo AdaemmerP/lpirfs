@@ -1,4 +1,9 @@
 
+# lpirfs 0.2.0.9000
+
+* Added the options *cumul_mult = T* for the functions *lp_lin_iv* and *lp_nl_iv*. It is only available for 
+
+
 # lpirfs 0.2.0
 
 * The dependency on the external JST data set has been removed by commenting out the examples for

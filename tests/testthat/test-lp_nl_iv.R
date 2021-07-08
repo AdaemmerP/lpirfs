@@ -1,4 +1,3 @@
-context("lp_nl_iv")
 
 # Load package data
   ag_data           <- ag_data
