@@ -39,10 +39,11 @@ Imports:
 RoxygenNote: 7.1.1
 LinkingTo: Rcpp, RcppArmadillo
 Suggests: 
-    testthat,
+    testthat (>= 3.0.0),
     readxl,
     knitr,
     rmarkdown,
     zoo,
     vars
 VignetteBuilder: knitr
+Config/testthat/edition: 3
