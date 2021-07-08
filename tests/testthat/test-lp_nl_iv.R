@@ -20,7 +20,7 @@
     endog_data    <- as.matrix(endog_data)
 
     testthat::expect_error(lp_nl_iv(endog_data,
-                              lags_endog_nl           = 3,
+                              lags_endog_nl     = 3,
                               shock             = instrument,
                               exog_data         = NULL,
                               lags_exog         = NULL,
@@ -415,4 +415,63 @@ test_that("Compare results with RZ-2018", {
   testthat::expect_equal(rz_s1_results, s1_results)
   testthat::expect_equal(rz_s2_results, s2_results)
 
+})
+
+
+
+
+test_that("Test that cumul_multiplier work", {
+
+
+  # Load package data
+  ag_data         <- ag_data
+  sample_start    <- 7
+  sample_end      <- dim(ag_data)[1]
+
+  # Endogenous data
+  endog_data       <- ag_data[sample_start:sample_end,3:5]
+
+  # 'Instrument' variable
+  instrument       <- as.data.frame(ag_data$Gov[sample_start:sample_end])
+
+
+
+  testthat::expect_error(lp_lin_iv(endog_data,
+                                   shock          = instrument,
+                                   cumul_mult     = TRUE,
+                                   lags_endog_lin = 4,
+                                   exog_data      = as.data.frame(rnorm(length(instrument[, 1]))),
+                                   lags_exog      = 2,
+                                   contemp_data   = NULL,
+                                   lags_criterion = NaN,
+                                   max_lags       = 4,
+                                   trend          = 2,
+                                   confint        = 1,
+                                   hor            = 12,
+                                   num_cores      = 1),
+                         NA)
+})
+
+
+
+
+test_that("Test whether cumul_mult is only used for fixed lag lengths", {
+  testthat::expect_error(lp_nl_iv(endog_data,
+                                  lags_endog_nl     = 3,
+                                  shock             = instrument,
+                                  cumul_mult        = TRUE,
+                                  exog_data         = NULL,
+                                  lags_exog         = NULL,
+                                  contemp_data      = NULL,
+                                  lags_criterion    = 'AIC',
+                                  max_lags          = 3,
+                                  trend             = 0,
+                                  confint           = 2,
+                                  hor               = 20,
+                                  switching         = switching_variable,
+                                  use_hp            = TRUE,
+                                  lambda            = 1600,
+                                  gamma             = 3,
+                                  num_cores         = 1),
+                         'The option cumul_mult = TRUE only works for a fixed number of lags.', fixed = TRUE)
 })

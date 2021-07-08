@@ -198,6 +198,10 @@ lp_nl_iv <- function(endog_data,
     warning("'instr' is a deprecated input name. Use 'shock' instead.")
   }
 
+  # Give warning if 'instr' is used as input name
+  if(isTRUE(cumul_mult) & is.character(lags_criterion)){
+    stop("The option cumul_mult = TRUE only works for a fixed number of lags.")
+  }
 
   # Check whether data is a data.frame
   if(!(is.data.frame(endog_data))){
@@ -313,7 +317,7 @@ lp_nl_iv <- function(endog_data,
      specs$contemp_data <- as.data.frame(contemp_data)
     }
 
-
+    specs$cumul_mult     <- cumul_mult
     specs$lags_exog      <- lags_exog
     specs$lags_criterion <- lags_criterion
     specs$max_lags       <- max_lags
@@ -407,11 +411,22 @@ lp_nl_iv <- function(endog_data,
 
                           for (h in 1:specs$hor){   # Accounts for the horizons
 
-                            yy  <-   y_nl[h:dim(y_nl)[1], ]
-                            xx  <-   x_nl[1:(dim(x_nl)[1] - h + 1), ]
+                            # Check whether cumulative multipliers shall be computed
+                            if(isTRUE(specs$cumul_mult)) {
 
-                            # This will be changed for cumul_mult
-                            # Using dplyr::lead() and lag()
+                              yy    <- dplyr::lead(y_nl, (h - 1)) - dplyr::lag(y_nl, 1)
+                              yy_xx <- cbind(yy, x_nl) %>%
+                                       stats::na.omit()
+
+                              yy    <- yy_xx[, 1:(dim(y_nl)[2])]
+                              xx    <- yy_xx[, (dim(y_nl)[2] + 1):dim(yy_xx)[2]]
+
+                            } else {
+
+                              yy  <-   y_nl[h:dim(y_nl)[1], ]
+                              xx  <-   x_nl[1:(dim(x_nl)[1] - h + 1), ]
+
+                            }
 
 
                             # Check whether data are matrices to correctly extract values
