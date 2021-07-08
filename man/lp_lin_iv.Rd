@@ -7,6 +7,7 @@
 lp_lin_iv(
   endog_data,
   shock = NULL,
+  cumul_mult = FALSE,
   instr = NULL,
   use_twosls = FALSE,
   instrum = NULL,
@@ -31,6 +32,10 @@ lp_lin_iv(
 
 \item{shock}{A one column \link{data.frame}, including the variable to shock with. The row length has to be the same as \emph{endog_data}.
 When \emph{use_twosls = TRUE}, this variable will be approximated/regressed on the instrument variable(s) given in \emph{instrum}.}
+
+\item{cumul_mult}{Boolean. Estimate cumulative multipliers? TRUE (default) or FALSE. If TRUE, cumulative responses
+are estimated via: \deqn{y_(t+h) - y_(t-1),} where h = 0,..., H-1.
+This option is only available for \emph{lags_criterion = NaN}.}
 
 \item{instr}{Deprecated input name. Use \emph{shock} instead. See \emph{shock} for details.}
 

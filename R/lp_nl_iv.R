@@ -7,6 +7,9 @@
 #' @param lags_endog_nl NaN or integer. NaN if lags are chosen by a lag length criterion. Integer for number of lags for \emph{endog_data}.
 #' @param shock One column \link{data.frame}, including the instrument to shock with.
 #'              The row length has to be the same as \emph{endog_data}.
+#' @param cumul_mult Boolean. Estimate cumulative multipliers? TRUE (default) or FALSE. If TRUE, cumulative responses
+#'                   are estimated via: \deqn{y_(t+h) - y_(t-1),} where h = 0,..., H-1.
+#'                   This option is only available for \emph{lags_criterion = NaN}.
 #' @param instr Deprecated input name. Use \emph{shock} instead. See \emph{shock} for details.
 #' @param exog_data A \link{data.frame}, containing exogenous variables. The row length has to be the same as \emph{endog_data}.
 #'                  Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.
@@ -167,6 +170,7 @@
 lp_nl_iv <- function(endog_data,
                             lags_endog_nl     = NULL,
                             shock             = NULL,
+                            cumul_mult        = FALSE,
                             instr             = NULL,
                             exog_data         = NULL,
                             lags_exog         = NULL,
@@ -193,6 +197,7 @@ lp_nl_iv <- function(endog_data,
     shock = instr
     warning("'instr' is a deprecated input name. Use 'shock' instead.")
   }
+
 
   # Check whether data is a data.frame
   if(!(is.data.frame(endog_data))){

@@ -4,6 +4,9 @@
 #' @param endog_data A \link{data.frame}, containing the values of the dependent variable(s).
 #' @param shock A one column \link{data.frame}, including the variable to shock with. The row length has to be the same as \emph{endog_data}.
 #' When \emph{use_twosls = TRUE}, this variable will be approximated/regressed on the instrument variable(s) given in \emph{instrum}.
+#' @param cumul_mult Boolean. Estimate cumulative multipliers? TRUE (default) or FALSE. If TRUE, cumulative responses
+#'                   are estimated via: \deqn{y_(t+h) - y_(t-1),} where h = 0,..., H-1.
+#'                   This option is only available for \emph{lags_criterion = NaN}.
 #' @param instr Deprecated input name. Use \emph{shock} instead. See \emph{shock} for details.
 #' @param use_twosls Boolean. Use two stage least squares? TRUE or FALSE (default).
 #' @param instrum A \link{data.frame}, containing the instrument(s) to use for 2SLS. This instrument will be used for the
@@ -82,7 +85,8 @@
 #' Schwarz, Gideon E. (1978). "Estimating the dimension of a model", \emph{Annals of Statistics}, 6 (2): 461–464.
 #'
 #'@author Philipp Adämmer
-#'@import foreach
+#'@import foreach dplyr
+#'@importFrom stats na.omit pf
 #'@examples
 #'\donttest{
 #'
@@ -198,6 +202,7 @@
 #'
 lp_lin_iv <- function(endog_data,
                    shock          = NULL,
+                   cumul_mult     = FALSE,
                    instr          = NULL,
                    use_twosls     = FALSE,
                    instrum        = NULL,
@@ -220,6 +225,11 @@ lp_lin_iv <- function(endog_data,
   if(!is.null(instr)){
     shock <- instr
     warning("'instr' is a deprecated input name. Use 'shock' instead.")
+  }
+
+  # Give warning if 'instr' is used as input name
+  if(isTRUE(cumul_mult) & is.character(lags_criterion)){
+    stop("The option cumul_mult = TRUE only works for a fixed number of lags.")
   }
 
   # Check whether data is a data.frame
@@ -317,6 +327,7 @@ lp_lin_iv <- function(endog_data,
 
   # Specify inputs
   specs$shock              <- shock
+  specs$cumul_mult         <- cumul_mult
   specs$use_twosls         <- use_twosls
   specs$instrum            <- instrum
   specs$lags_endog_lin     <- lags_endog_lin
@@ -392,13 +403,25 @@ if(is.nan(specs$lags_criterion) == TRUE){
 
   # Loops to estimate local projections
   lin_irfs <- foreach(s         = 1:specs$endog,
-                      .packages = 'lpirfs')  %dopar%{ # Accounts for the reaction of the endogenous variable
+                      .packages = c('lpirfs', 'dplyr', 'stats'))  %dopar%{ # Accounts for the reaction of the endogenous variable
 
                         for (h in 1:(specs$hor)){   # Accounts for the horizons
 
-                          # Create data
-                          yy  <-   y_lin[h:dim(y_lin)[1], ]
-                          xx  <-   x_lin[1:(dim(x_lin)[1] - h + 1), ]
+                          # Check whether cumulative multipliers shall be computed
+                          if(isTRUE(specs$cumul_mult)) {
+
+                            yy    <- dplyr::lead(y_lin, (h - 1)) - dplyr::lag(y_lin, 1)
+                            yy_xx <- cbind(yy, x_lin) %>%
+                                     stats::na.omit()
+
+                            yy    <- yy_xx[, 1:(dim(y_lin)[2])]
+                            xx    <- yy_xx[, (dim(y_lin)[2] + 1):dim(yy_xx)[2]]
+
+                                    } else {
+
+                            yy  <-   y_lin[h:dim(y_lin)[1], ]
+                            xx  <-   x_lin[1:(dim(x_lin)[1] - h + 1), ]
+                          }
 
                           # Check whether data are matrices to correctly extract values
                           if(!is.matrix(xx)){
