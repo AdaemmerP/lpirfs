@@ -75,7 +75,7 @@ List ols_diagnost(NumericVector y, NumericMatrix x){
   ssm            = sum(resids_mean_sq);
 
   // R^2
-  r_sq      = 1 - ssr/ssm;
+  r_sq      = 1 - (ssr/ssm);
 
   // Adjusted R^2
   r_sq_adj  = 1 - (1 - r_sq)*((nobs - 1)/double(nobs - num_exog));
