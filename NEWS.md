@@ -1,7 +1,7 @@
 
 # lpirfs 0.2.0.9000
 
-* Added the options *cumul_mult = T* for the functions *lp_lin_iv* and *lp_nl_iv*. It is only available for 
+* Added the options *cumul_mult = T* for the functions *lp_lin_iv* and *lp_nl_iv*. 
 
 
 # lpirfs 0.2.0

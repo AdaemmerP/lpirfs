@@ -7,8 +7,8 @@
 #' @keywords internal
 #' @references
 #'
-#'  Croissant, Y., Millo, G. (2017). "Robust Standard Error Estimators for Panel Models: A Unifying Approach." \emph{Journal of Statistical Software}, 27(2), 1-43. doi:
-#' 	10.18637/jss.v082.i03 (URL: \url{https://www.jstatsoft.org/article/view/v082i03}).
+#'  Croissant, Y., Millo, G. (2017). "Robust Standard Error Estimators for Panel Models: A Unifying Approach." \emph{Journal of Statistical Software}, 27(2), 1-43.
+#'  \doi{10.18637/jss.v082.i03}.
 #'
 get_robust_vcxt_panel <- function(func_name){
 

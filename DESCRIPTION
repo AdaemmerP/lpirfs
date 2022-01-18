@@ -18,8 +18,9 @@ Authors@R: c(
                     role    = c("ctb"))) 
 Maintainer: Philipp Adämmer <adaemmer@hsu-hh.de>
 BugReports: https://github.com/adaemmerp/lpirfs/issues
-Description: Provides functions to estimate and plot linear as well as nonlinear impulse 
+Description: Provides functions to estimate and visualize linear as well as nonlinear impulse 
              responses based on local projections by Jordà (2005) <doi:10.1257/0002828053828518>.
+             The methods and the package are outlined in Adämmer (2019) <doi:10.32614/RJ-2019-052>.
 License: GPL (>= 2)
 Depends: R (>= 3.1.2)
 Encoding: UTF-8
@@ -36,7 +37,7 @@ Imports:
     plm(>= 2.2-3),
     sandwich(>= 2.5-1),
     Rcpp(>= 1.0.4.6)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 LinkingTo: Rcpp, RcppArmadillo
 Suggests: 
     testthat (>= 3.0.0),
