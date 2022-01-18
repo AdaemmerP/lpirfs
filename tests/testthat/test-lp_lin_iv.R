@@ -32,7 +32,7 @@
   test_that("Test whether instrument is given", {
     testthat::expect_error(lp_lin_iv(endog_data,
                            shock          = NULL,
-                           lags_endog_lin       = 4,
+                           lags_endog_lin = 4,
                            exog_data      = NULL,
                            lags_exog      = NULL,
                            contemp_data   = NULL,
