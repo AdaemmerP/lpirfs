@@ -1,8 +1,12 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# lpirfs [![CRAN Version](https://www.r-pkg.org/badges/version/lpirfs)](https://CRAN.R-project.org/package=lpirfs)
+# lpirfs <a href='https://journal.r-project.org/archive/2019/RJ-2019-052/index.html'><img src='man/figures/lpirfs_logo.png' align="right" height="180" /></a>
 
+<!-- # lpirfs   -->
+
+[![CRAN
+Version](https://www.r-pkg.org/badges/version/lpirfs)](https://CRAN.R-project.org/package=lpirfs)
 [![R-CMD-check](https://github.com/AdaemmerP/lpirfs/workflows/R-CMD-check/badge.svg)](https://github.com/AdaemmerP/lpirfs/actions)
 [![Total
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/lpirfs?color=orange)](https://CRAN.R-project.org/package=lpirfs)
@@ -10,7 +14,7 @@ Downloads](https://cranlogs.r-pkg.org/badges/grand-total/lpirfs?color=orange)](h
 [![Coverage
 Status](https://codecov.io/gh/adaemmerp/lpirfs/graph/badge.svg)](https://codecov.io/github/adaemmerp/lpirfs?branch=master)
 
-# About
+## About
 
 An R-package which estimates linear and nonlinear impulse responses with
 local projections by [Jordà
