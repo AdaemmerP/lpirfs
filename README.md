@@ -14,7 +14,7 @@ Status](https://codecov.io/gh/adaemmerp/lpirfs/graph/badge.svg)](https://codecov
 
 An R-package which estimates linear and nonlinear impulse responses with
 local projections by [Jordà
-(2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518).
+(2005)](https://www.aeaweb.org/articles?id=10.1257/0002828053828518).<br />
 Please cite the paper by [Adämmer
 (2019)](https://journal.r-project.org/archive/2019/RJ-2019-052/index.html)
 when using the package.
