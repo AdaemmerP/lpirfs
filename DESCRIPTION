@@ -1,7 +1,7 @@
 Package: lpirfs
 Type: Package
 Title: Local Projections Impulse Response Functions
-Version: 0.2.0.9000
+Version: 0.2.1.9000
 Authors@R: c(
             person("Philipp", "Adämmer", 
                     email   = "adaemmer@hsu-hh.de", 
@@ -20,7 +20,7 @@ Maintainer: Philipp Adämmer <adaemmer@hsu-hh.de>
 BugReports: https://github.com/adaemmerp/lpirfs/issues
 Description: Provides functions to estimate and visualize linear as well as nonlinear impulse 
              responses based on local projections by Jordà (2005) <doi:10.1257/0002828053828518>.
-             The methods and the package are outlined in Adämmer (2019) <doi:10.32614/RJ-2019-052>.
+             The methods and the package are explained in detail in Adämmer (2019) <doi:10.32614/RJ-2019-052>.
 License: GPL (>= 2)
 Depends: R (>= 3.1.2)
 Encoding: UTF-8
@@ -31,7 +31,6 @@ Imports:
     dplyr(>= 1.0.0),
     foreach(>= 1.5.0),
     ggplot2(>= 3.3.0),
-    ggpubr(>= 0.3.0),
     gridExtra(>= 2.3),
     lmtest(>= 0.9-36), 
     plm(>= 2.2-3),
@@ -43,6 +42,7 @@ Suggests:
     testthat (>= 3.0.0),
     readxl,
     knitr,
+    ggpubr,
     rmarkdown,
     zoo,
     vars

@@ -39,8 +39,8 @@ lp_nl_iv(
 \item{shock}{One column \link{data.frame}, including the instrument to shock with.
 The row length has to be the same as \emph{endog_data}.}
 
-\item{cumul_mult}{Boolean. Estimate cumulative multipliers? TRUE (default) or FALSE. If TRUE, cumulative responses
-are estimated via: \deqn{y_(t+h) - y_(t-1),} where h = 0,..., H-1.
+\item{cumul_mult}{Boolean. Estimate cumulative multipliers? TRUE or FALSE (default). If TRUE, cumulative responses
+are estimated via: \deqn{y_{(t+h)} - y_{(t-1)},} where h = 0,..., H-1.
 This option is only available for \emph{lags_criterion = NaN}.}
 
 \item{instr}{Deprecated input name. Use \emph{shock} instead. See \emph{shock} for details.}

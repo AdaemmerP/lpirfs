@@ -3,8 +3,8 @@
 
 # lpirfs [![CRAN Version](https://www.r-pkg.org/badges/version/lpirfs)](https://CRAN.R-project.org/package=lpirfs)
 
-[![Build
-Status](https://travis-ci.com/AdaemmerP/lpirfs.svg)](https://travis-ci.com/AdaemmerP/lpirfs)
+[![R-CMD-check](https://github.com/AdaemmerP/lpirfs/workflows/R-CMD-check/badge.svg)](https://github.com/AdaemmerP/lpirfs/actions)
+<!-- [![CRAN status](https://www.r-pkg.org/badges/version/lpirfs)](https://cran.r-project.org/package=lpirfs) -->
 [![Downloads](https://cranlogs.r-pkg.org/badges/lpirfs)](https://CRAN.R-project.org/package=lpirfs)
 [![Total
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/lpirfs?color=orange)](https://CRAN.R-project.org/package=lpirfs)

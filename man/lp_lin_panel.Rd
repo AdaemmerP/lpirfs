@@ -45,7 +45,7 @@ a sequence of dates. This sequence has to be in the same format as the second co
 \item{endog_data}{Character. The column name of the endogenous variable. You can only provide one endogenous variable at a time.}
 
 \item{cumul_mult}{Boolean. Estimate cumulative multipliers? TRUE (default) or FALSE. If TRUE, cumulative responses
-are estimated via: \deqn{y_(t+h) - y_(t-1),} where h = 0,..., H-1.}
+are estimated via: \deqn{y_{(t+h)} - y_{(t-1)},} where h = 0,..., H-1.}
 
 \item{shock}{Character. The column name of the variable to shock with.}
 

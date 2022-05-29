@@ -1,16 +1,13 @@
 
 # lpirfs 0.2.0.9000
 
-* Added the options *cumul_mult = FALSE/TRUE* for the functions *lp_lin_iv* and *lp_nl_iv*. 
-  The default is FALSE.
-* Updated CITATION with the paper by Adämmer (2019).
-
+* Added the options *cumul_mult = FALSE/TRUE* for the functions *lp_lin_iv* and *lp_nl_iv*. The default is FALSE.
+* Updated CITATION to use the paper by Adämmer (2019) published in The R Journal.
+* Updated documentation.
 
 # lpirfs 0.2.0
 
-* The dependency on the external JST data set has been removed by commenting out the examples for
-the panel functions. Now, the JST data set has to be downloaded by the user first, before running 
-the examples for the panel functions.
+* The dependency on the external JST data set has been removed by commenting out the examples for the panel functions. Now, the JST data set has to be downloaded by the user first, before running the examples for the panel functions.
 
 
 # lpirfs 0.1.9

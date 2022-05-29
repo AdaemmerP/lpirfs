@@ -420,7 +420,7 @@ test_that("Compare results with RZ-2018", {
 
 
 
-test_that("Test that cumul_multiplier work", {
+test_that("Test that cumul_multiplier works", {
 
 
   # Load package data
