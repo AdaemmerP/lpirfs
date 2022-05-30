@@ -2,8 +2,8 @@
 #'
 #' lpirfs provides functions to estimate and plot linear as well as nonlinear impulse
 #' responses based on local projections by Jordà (2005) <doi:10.1257/0002828053828518>.
-#' Nonlinear impulse responses are estimated for two regimes which can be separated by a smooth transition function as
-#' applied in Auerbach and Gorodnichenko (2012) <doi:10.1257/pol.4.2.1>, or by a simple dummy approach.
+#' The methods and the package are explained in detail in Adämmer (2019) <doi:10.32614/RJ-2019-052>.
+#' Please cite the paper when using the package.
 #'
 #' @docType package
 #' @author Philipp Adämmer

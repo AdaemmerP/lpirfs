@@ -36,7 +36,7 @@ Imports:
     plm(>= 2.2-3),
     sandwich(>= 2.5-1),
     Rcpp(>= 1.0.4.6)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
 LinkingTo: Rcpp, RcppArmadillo
 Suggests: 
     testthat (>= 3.0.0),

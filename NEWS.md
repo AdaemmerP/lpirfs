@@ -1,8 +1,10 @@
 
-# lpirfs 0.2.0.9000
+# lpirfs 0.2.1
 
 * Added the options *cumul_mult = FALSE/TRUE* for the functions *lp_lin_iv* and *lp_nl_iv*. The default is FALSE.
+
 * Updated CITATION to use the paper by Adämmer (2019) published in The R Journal.
+
 * Updated documentation.
 
 # lpirfs 0.2.0
