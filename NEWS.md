@@ -1,3 +1,8 @@
+# lpirfs 0.2.1.9000
+
+* Disabled the possibility for *lags_exog* < 1 for functions `lp_lin`, `lp_nl`, `lp_lin_iv` and `lp_nl_iv`. Solely *contemp_data* should be used for exogenous data with contemporaneous impact.	
+
+* Improved documentation for functions `lp_lin`, `lp_nl`, `lp_lin_iv` and `lp_nl_iv` regardings *exog_data* and *lags_exog*.  
 
 # lpirfs 0.2.1
 
