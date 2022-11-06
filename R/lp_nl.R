@@ -37,8 +37,9 @@
 #'@param lambda Double. Value of \eqn{\lambda} for the Hodrick-Prescott filter (if use_hp = TRUE).
 #'@param exog_data A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
 #'                  Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.
-#'@param lags_exog Integer. Number of lags for the exogenous variables.
-#'@param contemp_data A \link{data.frame}, containing exogenous data with contemporaneous impact. This data will not be lagged.
+#' @param lags_exog NULL or Integer. Integer for the number of lags for the exogenous data. The value cannot be 0. If you want to
+#'                  to include exogenous data with contemporaneous impact use \emph{contemp_data}.
+#' @param contemp_data A \link{data.frame}, containing exogenous data with contemporaneous impact. This data will not be lagged.
 #'                      The row length has to be the same as \emph{endog_data}.
 #'@param num_cores Integer. The number of cores to use for the estimation. If NULL, the function will
 #'                 use the maximum number of cores minus one.
@@ -398,6 +399,12 @@ lp_nl <- function(endog_data,
       stop('The maximum number of lags can only be used if a lag length criterion is given.')
     }
 
+  # Check whether lags_exog < 1
+    if(!is.null(lags_exog)){
+      if(lags_exog < 1){
+        stop("'lags_exog' cannot be 0 or negative. If you want to include exogenous data with contemporaneous impact use 'contemp_data'.")
+      }
+    }
 
 
   # Safe data frame specifications in 'specs for functions

@@ -49,7 +49,8 @@ variable in \emph{shock}.}
 \item{exog_data}{A \link{data.frame}, containing exogenous variables. The row length has to be the same as \emph{endog_data}.
 Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.}
 
-\item{lags_exog}{NULL or Integer. Integer for the number of lags for the exogenous data.}
+\item{lags_exog}{NULL or Integer. Integer for the number of lags for the exogenous data. The value cannot be 0. If you want to
+to include exogenous data with contemporaneous impact use `contemp_data`.}
 
 \item{contemp_data}{A \link{data.frame}, containing exogenous data with contemporaneous impact.
 The row length has to be the same as \emph{endog_data}.}

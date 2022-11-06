@@ -17,10 +17,12 @@
 #' @param nw_prewhite Boolean. Should the estimators be pre-whitened? TRUE or FALSE (default).
 #' @param adjust_se Boolen. Should a finite sample adjsutment be made to the covariance matrix estimators? TRUE or FALSE (default).
 #' @param hor Integer. Number of horizons for impulse responses.
-#' @param exog_data A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
-#'                 Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.
-#' @param lags_exog Integer. Number of lags for the exogenous variables.
-#' @param contemp_data A \link{data.frame}, containing exogenous data with contemporaneous impact. The row length has to be the same as \emph{endog_data}.
+#'@param exog_data A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
+#'                  Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.
+#' @param lags_exog NULL or Integer. Integer for the number of lags for the exogenous data. The value cannot be 0. If you want to
+#'                  to include exogenous data with contemporaneous impact use \emph{contemp_data}.
+#' @param contemp_data A \link{data.frame}, containing exogenous data with contemporaneous impact. This data will not be lagged.
+#'                      The row length has to be the same as \emph{endog_data}.
 #' @param num_cores NULL or Integer. The number of cores to use for the estimation. If NULL, the function will
 #'                 use the maximum number of cores minus one.
 #'
@@ -278,6 +280,13 @@ lp_lin <- function(endog_data,
     if(!is.null(specs$exog_data) & is.null(specs$lags_exog)){
       stop('Please provide a lag length for the exogenous data.')
     }
+
+ # Check whether lags_exog < 1
+   if(!is.null(lags_exog)){
+     if(lags_exog < 1){
+       stop("'lags_exog' cannot be 0 or negative. If you want to include exogenous data with contemporaneous impact use 'contemp_data'.")
+     }
+   }
 
 
   # Safe data frame specifications in 'specs for functions

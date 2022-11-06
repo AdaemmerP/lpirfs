@@ -54,9 +54,11 @@ with the number of horizon.}
 \item{exog_data}{A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
 Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.}
 
-\item{lags_exog}{Integer. Number of lags for the exogenous variables.}
+\item{lags_exog}{NULL or Integer. Integer for the number of lags for the exogenous data. The value cannot be 0. If you want to
+to include exogenous data with contemporaneous impact use \emph{contemp_data}.}
 
-\item{contemp_data}{A \link{data.frame}, containing exogenous data with contemporaneous impact. The row length has to be the same as \emph{endog_data}.}
+\item{contemp_data}{A \link{data.frame}, containing exogenous data with contemporaneous impact. This data will not be lagged.
+The row length has to be the same as \emph{endog_data}.}
 
 \item{num_cores}{NULL or Integer. The number of cores to use for the estimation. If NULL, the function will
 use the maximum number of cores minus one.}

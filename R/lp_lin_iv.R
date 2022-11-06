@@ -14,7 +14,8 @@
 #' @param lags_endog_lin NaN or integer. NaN if lags are chosen by a lag length criterion. Integer for number of lags for \emph{endog_data}.
 #' @param exog_data A \link{data.frame}, containing exogenous variables. The row length has to be the same as \emph{endog_data}.
 #'                  Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.
-#' @param lags_exog NULL or Integer. Integer for the number of lags for the exogenous data.
+#' @param lags_exog NULL or Integer. Integer for the number of lags for the exogenous data. The value cannot be 0. If you want to
+#'                  to include exogenous data with contemporaneous impact use `contemp_data`.
 #' @param contemp_data A \link{data.frame}, containing exogenous data with contemporaneous impact.
 #'                      The row length has to be the same as \emph{endog_data}.
 #' @param lags_criterion NaN or character. NaN means that the number of lags
@@ -320,6 +321,12 @@ lp_lin_iv <- function(endog_data,
   }
 
 
+# Check whether lags_exog < 1
+  if(!is.null(lags_exog)){
+    if(lags_exog < 1){
+    stop("'lags_exog' cannot be 0 or negative. If you want to include exogenous data with contemporaneous impact use 'contemp_data'.")
+  }
+}
 
 
   # Create list to store inputs
