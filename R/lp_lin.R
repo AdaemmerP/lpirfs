@@ -18,7 +18,7 @@
 #' @param adjust_se Boolen. Should a finite sample adjsutment be made to the covariance matrix estimators? TRUE or FALSE (default).
 #' @param hor Integer. Number of horizons for impulse responses.
 #'@param exog_data A \link{data.frame}, containing exogenous variables for the VAR. The row length has to be the same as \emph{endog_data}.
-#'                  Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.
+#'                  Lag lengths for exogenous variables have to be given and will not be determined via a lag length criterion.
 #' @param lags_exog NULL or Integer. Integer for the number of lags for the exogenous data. The value cannot be 0. If you want to
 #'                  to include exogenous data with contemporaneous impact use \emph{contemp_data}.
 #' @param contemp_data A \link{data.frame}, containing exogenous data with contemporaneous impact. This data will not be lagged.

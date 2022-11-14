@@ -46,7 +46,7 @@ This option is only available for \emph{lags_criterion = NaN}.}
 \item{instr}{Deprecated input name. Use \emph{shock} instead. See \emph{shock} for details.}
 
 \item{exog_data}{A \link{data.frame}, containing exogenous variables. The row length has to be the same as \emph{endog_data}.
-Lag lengths for exogenous variables have to be given and will no be determined via a lag length criterion.}
+Lag lengths for exogenous variables have to be given and will not be determined via a lag length criterion.}
 
 \item{lags_exog}{NULL or Integer. Integer for the number of lags for the exogenous data. The value cannot be 0. If you want to
 to include exogenous data with contemporaneous impact use \emph{contemp_data}.}

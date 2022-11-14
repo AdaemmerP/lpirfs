@@ -1,8 +1,8 @@
-# lpirfs 0.2.1.9000
+# lpirfs 0.2.2
 
-* Disabled the possibility for *lags_exog* < 1 for functions `lp_lin`, `lp_nl`, `lp_lin_iv` and `lp_nl_iv`. Solely *contemp_data* should be used for exogenous data with contemporaneous impact.	
+* Disabled the possibility *lags_exog* = 0 for functions `lp_lin()`, `lp_nl()`, `lp_lin_iv()` and `lp_nl_iv()`. Solely *contemp_data* should be used for exogenous data with contemporaneous impact. 
 
-* Improved documentation for functions `lp_lin`, `lp_nl`, `lp_lin_iv` and `lp_nl_iv` regardings *exog_data* and *lags_exog*.  
+* Updated documentation for functions `lp_lin()`, `lp_nl()`, `lp_lin_iv()` and `lp_nl_iv()` regardings *exog_data* and *lags_exog*.  
 
 # lpirfs 0.2.1
 
@@ -41,7 +41,7 @@
 # lpirfs 0.1.6
 
 
-* New S3 methods for all main functions to use *summary()* and *plot()* 
+* New S3 methods for all main functions to use `summary()` and `plot()` 
 
 * More flexible options for the HAC estimators, such as pre-whitening, sample 
   size adjustment, etc. 
@@ -54,17 +54,17 @@
 
 # lpirfs 0.1.5
 
-* Fixed a bug for *lp_lin_panel()* and *lp_nl_panel()* regarding the construction of the 
+* Fixed a bug for `lp_lin_panel()` and `lp_nl_panel()` regarding the construction of the 
   endogenous and exogenous variables.
 
-* Fixed a bug for *lp_nl_panel()* when using the switching variable. 
+* Fixed a bug for `lp_nl_panel()` when using the switching variable. 
 
-* Fixed a bug for *lp_lin_panel()* and *lp_nl_panel()* when a pooling model is specified.
+* Fixed a bug for `lp_lin_panel()` and `lp_nl_panel()` when a pooling model is specified.
 
-* New checks for *lp_lin_panel()* and *lp_nl_panel()* to see whether shock variable has been dropped during estimation, 
+* New checks for `lp_lin_panel()` and `lp_nl_panel()` to see whether shock variable has been dropped during estimation, 
   potentially because of co-linearity or identification issues.
   
-* *lp_nl_panel()* now returns the (transformed) switching variable as a *tibble* along with the original data
+* `lp_nl_panel()` now returns the (transformed) switching variable as a tibble along with the original data
   for comparabaility.
   
 * Updated documentation.  
@@ -93,11 +93,11 @@ function | old input name | new input name
 
 # lpirfs 0.1.3
 
-* Included an option to conduct 2SLS with *lp_lin_iv*.
+* Included an option to conduct 2SLS with `lp_lin_iv()`.
 
-* Included an option to set the lag length of the endogenous variables in *lp_lin_iv* and *lp_nl_iv* to zero.
+* Included an option to set the lag length of the endogenous variables in `lp_lin_iv()` and `lp_nl_iv()` to zero.
 
-* Deleted the deprecated plot functions *plot_lin_irfs* and *plot_nl_irfs*.
+* Deleted the deprecated plot functions `plot_lin_irfs()` and `plot_nl_irfs()`.
 
 * Improved documentation.
 
