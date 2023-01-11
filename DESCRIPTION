@@ -4,7 +4,7 @@ Title: Local Projections Impulse Response Functions
 Version: 0.2.2.9000
 Authors@R: c(
             person("Philipp", "Adämmer", 
-                    email   = "adaemmer@hsu-hh.de", 
+                    email   = "philipp.adaemmer@uni-greifswald.de", 
                     role    = c("aut", "cre"),
                     comment = c(ORCID = "0000-0003-3770-0097")),
             person("James P.", "LeSage", 
