@@ -417,12 +417,31 @@ if(is.nan(specs$lags_criterion) == TRUE){
                           # Check whether cumulative multipliers shall be computed
                           if(isTRUE(specs$cumul_mult)) {
 
-                            yy    <- dplyr::lead(y_lin, (h - 1)) - dplyr::lag(y_lin, 1)
-                            yy_xx <- cbind(yy, x_lin) %>%
-                                     stats::na.omit()
+                            # Check whether two stage least squares is used
+                              if(isTRUE(specs$use_twosls)){
 
-                            yy    <- yy_xx[, 1:(dim(y_lin)[2])]
-                            xx    <- yy_xx[, (dim(y_lin)[2] + 1):dim(yy_xx)[2]]
+                                  yy       <- dplyr::lead(y_lin, (h - 1)) - dplyr::lag(y_lin, 1)
+                                  na_index <- unname(which(is.na(yy[, 1])))
+
+                                  yy_xx    <- cbind(yy, x_lin) %>%
+                                              stats::na.omit()
+
+                                  yy    <- yy_xx[, 1:(dim(y_lin)[2])]
+                                  xx    <- yy_xx[, (dim(y_lin)[2] + 1):dim(yy_xx)[2]]
+
+                                  # Extract and convert instrument
+                                  zz <- specs$z_lin[(na_index + 1) : (dim(z_lin)[1] - h + 1), ] %>%
+                                        as.matrix()
+
+                                            } else {
+
+                                  yy    <- dplyr::lead(y_lin, (h - 1)) - dplyr::lag(y_lin, 1)
+                                  yy_xx <- cbind(yy, x_lin) %>%
+                                           stats::na.omit()
+
+                                  yy    <- yy_xx[, 1:(dim(y_lin)[2])]
+                                  xx    <- yy_xx[, (dim(y_lin)[2] + 1):dim(yy_xx)[2]]
+                              }
 
                                     } else {
 
@@ -467,9 +486,18 @@ if(is.nan(specs$lags_criterion) == TRUE){
 
                                          }   else   {
 
-                               # Extract instrument matrix and save as matrix
-                                zz <- specs$z_lin[1 : (dim(z_lin)[1] - h + 1), ] %>%
-                                      as.matrix()
+                             # Check whether cumulative multipliers are used
+                             if(isTRUE(specs$cumul_mult)){
+
+                               # do nothing: zz has already been build above
+
+                                          } else {
+
+                               zz <- specs$z_lin[1 : (dim(z_lin)[1] - h + 1), ] %>%
+                                     as.matrix()
+
+                                          }
+
 
 
                               get_tsls_vals  <-   get_std_err_tsls(yy, xx, lag_nw, s, zz,  specs)

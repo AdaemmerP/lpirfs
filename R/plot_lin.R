@@ -52,7 +52,7 @@ plot_lin <- function(results_lin){
                               scale_y_continuous(expand = c(0, 0))          +
                               scale_x_continuous(expand = c(0, 0),
                                                  breaks = seq(0, specs$hor, 2))  +
-                              geom_hline(yintercept = 0, col = "black", size = 0.25, linetype = "dashed")
+                              geom_hline(yintercept = 0, col = "black", linewidth = 0.25, linetype = "dashed")
 
       # Add one to count variable
       plot_num     <- plot_num + 1
@@ -88,7 +88,7 @@ plot_lin <- function(results_lin){
                                   scale_y_continuous(expand = c(0, 0))          +
                                   scale_x_continuous(expand = c(0, 0),
                                                      breaks = seq(0, specs$hor, 2))  +
-                                  geom_hline(yintercept = 0, col = "black", size = 0.25, linetype = "dashed")
+                                  geom_hline(yintercept = 0, col = "black", linewidth = 0.25, linetype = "dashed")
 
 
 
