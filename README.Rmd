@@ -53,7 +53,7 @@ You can install the development version of **lpirfs** from [GitHub](https://gith
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("AdaemmerP/lpirfs")
+devtools::install_github("https://github.com/AdaemmerP/lpirfs/tree/dev")
 ```
 
 The package compiles some C++ source code for installation, which is why you need the appropriate compilers:
