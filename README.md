@@ -55,18 +55,8 @@ You can install the development version of **lpirfs** from
 devtools::install_github("https://github.com/AdaemmerP/lpirfs/tree/dev")
 ```
 
-The package compiles some C++ source code for installation, which is why
-you need the appropriate compilers:
-
-On Windows you need
-[Rtools](https://cran.r-project.org/bin/windows/Rtools/) available from
-CRAN.
-
-On macOS you need the Clang 6.x compiler and the GNU Fortran compiler
-from [macOS tools](https://cran.r-project.org/bin/macosx/tools/). Having
-installed the compilers, you need to open a terminal and start R via
-‘PATH=/usr/local/clang6/bin:\$PATH R’. Yo can then install the package
-via *devtools::install_github(“AdaemmerP/lpirfs”)*
+As lpirfs compiles some C++ source code, you will need to have installed
+the appropriate compilers to build the development version.
 
 ## How to use
 
