@@ -567,5 +567,23 @@ test_that("Test cumul_mult options", {
                          'The option cumul_mult = TRUE only works for a fixed number of lags.', fixed = TRUE)
 })
 
+test_that("Test whether 2SLS with cumul_mult works", {
 
-
+shock     <- ag_data[sample_start:sample_end, 3]
+exog_tbl  <-  tibble(x1 = rnorm(dim(shock)[1]), x2 = rnorm(dim(shock)[1]))
+testthat::expect_error(lp_lin_iv(
+                        endog_data = endog_data,
+                        shock = shock,
+                        cumul_mult = T,
+                        instr = NULL,
+                        instrum = instrument,
+                        use_twosls = TRUE,
+                        lags_endog_lin = 4,
+                        exog_data = exog_tbl,
+                        lags_exog = 4,
+                        lags_criterion = NaN,
+                        trend = 0,
+                        confint = 1.96,
+                        hor = 12,
+                        NA)
+)})
