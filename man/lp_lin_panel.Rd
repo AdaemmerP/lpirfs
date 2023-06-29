@@ -110,8 +110,9 @@ A list containing:
 
 \item{irf_lin_up}{A \link{matrix}, containing all upper confidence bands.
                                   The columns are the horizons.}
-
-\item{reg_summaries}{Regression output for each horizon.}
+\item{reg_outputs}{Full regression output (plm object) for each horizon.}
+\item{reg_summaries}{Summary of regression output for each horizon. In case of robust covariance estimators,
+this only includes the t-tests.}
 
 \item{xy_data_sets}{Data sets with endogenous and exogenous variables for each horizon.}
 

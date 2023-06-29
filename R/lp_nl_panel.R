@@ -33,7 +33,9 @@
 #'\item{irf_lin_up}{A \link{matrix}, containing all upper confidence bands.
 #'                                   The columns are the horizons.}
 #'
-#'\item{reg_summaries}{Regression output for each horizon.}
+#'\item{reg_outputs}{Full regression output (plm object) for each horizon.}
+#'\item{reg_summaries}{Summary of regression output for each horizon. In case of robust covariance estimators,
+#'this only includes the t-tests.}
 #'
 #'\item{xy_data_sets}{Data sets with endogenous and exogenous variables for each horizon.}
 #'
@@ -469,6 +471,7 @@ lp_nl_panel <- function(
 
 
   # List to store regression results
+  reg_outputs    <- list(rep(NaN), specs$hor)
   reg_summaries  <- list(rep(NaN), specs$hor)
   xy_data_sets   <- list(rep(NaN), specs$hor)
 
@@ -542,19 +545,20 @@ lp_nl_panel <- function(
       # Estimate robust covariance matrices
       if(specs$robust_cov %in% c("vcovBK", "vcovDC", "vcovHC", "vcovNW", "vcovSCC")){
 
-
-        reg_results <- get_robust_cov_panel(panel_results, specs)
+        reg_output_tmp  <- panel_results
+        reg_summary_tmp <- get_robust_cov_panel(panel_results, specs)
 
                                                 } else {
 
-        reg_results <-  lmtest::coeftest(panel_results,  vcov = get_robust_vcxt_panel(specs$robust_cov))
+        reg_output_tmp  <- panel_results
+        reg_summary_tmp <- lmtest::coeftest(panel_results,  vcov = get_robust_vcxt_panel(specs$robust_cov))
 
                                                 }
 
 
       # Extract the position of the parameters of the shock variable
-      shock_position_s1 <- which(stats::variable.names(t(reg_results)) == "shock_s1")
-      shock_position_s2 <- which(stats::variable.names(t(reg_results)) == "shock_s2")
+      shock_position_s1 <- which(stats::variable.names(t(reg_summary_tmp)) == "shock_s1")
+      shock_position_s2 <- which(stats::variable.names(t(reg_summary_tmp)) == "shock_s2")
 
       # If shock variable could not be found, stop estimation and give message
       if((is.integer(shock_position_s1) && length(shock_position_s1) == 0)|
@@ -565,39 +569,41 @@ lp_nl_panel <- function(
 
 
       # Estimate irfs and confidence bands
-      irf_s1_mean[1, ii]   <- reg_results[shock_position_s1, 1]
-      irf_s1_up[1,   ii]   <- reg_results[shock_position_s1, 1] + specs$confint*reg_results[shock_position_s1, 2]
-      irf_s1_low[1,  ii]   <- reg_results[shock_position_s1, 1] - specs$confint*reg_results[shock_position_s1, 2]
+      irf_s1_mean[1, ii]   <- reg_summary_tmp[shock_position_s1, 1]
+      irf_s1_up[1,   ii]   <- reg_summary_tmp[shock_position_s1, 1] + specs$confint*reg_summary_tmp[shock_position_s1, 2]
+      irf_s1_low[1,  ii]   <- reg_summary_tmp[shock_position_s1, 1] - specs$confint*reg_summary_tmp[shock_position_s1, 2]
 
-      irf_s2_mean[1, ii]   <- reg_results[shock_position_s2, 1]
-      irf_s2_up[1,   ii]   <- reg_results[shock_position_s2, 1] + specs$confint*reg_results[shock_position_s2,2]
-      irf_s2_low[1,  ii]   <- reg_results[shock_position_s2, 1] - specs$confint*reg_results[shock_position_s2,2]
+      irf_s2_mean[1, ii]   <- reg_summary_tmp[shock_position_s2, 1]
+      irf_s2_up[1,   ii]   <- reg_summary_tmp[shock_position_s2, 1] + specs$confint*reg_summary_tmp[shock_position_s2,2]
+      irf_s2_low[1,  ii]   <- reg_summary_tmp[shock_position_s2, 1] - specs$confint*reg_summary_tmp[shock_position_s2,2]
 
       # Estimate model without robust standard errors
                                }      else      {
 
-      reg_results <- summary(panel_results)
+      reg_output_tmp  <- panel_results
+      reg_summary_tmp <- summary(panel_results)
 
 
       # Extract the position of the parameters of the shock variable
-      shock_position_s1 <- which(stats::variable.names(t(reg_results$coef)) == "shock_s1")
-      shock_position_s2 <- which(stats::variable.names(t(reg_results$coef)) == "shock_s2")
+      shock_position_s1 <- which(stats::variable.names(t(reg_summary_tmp$coef)) == "shock_s1")
+      shock_position_s2 <- which(stats::variable.names(t(reg_summary_tmp$coef)) == "shock_s2")
 
 
       # Estimate irfs and confidence bands
-      irf_s1_mean[1, ii]   <- reg_results$coefficients[shock_position_s1, 1]
-      irf_s1_up[1,   ii]   <- reg_results$coefficients[shock_position_s1, 1] + specs$confint*reg_results$coefficients[shock_position_s1, 2]
-      irf_s1_low[1,  ii]   <- reg_results$coefficients[shock_position_s1, 1] - specs$confint*reg_results$coefficients[shock_position_s1, 2]
+      irf_s1_mean[1, ii]   <- reg_summary_tmp$coefficients[shock_position_s1, 1]
+      irf_s1_up[1,   ii]   <- reg_summary_tmp$coefficients[shock_position_s1, 1] + specs$confint*reg_summary_tmp$coefficients[shock_position_s1, 2]
+      irf_s1_low[1,  ii]   <- reg_summary_tmp$coefficients[shock_position_s1, 1] - specs$confint*reg_summary_tmp$coefficients[shock_position_s1, 2]
 
-      irf_s2_mean[1, ii]   <- reg_results$coefficients[shock_position_s2, 1]
-      irf_s2_up[1,   ii]   <- reg_results$coefficients[shock_position_s2, 1] + specs$confint*reg_results$coefficients[shock_position_s2, 2]
-      irf_s2_low[1,  ii]   <- reg_results$coefficients[shock_position_s2, 1] - specs$confint*reg_results$coefficients[shock_position_s2, 2]
+      irf_s2_mean[1, ii]   <- reg_summary_tmp$coefficients[shock_position_s2, 1]
+      irf_s2_up[1,   ii]   <- reg_summary_tmp$coefficients[shock_position_s2, 1] + specs$confint*reg_summary_tmp$coefficients[shock_position_s2, 2]
+      irf_s2_low[1,  ii]   <- reg_summary_tmp$coefficients[shock_position_s2, 1] - specs$confint*reg_summary_tmp$coefficients[shock_position_s2, 2]
 
     }
 
 
     # Save regression results and data_sets
-    reg_summaries[[ii]]      <- reg_results
+    reg_outputs[[ii]]        <- reg_output_tmp
+    reg_summaries[[ii]]      <- reg_summary_tmp
     xy_data_sets[[ii]]       <- yx_data
 
   }
