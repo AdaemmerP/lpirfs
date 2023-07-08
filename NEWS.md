@@ -1,3 +1,9 @@
+# lpirfs 0.2.3
+
+* Fixed bug [#27](https://github.com/AdaemmerP/lpirfs/issues/27#issue-1656283271).
+* Added additional output for panel functions. Now, the full plm-objects are returned in addition to summary statistics. 
+* Updated mail address. 
+
 # lpirfs 0.2.2
 
 * Disabled the possibility *lags_exog* = 0 for functions `lp_lin()`, `lp_nl()`, `lp_lin_iv()` and `lp_nl_iv()`. Solely *contemp_data* should be used for exogenous data with contemporaneous impact. 

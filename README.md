@@ -12,7 +12,7 @@ Version](https://www.r-pkg.org/badges/version/lpirfs)](https://CRAN.R-project.or
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/lpirfs?color=orange)](https://CRAN.R-project.org/package=lpirfs)
 [![Downloads](https://cranlogs.r-pkg.org/badges/lpirfs)](https://CRAN.R-project.org/package=lpirfs)
 [![Coverage
-Status](https://codecov.io/gh/adaemmerp/lpirfs/graph/badge.svg)](https://codecov.io/github/adaemmerp/lpirfs?branch=master)
+Status](https://codecov.io/gh/adaemmerp/lpirfs/graph/badge.svg)](https://app.codecov.io/github/adaemmerp/lpirfs?branch=master)
 
 ## About
 
