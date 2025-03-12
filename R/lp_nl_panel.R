@@ -10,8 +10,8 @@
 #'               directly plugged into the following smooth transition function:
 #'               \deqn{F_{z_t} = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)}.}
 #'               The data for the two regimes are lagged by default: \cr
-#'               Regime 1 = (1-\eqn{F(z_{t-1})})*y_{(t-p)}, \cr
-#'               Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.
+#'               Regime 1 = (1-\code{F(z\_{t-1}))*y\_{(t-p)}}, \cr
+#'               Regime 2 = \code{F(z\_{t-1})*y\_{(t-p)}}.
 #'               This option can be suppressed with "lag_switching = FALSE".
 #' @param lag_switching Boolean. Use the first lag of the values of the transition function? TRUE (default) or FALSE.
 #' @param gamma Double. Positive value for \eqn{\gamma}, used in the transition function.

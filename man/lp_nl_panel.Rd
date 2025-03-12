@@ -100,8 +100,8 @@ be decomposed by the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 20
 directly plugged into the following smooth transition function:
 \deqn{F_{z_t} = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)}.}
 The data for the two regimes are lagged by default: \cr
-Regime 1 = (1-\eqn{F(z_{t-1})})*y_{(t-p)}, \cr
-Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.
+Regime 1 = (1-\code{F(z\_{t-1}))*y\_{(t-p)}}, \cr
+Regime 2 = \code{F(z\_{t-1})*y\_{(t-p)}}.
 This option can be suppressed with "lag_switching = FALSE".}
 
 \item{use_logistic}{Boolean. Use logistic function to separate states? TRUE (default) or FALSE. If FALSE, the values of the switching variable

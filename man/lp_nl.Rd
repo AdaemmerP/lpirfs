@@ -65,10 +65,10 @@ with the number of horizon.}
 be decomposed via the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013) or
 directly plugged into the following logistic function:
 \deqn{ F_{z_t} = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)}. }
-Important: \eqn{F_{z_t}} will be lagged by one and then multiplied with the data.
+Important: \code{F_{z_t}} will be lagged by one and then multiplied with the data.
 If the variable shall not be lagged, use 'lag_switching = FALSE': \cr
-Regime 1 = (1-\eqn{F(z_{t-1})})*y_{(t-p)}, \cr
-Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.}
+Regime 1 = (1-\code{F(z_{t-1}))*y_{(t-p)}}, \cr
+Regime 2 = \code{F(z_{t-1})*y_{(t-p)}}.}
 
 \item{lag_switching}{Boolean. Use the first lag of the values of the transition function? TRUE (default) or FALSE.}
 
@@ -96,36 +96,36 @@ use the maximum number of cores minus one.}
 \value{
 A list containing:
 
-\item{irf_s1_mean}{A three 3D \link{array}, containing all impulse responses for all endogenous variables of the first state.
+\item{irf_s1_mean}{A three-dimensional \code{array}, containing all impulse responses for all endogenous variables of the first state.
                    The last dimension denotes the shock variable. The row in each matrix
                    denotes the responses of the \emph{ith} variable, ordered as in \emph{endog_data}. The columns are the horizons.
-                   For example, if the results are saved in \emph{results_nl}, results_nl$irf_s1_mean[, , 1] returns a KXH matrix,
-                   where K is the number of variables and H the number of horizons. '1' is the shock variable, corresponding to the
+                   For example, if the results are saved in \emph{results_nl}, \code{results_nl\$irf_s1_mean[, , 1]} returns a KxH matrix,
+                   where K is the number of variables and H is the number of horizons. '1' is the shock variable, corresponding to the
                    variable in the first column of \emph{endog_data}.}
 
-\item{irf_s1_low}{A three 3D \link{array}, containing all lower confidence bands of the impulse responses, based on
+\item{irf_s1_low}{A three-dimensional \code{array}, containing all lower confidence bands of the impulse responses, based on
                    robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s1_mean}.}
 
-\item{irf_s1_up}{A three 3D \link{array}, containing all upper confidence bands of the impulse responses, based on
+\item{irf_s1_up}{A three-dimensional \code{array}, containing all upper confidence bands of the impulse responses, based on
                    robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s1_mean}.}
 
-\item{irf_s2_mean}{A three 3D \link{array}, containing all impulse responses for all endogenous variables of the second state.
+\item{irf_s2_mean}{A three-dimensional \code{array}, containing all impulse responses for all endogenous variables of the second state.
                    The last dimension denotes the shock variable. The row in each matrix
-                   denotes the responses of the \emph{ith} variable, ordered as in endog_data. The columns denote the horizon.
-                   For example, if the results are saved in \emph{results_nl}, results_nl$irf_s2_mean[, , 1] returns a KXH matrix,
-                   where K is the number of variables and H the number of horizons. '1' is the first shock variable corresponding to the
+                   denotes the responses of the \emph{ith} variable, ordered as in \emph{endog_data}. The columns denote the horizon.
+                   For example, if the results are saved in \emph{results_nl}, \code{results_nl\$irf_s2_mean[, , 1]} returns a KxH matrix,
+                   where K is the number of variables and H is the number of horizons. '1' is the first shock variable corresponding to the
                    variable in the first column of \emph{endog_data}.}
 
-\item{irf_s2_low}{A three 3D \link{array}, containing all lower confidence bands of the responses,
+\item{irf_s2_low}{A three-dimensional \code{array}, containing all lower confidence bands of the responses,
                    based on robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s2_mean}.}
 
-\item{irf_s2_up}{A three 3D \link{array}, containing all upper confidence bands of the responses, based on
+\item{irf_s2_up}{A three-dimensional \code{array}, containing all upper confidence bands of the responses, based on
                    robust standard errors by Newey and West (1987). Properties are equal to \emph{irf_s2_mean}.}
 
 \item{specs}{A list with properties of \emph{endog_data} for the plot function. It also contains
-            lagged data (y_nl and x_nl) used for the irf estimations, and the selected lag lengths when an information criterion has been used.}
+            lagged data (\emph{y_nl} and \emph{x_nl}) used for the IRF estimations, and the selected lag lengths when an information criterion has been used.}
 
-\item{fz}{A vector containing the values of the transition function F(z_{t-1}).}
+\item{fz}{A vector containing the values of the transition function \code{F(z\_{t-1})}.}
 }
 \description{
 Compute nonlinear impulse responses with local projections by Jordà (2005). The

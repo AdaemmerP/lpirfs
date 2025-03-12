@@ -78,11 +78,11 @@ with the number of horizon.}
 be decomposed via the Hodrick-Prescott filter (see Auerbach and Gorodnichenko, 2013) or
 directly plugged into the following smooth transition function:
 \deqn{ F_{z_t} = \frac{exp(-\gamma z_t)}{1 + exp(-\gamma z_t)}. }
-Warning: \eqn{F_{z_t}} will be lagged by one and then multiplied with the data.
+Warning: \code{F\_{z_t}} will be lagged by one and then multiplied with the data.
 If the variable shall not be lagged, the vector has to be given with a lead of one.
 The data for the two regimes are: \cr
-Regime 1 = (1-\eqn{F(z_{t-1})})*y_{(t-p)}, \cr
-Regime 2 = \eqn{F(z_{t-1})}*y_{(t-p)}.}
+Regime 1 = (1-\code{F(z\_{t-1}))*y\_{(t-p)}}, \cr
+Regime 2 = \code{F(z\_{t-1})*y\_{(t-p)}}.}
 
 \item{lag_switching}{Boolean. Use the first lag of the values of the transition function? TRUE (default) or FALSE.}
 
@@ -126,7 +126,7 @@ A list containing:
 \item{specs}{A list with properties of \emph{endog_data} for the plot function. It also contains
             lagged data (y_nl and x_nl) used for the estimations of the impulse responses, and the selected lag lengths when an information criterion has been used.}
 
-\item{fz}{A vector, containing the values of the transition function F(z_{t-1}).}
+\item{fz}{A vector, containing the values of the transition function \code{F(z\_{t-1})}.}
 }
 \description{
 Compute nonlinear impulse responses with local projections and identified shock.
