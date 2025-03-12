@@ -35,8 +35,9 @@ Imports:
     lmtest(>= 0.9-36), 
     plm(>= 2.2-3),
     sandwich(>= 2.5-1),
-    Rcpp(>= 1.0.4.6)
-RoxygenNote: 7.2.3
+    Rcpp(>= 1.0.4.6),
+    AER(>= 1.2-12)
+RoxygenNote: 7.3.1
 LinkingTo: Rcpp, RcppArmadillo
 Suggests: 
     testthat (>= 3.0.0),

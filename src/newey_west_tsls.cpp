@@ -20,7 +20,7 @@ using namespace Rcpp;
 // [[Rcpp::export]]
 List newey_west_tsls(NumericVector y, NumericMatrix x, NumericMatrix z, int h){
   NumericMatrix V;
-  arma::mat G, M, xx, xx_one, yy, xx_hat, zz, M1, M2, ga, g1, za, xpxi, xpxi_iv, emat, hhat, cov_beta_iv;
+  arma::mat G, M, xx, xx_one, yy, xx_hat, zz, M1, M2, ga, g1, za, xpxi, xpxi_iv, emat, hhat, cov_beta_iv, p_z, x_pz_x;
   arma::vec w1, beta_iv, resids, resids_sq_iv;
   int nrow_hhat, a, nobs, num_exog, nlag;
   double ssr_iv, sigma_hat_iv, w ;
@@ -54,19 +54,18 @@ List newey_west_tsls(NumericVector y, NumericMatrix x, NumericMatrix z, int h){
   resids_sq_iv  = resids%resids;
   ssr_iv        = sum(resids_sq_iv);
   sigma_hat_iv  = ssr_iv/double(nobs - num_exog);
-
   cov_beta_iv   = sigma_hat_iv*xpxi_iv;
 
-
-
   // Start Newey-West
-  // Use original data for newey west estimator
-  xpxi     = inv(xx.t()*xx);
+  // xpxi     = inv(xx.t()*xx);
+  p_z      = (zz * inv(zz.t() * zz) * zz.t());
+  x_pz_x   = inv(xx.t()*p_z*xx);
   nlag     = h; // The lag increases with the horizons
   emat     = arma::zeros<arma::mat>(nobs, num_exog);
   emat.cols(0, num_exog-1).each_col()   = resids;
   emat     = emat.t();
-  hhat     = emat%xx.t();
+  // hhat     = emat%xx.t();
+  hhat     = emat%(xx.t()*p_z);
 
   G        = arma::zeros<arma::mat>(num_exog, num_exog);
   a        = 0;
@@ -99,7 +98,8 @@ List newey_west_tsls(NumericVector y, NumericMatrix x, NumericMatrix z, int h){
 
 
   }
-  V = wrap(xpxi*G*xpxi);
+  //V = wrap(xpxi*G*xpxi);
+  V = wrap(x_pz_x * G * x_pz_x);
 
   ret[0]  = beta_iv;
   ret[1]  = V;

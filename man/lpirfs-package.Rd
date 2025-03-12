@@ -2,6 +2,7 @@
 % Please edit documentation in R/package.R
 \docType{package}
 \name{lpirfs-package}
+\alias{lpirfs}
 \alias{lpirfs-package}
 \title{Local Projection Impulse Response Functions}
 \description{
@@ -9,6 +10,13 @@ lpirfs provides functions to estimate and plot linear as well as nonlinear impul
 responses based on local projections by Jordà (2005) <doi:10.1257/0002828053828518>.
 The methods and the package are explained in detail in Adämmer (2019) <doi:10.32614/RJ-2019-052>.
 Please cite the paper when using the package.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item Report bugs at \url{https://github.com/adaemmerp/lpirfs/issues}
+}
+
 }
 \author{
 Philipp Adämmer
