@@ -53,7 +53,8 @@ are estimated via: \deqn{y_{(t+h)} - y_{(t-1)},} where h = 0,..., H-1.}
 
 \item{shock}{Character. The column name of the variable to shock with.}
 
-\item{diff_shock}{Boolean. Take first differences of the shock variable? TRUE (default) or FALSE.}
+\item{diff_shock}{Boolean. Take first differences of the shock variable? TRUE (default) or FALSE. Note
+that when using this option both shock and instrument are used in first differences}
 
 \item{panel_model}{Character. Type of panel model. The default is "within" (fixed effects). Other options are "random", "ht",
 "between", "pooling" or "fd". See vignette of the plm package for details.}

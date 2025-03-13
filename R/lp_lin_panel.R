@@ -1,6 +1,7 @@
 #' @name lp_lin_panel
 #' @title Compute linear impulse responses with local projections for panel data
-#' @description This function estimates impulse responses with local projections for panel data, either with an
+#' @description This function estimates impulse responses with local projections
+#' for panel data, either with an
 #'              identified shock or by an instrument variable approach.
 #' @param data_set A \link{data.frame}, containing the panel data set. The first column has to be the
 #'                 variable denoting the cross section. The second column has to be the
@@ -11,7 +12,8 @@
 #' @param cumul_mult Boolean. Estimate cumulative multipliers? TRUE (default) or FALSE. If TRUE, cumulative responses
 #'                   are estimated via: \deqn{y_{(t+h)} - y_{(t-1)},} where h = 0,..., H-1.
 #' @param shock      Character. The column name of the variable to shock with.
-#' @param diff_shock Boolean. Take first differences of the shock variable? TRUE (default) or FALSE.
+#' @param diff_shock Boolean. Take first differences of the shock variable? TRUE (default) or FALSE. Note
+#' that when using this option both shock and instrument are used in first differences
 #' @param iv_reg     Boolean. Use instrument variable approach? TRUE or FALSE.
 #' @param instrum    NULL or Character. The name(s) of the instrument variable(s) if iv_reg = TRUE.
 #' @param panel_model Character. Type of panel model. The default is "within" (fixed effects). Other options are "random", "ht",

@@ -49,7 +49,8 @@ are estimated via: \deqn{y_{(t+h)} - y_{(t-1)},} where h = 0,..., H-1.}
 
 \item{shock}{Character. The column name of the variable to shock with.}
 
-\item{diff_shock}{Boolean. Take first differences of the shock variable? TRUE (default) or FALSE.}
+\item{diff_shock}{Boolean. Take first differences of the shock variable? TRUE (default) or FALSE. Note
+that when using this option both shock and instrument are used in first differences}
 
 \item{iv_reg}{Boolean. Use instrument variable approach? TRUE or FALSE.}
 
@@ -119,7 +120,8 @@ this only includes the t-tests.}
 \item{specs}{A list with data properties for e.g. the plot function.}
 }
 \description{
-This function estimates impulse responses with local projections for panel data, either with an
+This function estimates impulse responses with local projections
+for panel data, either with an
              identified shock or by an instrument variable approach.
 }
 \examples{
