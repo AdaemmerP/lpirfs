@@ -45,8 +45,6 @@ List newey_west(NumericVector y, NumericMatrix x, int h){
   emat     = emat.t();
   hhat     = emat%xx.t();
 
- // w        = arma::zeros<arma::vec>(2*nlag + 1);
-
   G        = arma::zeros<arma::mat>(num_exog, num_exog);
   a        = 0;
 
@@ -54,7 +52,6 @@ List newey_west(NumericVector y, NumericMatrix x, int h){
   for (int i = 0; i < nlag + 1; ++i){
 
     ga                 = arma::zeros<arma::mat>(num_exog, num_exog);
-  //  w(nlag + a)        = (nlag + 1 - a)/double(nlag + 1);
     w                  = 1 - i/double(nlag + 1);
     M                  = hhat;
     nrow_hhat          = M.n_rows;
@@ -73,7 +70,6 @@ List newey_west(NumericVector y, NumericMatrix x, int h){
 
     }
 
-   // G  = G +  w(nlag + a , 0)*ga;
     G  = G +  w*ga;
 
     a = a + 1;

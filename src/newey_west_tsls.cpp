@@ -57,14 +57,12 @@ List newey_west_tsls(NumericVector y, NumericMatrix x, NumericMatrix z, int h){
   cov_beta_iv   = sigma_hat_iv*xpxi_iv;
 
   // Start Newey-West
-  // xpxi     = inv(xx.t()*xx);
   p_z      = (zz * inv(zz.t() * zz) * zz.t());
   x_pz_x   = inv(xx.t()*p_z*xx);
   nlag     = h; // The lag increases with the horizons
   emat     = arma::zeros<arma::mat>(nobs, num_exog);
   emat.cols(0, num_exog-1).each_col()   = resids;
   emat     = emat.t();
-  // hhat     = emat%xx.t();
   hhat     = emat%(xx.t()*p_z);
 
   G        = arma::zeros<arma::mat>(num_exog, num_exog);
@@ -98,7 +96,6 @@ List newey_west_tsls(NumericVector y, NumericMatrix x, NumericMatrix z, int h){
 
 
   }
-  //V = wrap(xpxi*G*xpxi);
   V = wrap(x_pz_x * G * x_pz_x);
 
   ret[0]  = beta_iv;
