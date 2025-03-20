@@ -2,14 +2,14 @@
 
 ## Purpose
 
-* Fixed bug [#27](https://github.com/AdaemmerP/lpirfs/issues/27#issue-1656283271).
-* Added additional output for panel functions. Now, the full plm-objects are returned in addition to summary statistics. 
-* Updated mail address. 
-
+* Fixed bug [#48](https://github.com/AdaemmerP/lpirfs/issues/48) for computing the standard errors 
+for `lp_lin_iv()` when using 2SLS.
+* Improved documentation.
+* Fixed Notes and warnings on CRAN.
 
 ## Test environments
 * Running under Ubuntu 22.04.2 LTS
-* R version 4.3.1
+* R version 4.4.3
 
 
 

@@ -5,7 +5,7 @@
 \alias{ag_data}
 \title{Data to estimate fiscal multipliers}
 \format{
-A \link{tibble} with 248 quarterly observations (rows) and 7 variables (columns):
+A tibble with 248 quarterly observations (rows) and 7 variables (columns):
 \describe{
   \item{Year}{Year of observation.}
   \item{Quarter}{Quarter of observation.}
@@ -19,7 +19,7 @@ A \link{tibble} with 248 quarterly observations (rows) and 7 variables (columns)
 Sample: 1948:IV - 2008:IV
 }
 \source{
-\url{https://www.journals.uchicago.edu/doi/10.1086/696277}
+\doi{10.1086/696277}
 }
 \usage{
 ag_data

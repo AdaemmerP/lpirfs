@@ -1,3 +1,9 @@
+# lpirfs 0.2.4
+
+* Fixed bug [#48](https://github.com/AdaemmerP/lpirfs/issues/48) for computing the standard errors 
+for `lp_lin_iv()` when using 2SLS.
+* Improved documentation.
+
 # lpirfs 0.2.3
 
 * Fixed bug [#27](https://github.com/AdaemmerP/lpirfs/issues/27#issue-1656283271).

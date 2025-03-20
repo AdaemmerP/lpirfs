@@ -3,7 +3,7 @@
 #'              This data was originally used by Auerbach and Gorodnichenko (2012).
 #'              Sarah and Zubairy (2018) use this data to re-evaluate their results with local projections.
 #'
-#' @format A \link{tibble} with 248 quarterly observations (rows) and 7 variables (columns):
+#' @format A tibble with 248 quarterly observations (rows) and 7 variables (columns):
 #' \describe{
 #'   \item{Year}{Year of observation.}
 #'   \item{Quarter}{Quarter of observation.}
@@ -27,7 +27,7 @@
 #' and in Bad: Evidence from US Historical Data." \emph{Journal of Political Economy},
 #' 126(2): 850 - 901.
 #'
-#' @source \url{https://www.journals.uchicago.edu/doi/10.1086/696277}
+#' @source \doi{10.1086/696277}
 "ag_data"
 
 
@@ -35,7 +35,7 @@
 #' @title Data to estimate the effects of interest rate rules for monetary policy
 #' @description A tibble, containing data to estimate the effects of interest rate rules for monetary policy.
 #'              The data are used by Jordà (2005).
-#' @format A \link{tibble} with 193 quarterly observations (rows) and 3 variables (columns):
+#' @format A tibble with 193 quarterly observations (rows) and 3 variables (columns):
 #' \describe{
 #'   \item{GDP_gap}{Percentage difference between real GDP and potential GDP (Congressional Budget Office).}
 #'   \item{Infl}{Inflation: Percentage change in the GDP, chain weighted price index at annual rate.}
@@ -55,7 +55,7 @@
 #'
 #' @description A tibble, containing data to estimate a standard monetary VAR.
 #'
-#' @format A \link{tibble} with 494 monthly observations (rows) and 6 variables (columns):
+#' @format A tibble with 494 monthly observations (rows) and 6 variables (columns):
 #' \describe{
 #'   \item{EM}{Log of non-agricultural payroll employment.}
 #'   \item{P}{Log of personal consumption expenditures deflator (1996 = 100).}

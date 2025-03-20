@@ -5,7 +5,7 @@
 \alias{monetary_var_data}
 \title{Data to estimate a standard monetary VAR}
 \format{
-A \link{tibble} with 494 monthly observations (rows) and 6 variables (columns):
+A tibble with 494 monthly observations (rows) and 6 variables (columns):
 \describe{
   \item{EM}{Log of non-agricultural payroll employment.}
   \item{P}{Log of personal consumption expenditures deflator (1996 = 100).}

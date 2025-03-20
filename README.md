@@ -52,7 +52,7 @@ You can install the development version of **lpirfs** from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("https://github.com/AdaemmerP/lpirfs/tree/dev")
+devtools::install_github("https://github.com/AdaemmerP/lpirfs")
 ```
 
 As lpirfs compiles some C++ source code, you will need to have installed
@@ -72,7 +72,7 @@ I am thankful to Òscar
 comments and helpful suggestions. I am also indebted to Sarah
 [Zubairy](https://sites.google.com/site/sarahzubairy/) for providing the
 Matlab code before the publication of their
-[paper](https://www.journals.uchicago.edu/doi/10.1086/696277).
+[paper](https://doi.org/10.1086/696277).
 
 I greatly benefitted from the helpful remarks by Jon
 [Danielsson](https://www.systemicrisk.ac.uk/people/jon-danielsson) and
