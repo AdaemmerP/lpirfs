@@ -73,7 +73,7 @@ get_std_err_tsls <- function(yy, xx, lag_nw, k, zz,  specs){
     # Finite sample adjustment?
     if(isTRUE(specs$adjust_se)) beta_cov <- beta_cov*nrow(yy)/(nrow(yy) - ncol(xx) - 1)
 
-    std_err           <- sqrt(diag(beta_cov))
+    std_err           <- sqrt(diag(beta_cov)) * specs$confint
 
   }
 
