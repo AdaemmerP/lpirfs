@@ -26,9 +26,5 @@ create_lags  <- function(data, lags){
            lag_data <- cbind(lag_data, lags_column)
         }
   }
-
-  # Delete NAs
-     lag_data <- lag_data
-
      return(lag_data)
 }
