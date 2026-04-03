@@ -28,7 +28,7 @@
 #' @param nw_lag Integer. Specifies the maximum lag with positive weight for the Newey-West estimator. If set to NULL (default), the lag increases with
 #'               with the number of horizon.
 #' @param nw_prewhite Boolean. Should the estimators be pre-whitened? TRUE of FALSE (default).
-#' @param adjust_se Boolen. Should a finite sample adjsutment be made to the covariance matrix estimators? TRUE or FALSE (default).
+#' @param adjust_se Boolean. Should a finite sample adjsutment be made to the covariance matrix estimators? TRUE or FALSE (default).
 #' @param hor Integer. Number of horizons for impulse responses.
 #' @param num_cores NULL or Integer. The number of cores to use for the estimation. If NULL, the function will
 #'                  use the maximum number of cores minus one.
