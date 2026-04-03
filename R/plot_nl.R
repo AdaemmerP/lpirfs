@@ -48,11 +48,11 @@ plot_nl <- function(results_nl){
                                low = tbl_s1_low,   up   = tbl_s1_up)
 
       # Tibbles for recessions irfs
-      tbl_s1_mean <- as.matrix(t(irf_s2_mean[,  1:specs$hor , ss]))[, rr]
+      tbl_s2_mean <- as.matrix(t(irf_s2_mean[,  1:specs$hor , ss]))[, rr]
       tbl_s2_low  <- as.matrix(t(irf_s2_low[,   1:specs$hor , ss]))[, rr]
       tbl_s2_up   <- as.matrix(t(irf_s2_up[,    1:specs$hor , ss]))[, rr]
 
-      tbl_s2      <- data.frame(x   = 1:specs$hor,  mean   = tbl_s1_mean,
+      tbl_s2      <- data.frame(x   = 1:specs$hor,  mean   = tbl_s2_mean,
                                 low  = tbl_s2_low,   up     = tbl_s2_up)
 
 
